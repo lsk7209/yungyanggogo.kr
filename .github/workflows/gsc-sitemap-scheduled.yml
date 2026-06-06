@@ -1,0 +1,32 @@
+name: GSC Sitemap Scheduled
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+
+jobs:
+  gsc-sitemap-submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install
+      - name: Write GSC credentials
+        shell: bash
+        env:
+          GSC_CREDENTIALS_JSON: ${{ secrets.GSC_CREDENTIALS_JSON }}
+        run: |
+          if [ -z "$GSC_CREDENTIALS_JSON" ]; then
+            echo "GSC_CREDENTIALS_JSON secret is missing"
+            exit 1
+          fi
+          printf '%s' "$GSC_CREDENTIALS_JSON" > "$RUNNER_TEMP/gsc_credentials.json"
+      - name: Verify live sitemap and robots
+        run: npm run gsc:sitemap:check-live -- --credentials "$RUNNER_TEMP/gsc_credentials.json"
+      - name: Submit sitemap to GSC and wait for green status
+        run: npm run gsc:sitemap:submit -- --credentials "$RUNNER_TEMP/gsc_credentials.json" --pollAttempts 3 --pollIntervalMs 300000
