@@ -23,7 +23,7 @@ npm run build
 
 `.env.example`을 기준으로 Vercel 환경변수를 설정합니다.
 
-- `NEXT_PUBLIC_SITE_URL`: 운영 도메인
+- `NEXT_PUBLIC_SITE_URL`: 운영 도메인, 기본값 `https://yungyanggogo.kr`
 - `NEXT_PUBLIC_GA_ID`: GA4 측정 ID
 - `TURSO_DATABASE_URL`: Turso database URL
 - `TURSO_AUTH_TOKEN`: Turso auth token

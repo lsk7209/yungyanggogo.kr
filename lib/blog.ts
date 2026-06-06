@@ -16,6 +16,16 @@ export type BlogPost = {
   readingMinutes: number;
   noindex?: boolean;
   sections: BlogSection[];
+  internalLinks: {
+    href: string;
+    label: string;
+    description: string;
+  }[];
+  sourceLinks: {
+    href: string;
+    label: string;
+    description: string;
+  }[];
 };
 
 export const blogPosts: BlogPost[] = [
@@ -52,6 +62,25 @@ export const blogPosts: BlogPost[] = [
           "저당, 저열량, 무당 같은 영양강조표시는 임의의 마케팅 문구가 아니라 법정 기준이 있는 표현입니다. 영양고고는 이런 표현을 배지처럼 강조하지 않고 기준, 측정값, 충족 여부를 같이 제시하는 객관 정보로만 다룹니다.",
           "질병 예방, 치료, 완화처럼 건강 효능을 암시하는 문장은 사용하지 않습니다. 자료의 출처와 검토일을 함께 남겨 사용자가 직접 판단할 수 있게 하는 것이 기본 방향입니다."
         ]
+      }
+    ],
+    internalLinks: [
+      {
+        href: "/",
+        label: "식품영양성분 비교 홈",
+        description: "영양고고의 비교 원칙과 향후 랭킹 허브 방향을 확인합니다."
+      },
+      {
+        href: "/blog",
+        label: "식품영양성분 블로그",
+        description: "기준량, 출처, 영양강조표시 관련 글을 이어서 확인합니다."
+      }
+    ],
+    sourceLinks: [
+      {
+        href: "https://www.data.go.kr/data/15127578/openapi.do",
+        label: "식품의약품안전처 식품영양성분DB정보",
+        description: "식품명, 영양성분 함량 기준량, 출처, 데이터 기준일자 등을 제공하는 공공데이터포털 API입니다."
       }
     ]
   }

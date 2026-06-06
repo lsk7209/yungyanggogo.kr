@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TableOfContents } from "../../../components/TableOfContents";
 import { getAllPosts, getPostBySlug, getPostUrl } from "../../../lib/blog";
@@ -115,6 +116,40 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             ))}
           </section>
         ))}
+        <section id="next-actions" className="article-links">
+          <h2>식품영양성분 비교를 계속 확인하기</h2>
+          <p>
+            아래 링크에서 영양고고의 비교 원칙과 관련 글을 이어서 확인할 수 있습니다. 공식 데이터 출처도 함께
+            남겨 수치의 기준을 직접 검토할 수 있게 했습니다.
+          </p>
+          <div className="link-panel">
+            <h3>내부 링크</h3>
+            <ul>
+              {post.internalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href}>{link.label}</Link>
+                  <span>{link.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="link-panel">
+            <h3>공식 출처</h3>
+            <ul>
+              {post.sourceLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} target="_blank" rel="noreferrer">
+                    {link.label}
+                  </a>
+                  <span>{link.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <Link className="button article-cta" href="/blog">
+            식품영양성분 블로그 더 보기
+          </Link>
+        </section>
       </div>
     </article>
   );

@@ -9,7 +9,7 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero__content">
           <p className="eyebrow">식품영양성분 pSEO</p>
-          <h1>영양고고</h1>
+          <h1>식품영양성분 비교 영양고고</h1>
           <p>
             식품영양성분을 100g, 100kcal, 기준량, 출처로 정리해 목적형 식품 비교와 랭킹 허브를 만들기 위한
             데이터 중심 사이트입니다.
@@ -28,7 +28,7 @@ export default function HomePage() {
       <section className="section">
         <div className="section__head">
           <p className="eyebrow">운영 원칙</p>
-          <h2>단일 점수보다 기준과 맥락을 먼저 봅니다</h2>
+          <h2>식품영양성분 비교는 단일 점수보다 기준과 맥락을 먼저 봅니다</h2>
         </div>
         <div className="feature-grid">
           <article>

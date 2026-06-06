@@ -9,7 +9,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} - ${siteConfig.tagline}`,
+    default: siteConfig.title,
     template: `%s | ${siteConfig.name}`
   },
   description: siteConfig.description,
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     siteName: siteConfig.name,
-    title: siteConfig.name,
+    title: siteConfig.title,
     description: siteConfig.description,
     url: absoluteUrl("/")
   },
