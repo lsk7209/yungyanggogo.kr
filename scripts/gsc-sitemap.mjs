@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { sign } from "node:crypto";
 
@@ -163,8 +163,30 @@ async function checkLiveUrls() {
     throw new Error(`robots.txt does not reference ${sitemapUrl}`);
   }
 
+  const verificationFiles = getVerificationFiles();
+  for (const fileName of verificationFiles) {
+    const verificationUrl = new URL(`/${fileName}`, siteUrl).toString();
+    const verification = await fetch(verificationUrl, { redirect: "follow" });
+    const verificationText = await verification.text();
+    if (!verification.ok) {
+      throw new Error(`Google verification file is not fetchable: ${verification.status} ${verificationUrl}`);
+    }
+    if (!verificationText.includes(`google-site-verification: ${fileName}`)) {
+      throw new Error(`Google verification file body is invalid: ${verificationUrl}`);
+    }
+    console.log(`live_verification=ok ${verificationUrl}`);
+  }
+
   console.log(`live_sitemap=ok ${sitemapUrl}`);
   console.log(`live_robots=ok ${robotsUrl}`);
+}
+
+function getVerificationFiles() {
+  const publicDir = resolve("public");
+  if (!existsSync(publicDir)) {
+    return [];
+  }
+  return readdirSync(publicDir).filter((name) => /^google[a-z0-9]+\.html$/i.test(name));
 }
 
 async function hasSearchConsoleAccess(token) {
@@ -211,7 +233,9 @@ async function verifyPropertyAccess(token) {
     await insertVerification(token);
     await addSearchConsoleSite(token);
   }
-  await hasSearchConsoleAccess(token);
+  if (!(await hasSearchConsoleAccess(token))) {
+    throw new Error(`Search Console property is still not accessible after verification: ${siteUrl}`);
+  }
 }
 
 async function insertVerification(token) {
@@ -252,7 +276,12 @@ async function submitSitemap(token) {
 }
 
 async function printPropertyAndSitemapStatus(token) {
-  await hasSearchConsoleAccess(token);
+  if (!(await hasSearchConsoleAccess(token))) {
+    console.log("gsc_status=blocked_missing_permission");
+    console.log("next_step=npm run gsc:sitemap:verify");
+    process.exitCode = 20;
+    return;
+  }
   const status = await getSitemapStatus(token);
   console.log(JSON.stringify(status, null, 2));
 }
