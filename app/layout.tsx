@@ -81,7 +81,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <nav className="site-nav" aria-label="주요 메뉴">
             <Link href="/rankings">랭킹</Link>
             <Link href="/blog">블로그</Link>
-            <a href="/llms.txt">llms.txt</a>
           </nav>
         </header>
         <main>{children}</main>
