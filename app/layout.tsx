@@ -29,6 +29,12 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description
   },
+  verification: {
+    google: "T29-PupD3JevU3dqOjGvY-MgLoYKhBRAQkR8zk2elys"
+  },
+  other: {
+    "naver-site-verification": "c31ecdc91d511be16677fa7d93c7d52c810b635e"
+  },
   robots: {
     index: true,
     follow: true
@@ -73,6 +79,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <nav className="site-nav" aria-label="주요 메뉴">
+            <Link href="/rankings">랭킹</Link>
             <Link href="/blog">블로그</Link>
             <a href="/llms.txt">llms.txt</a>
           </nav>

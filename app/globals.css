@@ -697,6 +697,92 @@ h3 {
   margin-top: 22px;
 }
 
+.ranking-list {
+  display: grid;
+  gap: 12px;
+}
+
+.rank-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow-card);
+}
+
+.rank-row__num {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-row h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.rank-row p {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.rank-row small {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.rank-row a {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.food-detail section {
+  margin-top: 36px;
+}
+
+.claim-table {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.claim-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.claim-row p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
 .site-footer {
   display: flex;
   justify-content: space-between;
@@ -732,6 +818,15 @@ h3 {
 
   .category-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rank-row {
+    grid-template-columns: 38px 1fr;
+  }
+
+  .rank-row a {
+    grid-column: 2;
+    justify-self: start;
   }
 
   .site-footer {
@@ -792,5 +887,9 @@ h3 {
 
   .article-body p {
     font-size: 16px;
+  }
+
+  .claim-row {
+    grid-template-columns: 1fr;
   }
 }

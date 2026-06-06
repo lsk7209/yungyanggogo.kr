@@ -9,28 +9,32 @@ const rankingCards = [
     title: "단백질 높은 간편식",
     metric: "100kcal당 단백질",
     count: "128개",
-    tone: "green"
+    tone: "green",
+    href: "/foods/protein-ready-meal-sample"
   },
   {
     icon: "열",
     title: "칼로리 낮은 간식",
     metric: "1회 제공량 열량",
     count: "94개",
-    tone: "slate"
+    tone: "slate",
+    href: "/rankings"
   },
   {
     icon: "당",
     title: "당류 낮은 음료",
     metric: "100ml당 당류",
     count: "76개",
-    tone: "amber"
+    tone: "amber",
+    href: "/rankings"
   },
   {
     icon: "나",
     title: "나트륨 낮은 라면",
     metric: "1회 제공량 나트륨",
     count: "41개",
-    tone: "terra"
+    tone: "terra",
+    href: "/rankings"
   }
 ];
 
@@ -80,7 +84,7 @@ export default function HomePage() {
           <div className="chip-row" aria-label="목적별 기준">
             <span>목적별</span>
             {purposeChips.map((chip) => (
-              <Link key={chip} className="chip" href="/blog">
+              <Link key={chip} className="chip" href="/rankings">
                 {chip}
               </Link>
             ))}
@@ -101,7 +105,7 @@ export default function HomePage() {
         </div>
         <div className="ranking-grid">
           {rankingCards.map((card) => (
-            <Link key={card.title} className={`ranking-card ranking-card--${card.tone}`} href="/blog">
+            <Link key={card.title} className={`ranking-card ranking-card--${card.tone}`} href={card.href}>
               <span className="ranking-card__icon">{card.icon}</span>
               <span>
                 <strong>{card.title}</strong>
@@ -122,7 +126,7 @@ export default function HomePage() {
         </div>
         <div className="category-grid">
           {categories.map(([name, count]) => (
-            <Link key={name} className="category-tile" href="/blog">
+            <Link key={name} className="category-tile" href="/rankings">
               <strong>{name}</strong>
               <span>{count}</span>
             </Link>

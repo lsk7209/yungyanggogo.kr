@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts, getPostUrl } from "../lib/blog";
+import { foods, getFoodUrl } from "../lib/foods";
 import { absoluteUrl } from "../lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -15,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-06-06"),
       changeFrequency: "weekly",
       priority: 0.8
+    },
+    {
+      url: absoluteUrl("/rankings"),
+      lastModified: new Date("2026-06-06"),
+      changeFrequency: "weekly",
+      priority: 0.85
     }
   ];
 
@@ -25,5 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7
   }));
 
-  return [...staticRoutes, ...postRoutes];
+  const foodRoutes = foods.map((food) => ({
+    url: getFoodUrl(food),
+    lastModified: new Date("2026-06-06"),
+    changeFrequency: "monthly" as const,
+    priority: 0.72
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...foodRoutes];
 }
