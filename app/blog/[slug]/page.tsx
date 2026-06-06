@@ -9,8 +9,10 @@ type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  return getAllPosts({ includeScheduled: true }).map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -138,6 +140,36 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         ))}
       </div>
       <div className="article-body">
+        {post.dataPoints && post.dataPoints.length > 0 ? (
+          <section className="data-point-panel" aria-label="핵심 데이터 포인트">
+            {post.dataPoints.map((point) => (
+              <div key={point.label}>
+                <span>{point.label}</span>
+                <strong>{point.value}</strong>
+                <p>{point.note}</p>
+              </div>
+            ))}
+          </section>
+        ) : null}
+        {post.warningBox ? (
+          <section className="warning-panel">
+            <h2>{post.warningBox.title}</h2>
+            <p>{post.warningBox.body}</p>
+          </section>
+        ) : null}
+        {post.steps && post.steps.length > 0 ? (
+          <section className="step-panel">
+            <h2>{post.mainKeyword} 판단 순서</h2>
+            <ol>
+              {post.steps.map((step) => (
+                <li key={step.title}>
+                  <strong>{step.title}</strong>
+                  <span>{step.body}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ) : null}
         {post.sections.map((section) => (
           <section key={section.id} id={section.id}>
             <h2>{section.title}</h2>
@@ -154,6 +186,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             ))}
           </ul>
         </section>
+        {post.faq && post.faq.length > 0 ? (
+          <section id="faq" className="faq-panel">
+            <h2>{post.mainKeyword} FAQ</h2>
+            {post.faq.map((item) => (
+              <details key={item.question}>
+                <summary>{item.question}</summary>
+                <p>{item.answer}</p>
+              </details>
+            ))}
+          </section>
+        ) : null}
         <section id="next-actions" className="article-links">
           <h2>식품영양성분 비교를 계속 확인하기</h2>
           <p>

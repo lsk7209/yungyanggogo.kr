@@ -1,7 +1,7 @@
 import { getAllPosts, getPostUrl } from "../../lib/blog";
 import { siteConfig } from "../../lib/site";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 function escapeXml(value: string) {
   return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");

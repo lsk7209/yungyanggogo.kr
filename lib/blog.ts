@@ -1,3 +1,5 @@
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { absoluteUrl } from "./site";
 
 export type BlogSection = {
@@ -29,6 +31,23 @@ export type BlogPost = {
     caution: string;
   }[];
   checklist: string[];
+  dataPoints?: {
+    label: string;
+    value: string;
+    note: string;
+  }[];
+  steps?: {
+    title: string;
+    body: string;
+  }[];
+  warningBox?: {
+    title: string;
+    body: string;
+  };
+  faq?: {
+    question: string;
+    answer: string;
+  }[];
   sections: BlogSection[];
   internalLinks: {
     href: string;
@@ -42,7 +61,7 @@ export type BlogPost = {
   }[];
 };
 
-export const blogPosts: BlogPost[] = [
+export const seedBlogPosts: BlogPost[] = [
   {
     slug: "nutrition-label-comparison-basis",
     title: "영양성분표 비교: 100g·100kcal 기준으로 식품영양성분 읽는 법",
@@ -190,12 +209,48 @@ export const blogPosts: BlogPost[] = [
   }
 ];
 
-export function getAllPosts() {
-  return [...blogPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+type GetPostsOptions = {
+  includeScheduled?: boolean;
+  now?: Date;
+};
+
+const BLOG_CONTENT_DIR = path.join(process.cwd(), "content", "blog");
+
+function loadGeneratedPosts(): BlogPost[] {
+  if (!existsSync(BLOG_CONTENT_DIR)) {
+    return [];
+  }
+
+  return readdirSync(BLOG_CONTENT_DIR)
+    .filter((file) => file.endsWith(".json"))
+    .flatMap((file) => {
+      const raw = readFileSync(path.join(BLOG_CONTENT_DIR, file), "utf8");
+      const parsed = JSON.parse(raw) as BlogPost | BlogPost[];
+      return Array.isArray(parsed) ? parsed : [parsed];
+    });
 }
 
-export function getPostBySlug(slug: string) {
-  return blogPosts.find((post) => post.slug === slug);
+export function isPostPublished(post: BlogPost, now = new Date()) {
+  return new Date(post.publishedAt).getTime() <= now.getTime();
+}
+
+export const blogPosts: BlogPost[] = [...seedBlogPosts, ...loadGeneratedPosts()];
+
+export function getAllPosts(options: GetPostsOptions = {}) {
+  const now = options.now || new Date();
+  return [...blogPosts]
+    .filter((post) => options.includeScheduled || isPostPublished(post, now))
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+}
+
+export function getPostBySlug(slug: string, options: GetPostsOptions = {}) {
+  const post = blogPosts.find((item) => item.slug === slug);
+
+  if (!post || (!options.includeScheduled && !isPostPublished(post, options.now || new Date()))) {
+    return undefined;
+  }
+
+  return post;
 }
 
 export function getPostUrl(post: BlogPost) {

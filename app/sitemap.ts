@@ -3,6 +3,8 @@ import { getAllPosts, getPostUrl } from "../lib/blog";
 import { foods, getFoodUrl } from "../lib/foods";
 import { absoluteUrl } from "../lib/site";
 
+export const dynamic = "force-dynamic";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
