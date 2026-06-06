@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "gsc:sitemap": "node scripts/gsc-sitemap.mjs all",
+    "gsc:sitemap:status": "node scripts/gsc-sitemap.mjs status",
+    "gsc:sitemap:verify": "node scripts/gsc-sitemap.mjs verify-property",
+    "gsc:sitemap:submit": "node scripts/gsc-sitemap.mjs submit"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
