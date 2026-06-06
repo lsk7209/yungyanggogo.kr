@@ -99,7 +99,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <header className="article-header">
         <p className="eyebrow">{post.category}</p>
         <h1>{post.title}</h1>
+        <p className="article-subtitle">{post.subtitle}</p>
         <p>{post.description}</p>
+        <div className="keyword-row" aria-label="글 핵심 키워드">
+          <span>{post.mainKeyword}</span>
+          {post.expandedKeywords.map((keyword) => (
+            <span key={keyword}>{keyword}</span>
+          ))}
+        </div>
         <div className="article-meta">
           <time dateTime={post.publishedAt}>발행 {post.publishedAt}</time>
           <time dateTime={post.updatedAt}>검토 {post.updatedAt}</time>
@@ -107,6 +114,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </header>
       <TableOfContents sections={post.sections} />
+      <div className="article-insights" aria-label="핵심 요약">
+        {post.summaryCards.map((card) => (
+          <div key={card.label} className="insight-card">
+            <span>{card.label}</span>
+            <strong>{card.value}</strong>
+            <p>{card.description}</p>
+          </div>
+        ))}
+      </div>
+      <div className="comparison-table" aria-label="기준량 비교 표">
+        <div className="comparison-table__head">
+          <span>비교 기준</span>
+          <span>잘 맞는 상황</span>
+          <span>주의점</span>
+        </div>
+        {post.comparisonRows.map((row) => (
+          <div key={row.basis} className="comparison-table__row">
+            <strong>{row.basis}</strong>
+            <span>{row.bestFor}</span>
+            <span>{row.caution}</span>
+          </div>
+        ))}
+      </div>
       <div className="article-body">
         {post.sections.map((section) => (
           <section key={section.id} id={section.id}>
@@ -116,6 +146,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             ))}
           </section>
         ))}
+        <section id="checklist" className="check-panel">
+          <h2>영양성분표 비교 전 체크리스트</h2>
+          <ul>
+            {post.checklist.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
         <section id="next-actions" className="article-links">
           <h2>식품영양성분 비교를 계속 확인하기</h2>
           <p>
