@@ -695,6 +695,21 @@ h3 {
   font-weight: 700;
 }
 
+.article-hero-image {
+  overflow: hidden;
+  margin-top: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow-card);
+}
+
+.article-hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .keyword-row {
   display: flex;
   flex-wrap: wrap;

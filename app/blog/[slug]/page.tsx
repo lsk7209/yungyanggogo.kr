@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import type React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TableOfContents } from "../../../components/TableOfContents";
 import { getAllPosts, getPostBySlug, getPostUrl } from "../../../lib/blog";
+import { getPostThumbnailUrl } from "../../../lib/post-thumbnail";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
 
 type BlogPostPageProps = {
@@ -24,6 +26,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     return {};
   }
 
+  const thumbnailUrl = getPostThumbnailUrl(post);
+
   return {
     title: post.title,
     description: post.description,
@@ -36,7 +40,21 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       description: post.description,
       url: getPostUrl(post),
       publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt
+      modifiedTime: post.updatedAt,
+      images: [
+        {
+          url: thumbnailUrl,
+          width: 960,
+          height: 420,
+          alt: `${post.title} 썸네일`
+        }
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [thumbnailUrl]
     },
     robots: post.noindex ? { index: false, follow: true } : { index: true, follow: true }
   };
@@ -50,6 +68,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const thumbnailUrl = getPostThumbnailUrl(post);
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -59,6 +79,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     mainEntityOfPage: getPostUrl(post),
+    image: thumbnailUrl,
     publisher: {
       "@id": absoluteUrl("/#organization")
     },
@@ -104,6 +125,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <h1>{post.title}</h1>
         <p className="article-subtitle">{post.subtitle}</p>
         <p>{post.description}</p>
+        <div className="article-hero-image">
+          <Image
+            src={thumbnailUrl}
+            alt={`${post.title} 썸네일`}
+            width={960}
+            height={420}
+            sizes="(max-width: 760px) 100vw, 760px"
+            priority
+            unoptimized
+          />
+        </div>
         <div className="keyword-row" aria-label="글 핵심 키워드">
           <span>{post.mainKeyword}</span>
           {post.expandedKeywords.map((keyword) => (

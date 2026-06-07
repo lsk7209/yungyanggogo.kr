@@ -1,4 +1,5 @@
 import type { BlogPost } from "./blog";
+import { absoluteUrl } from "./site";
 
 const themeColors = {
   green: {
@@ -34,12 +35,20 @@ const themeColors = {
 };
 
 export function getPostThumbnail(post: BlogPost) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(getPostThumbnailSvg(post))}`;
+}
+
+export function getPostThumbnailUrl(post: BlogPost) {
+  return absoluteUrl(`/blog/${post.slug}/thumbnail.svg`);
+}
+
+export function getPostThumbnailSvg(post: BlogPost) {
   const theme = themeColors[post.accentTheme || "green"];
   const keyword = truncateText(post.mainKeyword, 18);
   const category = truncateText(post.category, 12);
   const firstExpandedKeyword = truncateText(post.expandedKeywords[0] || "식품영양성분", 14);
   const bars = buildBars(post.slug);
-  const svg = `
+  return `
     <svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-label="${escapeXml(post.title)} 썸네일">
       <rect width="960" height="420" fill="${theme.bg}"/>
       <rect x="48" y="42" width="864" height="336" rx="28" fill="#ffffff" opacity="0.86"/>
@@ -69,8 +78,6 @@ export function getPostThumbnail(post: BlogPost) {
       </g>
     </svg>
   `;
-
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
 function buildBars(seed: string) {

@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { BlogPost } from "../lib/blog";
-import { getPostThumbnail } from "../lib/post-thumbnail";
+import { getPostThumbnailUrl } from "../lib/post-thumbnail";
 
 type PostCardProps = {
   post: BlogPost;
 };
 
 export function PostCard({ post }: PostCardProps) {
-  const thumbnail = getPostThumbnail(post);
+  const thumbnail = getPostThumbnailUrl(post);
 
   return (
     <article className="post-card">
