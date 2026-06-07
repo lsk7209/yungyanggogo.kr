@@ -19,6 +19,7 @@ type PageProps = {
     dataset: string;
   }>;
   searchParams?: Promise<{
+    page?: string;
     q?: string;
   }>;
 };
@@ -57,11 +58,15 @@ export default async function NutritionDatasetPage({ params, searchParams }: Pag
 
   const queryParams = await searchParams;
   const query = queryParams?.q?.trim() || "";
+  const page = Math.max(1, Number(queryParams?.page || "1") || 1);
   const datasetInfo = getNationalNutritionDataset(dataset);
   const hasApiKey = Boolean(getNationalNutritionApiKey());
   const result = hasApiKey
-    ? await fetchNationalNutritionItemsWithDbCache({ dataset, query, numOfRows: 50 })
+    ? await fetchNationalNutritionItemsWithDbCache({ dataset, query, pageNo: page, numOfRows: 50 })
     : null;
+  const hasPrevious = page > 1;
+  const hasNext = Boolean(result && result.count === 50);
+  const pageQuery = query ? `&q=${encodeURIComponent(query)}` : "";
 
   const schema = {
     "@context": "https://schema.org",
@@ -164,6 +169,20 @@ export default async function NutritionDatasetPage({ params, searchParams }: Pag
           </article>
         ))}
       </div>
+
+      <nav className="pagination-nav" aria-label={`${datasetInfo.shortName} 목록 페이지 이동`}>
+        {hasPrevious ? (
+          <Link href={`/nutrition-data/${dataset}?page=${page - 1}${pageQuery}`}>이전 50개</Link>
+        ) : (
+          <span>이전 50개</span>
+        )}
+        <strong>{page.toLocaleString("ko-KR")}페이지</strong>
+        {hasNext ? (
+          <Link href={`/nutrition-data/${dataset}?page=${page + 1}${pageQuery}`}>다음 50개</Link>
+        ) : (
+          <span>다음 50개</span>
+        )}
+      </nav>
 
       <section className="link-panel">
         <h2>다른 데이터셋 보기</h2>

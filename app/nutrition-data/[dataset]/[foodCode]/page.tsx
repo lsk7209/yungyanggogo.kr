@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  fetchNationalNutritionItemDetail
+  fetchNationalNutritionItemDetail,
+  readRelatedNationalNutritionItemsFromDb
 } from "../../../../lib/national-nutrition-db";
 import {
   getNationalNutritionDataset,
@@ -75,6 +76,12 @@ export default async function NationalNutritionDetailPage({ params }: PageProps)
   if (!item) {
     notFound();
   }
+
+  const relatedItems = await readRelatedNationalNutritionItemsFromDb({
+    dataset: datasetSlug,
+    foodCode: item.foodCode,
+    limit: 6
+  });
 
   const pageUrl = absoluteUrl(`/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`);
   const primaryMetrics = [
@@ -226,9 +233,34 @@ export default async function NationalNutritionDetailPage({ params }: PageProps)
         </p>
       </section>
 
+      {relatedItems.length > 0 ? (
+        <section className="nutrition-detail-section">
+          <h2>{datasetInfo.shortName}에서 함께 보는 영양성분표</h2>
+          <div className="related-nutrition-grid">
+            {relatedItems.map((related) => (
+              <Link
+                key={related.foodCode}
+                href={`/nutrition-data/${datasetSlug}/${encodeURIComponent(related.foodCode)}`}
+              >
+                <span>{related.typeName || datasetInfo.shortName}</span>
+                <strong>{related.name || "식품명 미기재"}</strong>
+                <small>
+                  열량 {related.energy || "-"} kcal · 단백질 {related.protein || "-"} g · 나트륨{" "}
+                  {related.sodium || "-"} mg
+                </small>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       <section className="link-panel">
         <h2>함께 확인할 데이터</h2>
         <ul>
+          <li>
+            <Link href={`/nutrition-data/${datasetSlug}`}>{datasetInfo.shortName} 영양성분표 목록</Link>
+            <span>같은 데이터셋의 다른 식품을 이어서 확인합니다.</span>
+          </li>
           <li>
             <Link href="/nutrition-data">전국통합 식품영양성분정보 조회</Link>
             <span>다른 음식, 가공식품, 원재료성 식품과 비교합니다.</span>

@@ -204,6 +204,33 @@ export async function readNationalNutritionItemByCodeFromDb({
   return row ? mapNationalNutritionRow(row as unknown as NationalNutritionRow) : null;
 }
 
+export async function readRelatedNationalNutritionItemsFromDb({
+  dataset,
+  foodCode,
+  limit = 6
+}: {
+  dataset: NationalNutritionDatasetSlug;
+  foodCode: string;
+  limit?: number;
+}) {
+  if (!isTursoConfigured) {
+    return [] as NationalNutritionItem[];
+  }
+
+  await ensureNationalNutritionSchema();
+
+  const db = getDb();
+  const result = await db.execute({
+    sql: `SELECT * FROM national_nutrition_items
+      WHERE dataset_slug = ? AND food_code <> ?
+      ORDER BY synced_at DESC, food_name ASC
+      LIMIT ?`,
+    args: [dataset, foodCode, Math.max(1, Math.floor(limit))]
+  });
+
+  return result.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow));
+}
+
 export async function fetchNationalNutritionItemDetail({
   dataset,
   foodCode
