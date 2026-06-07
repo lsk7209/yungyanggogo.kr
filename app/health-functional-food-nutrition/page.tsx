@@ -203,6 +203,10 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>{HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}</dd>
           </div>
           <div>
+            <dt>인증키 적용</dt>
+            <dd>API 환경 또는 호출 조건에 따라 Encoding/Decoding 인증키 중 실제 구동되는 키를 서버 환경변수에 등록합니다.</dd>
+          </div>
+          <div>
             <dt>활용정보</dt>
             <dd>사이트개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
           </div>

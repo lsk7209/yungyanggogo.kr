@@ -125,15 +125,7 @@ export async function fetchHealthFunctionalFoodNutritionItems({
     };
   }
 
-  const url = new URL(HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT);
-  url.searchParams.set("serviceKey", serviceKey);
-  url.searchParams.set("pageNo", String(Math.max(1, Math.floor(pageNo))));
-  url.searchParams.set("numOfRows", String(Math.min(MAX_NUM_OF_ROWS, Math.max(1, Math.floor(numOfRows)))));
-  url.searchParams.set("type", "json");
-
-  if (query?.trim()) {
-    url.searchParams.set("foodNm", query.trim());
-  }
+  const url = buildHealthFunctionalFoodNutritionUrl({ serviceKey, query, pageNo, numOfRows });
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -214,6 +206,24 @@ export function extractHealthFunctionalFoodNutritionItems(payload: unknown) {
     resultCode: header?.resultCode || "",
     resultMessage: header?.resultMsg || ""
   };
+}
+
+export function buildHealthFunctionalFoodNutritionUrl({
+  serviceKey,
+  query,
+  pageNo = 1,
+  numOfRows = 12
+}: FetchHealthFunctionalFoodNutritionItemsOptions & { serviceKey: string }) {
+  const params = new URLSearchParams();
+  params.set("pageNo", String(Math.max(1, Math.floor(pageNo))));
+  params.set("numOfRows", String(Math.min(MAX_NUM_OF_ROWS, Math.max(1, Math.floor(numOfRows)))));
+  params.set("type", "json");
+
+  if (query?.trim()) {
+    params.set("foodNm", query.trim());
+  }
+
+  return `${HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}?serviceKey=${serviceKey}&${params.toString()}`;
 }
 
 function emptyExtract() {
