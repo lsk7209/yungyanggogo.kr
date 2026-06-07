@@ -80,6 +80,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </Link>
           <nav className="site-nav" aria-label="주요 메뉴">
             <Link href="/rankings">랭킹</Link>
+            <Link href="/health-functional-foods">건기식</Link>
             <Link href="/blog">블로그</Link>
           </nav>
         </header>
