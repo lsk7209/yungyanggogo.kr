@@ -144,6 +144,55 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
         </article>
       </div>
 
+      <section className="data-license-panel" aria-label="건강기능식품 영양DB 기본정보와 라이선스">
+        <div>
+          <p className="eyebrow">Data License</p>
+          <h2>데이터명, 승인, 활용정보, 저작권 표시</h2>
+          <p>
+            이 페이지는 공공데이터포털의 건강기능식품 영양DB를 웹사이트 연동 및 운영 목적으로 활용하도록
+            설계했습니다. 데이터 이용 시 출처와 저작권, 제3자 권리 포함 가능성을 함께 표시합니다.
+          </p>
+        </div>
+        <dl>
+          <div>
+            <dt>데이터명</dt>
+            <dd>식품의약품안전처_건강기능식품 영양DB</dd>
+          </div>
+          <div>
+            <dt>표준데이터명</dt>
+            <dd>{HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE}</dd>
+          </div>
+          <div>
+            <dt>제공기관</dt>
+            <dd>식품의약품안전처</dd>
+          </div>
+          <div>
+            <dt>활용정보</dt>
+            <dd>사이트 개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
+          </div>
+          <div>
+            <dt>승인 상태</dt>
+            <dd>해당 API 활용신청이 승인된 data.go.kr 서비스키를 서버 환경변수에 등록해야 실데이터가 표시됩니다.</dd>
+          </div>
+          <div>
+            <dt>미리보기</dt>
+            <dd>제품명, 제공 단위량, 에너지, 단백질, 지방, 탄수화물, 당류, 나트륨, 비타민, 품목제조신고번호</dd>
+          </div>
+          <div>
+            <dt>라이선스 표시</dt>
+            <dd>공공데이터 이용 조건에 따라 출처를 표시하고, 원 데이터의 최신성·정확성은 제공기관 기준으로 확인합니다.</dd>
+          </div>
+          <div>
+            <dt>저작자표시</dt>
+            <dd>출처: 공공데이터포털, 식품의약품안전처, {HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE}</dd>
+          </div>
+          <div>
+            <dt>제3자 권리 포함</dt>
+            <dd>제3자 권리가 포함될 수 있으므로 원자료의 저작권 표시와 이용 조건을 함께 확인합니다.</dd>
+          </div>
+        </dl>
+      </section>
+
       {apiResult?.ok ? (
         <div className="api-sample" aria-label="건강기능식품 영양DB API 데이터">
           <div className="api-sample__head">

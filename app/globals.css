@@ -1135,6 +1135,60 @@ h3 {
   font-size: 14px;
 }
 
+.data-license-panel {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 18px;
+  margin: 0 0 22px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--dv-slate);
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgb(91 123 154 / 10%), var(--bg) 42%);
+  box-shadow: var(--shadow-card);
+}
+
+.data-license-panel h2 {
+  font-size: 22px;
+}
+
+.data-license-panel p {
+  margin: 8px 0 0;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.data-license-panel dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.data-license-panel dl div {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-license-panel dl div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.data-license-panel dt {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.data-license-panel dd {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
 .api-status {
   margin-bottom: 18px;
   padding: 18px;
@@ -1479,6 +1533,7 @@ h3 {
   .ranking-grid,
   .metric-grid,
   .article-insights,
+  .data-license-panel,
   .content-guide-grid,
   .api-sample__grid,
   .health-food-grid,
@@ -1570,6 +1625,7 @@ h3 {
   }
 
   .data-search > div,
+  .data-license-panel dl div,
   .health-food-card dl,
   .health-nutrition-card dl {
     grid-template-columns: 1fr;
