@@ -11,7 +11,7 @@ type RouteContext = {
 
 export async function GET(_request: Request, { params }: RouteContext) {
   const { slug } = await params;
-  const post = getPostBySlug(slug, { includeScheduled: true });
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return new Response("Not found", { status: 404 });
