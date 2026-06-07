@@ -167,8 +167,24 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>{HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE}</dd>
           </div>
           <div>
+            <dt>상세설명</dt>
+            <dd>전국건강기능식품영양성분정보표준데이터 상세설명</dd>
+          </div>
+          <div>
             <dt>제공기관</dt>
             <dd>식품의약품안전처</dd>
+          </div>
+          <div>
+            <dt>서비스유형</dt>
+            <dd>REST</dd>
+          </div>
+          <div>
+            <dt>심의여부</dt>
+            <dd>자동승인</dd>
+          </div>
+          <div>
+            <dt>신청유형</dt>
+            <dd>개발계정 | 활용신청</dd>
           </div>
           <div>
             <dt>활용정보</dt>
