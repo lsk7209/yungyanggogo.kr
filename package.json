@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "content:generate": "node scripts/generate-scheduled-blog-batch.mjs",
     "content:audit": "node scripts/audit-blog-batch.mjs",
+    "nutrition:sync": "node scripts/sync-national-nutrition.mjs",
     "gsc:sitemap": "node scripts/gsc-sitemap.mjs all",
     "gsc:sitemap:check-live": "node scripts/gsc-sitemap.mjs check-live",
     "gsc:sitemap:status": "node scripts/gsc-sitemap.mjs status",
