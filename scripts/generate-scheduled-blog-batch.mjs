@@ -107,7 +107,7 @@ const angles = [
     structureType: "checklist",
     theme: "terra",
     visualElements: ["steps", "checklist", "summary_box", "metric_bars"],
-    title: ({ main, situation }) => `${main}: ${situation}`,
+    title: ({ main, ext1, ext2, situation }) => `${main}: ${ext1}·${ext2} 확인 순서`,
     claim: "구매 전 짧은 시간 안에 기준량, 핵심 지표, 출처를 순서대로 확인한다"
   },
   {

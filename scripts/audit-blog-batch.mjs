@@ -68,6 +68,9 @@ posts.forEach((post) => {
 
   if (!post.title.includes(post.mainKeyword)) fail(`title missing main keyword: ${post.slug}`);
   if (!post.subtitle.includes(post.mainKeyword)) fail(`subtitle missing main keyword: ${post.slug}`);
+  if (!post.expandedKeywords?.some((keyword) => post.title.includes(keyword))) {
+    fail(`title missing expanded keyword: ${post.slug}`);
+  }
   if (weakTitlePatterns.some((pattern) => pattern.test(post.title))) {
     fail(`weak title/subtitle pattern: ${post.slug} | ${post.title}`);
   }
