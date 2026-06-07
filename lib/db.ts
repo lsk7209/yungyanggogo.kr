@@ -1,7 +1,7 @@
 import { createClient } from "@libsql/client";
 
-const databaseUrl = process.env.TURSO_DATABASE_URL;
-const authToken = process.env.TURSO_AUTH_TOKEN;
+const databaseUrl = process.env.TURSO_DATABASE_URL?.trim();
+const authToken = process.env.TURSO_AUTH_TOKEN?.trim();
 
 export const isTursoConfigured = Boolean(databaseUrl && authToken);
 
