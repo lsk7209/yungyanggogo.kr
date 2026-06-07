@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { fetchNationalNutritionItemsWithDbCache } from "../../lib/national-nutrition-db";
 import {
-  fetchNationalNutritionDatasets,
   getNationalNutritionApiKey,
   NATIONAL_NUTRITION_DATASETS,
   NATIONAL_NUTRITION_SOURCE
@@ -36,7 +36,13 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const query = params?.q?.trim() || "";
   const hasApiKey = Boolean(getNationalNutritionApiKey());
-  const results = hasApiKey ? await fetchNationalNutritionDatasets({ query, numOfRows: 4 }) : [];
+  const results = hasApiKey
+    ? await Promise.all(
+        NATIONAL_NUTRITION_DATASETS.map((dataset) =>
+          fetchNationalNutritionItemsWithDbCache({ dataset: dataset.slug, query, numOfRows: 4 })
+        )
+      )
+    : [];
   const totalVisible = results.reduce((sum, result) => sum + result.count, 0);
 
   const datasetSchema = {
@@ -166,7 +172,11 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
                     <h2>{result.dataset.name}</h2>
                   </div>
                   <small>
-                    {result.fallback ? "검증 샘플 표시" : `전체 ${result.totalCount.toLocaleString("ko-KR")}건`}
+                    {result.cacheSource === "db"
+                      ? `DB 저장 데이터 · 전체 ${result.totalCount.toLocaleString("ko-KR")}건`
+                      : result.fallback
+                        ? "검증 샘플 표시"
+                        : `API 수집 데이터 · 전체 ${result.totalCount.toLocaleString("ko-KR")}건`}
                   </small>
                 </div>
                 {result.foods.length > 0 ? (

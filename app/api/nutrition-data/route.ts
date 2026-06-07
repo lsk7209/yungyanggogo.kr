@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
+import { fetchNationalNutritionItemsWithDbCache } from "../../../lib/national-nutrition-db";
 import {
-  fetchNationalNutritionDatasets,
-  fetchNationalNutritionItems,
   getNationalNutritionApiKey,
   NATIONAL_NUTRITION_DATASETS,
   NATIONAL_NUTRITION_SOURCE,
@@ -35,12 +34,13 @@ export async function GET(request: Request) {
   }
 
   if (dataset && datasetSlugs.has(dataset)) {
-    const result = await fetchNationalNutritionItems({ dataset, query: q, pageNo, numOfRows });
+    const result = await fetchNationalNutritionItemsWithDbCache({ dataset, query: q, pageNo, numOfRows });
     return NextResponse.json({
       ok: result.ok,
       source: NATIONAL_NUTRITION_SOURCE,
       dataset: result.dataset,
       query: q || null,
+      cacheSource: result.cacheSource,
       fallback: result.fallback || false,
       totalCount: result.totalCount,
       count: result.count,
@@ -49,7 +49,16 @@ export async function GET(request: Request) {
     });
   }
 
-  const results = await fetchNationalNutritionDatasets({ query: q, numOfRows: Math.min(numOfRows, 6) });
+  const results = await Promise.all(
+    NATIONAL_NUTRITION_DATASETS.map((item) =>
+      fetchNationalNutritionItemsWithDbCache({
+        dataset: item.slug,
+        query: q,
+        pageNo: 1,
+        numOfRows: Math.min(numOfRows, 6)
+      })
+    )
+  );
 
   return NextResponse.json({
     ok: results.some((result) => result.ok),
@@ -57,6 +66,7 @@ export async function GET(request: Request) {
     query: q || null,
     datasets: results.map((result) => ({
       dataset: result.dataset,
+      cacheSource: result.cacheSource,
       fallback: result.fallback || false,
       totalCount: result.totalCount,
       count: result.count,
