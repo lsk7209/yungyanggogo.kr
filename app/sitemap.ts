@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts, getPostUrl } from "../lib/blog";
 import { foods, getFoodUrl } from "../lib/foods";
+import { isTursoConfigured } from "../lib/db";
+import { readNationalNutritionItemsFromDb } from "../lib/national-nutrition-db";
+import { NATIONAL_NUTRITION_DATASETS } from "../lib/national-nutrition-api";
 import { absoluteUrl } from "../lib/site";
 import { staticInfoPages } from "../lib/static-pages";
 
 export const dynamic = "force-dynamic";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: absoluteUrl("/"),
@@ -67,5 +70,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.55
   }));
 
-  return [...staticRoutes, ...trustRoutes, ...postRoutes, ...foodRoutes];
+  const nutritionDetailRoutes = await getNutritionDetailRoutes();
+
+  return [...staticRoutes, ...trustRoutes, ...nutritionDetailRoutes, ...postRoutes, ...foodRoutes];
+}
+
+async function getNutritionDetailRoutes(): Promise<MetadataRoute.Sitemap> {
+  if (!isTursoConfigured) {
+    return [];
+  }
+
+  try {
+    const results = await Promise.all(
+      NATIONAL_NUTRITION_DATASETS.map(async (dataset) => {
+        const { foods: nutritionItems } = await readNationalNutritionItemsFromDb({
+          dataset: dataset.slug,
+          numOfRows: 20
+        });
+
+        return nutritionItems.map((item) => ({
+          url: absoluteUrl(`/nutrition-data/${dataset.slug}/${encodeURIComponent(item.foodCode)}`),
+          lastModified: new Date(item.updatedAt || "2026-06-07"),
+          changeFrequency: "monthly" as const,
+          priority: 0.62
+        }));
+      })
+    );
+
+    return results.flat();
+  } catch {
+    return [];
+  }
 }

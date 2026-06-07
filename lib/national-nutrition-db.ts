@@ -178,6 +178,56 @@ export async function readNationalNutritionItemsFromDb({
   return { totalCount, foods };
 }
 
+export async function readNationalNutritionItemByCodeFromDb({
+  dataset,
+  foodCode
+}: {
+  dataset: NationalNutritionDatasetSlug;
+  foodCode: string;
+}) {
+  if (!isTursoConfigured) {
+    return null;
+  }
+
+  await ensureNationalNutritionSchema();
+
+  const db = getDb();
+  const result = await db.execute({
+    sql: `SELECT * FROM national_nutrition_items
+      WHERE dataset_slug = ? AND food_code = ?
+      ORDER BY synced_at DESC
+      LIMIT 1`,
+    args: [dataset, foodCode]
+  });
+
+  const row = result.rows[0];
+  return row ? mapNationalNutritionRow(row as unknown as NationalNutritionRow) : null;
+}
+
+export async function fetchNationalNutritionItemDetail({
+  dataset,
+  foodCode
+}: {
+  dataset: NationalNutritionDatasetSlug;
+  foodCode: string;
+}) {
+  const cached = await readNationalNutritionItemByCodeFromDb({ dataset, foodCode });
+  if (cached) {
+    return {
+      item: cached,
+      cacheSource: "db" as const
+    };
+  }
+
+  const result = await fetchNationalNutritionItemsWithDbCache({ dataset, numOfRows: 50 });
+  const item = result.foods.find((food) => food.foodCode === foodCode) || null;
+
+  return {
+    item,
+    cacheSource: result.cacheSource
+  };
+}
+
 export async function saveNationalNutritionItemsToDb({
   dataset,
   query,

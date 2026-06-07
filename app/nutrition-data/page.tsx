@@ -185,7 +185,15 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
                       <article key={`${result.dataset.slug}-${food.foodCode || food.name}`} className="health-nutrition-card">
                         <div className="health-food-card__head">
                           <span>{food.typeName || result.dataset.shortName}</span>
-                          <strong>{food.name || "식품명 미기재"}</strong>
+                          <strong>
+                            {food.foodCode ? (
+                              <Link href={`/nutrition-data/${result.dataset.slug}/${encodeURIComponent(food.foodCode)}`}>
+                                {food.name || "식품명 미기재"}
+                              </Link>
+                            ) : (
+                              food.name || "식품명 미기재"
+                            )}
+                          </strong>
                           <small>{food.maker || food.restaurant || food.importer || food.sourceName || "제공처 미기재"}</small>
                         </div>
                         <dl>
