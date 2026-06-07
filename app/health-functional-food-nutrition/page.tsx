@@ -155,6 +155,10 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
         </div>
         <dl>
           <div>
+            <dt>기본정보</dt>
+            <dd>건강기능식품 제품별 영양성분 정보와 품목제조신고번호를 제공하는 공공데이터입니다.</dd>
+          </div>
+          <div>
             <dt>데이터명</dt>
             <dd>식품의약품안전처_건강기능식품 영양DB</dd>
           </div>
@@ -168,7 +172,7 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
           </div>
           <div>
             <dt>활용정보</dt>
-            <dd>사이트 개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
+            <dd>사이트개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
           </div>
           <div>
             <dt>자동승인</dt>
