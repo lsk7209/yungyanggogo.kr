@@ -1422,6 +1422,76 @@ h3 {
   font-weight: 800;
 }
 
+.nutrition-source-grid,
+.nutrition-dataset-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.nutrition-source-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.nutrition-source-grid article,
+.nutrition-dataset {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--bg), var(--bg-section));
+  box-shadow: var(--shadow-card);
+}
+
+.nutrition-source-grid span,
+.nutrition-dataset__head span {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: rgb(91 123 154 / 13%);
+  color: var(--dv-slate);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.nutrition-source-grid h2,
+.nutrition-dataset__head h2 {
+  margin-top: 9px;
+  font-size: 19px;
+  line-height: 1.32;
+}
+
+.nutrition-source-grid p {
+  margin: 8px 0;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.nutrition-source-grid small,
+.nutrition-dataset__head small {
+  display: block;
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.nutrition-source-grid code {
+  display: block;
+  margin-top: 10px;
+  color: var(--ink-2);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.nutrition-dataset__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
 .rank-row {
   display: grid;
   grid-template-columns: 44px 1fr auto;
@@ -1536,6 +1606,7 @@ h3 {
   .data-license-panel,
   .content-guide-grid,
   .api-sample__grid,
+  .nutrition-source-grid,
   .health-food-grid,
   .data-point-panel,
   .do-dont-panel > div,
@@ -1621,6 +1692,10 @@ h3 {
   }
 
   .api-sample__head {
+    flex-direction: column;
+  }
+
+  .nutrition-dataset__head {
     flex-direction: column;
   }
 

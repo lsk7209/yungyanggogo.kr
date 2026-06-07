@@ -80,6 +80,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </Link>
           <nav className="site-nav" aria-label="주요 메뉴">
             <Link href="/rankings">랭킹</Link>
+            <Link href="/nutrition-data">통합영양</Link>
             <Link href="/health-functional-foods">건기식</Link>
             <Link href="/health-functional-food-nutrition">영양DB</Link>
             <Link href="/blog">블로그</Link>
