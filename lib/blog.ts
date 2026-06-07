@@ -20,6 +20,7 @@ export type BlogPost = {
   updatedAt: string;
   readingMinutes: number;
   noindex?: boolean;
+  accentTheme?: "green" | "amber" | "slate" | "terra" | "gray";
   summaryCards: {
     label: string;
     value: string;
@@ -44,6 +45,21 @@ export type BlogPost = {
     title: string;
     body: string;
   };
+  doDont?: {
+    title: string;
+    doItems: string[];
+    dontItems: string[];
+  };
+  sourceNote?: {
+    title: string;
+    body: string;
+  };
+  metricBars?: {
+    label: string;
+    value: number;
+    tone: "green" | "amber" | "slate" | "terra" | "gray";
+    note: string;
+  }[];
   faq?: {
     question: string;
     answer: string;

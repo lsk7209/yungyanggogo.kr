@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TableOfContents } from "../../../components/TableOfContents";
@@ -93,7 +94,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <article className="article-shell">
+    <article className="article-shell" data-theme={post.accentTheme || "green"}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }}
@@ -157,6 +158,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <p>{post.warningBox.body}</p>
           </section>
         ) : null}
+        {post.metricBars && post.metricBars.length > 0 ? (
+          <section className="metric-bar-panel" aria-label="판단 지표">
+            <h2>{post.mainKeyword} 핵심 지표 읽기</h2>
+            <div>
+              {post.metricBars.map((metric) => (
+                <article key={metric.label} data-tone={metric.tone}>
+                  <div>
+                    <strong>{metric.label}</strong>
+                    <span>{metric.note}</span>
+                  </div>
+                  <b style={{ "--metric": `${metric.value}%` } as React.CSSProperties} />
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
         {post.steps && post.steps.length > 0 ? (
           <section className="step-panel">
             <h2>{post.mainKeyword} 판단 순서</h2>
@@ -168,6 +185,35 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </li>
               ))}
             </ol>
+          </section>
+        ) : null}
+        {post.doDont ? (
+          <section className="do-dont-panel">
+            <h2>{post.doDont.title}</h2>
+            <div>
+              <article>
+                <h3>이렇게 확인</h3>
+                <ul>
+                  {post.doDont.doItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+              <article>
+                <h3>이렇게 단정하지 않기</h3>
+                <ul>
+                  {post.doDont.dontItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+          </section>
+        ) : null}
+        {post.sourceNote ? (
+          <section className="source-note-panel">
+            <h2>{post.sourceNote.title}</h2>
+            <p>{post.sourceNote.body}</p>
           </section>
         ) : null}
         {post.sections.map((section) => (
