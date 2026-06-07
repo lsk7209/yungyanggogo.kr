@@ -1256,6 +1256,12 @@ h3 {
   gap: 12px;
 }
 
+.health-nutrition-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
 .health-food-card {
   display: grid;
   gap: 12px;
@@ -1331,6 +1337,35 @@ h3 {
   padding: 10px;
   border-radius: 10px;
   background: var(--warn-soft);
+}
+
+.health-nutrition-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--bg), var(--bg-section));
+}
+
+.health-nutrition-card dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.health-nutrition-card dt {
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.health-nutrition-card dd {
+  margin: 2px 0 0;
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .rank-row {
@@ -1535,7 +1570,8 @@ h3 {
   }
 
   .data-search > div,
-  .health-food-card dl {
+  .health-food-card dl,
+  .health-nutrition-card dl {
     grid-template-columns: 1fr;
   }
 

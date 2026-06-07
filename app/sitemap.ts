@@ -30,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-06-07"),
       changeFrequency: "daily",
       priority: 0.82
+    },
+    {
+      url: absoluteUrl("/health-functional-food-nutrition"),
+      lastModified: new Date("2026-06-07"),
+      changeFrequency: "daily",
+      priority: 0.82
     }
   ];
 
