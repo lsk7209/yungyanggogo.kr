@@ -221,9 +221,74 @@ function makeSections(input) {
       ["use-case", `${situation}의 선택 기준을 좁히는 법`],
       ["caution", `${mainKeyword}을 효능 문장으로 읽지 않기`],
       ["next-reading", `관련 글과 랭킹으로 다시 검토하기`]
+    ],
+    [
+      ["label-first", `${baseKeyword} 포장지에서 먼저 볼 줄`],
+      ["serving-trap", `${ext1}은 기준량이 바뀌면 다르게 보입니다`],
+      ["comparison-boundary", `${ext2} 비교 범위를 좁혀야 하는 이유`],
+      ["source-near-table", `${mainKeyword} 표 옆에 출처를 붙여야 합니다`],
+      ["shopping-moment", `${situation}의 구매 전 판단 기준`],
+      ["overclaim-guard", `${ext3}을 과장 표현으로 읽지 않기`],
+      ["next-internal", `다음 확인은 기준 글과 랭킹에서 이어갑니다`]
+    ],
+    [
+      ["one-minute-check", `${mainKeyword} 1분 점검 순서`],
+      ["amount-vs-density", `${baseKeyword}은 양과 농도를 나눠 봅니다`],
+      ["supporting-index", `${ext2}는 단독 결론이 아니라 보조 지표입니다`],
+      ["public-data-gap", `공공데이터와 포장지 사이의 시차`],
+      ["decision-rule", `${situation}에서 쓸 수 있는 간단한 규칙`],
+      ["reader-limit", `개인 식단 판단과 데이터 비교의 경계`],
+      ["related-route", `${ext1} 기준을 다른 글에서 다시 확인하기`]
+    ],
+    [
+      ["first-question", `${baseKeyword}을 고르기 전 첫 질문`],
+      ["unit-check", `${ext1} 숫자의 기준 단위를 확인합니다`],
+      ["pair-reading", `${ext2}와 ${ext3}을 짝지어 읽는 법`],
+      ["evidence-note", `출처명과 갱신일을 남겨야 하는 이유`],
+      ["case-order", `${situation}라면 이 순서로 좁힙니다`],
+      ["not-medical", `영양성분 숫자를 건강 효능으로 바꾸지 않기`],
+      ["continue-reading", `영양고고 내부에서 이어 볼 글`]
+    ],
+    [
+      ["visible-claim", `${mainKeyword}에서 문구보다 숫자가 먼저입니다`],
+      ["portion-context", `${ext1}은 실제 먹는 양과 함께 봅니다`],
+      ["category-filter", `${baseKeyword} 비교는 식품군 필터가 필요합니다`],
+      ["data-checkpoint", `${ext2} 값을 다시 확인하는 공식 경로`],
+      ["action-checklist", `${situation}의 행동 체크포인트`],
+      ["interpretation-risk", `${ext3} 해석에서 생기는 흔한 과장`],
+      ["site-path", `관련 데이터 화면으로 넘어가는 방법`]
+    ],
+    [
+      ["scan-order", `${baseKeyword} 라벨을 훑는 순서`],
+      ["main-number", `${mainKeyword}의 대표 숫자와 숨은 조건`],
+      ["second-number", `${ext2}가 결론을 바꾸는 경우`],
+      ["source-crosscheck", `공식 출처와 제품 표시를 교차 확인합니다`],
+      ["choice-context", `${situation}의 선택 맥락을 좁히기`],
+      ["safe-language", `좋다 나쁘다보다 기준을 남기는 표현`],
+      ["internal-followup", `${ext1} 관련 후속 확인 경로`]
+    ],
+    [
+      ["reader-problem", `${situation}에서 생기는 실제 문제`],
+      ["basis-split", `${ext1}과 총내용량을 분리해 봅니다`],
+      ["comparison-step", `${ext2} 비교 전에 맞춰야 할 조건`],
+      ["traceability", `${mainKeyword}에 추적 가능한 출처가 필요한 이유`],
+      ["small-decision", `바로 쓸 수 있는 작은 판단 기준`],
+      ["scope-limit", `${baseKeyword} 글의 범위와 한계`],
+      ["next-topic", `다음에는 ${ext3}을 더 좁혀 봅니다`]
+    ],
+    [
+      ["decision-moment", `${mainKeyword}이 필요한 순간`],
+      ["number-context", `${ext1} 숫자는 맥락 없이 읽기 어렵습니다`],
+      ["indicator-mix", `${ext2}와 ${ext3} 조합으로 보기`],
+      ["official-route", `공식 데이터에서 확인할 항목`],
+      ["practical-filter", `${situation}의 실전 필터`],
+      ["avoid-claim", `효능 암시 없이 설명하는 방법`],
+      ["link-bridge", `기준 글과 랭킹으로 연결하기`]
     ]
   ];
-  const roles = roleSet[index % roleSet.length];
+  const clusterIndex = Math.floor(index / angles.length);
+  const angleIndex = index % angles.length;
+  const roles = roleSet[(clusterIndex * 7 + angleIndex) % roleSet.length];
 
   const bodies = [
     [

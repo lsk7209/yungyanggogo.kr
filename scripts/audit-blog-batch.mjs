@@ -37,6 +37,7 @@ const titles = new Set();
 const slugs = new Set();
 const mainKeywords = new Set();
 const titleSignatures = new Set();
+const structureSignatures = new Map();
 const weakTitlePatterns = [
   /기준 기준/,
   /실수 실수/,
@@ -87,7 +88,26 @@ posts.forEach((post) => {
   if (!post.doDont && !post.metricBars && !post.sourceNote && !post.dataPoints && !post.warningBox && !post.steps) {
     fail(`missing readability block beyond base sections: ${post.slug}`);
   }
+
+  const structureSignature = [
+    post.structureType,
+    (post.visualElements || []).join("|"),
+    (post.sections || []).map((section) => section.id).join("|"),
+    Boolean(post.faq),
+    Boolean(post.doDont),
+    Boolean(post.metricBars),
+    Boolean(post.sourceNote)
+  ].join("::");
+  structureSignatures.set(structureSignature, (structureSignatures.get(structureSignature) || 0) + 1);
 });
+
+const maxStructureRepeat = Math.max(...structureSignatures.values());
+if (structureSignatures.size < 50) {
+  fail(`template risk: expected at least 50 structure signatures, got ${structureSignatures.size}`);
+}
+if (maxStructureRepeat > 4) {
+  fail(`template risk: one structure signature repeats ${maxStructureRepeat} times`);
+}
 
 byPublished.forEach((post, index) => {
   if (index > 0 && hoursBetween(byPublished[index - 1].publishedAt, post.publishedAt) !== 5) {
@@ -109,7 +129,7 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `audit_pass=true files=${files.length} posts=${posts.length} unique_titles=${titles.size} unique_main_keywords=${mainKeywords.size}`
+  `audit_pass=true files=${files.length} posts=${posts.length} unique_titles=${titles.size} unique_main_keywords=${mainKeywords.size} structure_signatures=${structureSignatures.size} max_structure_repeat=${maxStructureRepeat}`
 );
 console.log(`schedule_start=${byPublished[0].publishedAt}`);
 console.log(`schedule_end=${byPublished.at(-1).publishedAt}`);
