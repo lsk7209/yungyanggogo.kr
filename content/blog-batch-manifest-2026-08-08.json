@@ -1,0 +1,18 @@
+{
+  "site": "yungyanggogo",
+  "target": "nextjs",
+  "batchId": "2026-08-08",
+  "count": 100,
+  "scheduleStart": "2026-08-08T12:00:00+09:00",
+  "scheduleIntervalHours": 5,
+  "scheduleEnd": "2026-08-29T03:00:00+09:00",
+  "duplicateTitles": false,
+  "duplicateSlugs": false,
+  "duplicateMainKeywords": false,
+  "generationPolicy": "Codex host-authored, no external LLM API, official source links first, no title/main-keyword overlap",
+  "qualityFloor": 90,
+  "readabilityPolicy": "Every post carries 1 semantic accent theme and article-specific visual blocks for comparison, warning, source, checklist, or metric reading.",
+  "files": [
+    "content\\blog\\scheduled-2026-08-08.json"
+  ]
+}

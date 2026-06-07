@@ -24,8 +24,8 @@ function signature(title) {
     .trim();
 }
 
-if (files.length < 3) {
-  fail(`expected at least 3 scheduled content files, got ${files.length}`);
+if (files.length < 4) {
+  fail(`expected at least 4 scheduled content files, got ${files.length}`);
 }
 
 if (posts.length !== files.length * 100) {
@@ -96,6 +96,9 @@ posts.forEach((post) => {
     post.structureType,
     (post.visualElements || []).join("|"),
     (post.sections || []).map((section) => section.id).join("|"),
+    Boolean(post.dataPoints),
+    Boolean(post.warningBox),
+    Boolean(post.steps),
     Boolean(post.faq),
     Boolean(post.doDont),
     Boolean(post.metricBars),
@@ -105,10 +108,11 @@ posts.forEach((post) => {
 });
 
 const maxStructureRepeat = Math.max(...structureSignatures.values());
-if (structureSignatures.size < 90) {
-  fail(`template risk: expected at least 90 structure signatures, got ${structureSignatures.size}`);
+const minStructureSignatures = files.length * 55;
+if (structureSignatures.size < minStructureSignatures) {
+  fail(`template risk: expected at least ${minStructureSignatures} structure signatures, got ${structureSignatures.size}`);
 }
-if (maxStructureRepeat > 5) {
+if (maxStructureRepeat > 4) {
   fail(`template risk: one structure signature repeats ${maxStructureRepeat} times`);
 }
 
@@ -122,7 +126,7 @@ if (byPublished[0]?.publishedAt !== "2026-06-07T00:00:00+09:00") {
   fail(`unexpected schedule start: ${byPublished[0]?.publishedAt}`);
 }
 
-if (byPublished.at(-1)?.publishedAt !== "2026-08-08T07:00:00+09:00") {
+if (byPublished.at(-1)?.publishedAt !== "2026-08-29T03:00:00+09:00") {
   fail(`unexpected schedule end: ${byPublished.at(-1)?.publishedAt}`);
 }
 
