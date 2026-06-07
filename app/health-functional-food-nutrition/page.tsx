@@ -171,15 +171,23 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>사이트 개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
           </div>
           <div>
-            <dt>승인 상태</dt>
-            <dd>해당 API 활용신청이 승인된 data.go.kr 서비스키를 서버 환경변수에 등록해야 실데이터가 표시됩니다.</dd>
+            <dt>자동승인</dt>
+            <dd>개발계정 활용신청은 자동승인 대상입니다.</dd>
+          </div>
+          <div>
+            <dt>승인</dt>
+            <dd>활용신청이 승인된 data.go.kr 서비스키를 서버 환경변수에 등록해야 실데이터가 표시됩니다.</dd>
           </div>
           <div>
             <dt>미리보기</dt>
             <dd>제품명, 제공 단위량, 에너지, 단백질, 지방, 탄수화물, 당류, 나트륨, 비타민, 품목제조신고번호</dd>
           </div>
           <div>
-            <dt>라이선스 표시</dt>
+            <dt>확인</dt>
+            <dd>미리보기 데이터와 실제 API 응답 필드를 대조해 화면 표시 항목을 구성합니다.</dd>
+          </div>
+          <div>
+            <dt>라이센스표시</dt>
             <dd>공공데이터 이용 조건에 따라 출처를 표시하고, 원 데이터의 최신성·정확성은 제공기관 기준으로 확인합니다.</dd>
           </div>
           <div>
@@ -187,7 +195,7 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>출처: 공공데이터포털, 식품의약품안전처, {HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE}</dd>
           </div>
           <div>
-            <dt>제3자 권리 포함</dt>
+            <dt>제3자 권리 포함 : 저작권 표시</dt>
             <dd>제3자 권리가 포함될 수 있으므로 원자료의 저작권 표시와 이용 조건을 함께 확인합니다.</dd>
           </div>
         </dl>
