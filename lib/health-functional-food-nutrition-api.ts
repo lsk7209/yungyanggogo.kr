@@ -52,6 +52,10 @@ type FetchHealthFunctionalFoodNutritionItemsOptions = {
 
 const MAX_NUM_OF_ROWS = 100;
 const REQUEST_TIMEOUT_MS = 9000;
+const REQUEST_HEADERS = {
+  accept: "application/json,text/plain,*/*",
+  "user-agent": "yungyanggogo.kr nutrition-db/1.0"
+};
 
 export function getHealthFunctionalFoodNutritionApiKey() {
   return (
@@ -131,14 +135,7 @@ export async function fetchHealthFunctionalFoodNutritionItems({
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        accept: "application/json,text/plain,*/*",
-        "user-agent": "yungyanggogo.kr nutrition-db/1.0"
-      },
-      next: { revalidate: 86400 },
-      signal: controller.signal
-    });
+    const response = await fetchHealthFunctionalFoodNutritionResponse(url, controller.signal);
     const text = await response.text();
 
     if (!response.ok) {
@@ -228,6 +225,27 @@ export function buildHealthFunctionalFoodNutritionUrl({
   }
 
   return `${HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}?serviceKey=${serviceKey}&${params.toString()}`;
+}
+
+async function fetchHealthFunctionalFoodNutritionResponse(url: string, signal: AbortSignal) {
+  try {
+    return await fetch(url, {
+      headers: REQUEST_HEADERS,
+      next: { revalidate: 86400 },
+      signal
+    });
+  } catch (error) {
+    const httpUrl = url.replace("https://api.data.go.kr/", "http://api.data.go.kr/");
+    if (httpUrl === url) {
+      throw error;
+    }
+
+    return fetch(httpUrl, {
+      headers: REQUEST_HEADERS,
+      next: { revalidate: 86400 },
+      signal
+    });
+  }
 }
 
 function emptyExtract() {
