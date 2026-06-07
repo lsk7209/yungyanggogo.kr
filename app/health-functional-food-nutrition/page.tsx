@@ -199,6 +199,10 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>JSON+XML</dd>
           </div>
           <div>
+            <dt>End Point</dt>
+            <dd>{HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}</dd>
+          </div>
+          <div>
             <dt>활용정보</dt>
             <dd>사이트개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
           </div>
