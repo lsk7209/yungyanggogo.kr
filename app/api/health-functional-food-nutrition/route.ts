@@ -7,6 +7,7 @@ import {
 } from "../../../lib/health-functional-food-nutrition-api";
 
 export const dynamic = "force-dynamic";
+export const preferredRegion = "icn1";
 
 export async function GET(request: Request) {
   if (!getHealthFunctionalFoodNutritionApiKey()) {

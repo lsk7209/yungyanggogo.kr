@@ -9,6 +9,7 @@ import {
 import { absoluteUrl, siteConfig } from "../../lib/site";
 
 export const dynamic = "force-dynamic";
+export const preferredRegion = "icn1";
 
 export const metadata: Metadata = {
   title: "건강기능식품 영양DB 제품 영양성분 조회",
