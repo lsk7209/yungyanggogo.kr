@@ -71,8 +71,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const nutritionDetailRoutes = await getNutritionDetailRoutes();
+  const nutritionDatasetRoutes = NATIONAL_NUTRITION_DATASETS.map((dataset) => ({
+    url: absoluteUrl(`/nutrition-data/${dataset.slug}`),
+    lastModified: new Date("2026-06-07"),
+    changeFrequency: "daily" as const,
+    priority: 0.76
+  }));
 
-  return [...staticRoutes, ...trustRoutes, ...nutritionDetailRoutes, ...postRoutes, ...foodRoutes];
+  return [...staticRoutes, ...trustRoutes, ...nutritionDatasetRoutes, ...nutritionDetailRoutes, ...postRoutes, ...foodRoutes];
 }
 
 async function getNutritionDetailRoutes(): Promise<MetadataRoute.Sitemap> {
@@ -85,7 +91,7 @@ async function getNutritionDetailRoutes(): Promise<MetadataRoute.Sitemap> {
       NATIONAL_NUTRITION_DATASETS.map(async (dataset) => {
         const { foods: nutritionItems } = await readNationalNutritionItemsFromDb({
           dataset: dataset.slug,
-          numOfRows: 20
+          numOfRows: 500
         });
 
         return nutritionItems.map((item) => ({

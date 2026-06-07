@@ -148,7 +148,9 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
         {NATIONAL_NUTRITION_DATASETS.map((dataset) => (
           <article key={dataset.slug}>
             <span>{dataset.shortName}</span>
-            <h2>{dataset.name}</h2>
+            <h2>
+              <Link href={`/nutrition-data/${dataset.slug}`}>{dataset.name}</Link>
+            </h2>
             <p>{dataset.description}</p>
             <small>일일 트래픽 {dataset.dailyTraffic.toLocaleString("ko-KR")}건</small>
             <code>{dataset.endpoint}</code>
