@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { AdsenseScript } from "../components/AdsenseScript";
 import { GAProvider } from "../components/GAProvider";
 import { absoluteUrl, siteConfig } from "../lib/site";
+import { staticInfoPages } from "../lib/static-pages";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -47,7 +48,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     "@type": "Organization",
     "@id": absoluteUrl("/#organization"),
     name: siteConfig.name,
-    url: absoluteUrl("/")
+    url: absoluteUrl("/"),
+    email: siteConfig.contactEmail,
+    foundingDate: siteConfig.launchedAt,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: siteConfig.contactEmail,
+      availableLanguage: ["ko"]
+    }
   };
 
   const websiteSchema = {
@@ -84,12 +93,22 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Link href="/health-functional-foods">건기식</Link>
             <Link href="/health-functional-food-nutrition">영양DB</Link>
             <Link href="/blog">블로그</Link>
+            <Link href="/about">소개</Link>
           </nav>
         </header>
         <main>{children}</main>
         <footer className="site-footer">
-          <p>출처, 기준량, 검토일을 함께 표시하는 식품영양 데이터 사이트입니다.</p>
-          <p>효능·질병 표현을 피하고 건강기능식품 제휴 표현을 사용하지 않습니다.</p>
+          <div>
+            <p>출처, 기준량, 검토일을 함께 표시하는 식품영양 데이터 사이트입니다.</p>
+            <p>효능·질병 표현을 피하고 건강기능식품 제휴 표현을 사용하지 않습니다.</p>
+          </div>
+          <nav className="footer-links" aria-label="사이트 정책">
+            {staticInfoPages.map((page) => (
+              <Link key={page.href} href={page.href}>
+                {page.title}
+              </Link>
+            ))}
+          </nav>
         </footer>
       </body>
     </html>

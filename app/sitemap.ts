@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllPosts, getPostUrl } from "../lib/blog";
 import { foods, getFoodUrl } from "../lib/foods";
 import { absoluteUrl } from "../lib/site";
+import { staticInfoPages } from "../lib/static-pages";
 
 export const dynamic = "force-dynamic";
 
@@ -59,5 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.72
   }));
 
-  return [...staticRoutes, ...postRoutes, ...foodRoutes];
+  const trustRoutes = staticInfoPages.map((page) => ({
+    url: absoluteUrl(page.href),
+    lastModified: new Date("2026-06-07"),
+    changeFrequency: "monthly" as const,
+    priority: 0.55
+  }));
+
+  return [...staticRoutes, ...trustRoutes, ...postRoutes, ...foodRoutes];
 }
