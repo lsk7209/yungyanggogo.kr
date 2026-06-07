@@ -132,6 +132,10 @@ export async function fetchHealthFunctionalFoodNutritionItems({
 
   try {
     const response = await fetch(url, {
+      headers: {
+        accept: "application/json,text/plain,*/*",
+        "user-agent": "yungyanggogo.kr nutrition-db/1.0"
+      },
       next: { revalidate: 86400 },
       signal: controller.signal
     });
