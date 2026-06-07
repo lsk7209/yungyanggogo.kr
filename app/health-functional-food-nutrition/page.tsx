@@ -187,6 +187,18 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>개발계정 | 활용신청</dd>
           </div>
           <div>
+            <dt>활용기간</dt>
+            <dd>2026-06-07 ~ 2028-06-07</dd>
+          </div>
+          <div>
+            <dt>서비스정보</dt>
+            <dd>건강기능식품 제품별 영양성분 정보 REST API</dd>
+          </div>
+          <div>
+            <dt>데이터포맷</dt>
+            <dd>JSON+XML</dd>
+          </div>
+          <div>
             <dt>활용정보</dt>
             <dd>사이트개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
           </div>
