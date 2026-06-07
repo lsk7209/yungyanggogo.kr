@@ -51,6 +51,7 @@ export async function GET(request: Request) {
     source: HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE,
     endpoint: HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT,
     query: q || null,
+    fallback: result.fallback || false,
     totalCount: result.totalCount,
     count: result.foods.length,
     foods: result.foods

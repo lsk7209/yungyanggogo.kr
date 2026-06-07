@@ -1,3 +1,5 @@
+import { healthFunctionalFoodNutritionSnapshot } from "./health-functional-food-nutrition-snapshot";
+
 export const HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT =
   "https://api.data.go.kr/openapi/tn_pubr_public_health_functional_food_nutrition_info_api";
 export const HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE = "전국건강기능식품영양성분정보표준데이터";
@@ -162,19 +164,17 @@ export async function fetchHealthFunctionalFoodNutritionItems({
       message: resultCode === "00" ? "" : resultMessage || text.slice(0, 500)
     };
   } catch (error) {
-    const message =
-      error instanceof Error && error.name === "AbortError"
-        ? "건강기능식품 영양DB API 응답 시간이 초과되었습니다."
-        : error instanceof Error
-          ? error.message
-          : "건강기능식품 영양DB API 응답을 처리하지 못했습니다.";
-
     return {
-      ok: false,
-      status: 502,
-      totalCount: 0,
-      foods: [] as HealthFunctionalFoodNutritionItem[],
-      message
+      ok: true,
+      status: 200,
+      totalCount: healthFunctionalFoodNutritionSnapshot.totalCount,
+      resultCode: "SNAPSHOT",
+      foods: healthFunctionalFoodNutritionSnapshot.foods,
+      fallback: true,
+      message:
+        error instanceof Error
+          ? `Live API fetch failed; using verified snapshot from ${healthFunctionalFoodNutritionSnapshot.fetchedAt}. ${error.message}`
+          : `Live API fetch failed; using verified snapshot from ${healthFunctionalFoodNutritionSnapshot.fetchedAt}.`
     };
   } finally {
     clearTimeout(timeout);
