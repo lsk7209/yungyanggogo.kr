@@ -24,12 +24,12 @@ function signature(title) {
     .trim();
 }
 
-if (files.length < 2) {
-  fail(`expected at least 2 scheduled content files, got ${files.length}`);
+if (files.length < 3) {
+  fail(`expected at least 3 scheduled content files, got ${files.length}`);
 }
 
-if (posts.length !== 200) {
-  fail(`expected 200 generated posts, got ${posts.length}`);
+if (posts.length !== files.length * 100) {
+  fail(`expected ${files.length * 100} generated posts, got ${posts.length}`);
 }
 
 const byPublished = [...posts].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
@@ -105,10 +105,10 @@ posts.forEach((post) => {
 });
 
 const maxStructureRepeat = Math.max(...structureSignatures.values());
-if (structureSignatures.size < 50) {
-  fail(`template risk: expected at least 50 structure signatures, got ${structureSignatures.size}`);
+if (structureSignatures.size < 90) {
+  fail(`template risk: expected at least 90 structure signatures, got ${structureSignatures.size}`);
 }
-if (maxStructureRepeat > 4) {
+if (maxStructureRepeat > 5) {
   fail(`template risk: one structure signature repeats ${maxStructureRepeat} times`);
 }
 
@@ -122,7 +122,7 @@ if (byPublished[0]?.publishedAt !== "2026-06-07T00:00:00+09:00") {
   fail(`unexpected schedule start: ${byPublished[0]?.publishedAt}`);
 }
 
-if (byPublished.at(-1)?.publishedAt !== "2026-07-18T11:00:00+09:00") {
+if (byPublished.at(-1)?.publishedAt !== "2026-08-08T07:00:00+09:00") {
   fail(`unexpected schedule end: ${byPublished.at(-1)?.publishedAt}`);
 }
 

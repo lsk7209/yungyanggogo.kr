@@ -69,6 +69,29 @@ const nextClusters = [
   ["nutrition-claim-wording", "영양강조표시", "영양강조표시 문구", "저당", "고단백", "무가당", "포장 문구와 숫자가 맞는지 확인할 때"]
 ];
 
+const thirdClusters = [
+  ["frozen-pizza-label", "냉동피자", "냉동피자 영양성분", "조각 기준", "포화지방", "나트륨", "냉동피자 한 판과 한 조각 수치를 나눠 봐야 할 때"],
+  ["fried-rice-meal-sodium", "볶음밥", "볶음밥 간편식 나트륨", "냉동밥", "소스류", "총내용량", "간편식 한 봉지를 한 끼로 볼지 고민될 때"],
+  ["fishcake-soup-mealkit", "어묵탕", "어묵탕 밀키트 기준량", "국물", "어묵 중량", "나트륨", "국물까지 먹을지 건더기만 볼지 정해야 할 때"],
+  ["cup-soup-sugar", "컵수프", "컵수프 당류", "분말스프", "우유 조리", "나트륨", "가벼운 간식처럼 보여 수치를 놓칠 때"],
+  ["granola-fat", "그래놀라", "그래놀라 지방", "견과 토핑", "당류", "1회제공량", "시리얼보다 건강해 보이는 인상을 검토할 때"],
+  ["dried-sweet-potato-sugar", "고구마말랭이", "고구마말랭이 당류", "건조 과일", "총내용량", "식이섬유", "원물 간식이라 당류를 낮게 예상할 때"],
+  ["beef-jerky-sodium", "육포", "육포 나트륨", "단백질", "소포장", "포화지방", "단백질 간식으로만 보고 나트륨을 놓칠 때"],
+  ["instant-curry-calorie", "즉석카레", "즉석카레 열량", "소스 중량", "밥 조합", "나트륨", "카레 한 봉지와 밥 한 공기를 합쳐 봐야 할 때"],
+  ["pasta-sauce-sodium", "파스타소스", "파스타소스 나트륨", "1회 사용량", "토마토소스", "크림소스", "면보다 소스 수치가 선택을 바꿀 때"],
+  ["jam-sugar", "잼", "잼 당류", "스푼 기준", "과일 함량", "총당류", "빵에 바르는 양과 표시량이 다를 때"],
+  ["powder-drink-sugar", "분말음료", "분말음료 당류", "스틱 1개", "물 조리", "우유 조리", "타 마시는 제품의 실제 당류를 볼 때"],
+  ["kids-drink-100ml", "어린이 음료", "어린이 음료 100ml", "당류", "용량 차이", "과채음료", "아이 음료를 작은 병 기준으로 비교할 때"],
+  ["protein-shake-sugar", "단백질 쉐이크", "단백질 쉐이크 당류", "분말형", "액상형", "단백질 밀도", "단백질 수치만 보고 당류를 놓칠 때"],
+  ["chicken-sausage-sodium", "닭가슴살 소시지", "닭가슴살 소시지 나트륨", "가공육", "단백질", "1개 기준", "닭가슴살 이름 때문에 가공 지표를 덜 볼 때"],
+  ["salad-lunchbox-dressing", "샐러드 도시락", "샐러드 도시락 드레싱", "토핑", "소스", "총열량", "샐러드와 드레싱을 분리해서 봐야 할 때"],
+  ["gimbap-line-nutrition", "김밥", "김밥 한 줄 영양성분", "밥량", "속재료", "나트륨", "김밥 한 줄을 간식인지 식사인지 볼 때"],
+  ["bagel-carbs", "베이글", "베이글 탄수화물", "크림치즈", "중량", "당류", "빵 크기보다 중량 기준으로 비교해야 할 때"],
+  ["cracker-sodium", "크래커", "크래커 나트륨", "1봉 기준", "치즈맛", "당류", "담백한 맛 때문에 나트륨을 낮게 예상할 때"],
+  ["frozen-hotdog-satfat", "냉동핫도그", "냉동핫도그 포화지방", "튀김옷", "소시지", "총열량", "간식 한 개의 포화지방을 확인할 때"],
+  ["ingredient-list-reading", "원재료명", "식품라벨 원재료명 해석", "원재료 순서", "첨가물", "영양성분표", "영양성분 숫자와 원재료명을 함께 봐야 할 때"]
+];
+
 const angles = [
   {
     id: "basis",
@@ -128,14 +151,24 @@ const batches = [
     outFile: "scheduled-2026-06-07.json",
     manifestFile: "blog-batch-manifest-2026-06-07.json",
     startUtc: Date.UTC(2026, 5, 6, 15, 0, 0),
-    clusters: firstClusters
+    clusters: firstClusters,
+    structureOffset: 0
   },
   {
     id: "2026-06-27",
     outFile: "scheduled-2026-06-27.json",
     manifestFile: "blog-batch-manifest-2026-06-27.json",
     startUtc: Date.UTC(2026, 5, 27, 11, 0, 0),
-    clusters: nextClusters
+    clusters: nextClusters,
+    structureOffset: 5
+  },
+  {
+    id: "2026-07-18",
+    outFile: "scheduled-2026-07-18.json",
+    manifestFile: "blog-batch-manifest-2026-07-18.json",
+    startUtc: Date.UTC(2026, 6, 18, 7, 0, 0),
+    clusters: thirdClusters,
+    structureOffset: 11
   }
 ];
 
@@ -284,11 +317,101 @@ function makeSections(input) {
       ["practical-filter", `${situation}의 실전 필터`],
       ["avoid-claim", `효능 암시 없이 설명하는 방법`],
       ["link-bridge", `기준 글과 랭킹으로 연결하기`]
+    ],
+    [
+      ["package-signal", `${baseKeyword} 포장 문구를 숫자로 다시 확인합니다`],
+      ["unit-swap", `${ext1} 기준이 바뀔 때 생기는 착시`],
+      ["meal-context", `${ext2}를 식사 맥락에서 읽는 방법`],
+      ["source-placement", `출처는 표 아래가 아니라 판단 옆에 둡니다`],
+      ["choice-line", `${situation}의 선택선을 정하는 법`],
+      ["claim-limit", `${ext3}을 효능처럼 말하지 않는 이유`],
+      ["next-filter", `다음 비교에서는 식품군 필터를 좁힙니다`]
+    ],
+    [
+      ["small-label", `${mainKeyword}에서 작은 글씨가 더 중요한 순간`],
+      ["portion-math", `${ext1}을 실제 섭취량으로 바꿔 봅니다`],
+      ["paired-metric", `${ext2}는 ${ext3}과 같이 볼 때 의미가 생깁니다`],
+      ["data-timestamp", `데이터 기준일이 오래되면 생기는 차이`],
+      ["buying-question", `${situation}라면 먼저 던질 질문`],
+      ["not-ranking", `순위보다 기준을 남기는 설명 방식`],
+      ["continue-data", `공식 데이터 화면으로 이어서 확인하기`]
+    ],
+    [
+      ["category-start", `${baseKeyword}은 같은 분류끼리만 비교합니다`],
+      ["front-copy", `앞면 문구보다 ${ext1} 값이 먼저입니다`],
+      ["serving-reality", `${ext2}와 실제 먹는 양의 거리`],
+      ["official-cross", `공식 출처와 포장 표시를 교차합니다`],
+      ["decision-pocket", `${situation}에서 바로 쓰는 판단 카드`],
+      ["health-boundary", `${ext3} 해석의 건강 주장 경계`],
+      ["related-basis", `기준량 글로 돌아가 다시 계산하기`]
+    ],
+    [
+      ["reader-doubt", `${situation}에서 독자가 헷갈리는 지점`],
+      ["number-order", `${mainKeyword}은 숫자 순서가 중요합니다`],
+      ["support-metric", `${ext1} 뒤에 붙일 보조 지표`],
+      ["trace-note", `${ext2} 값을 추적 가능하게 남기는 법`],
+      ["comparison-card", `${baseKeyword} 비교 카드로 정리하기`],
+      ["overread", `${ext3}을 과잉 해석하지 않기`],
+      ["internal-loop", `블로그와 랭킹을 오가며 확인하기`]
+    ],
+    [
+      ["search-intent", `${mainKeyword}을 검색한 사람이 원하는 답`],
+      ["label-unit", `${ext1} 단위부터 맞춰야 합니다`],
+      ["total-vs-serving", `${ext2}와 총내용량을 나눠 보기`],
+      ["source-gap", `공공데이터와 제품 리뉴얼의 간격`],
+      ["practical-rule", `${situation}의 실전 규칙 하나`],
+      ["safe-cta", `확정 대신 다시 확인으로 끝내는 이유`],
+      ["next-question", `다음 질문은 ${ext3}으로 좁힙니다`]
+    ],
+    [
+      ["quick-scan", `${baseKeyword}을 30초 안에 훑는 법`],
+      ["primary-value", `${ext1}은 첫 숫자일 뿐 결론은 아닙니다`],
+      ["context-value", `${ext2}가 높은지 낮은지 보는 맥락`],
+      ["evidence-path", `근거 링크를 따라 다시 검토하기`],
+      ["reader-choice", `${situation}의 선택지를 줄이는 순서`],
+      ["interpretation-line", `${ext3} 설명의 선을 넘지 않기`],
+      ["site-navigation", `영양고고 안에서 다음 화면으로 이동하기`]
+    ],
+    [
+      ["why-now", `지금 ${mainKeyword}을 따로 봐야 하는 이유`],
+      ["label-anchor", `${ext1}을 기준점으로 고정합니다`],
+      ["secondary-check", `${ext2} 확인이 빠지면 결론이 흔들립니다`],
+      ["data-anchor", `출처명과 기준일을 판단 근거로 남깁니다`],
+      ["use-scenario", `${situation}의 실제 사용 장면`],
+      ["no-prescription", `개인 식단 처방으로 넘어가지 않기`],
+      ["followup-link", `${ext3} 관련 후속 글로 연결하기`]
+    ],
+    [
+      ["first-filter", `${baseKeyword} 첫 필터는 제품명이 아닙니다`],
+      ["amount-check", `${ext1}과 한 번 먹는 양을 분리합니다`],
+      ["compare-check", `${ext2} 비교에서 빠지기 쉬운 조건`],
+      ["official-check", `공식 데이터에서 다시 볼 필드`],
+      ["decision-check", `${situation}의 결정 전 체크`],
+      ["wording-check", `${ext3} 표현을 조심해서 쓰는 법`],
+      ["next-checkpoint", `다음 체크포인트로 넘어가기`]
+    ],
+    [
+      ["problem-frame", `${mainKeyword}의 문제를 한 문장으로 좁힙니다`],
+      ["unit-frame", `${ext1} 기준 프레임을 먼저 세웁니다`],
+      ["risk-frame", `${ext2}와 ${ext3}이 만드는 오해`],
+      ["source-frame", `근거를 남기는 위치가 신뢰를 좌우합니다`],
+      ["action-frame", `${situation}에서 할 수 있는 행동`],
+      ["limit-frame", `이 글이 답하지 않는 것`],
+      ["bridge-frame", `다음 글로 넘겨야 할 질문`]
+    ],
+    [
+      ["data-question", `${baseKeyword} 데이터에서 먼저 물을 질문`],
+      ["label-question", `${ext1} 표시는 무엇을 기준으로 하나요`],
+      ["serving-question", `${ext2}는 실제 섭취량과 맞나요`],
+      ["source-question", `출처와 갱신일은 확인됐나요`],
+      ["choice-question", `${situation}라면 어떤 선택이 남나요`],
+      ["claim-question", `${ext3}을 어디까지 말할 수 있나요`],
+      ["next-question-link", `이어 읽을 질문을 남깁니다`]
     ]
   ];
   const clusterIndex = Math.floor(index / angles.length);
   const angleIndex = index % angles.length;
-  const roles = roleSet[(clusterIndex * 7 + angleIndex) % roleSet.length];
+  const roles = roleSet[(clusterIndex * 7 + angleIndex + (input.structureOffset || 0)) % roleSet.length];
 
   const bodies = [
     [
@@ -339,7 +462,7 @@ function makeArticle(batch, cluster, angle, index) {
   const subtitle = `${mainKeyword}에서 ${withObject(withAnd(ext1, ext2))} 같은 기준으로 읽어 ${angle.claim} 식품영양성분 가이드`;
   const slug = slugify(`${clusterId}-${angle.id}`);
   const publishedAt = formatKst(batch.startUtc + index * intervalHours * 60 * 60 * 1000);
-  const common = { baseKeyword, mainKeyword, ext1, ext2, ext3, situation, angle, index };
+  const common = { baseKeyword, mainKeyword, ext1, ext2, ext3, situation, angle, index, structureOffset: batch.structureOffset };
 
   return {
     slug,
@@ -455,9 +578,24 @@ function validateBatch(posts, batch) {
   const slugs = new Set(posts.map((post) => post.slug));
   const mainKeywords = new Set(posts.map((post) => post.mainKeyword));
   const shortPosts = posts.filter((post) => JSON.stringify(post.sections).length < 3500);
-  if (posts.length !== 100 || titles.size !== 100 || slugs.size !== 100 || mainKeywords.size !== 100 || shortPosts.length > 0) {
+  const missingTitleKeywords = posts.filter(
+    (post) => !post.title.includes(post.mainKeyword) || !post.expandedKeywords.some((keyword) => post.title.includes(keyword))
+  );
+  const missingSubtitleKeywords = posts.filter(
+    (post) =>
+      !post.subtitle.includes(post.mainKeyword) || !post.expandedKeywords.some((keyword) => post.subtitle.includes(keyword))
+  );
+  if (
+    posts.length !== 100 ||
+    titles.size !== 100 ||
+    slugs.size !== 100 ||
+    mainKeywords.size !== 100 ||
+    shortPosts.length > 0 ||
+    missingTitleKeywords.length > 0 ||
+    missingSubtitleKeywords.length > 0
+  ) {
     throw new Error(
-      `Batch ${batch.id} validation failed: posts=${posts.length}, titles=${titles.size}, slugs=${slugs.size}, mainKeywords=${mainKeywords.size}, short=${shortPosts.length}`
+      `Batch ${batch.id} validation failed: posts=${posts.length}, titles=${titles.size}, slugs=${slugs.size}, mainKeywords=${mainKeywords.size}, short=${shortPosts.length}, titleKeywords=${missingTitleKeywords.length}, subtitleKeywords=${missingSubtitleKeywords.length}`
     );
   }
 }
