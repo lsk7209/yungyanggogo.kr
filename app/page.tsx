@@ -164,19 +164,98 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section trust-section">
-        <div className="trust-card">
-          <p className="eyebrow">신뢰 정책</p>
+      <section className=”section trust-section”>
+        <div className=”trust-card”>
+          <p className=”eyebrow”>신뢰 정책</p>
           <h2>건강 정보이기에, 근거를 먼저 보여드립니다</h2>
           <p>
             “좋다/나쁘다”로 단정하지 않습니다. 측정값, 기준량, 공식 출처, 검토일을 함께 남겨 사용자가 직접
             판단할 수 있게 합니다.
           </p>
           {latestPost ? (
-            <Link className="button button--light" href={`/blog/${latestPost.slug}`}>
+            <Link className=”button button--light” href={`/blog/${latestPost.slug}`}>
               최근 기준 글 읽기
             </Link>
           ) : null}
+        </div>
+      </section>
+
+      <section className=”section section--surface”>
+        <div className=”section__head”>
+          <p className=”eyebrow”>How to Use</p>
+          <h2>영양고고를 활용하는 방법</h2>
+          <p>영양성분 수치를 단순히 나열하는 것이 아니라, 목적에 맞는 기준으로 제품을 비교하는 방법을 안내합니다.</p>
+        </div>
+        <div className=”category-grid”>
+          <article className=”guide-card”>
+            <h3>다이어트 식품 고르기</h3>
+            <p>
+              저칼로리·저지방·저당 기준을 동시에 만족하는 제품을 찾으려면 100g 기준
+              비교가 가장 정확합니다. 1회 제공량은 제조사마다 달라 직접 비교가 어렵기
+              때문입니다. 영양고고의 랭킹 도구에서 기준을 선택하면 동일 조건으로 정렬된
+              목록을 바로 확인할 수 있습니다.
+            </p>
+          </article>
+          <article className=”guide-card”>
+            <h3>단백질 식품 선택 기준</h3>
+            <p>
+              단백질 함량은 100kcal당 g 수로 비교하는 것이 더 정확합니다. 같은 단백질
+              식품이라도 열량 대비 단백질 비율이 다르면 실제 섭취 효율이 달라집니다.
+              고단백 기준은 100g당 20g 이상, 100kcal당 10g 이상을 충족해야 강조표시가
+              허용됩니다.
+            </p>
+          </article>
+          <article className=”guide-card”>
+            <h3>나트륨 제한 식단</h3>
+            <p>
+              나트륨은 1회 제공량 기준으로 표기되는 경우가 많아 제품 간 비교가
+              어렵습니다. 영양고고에서는 100g 기준으로 정규화해 같은 조건으로 순위를
+              매깁니다. 하루 나트륨 섭취 목표를 정해두고 제품별 1회 제공량을 역산하면
+              실제 섭취 계획을 세울 수 있습니다.
+            </p>
+          </article>
+          <article className=”guide-card”>
+            <h3>편의점 식품 영양 체크</h3>
+            <p>
+              편의점 간편식은 용량 대비 열량이 높은 경우가 많습니다. 영양고고에서
+              편의점 카테고리로 필터링하면 칼로리·단백질·나트륨을 한눈에 비교할 수
+              있습니다. 목적에 맞는 제품을 구매 전에 미리 확인하세요.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section className=”section”>
+        <div className=”section__head”>
+          <p className=”eyebrow”>FAQ</p>
+          <h2>자주 묻는 질문</h2>
+        </div>
+        <div className=”faq-list”>
+          <article className=”faq-item”>
+            <h3>영양성분 데이터는 어디서 가져오나요?</h3>
+            <p>
+              식품의약품안전처 식품영양성분 데이터베이스(식품안전나라)의 공공데이터를
+              기반으로 합니다. 데이터 갱신 주기와 수집일은 각 제품 페이지에 명시합니다.
+              제조사 자체 표기와 차이가 있을 수 있으므로 구매 전 실제 제품 라벨을
+              반드시 확인하세요.
+            </p>
+          </article>
+          <article className=”faq-item”>
+            <h3>강조표시 기준이란 무엇인가요?</h3>
+            <p>
+              식약처가 정한 기능성 영양 강조표시 기준을 말합니다. 예를 들어 고단백은
+              100g당 단백질 20g 이상이거나 100kcal당 10g 이상이어야 합니다. 영양고고는
+              이 기준 충족 여부를 각 제품 페이지에서 배지로 표시합니다.
+            </p>
+          </article>
+          <article className=”faq-item”>
+            <h3>영양고고 정보를 건강 진단 목적으로 써도 되나요?</h3>
+            <p>
+              아닙니다. 영양고고는 식품 선택에 참고하는 정보 서비스이며 의료·영양 상담을
+              대체하지 않습니다. 특정 질환이나 식이 제한이 있다면 의사나 영양사에게
+              확인하세요.
+            </p>
+          </article>
         </div>
       </section>
     </>
