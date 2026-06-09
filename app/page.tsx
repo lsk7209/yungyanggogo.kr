@@ -256,6 +256,14 @@ export default function HomePage() {
               확인하세요.
             </p>
           </article>
+          <article className=”faq-item”>
+            <h3>제품 비교는 어떻게 하나요?</h3>
+            <p>
+              랭킹 목록에서 관심 있는 제품을 선택하면 100g·100kcal 기준 수치를 나란히
+              볼 수 있습니다. 1회 제공량 기준은 제조사마다 달라 직접 비교가 어렵기
+              때문에 영양고고는 정규화된 기준으로 동일 조건 비교를 지원합니다.
+            </p>
+          </article>
         </div>
       </section>
     </>
