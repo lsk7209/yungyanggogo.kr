@@ -164,30 +164,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className=”section trust-section”>
-        <div className=”trust-card”>
-          <p className=”eyebrow”>신뢰 정책</p>
+      <section className="section trust-section">
+        <div className="trust-card">
+          <p className="eyebrow">신뢰 정책</p>
           <h2>건강 정보이기에, 근거를 먼저 보여드립니다</h2>
           <p>
-            “좋다/나쁘다”로 단정하지 않습니다. 측정값, 기준량, 공식 출처, 검토일을 함께 남겨 사용자가 직접
+            "좋다/나쁘다"로 단정하지 않습니다. 측정값, 기준량, 공식 출처, 검토일을 함께 남겨 사용자가 직접
             판단할 수 있게 합니다.
           </p>
           {latestPost ? (
-            <Link className=”button button--light” href={`/blog/${latestPost.slug}`}>
+            <Link className="button button--light" href={`/blog/${latestPost.slug}`}>
               최근 기준 글 읽기
             </Link>
           ) : null}
         </div>
       </section>
 
-      <section className=”section section--surface”>
-        <div className=”section__head”>
-          <p className=”eyebrow”>How to Use</p>
+      <section className="section section--surface">
+        <div className="section__head">
+          <p className="eyebrow">How to Use</p>
           <h2>영양고고를 활용하는 방법</h2>
           <p>영양성분 수치를 단순히 나열하는 것이 아니라, 목적에 맞는 기준으로 제품을 비교하는 방법을 안내합니다.</p>
         </div>
-        <div className=”category-grid”>
-          <article className=”guide-card”>
+        <div className="category-grid">
+          <article className="guide-card">
             <h3>다이어트 식품 고르기</h3>
             <p>
               저칼로리·저지방·저당 기준을 동시에 만족하는 제품을 찾으려면 100g 기준
@@ -196,7 +196,7 @@ export default function HomePage() {
               목록을 바로 확인할 수 있습니다.
             </p>
           </article>
-          <article className=”guide-card”>
+          <article className="guide-card">
             <h3>단백질 식품 선택 기준</h3>
             <p>
               단백질 함량은 100kcal당 g 수로 비교하는 것이 더 정확합니다. 같은 단백질
@@ -205,7 +205,7 @@ export default function HomePage() {
               허용됩니다.
             </p>
           </article>
-          <article className=”guide-card”>
+          <article className="guide-card">
             <h3>나트륨 제한 식단</h3>
             <p>
               나트륨은 1회 제공량 기준으로 표기되는 경우가 많아 제품 간 비교가
@@ -214,7 +214,7 @@ export default function HomePage() {
               실제 섭취 계획을 세울 수 있습니다.
             </p>
           </article>
-          <article className=”guide-card”>
+          <article className="guide-card">
             <h3>편의점 식품 영양 체크</h3>
             <p>
               편의점 간편식은 용량 대비 열량이 높은 경우가 많습니다. 영양고고에서
@@ -225,13 +225,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className=”section”>
-        <div className=”section__head”>
-          <p className=”eyebrow”>FAQ</p>
+      <section className="section">
+        <div className="section__head">
+          <p className="eyebrow">FAQ</p>
           <h2>자주 묻는 질문</h2>
         </div>
-        <div className=”faq-list”>
-          <article className=”faq-item”>
+        <div className="faq-list">
+          <article className="faq-item">
             <h3>영양성분 데이터는 어디서 가져오나요?</h3>
             <p>
               식품의약품안전처 식품영양성분 데이터베이스(식품안전나라)의 공공데이터를
@@ -240,7 +240,7 @@ export default function HomePage() {
               반드시 확인하세요.
             </p>
           </article>
-          <article className=”faq-item”>
+          <article className="faq-item">
             <h3>강조표시 기준이란 무엇인가요?</h3>
             <p>
               식약처가 정한 기능성 영양 강조표시 기준을 말합니다. 예를 들어 고단백은
@@ -248,7 +248,7 @@ export default function HomePage() {
               이 기준 충족 여부를 각 제품 페이지에서 배지로 표시합니다.
             </p>
           </article>
-          <article className=”faq-item”>
+          <article className="faq-item">
             <h3>영양고고 정보를 건강 진단 목적으로 써도 되나요?</h3>
             <p>
               아닙니다. 영양고고는 식품 선택에 참고하는 정보 서비스이며 의료·영양 상담을
@@ -256,7 +256,7 @@ export default function HomePage() {
               확인하세요.
             </p>
           </article>
-          <article className=”faq-item”>
+          <article className="faq-item">
             <h3>제품 비교는 어떻게 하나요?</h3>
             <p>
               랭킹 목록에서 관심 있는 제품을 선택하면 100g·100kcal 기준 수치를 나란히
@@ -264,7 +264,7 @@ export default function HomePage() {
               때문에 영양고고는 정규화된 기준으로 동일 조건 비교를 지원합니다.
             </p>
           </article>
-          <article className=”faq-item”>
+          <article className="faq-item">
             <h3>영양고고 데이터는 얼마나 자주 갱신되나요?</h3>
             <p>
               식품의약품안전처 식품영양성분 데이터베이스 갱신 주기에 맞춰 업데이트합니다.
@@ -273,7 +273,7 @@ export default function HomePage() {
               있으므로 구매 전 라벨을 반드시 확인하세요.
             </p>
           </article>
-          <article className=”faq-item”>
+          <article className="faq-item">
             <h3>특정 제품이 목록에 없으면 어떻게 하나요?</h3>
             <p>
               공공데이터에 등록된 식품만 수록됩니다. 수입 식품이나 소규모 제조사의
@@ -285,14 +285,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className=”section section--surface”>
-        <div className=”section__head”>
-          <p className=”eyebrow”>Nutrition Guide</p>
+      <section className="section section--surface">
+        <div className="section__head">
+          <p className="eyebrow">Nutrition Guide</p>
           <h2>영양 성분 바르게 읽는 법</h2>
           <p>식품 라벨의 숫자를 실생활에서 활용하기 위한 기준점을 정리했습니다.</p>
         </div>
-        <div className=”category-grid”>
-          <article className=”guide-card”>
+        <div className="category-grid">
+          <article className="guide-card">
             <h3>100g 기준 비교가 중요한 이유</h3>
             <p>
               제품마다 1회 제공량이 다르면 같은 숫자라도 실제 섭취량이 달라집니다.
@@ -301,7 +301,7 @@ export default function HomePage() {
               같은 조건에서 비교할 수 있습니다.
             </p>
           </article>
-          <article className=”guide-card”>
+          <article className="guide-card">
             <h3>단백질 일일 권장량과 식품 선택</h3>
             <p>
               성인 기준 단백질 권장 섭취량은 체중 1kg당 약 0.8g입니다. 체중 60kg이면
@@ -310,7 +310,7 @@ export default function HomePage() {
               일치합니다.
             </p>
           </article>
-          <article className=”guide-card”>
+          <article className="guide-card">
             <h3>당류와 첨가당 구분하기</h3>
             <p>
               영양성분표의 당류에는 과일·우유의 천연당과 설탕 등 첨가당이 모두
@@ -319,7 +319,7 @@ export default function HomePage() {
               첨가당 비중이 높습니다.
             </p>
           </article>
-          <article className=”guide-card”>
+          <article className="guide-card">
             <h3>나트륨 섭취량 관리 방법</h3>
             <p>
               한국인의 하루 평균 나트륨 섭취량은 권장량(2,000mg)을 크게 초과합니다.
