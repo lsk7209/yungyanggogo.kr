@@ -6,14 +6,29 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/"
+        allow: "/",
       },
       {
         userAgent: ["GPTBot", "Google-Extended", "CCBot"],
-        allow: "/"
-      }
+        allow: "/",
+      },
+      {
+        userAgent: [
+          "ClaudeBot",
+          "anthropic-ai",
+          "PerplexityBot",
+          "OAI-SearchBot",
+          "Yeti",
+          "Daumoa",
+        ],
+        allow: "/",
+      },
+      {
+        userAgent: "Bytespider",
+        disallow: "/",
+      },
     ],
     sitemap: absoluteUrl("/sitemap.xml"),
-    host: siteConfig.url
+    host: siteConfig.url,
   };
 }
