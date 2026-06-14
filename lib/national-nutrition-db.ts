@@ -1,13 +1,17 @@
+import { unstable_cache } from "next/cache";
 import { getDb, isTursoConfigured } from "./db";
 import {
   fetchNationalNutritionItems,
   getNationalNutritionDataset,
   type NationalNutritionDatasetSlug,
   type NationalNutritionItem,
-  type NationalNutritionResult
+  type NationalNutritionResult,
 } from "./national-nutrition-api";
 
 const DEFAULT_QUERY_KEY = "__default__";
+
+// DDL을 매 요청마다 실행하지 않도록 초기화 완료 여부 추적 (프로세스 수명 동안 1회만 실행)
+let schemaReady = false;
 
 type FetchCachedNationalNutritionOptions = {
   dataset?: NationalNutritionDatasetSlug;
@@ -55,18 +59,30 @@ export async function fetchNationalNutritionItemsWithDbCache({
   dataset = "all",
   query,
   pageNo = 1,
-  numOfRows = 12
-}: FetchCachedNationalNutritionOptions = {}): Promise<NationalNutritionResult & { cacheSource: "db" | "api" | "api_no_db" }> {
+  numOfRows = 12,
+}: FetchCachedNationalNutritionOptions = {}): Promise<
+  NationalNutritionResult & { cacheSource: "db" | "api" | "api_no_db" }
+> {
   const selectedDataset = getNationalNutritionDataset(dataset);
 
   if (!isTursoConfigured) {
-    const result = await fetchNationalNutritionItems({ dataset, query, pageNo, numOfRows });
+    const result = await fetchNationalNutritionItems({
+      dataset,
+      query,
+      pageNo,
+      numOfRows,
+    });
     return { ...result, cacheSource: "api_no_db" };
   }
 
   await ensureNationalNutritionSchema();
 
-  const cached = await readNationalNutritionItemsFromDb({ dataset, query, pageNo, numOfRows });
+  const cached = await readNationalNutritionItemsFromDb({
+    dataset,
+    query,
+    pageNo,
+    numOfRows,
+  });
   if (cached.foods.length > 0) {
     return {
       ok: true,
@@ -76,17 +92,22 @@ export async function fetchNationalNutritionItemsWithDbCache({
       count: cached.foods.length,
       foods: cached.foods,
       cacheSource: "db",
-      message: ""
+      message: "",
     };
   }
 
-  const result = await fetchNationalNutritionItems({ dataset, query, pageNo, numOfRows });
+  const result = await fetchNationalNutritionItems({
+    dataset,
+    query,
+    pageNo,
+    numOfRows,
+  });
   if (result.foods.length > 0) {
     await saveNationalNutritionItemsToDb({
       dataset,
       query,
       totalCount: result.totalCount,
-      foods: result.foods
+      foods: result.foods,
     });
   }
 
@@ -94,6 +115,9 @@ export async function fetchNationalNutritionItemsWithDbCache({
 }
 
 export async function ensureNationalNutritionSchema() {
+  // 이미 초기화된 경우 DDL 재실행 방지 — 매 요청마다 DDL을 Turso에 보내던 것을 프로세스 수명 1회로 제한
+  if (schemaReady) return;
+
   const db = getDb();
 
   await db.batch([
@@ -143,15 +167,20 @@ export async function ensureNationalNutritionSchema() {
       PRIMARY KEY (dataset_slug, query_key, food_code)
     )`,
     "CREATE INDEX IF NOT EXISTS idx_national_nutrition_items_dataset_query ON national_nutrition_items(dataset_slug, query_key, synced_at)",
-    "CREATE INDEX IF NOT EXISTS idx_national_nutrition_items_name ON national_nutrition_items(food_name)"
+    "CREATE INDEX IF NOT EXISTS idx_national_nutrition_items_name ON national_nutrition_items(food_name)",
+    // 상세 페이지 조회: WHERE dataset_slug=? AND food_code=? — PK가 (dataset_slug, query_key, food_code)라서
+    // query_key 없이 food_code만으로 찾으면 풀스캔 발생 → 전용 인덱스로 해결
+    "CREATE INDEX IF NOT EXISTS idx_national_nutrition_items_food_code ON national_nutrition_items(dataset_slug, food_code)",
   ]);
+
+  schemaReady = true;
 }
 
 export async function readNationalNutritionItemsFromDb({
   dataset = "all",
   query,
   pageNo = 1,
-  numOfRows = 12
+  numOfRows = 12,
 }: FetchCachedNationalNutritionOptions = {}) {
   const db = getDb();
   const queryKey = normalizeQueryKey(query);
@@ -161,26 +190,30 @@ export async function readNationalNutritionItemsFromDb({
   const [syncResult, rowsResult] = await Promise.all([
     db.execute({
       sql: "SELECT total_count FROM national_nutrition_syncs WHERE dataset_slug = ? AND query_key = ?",
-      args: [dataset, queryKey]
+      args: [dataset, queryKey],
     }),
     db.execute({
       sql: `SELECT * FROM national_nutrition_items
         WHERE dataset_slug = ? AND query_key = ?
         ORDER BY synced_at DESC, food_name ASC
         LIMIT ? OFFSET ?`,
-      args: [dataset, queryKey, limit, offset]
-    })
+      args: [dataset, queryKey, limit, offset],
+    }),
   ]);
 
-  const totalCount = Number(syncResult.rows[0]?.total_count || rowsResult.rows.length);
-  const foods = rowsResult.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow));
+  const totalCount = Number(
+    syncResult.rows[0]?.total_count || rowsResult.rows.length,
+  );
+  const foods = rowsResult.rows.map((row) =>
+    mapNationalNutritionRow(row as unknown as NationalNutritionRow),
+  );
 
   return { totalCount, foods };
 }
 
 export async function readNationalNutritionItemByCodeFromDb({
   dataset,
-  foodCode
+  foodCode,
 }: {
   dataset: NationalNutritionDatasetSlug;
   foodCode: string;
@@ -197,17 +230,19 @@ export async function readNationalNutritionItemByCodeFromDb({
       WHERE dataset_slug = ? AND food_code = ?
       ORDER BY synced_at DESC
       LIMIT 1`,
-    args: [dataset, foodCode]
+    args: [dataset, foodCode],
   });
 
   const row = result.rows[0];
-  return row ? mapNationalNutritionRow(row as unknown as NationalNutritionRow) : null;
+  return row
+    ? mapNationalNutritionRow(row as unknown as NationalNutritionRow)
+    : null;
 }
 
 export async function readRelatedNationalNutritionItemsFromDb({
   dataset,
   foodCode,
-  limit = 6
+  limit = 6,
 }: {
   dataset: NationalNutritionDatasetSlug;
   foodCode: string;
@@ -225,33 +260,41 @@ export async function readRelatedNationalNutritionItemsFromDb({
       WHERE dataset_slug = ? AND food_code <> ?
       ORDER BY synced_at DESC, food_name ASC
       LIMIT ?`,
-    args: [dataset, foodCode, Math.max(1, Math.floor(limit))]
+    args: [dataset, foodCode, Math.max(1, Math.floor(limit))],
   });
 
-  return result.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow));
+  return result.rows.map((row) =>
+    mapNationalNutritionRow(row as unknown as NationalNutritionRow),
+  );
 }
 
 export async function fetchNationalNutritionItemDetail({
   dataset,
-  foodCode
+  foodCode,
 }: {
   dataset: NationalNutritionDatasetSlug;
   foodCode: string;
 }) {
-  const cached = await readNationalNutritionItemByCodeFromDb({ dataset, foodCode });
+  const cached = await readNationalNutritionItemByCodeFromDb({
+    dataset,
+    foodCode,
+  });
   if (cached) {
     return {
       item: cached,
-      cacheSource: "db" as const
+      cacheSource: "db" as const,
     };
   }
 
-  const result = await fetchNationalNutritionItemsWithDbCache({ dataset, numOfRows: 50 });
+  const result = await fetchNationalNutritionItemsWithDbCache({
+    dataset,
+    numOfRows: 50,
+  });
   const item = result.foods.find((food) => food.foodCode === foodCode) || null;
 
   return {
     item,
-    cacheSource: result.cacheSource
+    cacheSource: result.cacheSource,
   };
 }
 
@@ -259,7 +302,7 @@ export async function saveNationalNutritionItemsToDb({
   dataset,
   query,
   totalCount,
-  foods
+  foods,
 }: {
   dataset: NationalNutritionDatasetSlug;
   query?: string;
@@ -275,7 +318,7 @@ export async function saveNationalNutritionItemsToDb({
         VALUES (?, ?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(dataset_slug, query_key)
         DO UPDATE SET total_count = excluded.total_count, fetched_at = CURRENT_TIMESTAMP`,
-      args: [dataset, queryKey, totalCount]
+      args: [dataset, queryKey, totalCount],
     },
     ...foods.map((food) => ({
       sql: `INSERT INTO national_nutrition_items (
@@ -353,13 +396,15 @@ export async function saveNationalNutritionItemsToDb({
         food.originCountry,
         food.sourceName,
         food.createdAt,
-        food.updatedAt
-      ]
-    }))
+        food.updatedAt,
+      ],
+    })),
   ]);
 }
 
-function mapNationalNutritionRow(row: NationalNutritionRow): NationalNutritionItem {
+function mapNationalNutritionRow(
+  row: NationalNutritionRow,
+): NationalNutritionItem {
   return {
     foodCode: row.food_code,
     name: row.food_name,
@@ -392,10 +437,19 @@ function mapNationalNutritionRow(row: NationalNutritionRow): NationalNutritionIt
     originCountry: row.origin_country,
     sourceName: row.source_name,
     createdAt: row.created_at,
-    updatedAt: row.updated_at
+    updatedAt: row.updated_at,
   };
 }
 
 function normalizeQueryKey(query?: string) {
   return query?.trim() || DEFAULT_QUERY_KEY;
 }
+
+// force-dynamic 페이지(searchParams 사용)에서도 동일 쿼리는 Next.js 데이터 캐시로 서빙
+// 봇이 같은 URL을 반복 방문해도 1시간 내 DB 재조회 없음
+export const fetchNationalNutritionItemsWithDbCacheCached = unstable_cache(
+  (options: FetchCachedNationalNutritionOptions) =>
+    fetchNationalNutritionItemsWithDbCache(options),
+  ["national-nutrition-db"],
+  { revalidate: 3600, tags: ["national-nutrition"] },
+);

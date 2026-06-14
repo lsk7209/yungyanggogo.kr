@@ -7,7 +7,8 @@ import { NATIONAL_NUTRITION_DATASETS } from "../lib/national-nutrition-api";
 import { absoluteUrl } from "../lib/site";
 import { staticInfoPages } from "../lib/static-pages";
 
-export const dynamic = "force-dynamic";
+// 사이트맵은 하루 1회 재생성으로 충분 — force-dynamic 제거로 봇 재방문 시 DB 재조회 방지
+export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -15,59 +16,59 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: absoluteUrl("/"),
       lastModified: new Date("2026-06-06"),
       changeFrequency: "weekly",
-      priority: 1
+      priority: 1,
     },
     {
       url: absoluteUrl("/blog"),
       lastModified: new Date("2026-06-06"),
       changeFrequency: "weekly",
-      priority: 0.8
+      priority: 0.8,
     },
     {
       url: absoluteUrl("/rankings"),
       lastModified: new Date("2026-06-06"),
       changeFrequency: "weekly",
-      priority: 0.85
+      priority: 0.85,
     },
     {
       url: absoluteUrl("/nutrition-data"),
       lastModified: new Date("2026-06-07"),
       changeFrequency: "daily",
-      priority: 0.84
+      priority: 0.84,
     },
     {
       url: absoluteUrl("/health-functional-foods"),
       lastModified: new Date("2026-06-07"),
       changeFrequency: "daily",
-      priority: 0.82
+      priority: 0.82,
     },
     {
       url: absoluteUrl("/health-functional-food-nutrition"),
       lastModified: new Date("2026-06-07"),
       changeFrequency: "daily",
-      priority: 0.82
-    }
+      priority: 0.82,
+    },
   ];
 
   const postRoutes = getAllPosts().map((post) => ({
     url: getPostUrl(post),
     lastModified: new Date(post.updatedAt),
     changeFrequency: "monthly" as const,
-    priority: 0.7
+    priority: 0.7,
   }));
 
   const foodRoutes = foods.map((food) => ({
     url: getFoodUrl(food),
     lastModified: new Date("2026-06-06"),
     changeFrequency: "monthly" as const,
-    priority: 0.72
+    priority: 0.72,
   }));
 
   const trustRoutes = staticInfoPages.map((page) => ({
     url: absoluteUrl(page.href),
     lastModified: new Date("2026-06-07"),
     changeFrequency: "monthly" as const,
-    priority: 0.55
+    priority: 0.55,
   }));
 
   const nutritionDetailRoutes = await getNutritionDetailRoutes();
@@ -75,10 +76,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: absoluteUrl(`/nutrition-data/${dataset.slug}`),
     lastModified: new Date("2026-06-07"),
     changeFrequency: "daily" as const,
-    priority: 0.76
+    priority: 0.76,
   }));
 
-  return [...staticRoutes, ...trustRoutes, ...nutritionDatasetRoutes, ...nutritionDetailRoutes, ...postRoutes, ...foodRoutes];
+  return [
+    ...staticRoutes,
+    ...trustRoutes,
+    ...nutritionDatasetRoutes,
+    ...nutritionDetailRoutes,
+    ...postRoutes,
+    ...foodRoutes,
+  ];
 }
 
 async function getNutritionDetailRoutes(): Promise<MetadataRoute.Sitemap> {
@@ -89,18 +97,21 @@ async function getNutritionDetailRoutes(): Promise<MetadataRoute.Sitemap> {
   try {
     const results = await Promise.all(
       NATIONAL_NUTRITION_DATASETS.map(async (dataset) => {
-        const { foods: nutritionItems } = await readNationalNutritionItemsFromDb({
-          dataset: dataset.slug,
-          numOfRows: 500
-        });
+        const { foods: nutritionItems } =
+          await readNationalNutritionItemsFromDb({
+            dataset: dataset.slug,
+            numOfRows: 500,
+          });
 
         return nutritionItems.map((item) => ({
-          url: absoluteUrl(`/nutrition-data/${dataset.slug}/${encodeURIComponent(item.foodCode)}`),
+          url: absoluteUrl(
+            `/nutrition-data/${dataset.slug}/${encodeURIComponent(item.foodCode)}`,
+          ),
           lastModified: new Date(item.updatedAt || "2026-06-07"),
           changeFrequency: "monthly" as const,
-          priority: 0.62
+          priority: 0.62,
         }));
-      })
+      }),
     );
 
     return results.flat();

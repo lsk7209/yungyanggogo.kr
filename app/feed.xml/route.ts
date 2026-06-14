@@ -1,10 +1,15 @@
 import { getAllPosts, getPostUrl } from "../../lib/blog";
 import { siteConfig } from "../../lib/site";
 
-export const dynamic = "force-dynamic";
+// RSS 피드는 파일시스템 읽기만 하므로 force-dynamic 불필요 — 1시간 캐싱
+export const revalidate = 3600;
 
 function escapeXml(value: string) {
-  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }
 
 export function GET() {
@@ -18,7 +23,7 @@ export function GET() {
           <guid>${getPostUrl(post)}</guid>
           <description>${escapeXml(post.description)}</description>
           <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
-        </item>`
+        </item>`,
     )
     .join("");
 
@@ -35,7 +40,7 @@ export function GET() {
   return new Response(body, {
     headers: {
       "content-type": "application/rss+xml; charset=utf-8",
-      "cache-control": "public, max-age=3600"
-    }
+      "cache-control": "public, max-age=3600",
+    },
   });
 }
