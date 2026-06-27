@@ -28,6 +28,8 @@ jobs:
       - name: Live Vercel and Turso usage check
         env:
           REQUIRE_LIVE_COST_SECRETS: "1"
+          RUN_VERCEL_LIVE_CHECK: ${{ vars.RUN_VERCEL_LIVE_CHECK }}
+          RUN_TURSO_LIVE_CHECK: ${{ vars.RUN_TURSO_LIVE_CHECK }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
           VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}

@@ -37,6 +37,11 @@ function checkThreshold(label, value, warnAt, failAt, unit = "") {
 }
 
 function checkVercelUsage() {
+  if (process.env.RUN_VERCEL_LIVE_CHECK === "0") {
+    reports.push("Vercel live usage check skipped by RUN_VERCEL_LIVE_CHECK=0.");
+    return;
+  }
+
   const token = process.env.VERCEL_TOKEN;
   if (!token) {
     const message = "VERCEL_TOKEN is not configured; live Vercel usage check was skipped.";
@@ -115,7 +120,13 @@ function currentRepoUsesTurso() {
 }
 
 async function checkTursoUsage() {
-  const tursoExpected = process.env.TURSO_EXPECTED === "1" || currentRepoUsesTurso();
+  if (process.env.RUN_TURSO_LIVE_CHECK === "0") {
+    reports.push("Turso live usage check skipped by RUN_TURSO_LIVE_CHECK=0.");
+    return;
+  }
+
+  const tursoExpected =
+    process.env.RUN_TURSO_LIVE_CHECK === "1" || process.env.TURSO_EXPECTED === "1" || currentRepoUsesTurso();
   const token = process.env.TURSO_API_TOKEN;
   const organization = process.env.TURSO_ORG_SLUG;
   const databases = (process.env.TURSO_DATABASES || "")

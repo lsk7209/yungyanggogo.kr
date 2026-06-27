@@ -44,6 +44,11 @@ The workflow in `.github/workflows/live-cost-watch.yml` runs daily at 09:20 KST 
 
 If the required secrets are missing, the workflow fails on purpose so GitHub sends a workflow failure notification.
 
+For multi-repo accounts, run live usage checks from one representative repository to avoid duplicate account-level alerts. Set these GitHub Variables:
+
+- Representative alert repository: `RUN_VERCEL_LIVE_CHECK=1`, `RUN_TURSO_LIVE_CHECK=1`
+- Other repositories: `RUN_VERCEL_LIVE_CHECK=0`, `RUN_TURSO_LIVE_CHECK=0`
+
 Required GitHub Secrets for live checks:
 
 - `VERCEL_TOKEN`: Vercel token with permission to read usage.
@@ -60,6 +65,8 @@ Optional GitHub Variables for thresholds:
 - `TURSO_ROWS_READ_FAIL`
 - `TURSO_ROWS_WRITTEN_WARN`
 - `TURSO_ROWS_WRITTEN_FAIL`
+- `RUN_VERCEL_LIVE_CHECK`
+- `RUN_TURSO_LIVE_CHECK`
 
 ## Local Command
 
