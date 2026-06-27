@@ -64,11 +64,55 @@ function routeFileCandidates(projectDir, cronPath) {
   ];
 }
 
+function localImportCandidates(projectDir, importerFile, specifier) {
+  if (!specifier.startsWith(".") && !specifier.startsWith("@/")) {
+    return [];
+  }
+
+  const basePath = specifier.startsWith("@/")
+    ? path.join(projectDir, specifier.slice(2))
+    : path.resolve(path.dirname(importerFile), specifier);
+
+  return [
+    `${basePath}.ts`,
+    `${basePath}.tsx`,
+    `${basePath}.js`,
+    `${basePath}.jsx`,
+    path.join(basePath, "index.ts"),
+    path.join(basePath, "index.tsx"),
+    path.join(basePath, "index.js"),
+    path.join(basePath, "index.jsx"),
+  ].filter((candidate) => path.resolve(candidate).startsWith(path.resolve(projectDir)));
+}
+
+function hasCronAuthSource(projectDir, sourceFile, seen = new Set(), depth = 0) {
+  const resolvedFile = path.resolve(sourceFile);
+  if (seen.has(resolvedFile) || depth > 4 || !existsSync(resolvedFile)) {
+    return false;
+  }
+
+  seen.add(resolvedFile);
+  const source = readFileSync(resolvedFile, "utf8");
+  if (/CRON_SECRET|Authorization|Bearer|x-cron-secret|cronSecret/i.test(source)) {
+    return true;
+  }
+
+  const imports = source.matchAll(/(?:import|export)\s+(?:[^'"]+\s+from\s+)?["']([^"']+)["']/g);
+  for (const match of imports) {
+    for (const candidate of localImportCandidates(projectDir, resolvedFile, match[1])) {
+      if (hasCronAuthSource(projectDir, candidate, seen, depth + 1)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 function hasCronAuthGuard(projectDir, cronPath) {
   const routeFile = routeFileCandidates(projectDir, cronPath).find((candidate) => existsSync(candidate));
   if (!routeFile) return { found: false, guarded: false };
-  const source = readFileSync(routeFile, "utf8");
-  const guarded = /CRON_SECRET|Authorization|Bearer|x-cron-secret|x-vercel-cron|vercel-cron|cronSecret/i.test(source);
+  const guarded = hasCronAuthSource(projectDir, routeFile);
   return { found: true, guarded, routeFile };
 }
 
