@@ -1,0 +1,43 @@
+name: Live Cost Watch
+
+on:
+  schedule:
+    # Daily at 09:20 KST. GitHub cron uses UTC.
+    - cron: "20 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-cost-watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Static hosting cost audit
+        run: node scripts/audit-hosting-costs.mjs --fail-on=critical
+
+      - name: Live Vercel and Turso usage check
+        env:
+          REQUIRE_LIVE_COST_SECRETS: "1"
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_SCOPE: ${{ secrets.VERCEL_SCOPE }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_BILLED_COST_WARN_USD: ${{ vars.VERCEL_BILLED_COST_WARN_USD }}
+          VERCEL_BILLED_COST_FAIL_USD: ${{ vars.VERCEL_BILLED_COST_FAIL_USD }}
+          TURSO_API_TOKEN: ${{ secrets.TURSO_API_TOKEN }}
+          TURSO_ORG_SLUG: ${{ secrets.TURSO_ORG_SLUG }}
+          TURSO_DATABASES: ${{ secrets.TURSO_DATABASES }}
+          TURSO_ROWS_READ_WARN: ${{ vars.TURSO_ROWS_READ_WARN }}
+          TURSO_ROWS_READ_FAIL: ${{ vars.TURSO_ROWS_READ_FAIL }}
+          TURSO_ROWS_WRITTEN_WARN: ${{ vars.TURSO_ROWS_WRITTEN_WARN }}
+          TURSO_ROWS_WRITTEN_FAIL: ${{ vars.TURSO_ROWS_WRITTEN_FAIL }}
+        run: node scripts/check-live-costs.mjs

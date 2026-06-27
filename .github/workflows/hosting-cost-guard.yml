@@ -1,0 +1,32 @@
+name: Hosting Cost Guard
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  schedule:
+    # Daily at 09:10 KST. GitHub cron uses UTC.
+    - cron: "10 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-hosting-costs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Audit Vercel, Turso, and deploy cost risks
+        run: node scripts/audit-hosting-costs.mjs --fail-on=critical
