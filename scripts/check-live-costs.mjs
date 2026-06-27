@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { execFileSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
@@ -45,17 +45,42 @@ function checkVercelUsage() {
     return;
   }
 
-  const args = ["vercel@latest", "usage", "--format", "json", "--token", token, "--no-color", "--non-interactive"];
-  if (process.env.VERCEL_SCOPE) args.push("--scope", process.env.VERCEL_SCOPE);
-  if (process.env.VERCEL_TEAM_ID) args.push("--team", process.env.VERCEL_TEAM_ID);
+  const usageArgs = ["usage", "--format", "json", "--no-color", "--non-interactive"];
+  if (process.env.VERCEL_SCOPE) usageArgs.push("--scope", process.env.VERCEL_SCOPE);
+  if (process.env.VERCEL_TEAM_ID) usageArgs.push("--team", process.env.VERCEL_TEAM_ID);
 
   let parsed;
   try {
-    const stdout = execFileSync("npx", ["--yes", ...args], {
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"],
-      timeout: 120000,
-    });
+    const vercel = process.platform === "win32" ? "vercel.cmd" : "vercel";
+    let stdout;
+    try {
+      stdout =
+        process.platform === "win32"
+          ? execSync(["vercel", ...usageArgs].map((arg) => `"${String(arg).replace(/"/g, '\\"')}"`).join(" "), {
+              encoding: "utf8",
+              stdio: ["ignore", "pipe", "pipe"],
+              timeout: 120000,
+            })
+          : execFileSync(vercel, usageArgs, {
+              encoding: "utf8",
+              stdio: ["ignore", "pipe", "pipe"],
+              timeout: 120000,
+            });
+    } catch {
+      const npxArgs = ["--yes", "vercel@latest", ...usageArgs];
+      stdout =
+        process.platform === "win32"
+          ? execSync(["npx", ...npxArgs].map((arg) => `"${String(arg).replace(/"/g, '\\"')}"`).join(" "), {
+              encoding: "utf8",
+              stdio: ["ignore", "pipe", "pipe"],
+              timeout: 120000,
+            })
+          : execFileSync("npx", npxArgs, {
+              encoding: "utf8",
+              stdio: ["ignore", "pipe", "pipe"],
+              timeout: 120000,
+            });
+    }
     parsed = JSON.parse(stdout);
   } catch (error) {
     const message = `Vercel usage check failed: ${error.message}`;
