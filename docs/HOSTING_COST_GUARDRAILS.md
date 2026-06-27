@@ -76,6 +76,8 @@ node scripts/audit-hosting-costs.mjs
 
 Use this before adding a new Vercel cron, production deploy script, Turso migration script, or long-running API route.
 
+The audit also checks cron route files for an obvious `CRON_SECRET`, `Authorization`, or equivalent guard. This is heuristic: it does not prove the route is secure, but it catches the common expensive failure mode where a public cron endpoint can be called by anyone.
+
 ## Manual Dashboard Checklist
 
 - Vercel account/team: hard spend cap enabled.

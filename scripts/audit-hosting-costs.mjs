@@ -48,6 +48,30 @@ function severityRank(value) {
   return { info: 0, warn: 1, high: 2, critical: 3 }[value] ?? 0;
 }
 
+function routeFileCandidates(projectDir, cronPath) {
+  const cleanPath = String(cronPath || "").replace(/^\/+/, "").replace(/\/+$/, "");
+  if (!cleanPath) return [];
+  const routePath = cleanPath.split("/").join(path.sep);
+  return [
+    path.join(projectDir, "app", routePath, "route.ts"),
+    path.join(projectDir, "app", routePath, "route.js"),
+    path.join(projectDir, "src", "app", routePath, "route.ts"),
+    path.join(projectDir, "src", "app", routePath, "route.js"),
+    path.join(projectDir, "pages", `${routePath}.ts`),
+    path.join(projectDir, "pages", `${routePath}.js`),
+    path.join(projectDir, "src", "pages", `${routePath}.ts`),
+    path.join(projectDir, "src", "pages", `${routePath}.js`),
+  ];
+}
+
+function hasCronAuthGuard(projectDir, cronPath) {
+  const routeFile = routeFileCandidates(projectDir, cronPath).find((candidate) => existsSync(candidate));
+  if (!routeFile) return { found: false, guarded: false };
+  const source = readFileSync(routeFile, "utf8");
+  const guarded = /CRON_SECRET|Authorization|Bearer|x-cron-secret|x-vercel-cron|vercel-cron|cronSecret/i.test(source);
+  return { found: true, guarded, routeFile };
+}
+
 const projects = listProjects(root);
 const findings = [];
 const summaries = [];
@@ -98,6 +122,21 @@ for (const projectDir of projects) {
         project,
         severity: runs >= 24 ? "high" : "warn",
         message: `cron ${cron.path || "(unknown path)"} runs about ${runs} times/day (${cron.schedule}).`,
+      });
+    }
+
+    const authGuard = hasCronAuthGuard(projectDir, cron.path);
+    if (authGuard.found && !authGuard.guarded) {
+      findings.push({
+        project,
+        severity: "warn",
+        message: `cron ${cron.path || "(unknown path)"} route exists but no obvious CRON_SECRET/Authorization guard was detected.`,
+      });
+    } else if (!authGuard.found) {
+      findings.push({
+        project,
+        severity: "warn",
+        message: `cron ${cron.path || "(unknown path)"} route file was not found by the audit script; verify it is not publicly abusable.`,
       });
     }
   }
