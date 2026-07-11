@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AdsenseScript } from "../components/AdsenseScript";
+import { CoupangPartnersBanner } from "../components/CoupangPartnersBanner";
 import { GAProvider } from "../components/GAProvider";
 import { absoluteUrl, siteConfig } from "../lib/site";
 import { staticInfoPages } from "../lib/static-pages";
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </nav>
         </header>
         <main>{children}</main>
+        <CoupangPartnersBanner />
         <footer className="site-footer">
           <div>
             <p>출처, 기준량, 검토일을 함께 표시하는 식품영양 데이터 사이트입니다.</p>
