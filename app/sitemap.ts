@@ -57,7 +57,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const foodRoutes = foods.map((food) => ({
+  const foodRoutes = foods
+    .filter((food) => food.slug !== "protein-ready-meal-sample")
+    .map((food) => ({
     url: getFoodUrl(food),
     lastModified: new Date("2026-06-06"),
     changeFrequency: "monthly" as const,

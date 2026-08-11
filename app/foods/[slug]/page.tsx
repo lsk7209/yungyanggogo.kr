@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { foods, getFoodBySlug, getFoodUrl } from "../../../lib/foods";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
@@ -20,14 +20,15 @@ export async function generateMetadata({ params }: FoodPageProps): Promise<Metad
   }
 
   return {
-    title: `${food.name} 영양성분`,
+    title: `${food.name} ?곸뼇?깅텇`,
     description: food.description,
     alternates: {
       canonical: getFoodUrl(food)
     },
+    robots: slug === "protein-ready-meal-sample" ? { index: false, follow: true } : undefined,
     openGraph: {
       type: "article",
-      title: `${food.name} 영양성분 | ${siteConfig.name}`,
+      title: `${food.name} ?곸뼇?깅텇 | ${siteConfig.name}`,
       description: food.description,
       url: getFoodUrl(food)
     }
@@ -58,17 +59,17 @@ export default async function FoodPage({ params }: FoodPageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <header className="article-header">
         <p className="eyebrow">{food.category}</p>
-        <h1>{food.name} 영양성분</h1>
+        <h1>{food.name} ?곸뼇?깅텇</h1>
         <p>{food.description}</p>
         <div className="source-bar">
-          <span>출처 식품의약품안전처 식품영양성분DB</span>
-          <span>최종 갱신 {food.updatedAt}</span>
-          <span>{food.reviewer} 검토</span>
+          <span>異쒖쿂 ?앺뭹?섏빟?덉븞?꾩쿂 ?앺뭹?곸뼇?깅텇DB</span>
+          <span>理쒖쥌 媛깆떊 {food.updatedAt}</span>
+          <span>{food.reviewer} ???</span>
         </div>
       </header>
 
       <section>
-        <h2>핵심 지표</h2>
+        <h2>영양성분</h2>
         <div className="metric-grid">
           {food.metrics.map((metric) => (
             <article key={metric.label} className="metric-card">
@@ -84,12 +85,12 @@ export default async function FoodPage({ params }: FoodPageProps) {
       </section>
 
       <section>
-        <h2>강조표시 판정</h2>
+        <h2>媛뺤“?쒖떆 ?먯젙</h2>
         <div className="claim-table">
           {food.claims.map((claim) => (
             <div key={claim.label} className="claim-row">
               <span className={claim.met ? "badge badge--met" : "badge badge--neutral"}>
-                {claim.met ? "✓" : "–"} {claim.label}
+                {claim.met ? "통과: " : "미충족: "} {claim.label}
               </span>
               <p>{claim.basis}</p>
             </div>
@@ -98,7 +99,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
       </section>
 
       <section>
-        <h2>카테고리 내 위치</h2>
+        <h2>移댄뀒怨좊━ ???꾩튂</h2>
         <div className="claim-panel">
           <div className="percentile">
             <span>{food.percentile.label}</span>
@@ -108,12 +109,14 @@ export default async function FoodPage({ params }: FoodPageProps) {
       </section>
 
       <section className="link-panel">
-        <h2>주의사항</h2>
+        <h2>二쇱쓽?ы빆</h2>
         <p>
-          이 페이지는 데이터 화면 구현을 위한 예시입니다. 실제 구매나 식단 판단 전에는 제품 포장지의 최신
-          영양성분표와 공식 출처를 함께 확인해야 합니다.
+          ???섏씠吏???곗씠???붾㈃ 援ы쁽???꾪븳 ?덉떆?낅땲?? ?ㅼ젣 援ш깊???앸떒 ?먮떒 ?꾩뿉???쒗뭹 ?ъ옣吏??理쒖떊
+          ?곸뼇?깅텇?쒖? 怨듭떇 異쒖쿂痢쒖 ??? ?⑸땲??
         </p>
-        <a href={absoluteUrl("/rankings")}>목적별 랭킹으로 돌아가기</a>
+        <a href={absoluteUrl("/rankings")}>
+          Link to rankings
+        </a>
       </section>
     </article>
   );
