@@ -2,12 +2,16 @@ name: Live Cost Watch
 
 on:
   schedule:
-    # Daily at 09:20 KST. GitHub cron uses UTC.
-    - cron: "20 0 * * *"
+    # Weekly at 09:20 KST on Monday. GitHub cron uses UTC.
+    - cron: "20 0 * * 1"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: live-cost-watch-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   live-cost-watch:
