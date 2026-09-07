@@ -8,15 +8,13 @@ const rankingCards = [
     icon: "단",
     title: "단백질 높은 간편식",
     metric: "100kcal당 단백질",
-    count: "128개",
     tone: "green",
-    href: "/foods/protein-ready-meal-sample"
+    href: "/rankings"
   },
   {
     icon: "열",
     title: "칼로리 낮은 간식",
     metric: "1회 제공량 열량",
-    count: "94개",
     tone: "slate",
     href: "/rankings"
   },
@@ -24,7 +22,6 @@ const rankingCards = [
     icon: "당",
     title: "당류 낮은 음료",
     metric: "100ml당 당류",
-    count: "76개",
     tone: "amber",
     href: "/rankings"
   },
@@ -32,21 +29,13 @@ const rankingCards = [
     icon: "나",
     title: "나트륨 낮은 라면",
     metric: "1회 제공량 나트륨",
-    count: "41개",
     tone: "terra",
     href: "/rankings"
   }
 ];
 
 const categories = [
-  ["라면", "312개"],
-  ["스낵", "468개"],
-  ["음료", "539개"],
-  ["단백질식품", "126개"],
-  ["즉석식품", "284개"],
-  ["유제품", "193개"],
-  ["시리얼", "88개"],
-  ["소스류", "147개"]
+  "라면", "스낵", "음료", "단백질식품", "즉석식품", "유제품", "시리얼", "소스류"
 ];
 
 const metrics = [
@@ -70,17 +59,10 @@ export default function HomePage() {
             찾을까요?
           </h1>
           <p>
-            영양고고는 식품영양성분을 목적에 맞춰 랭킹하고, 100g·100kcal 기준과 출처, 갱신 시점,
-            강조표시 충족 여부를 함께 보여주는 데이터 중심 사이트입니다.
+            영양고고는 공식 식품영양 자료와 100g·100kcal 비교 기준을 안내합니다.
+            실제 자료는 영양성분 데이터 메뉴에서 확인하고, 화면 설명용 예시 데이터와 구분해 이용하세요.
           </p>
-          <form className="hero-search" action="/blog">
-            <label className="sr-only" htmlFor="food-search">
-              제품명, 업체, 카테고리 검색
-            </label>
-            <span aria-hidden="true">⌕</span>
-            <input id="food-search" name="q" placeholder="제품명·업체·카테고리 검색" />
-            <button type="submit">검색</button>
-          </form>
+          <Link className="button" href="/nutrition-data">공식 영양성분 데이터 둘러보기</Link>
           <div className="chip-row" aria-label="목적별 기준">
             <span>목적별</span>
             {purposeChips.map((chip) => (
@@ -91,8 +73,7 @@ export default function HomePage() {
           </div>
           <div className="source-bar">
             <span>출처 식품의약품안전처 식품영양성분DB</span>
-            <span>최종 갱신 2026-06</span>
-            <span>영양고고 편집팀 검토</span>
+            <span>자료별 출처와 기준일은 각 데이터 페이지에서 확인하세요</span>
           </div>
         </div>
       </section>
@@ -100,8 +81,8 @@ export default function HomePage() {
       <section className="section section--tight">
         <div className="section__head">
           <p className="eyebrow">Popular Rankings</p>
-          <h2>인기 목적 랭킹</h2>
-          <p>단일 점수로 제품을 단정하지 않고 목적별 기준과 보조 지표를 같이 봅니다.</p>
+          <h2>목적별 비교 기준</h2>
+          <p>실제 제품 순위가 아닌 비교 기준 안내입니다. 정렬된 랭킹과 상품 수는 아직 제공하지 않습니다.</p>
         </div>
         <div className="ranking-grid">
           {rankingCards.map((card) => (
@@ -110,7 +91,7 @@ export default function HomePage() {
               <span>
                 <strong>{card.title}</strong>
                 <small>
-                  {card.metric} · {card.count}
+                  {card.metric} · 비교 기준
                 </small>
               </span>
               <b aria-hidden="true">›</b>
@@ -125,10 +106,10 @@ export default function HomePage() {
           <h2>카테고리로 둘러보기</h2>
         </div>
         <div className="category-grid">
-          {categories.map(([name, count]) => (
-            <Link key={name} className="category-tile" href="/rankings">
+          {categories.map((name) => (
+            <Link key={name} className="category-tile" href="/nutrition-data">
               <strong>{name}</strong>
-              <span>{count}</span>
+              <span>공식 데이터 목록에서 찾기</span>
             </Link>
           ))}
         </div>
@@ -137,8 +118,8 @@ export default function HomePage() {
       <section className="section data-preview">
         <div className="section__head">
           <p className="eyebrow">Data Preview</p>
-          <h2>제품 상세는 수치와 판정 근거를 먼저 보여줍니다</h2>
-          <p>프로토타입의 metric card, percentile bar, 충족/미충족 배지를 영양고고 스타일로 적용했습니다.</p>
+          <h2>예시 데이터 — 실제 식품·판정·순위가 아닙니다</h2>
+          <p>아래 수치와 배지는 화면 설명용 가상 값이며 식약처에서 조회한 제품 기록이 아닙니다. 구매나 식단 판단에 사용하지 마세요.</p>
         </div>
         <div className="metric-grid">
           {metrics.map(([label, value, unit, note]) => (
@@ -169,7 +150,7 @@ export default function HomePage() {
           <p className="eyebrow">신뢰 정책</p>
           <h2>건강 정보이기에, 근거를 먼저 보여드립니다</h2>
           <p>
-            "좋다/나쁘다"로 단정하지 않습니다. 측정값, 기준량, 공식 출처, 검토일을 함께 남겨 사용자가 직접
+            &ldquo;좋다/나쁘다&rdquo;로 단정하지 않습니다. 측정값, 기준량, 공식 출처, 검토일을 함께 남겨 사용자가 직접
             판단할 수 있게 합니다.
           </p>
           {latestPost ? (
@@ -192,8 +173,8 @@ export default function HomePage() {
             <p>
               저칼로리·저지방·저당 기준을 동시에 만족하는 제품을 찾으려면 100g 기준
               비교가 가장 정확합니다. 1회 제공량은 제조사마다 달라 직접 비교가 어렵기
-              때문입니다. 영양고고의 랭킹 도구에서 기준을 선택하면 동일 조건으로 정렬된
-              목록을 바로 확인할 수 있습니다.
+              때문입니다. 비교 기준 안내와 실제 데이터 목록을 구분해 확인하세요.
+              정렬된 제품 랭킹은 아직 제공하지 않습니다.
             </p>
           </article>
           <article className="guide-card">
@@ -209,17 +190,16 @@ export default function HomePage() {
             <h3>나트륨 제한 식단</h3>
             <p>
               나트륨은 1회 제공량 기준으로 표기되는 경우가 많아 제품 간 비교가
-              어렵습니다. 영양고고에서는 100g 기준으로 정규화해 같은 조건으로 순위를
-              매깁니다. 하루 나트륨 섭취 목표를 정해두고 제품별 1회 제공량을 역산하면
+              어렵습니다. 공식 데이터 목록에서 기준량과 단위를 확인하세요.
+              하루 나트륨 섭취 목표를 정해두고 제품별 1회 제공량을 역산하면
               실제 섭취 계획을 세울 수 있습니다.
             </p>
           </article>
           <article className="guide-card">
             <h3>편의점 식품 영양 체크</h3>
             <p>
-              편의점 간편식은 용량 대비 열량이 높은 경우가 많습니다. 영양고고에서
-              편의점 카테고리로 필터링하면 칼로리·단백질·나트륨을 한눈에 비교할 수
-              있습니다. 목적에 맞는 제품을 구매 전에 미리 확인하세요.
+              제품 포장지의 영양성분표와 공식 데이터의 기준량을 확인하세요.
+              편의점 제품만 따로 정렬하는 필터는 아직 제공하지 않습니다.
             </p>
           </article>
         </div>
@@ -259,9 +239,8 @@ export default function HomePage() {
           <article className="faq-item">
             <h3>제품 비교는 어떻게 하나요?</h3>
             <p>
-              랭킹 목록에서 관심 있는 제품을 선택하면 100g·100kcal 기준 수치를 나란히
-              볼 수 있습니다. 1회 제공량 기준은 제조사마다 달라 직접 비교가 어렵기
-              때문에 영양고고는 정규화된 기준으로 동일 조건 비교를 지원합니다.
+              공식 데이터 목록에서 기준량과 단위를 확인한 뒤 제품 라벨과 대조하세요.
+              현재 목적별 페이지는 비교 기준 안내이며, 제품 간 자동 정렬·나란히 비교 기능은 제공하지 않습니다.
             </p>
           </article>
           <article className="faq-item">

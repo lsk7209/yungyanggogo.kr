@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { rankingGroups } from "../../lib/foods";
 import {
   fetchPublicFoodItems,
@@ -12,15 +11,15 @@ import { absoluteUrl, siteConfig } from "../../lib/site";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "식품영양성분 랭킹",
+  title: "식품영양성분 목적별 비교 기준",
   description:
-    "단백질, 저칼로리, 저당, 저나트륨 등 목적별 식품영양성분 랭킹 허브입니다.",
+    "단백질, 저칼로리, 저당, 저나트륨 비교 기준 안내입니다. 실제 제품 순위는 제공하지 않습니다.",
   alternates: {
     canonical: absoluteUrl("/rankings"),
   },
   openGraph: {
-    title: `식품영양성분 랭킹 | ${siteConfig.name}`,
-    description: "목적별 식품영양성분 랭킹과 기준 수치를 확인합니다.",
+    title: `식품영양성분 목적별 비교 기준 | ${siteConfig.name}`,
+    description: "목적별 비교 기준 안내이며 실제 제품 순위가 아닙니다.",
     url: absoluteUrl("/rankings"),
   },
 };
@@ -35,10 +34,9 @@ export default async function RankingsPage() {
     <section className="section blog-index">
       <div className="section__head">
         <p className="eyebrow">Rankings</p>
-        <h1>식품영양성분 목적별 랭킹</h1>
+        <h1>식품영양성분 목적별 비교 기준</h1>
         <p>
-          각 랭킹은 기준량, 보조 지표, 출처와 갱신 시점을 함께 확인하도록
-          설계했습니다.
+          아래 네 항목은 비교 기준 안내이며 제품 순위가 아닙니다. 실제 정렬된 랭킹은 아직 제공하지 않습니다.
         </p>
       </div>
       <div
@@ -66,7 +64,7 @@ export default async function RankingsPage() {
       {apiSample?.ok && apiSample.foods.length > 0 ? (
         <div className="api-sample" aria-label="공공데이터 API 샘플">
           <div className="api-sample__head">
-            <strong>실시간 API 샘플: 라면 영양성분</strong>
+            <strong>공식 API 조회 자료: 라면 영양성분 (순위 아님)</strong>
             <span>출처: 식품의약품안전처_식품영양성분DB정보</span>
           </div>
           <div className="api-sample__grid">
@@ -117,7 +115,7 @@ export default async function RankingsPage() {
               <p>{ranking.description}</p>
               <small>{ranking.metric} 기준</small>
             </div>
-            <Link href={`/foods/${ranking.productSlug}`}>대표 제품 보기</Link>
+            <span>비교 기준 안내 · 제품 순위 아님</span>
           </article>
         ))}
       </div>

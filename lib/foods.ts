@@ -8,6 +8,7 @@ export type FoodMetric = {
 };
 
 export type FoodProduct = {
+  isExample: boolean;
   slug: string;
   name: string;
   maker: string;
@@ -31,6 +32,7 @@ export type FoodProduct = {
 export const foods: FoodProduct[] = [
   {
     slug: "protein-ready-meal-sample",
+    isExample: true,
     name: "단백질 간편식 샘플",
     maker: "영양고고 데이터 예시",
     category: "단백질식품",
@@ -62,29 +64,25 @@ export const rankingGroups = [
     slug: "high-protein",
     title: "단백질 높은 간편식",
     metric: "100kcal당 단백질",
-    description: "같은 열량 안에서 단백질 밀도가 높은 제품을 먼저 비교합니다.",
-    productSlug: "protein-ready-meal-sample"
+    description: "같은 열량 안에서 단백질 밀도를 비교할 때 사용할 기준입니다."
   },
   {
     slug: "low-calorie",
     title: "칼로리 낮은 간식",
     metric: "1회 제공량 열량",
-    description: "제품별 1회 제공량을 분리해 열량 기준으로 정렬합니다.",
-    productSlug: "protein-ready-meal-sample"
+    description: "제품별 1회 제공량을 구분해 열량을 비교할 때 사용할 기준입니다."
   },
   {
     slug: "low-sugar",
     title: "당류 낮은 음료",
     metric: "100ml당 당류",
-    description: "용량 차이를 줄이기 위해 100ml 기준 당류를 우선 확인합니다.",
-    productSlug: "protein-ready-meal-sample"
+    description: "용량 차이를 줄이기 위해 100ml 기준 당류를 확인합니다."
   },
   {
     slug: "low-sodium",
     title: "나트륨 낮은 라면",
     metric: "1회 제공량 나트륨",
-    description: "나트륨 수치와 열량, 포화지방을 같이 보는 랭킹입니다.",
-    productSlug: "protein-ready-meal-sample"
+    description: "나트륨 수치와 열량, 포화지방을 함께 확인하는 비교 기준입니다."
   }
 ];
 

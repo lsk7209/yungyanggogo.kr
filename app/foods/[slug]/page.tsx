@@ -20,15 +20,15 @@ export async function generateMetadata({ params }: FoodPageProps): Promise<Metad
   }
 
   return {
-    title: `${food.name} 영양성분`,
+    title: food.isExample ? `${food.name} — 예시 데이터` : `${food.name} 영양성분`,
     description: food.description,
     alternates: {
       canonical: getFoodUrl(food)
     },
-    robots: slug === "protein-ready-meal-sample" ? { index: false, follow: true } : undefined,
+    robots: food.isExample ? { index: false, follow: true } : undefined,
     openGraph: {
       type: "article",
-      title: `${food.name} 영양성분 | ${siteConfig.name}`,
+      title: food.isExample ? `${food.name} — 예시 데이터 | ${siteConfig.name}` : `${food.name} 영양성분 | ${siteConfig.name}`,
       description: food.description,
       url: getFoodUrl(food)
     }
@@ -43,7 +43,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
     notFound();
   }
 
-  const productSchema = {
+  const productSchema = food.isExample ? null : {
     "@context": "https://schema.org",
     "@type": "Product",
     "@id": `${getFoodUrl(food)}#product`,
@@ -56,20 +56,20 @@ export default async function FoodPage({ params }: FoodPageProps) {
 
   return (
     <article className="article-shell food-detail">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+      {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
       <header className="article-header">
-        <p className="eyebrow">{food.category}</p>
-        <h1>{food.name} 영양성분</h1>
+        <p className="eyebrow">{food.isExample ? "실제 식품이 아닌 화면 예시" : food.category}</p>
+        <h1>{food.name}{food.isExample ? " — 예시 데이터" : " 영양성분"}</h1>
         <p>{food.description}</p>
-        <div className="source-bar">
+        {food.isExample ? <p>아래 수치·강조표시·백분위는 화면 설명용 가상 값입니다. 식약처에서 조회한 제품 기록이나 실제 상품의 판정·순위가 아닙니다.</p> : <div className="source-bar">
           <span>출처 식품의약품안전처 식품영양성분DB</span>
           <span>최종 갱신 {food.updatedAt}</span>
           <span>{food.reviewer} 검토</span>
-        </div>
+        </div>}
       </header>
 
       <section>
-        <h2>핵심 지표</h2>
+        <h2>{food.isExample ? "지표 표시 예시" : "핵심 지표"}</h2>
         <div className="metric-grid">
           {food.metrics.map((metric) => (
             <article key={metric.label} className="metric-card">
@@ -85,7 +85,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
       </section>
 
       <section>
-        <h2>강조표시 판정</h2>
+        <h2>{food.isExample ? "강조표시 화면 예시 — 실제 판정 아님" : "강조표시 판정"}</h2>
         <div className="claim-table">
           {food.claims.map((claim) => (
             <div key={claim.label} className="claim-row">
@@ -99,7 +99,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
       </section>
 
       <section>
-        <h2>카테고리 내 위치</h2>
+        <h2>{food.isExample ? "백분위 화면 예시 — 실제 순위 아님" : "카테고리 내 위치"}</h2>
         <div className="claim-panel">
           <div className="percentile">
             <span>{food.percentile.label}</span>
