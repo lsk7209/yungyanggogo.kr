@@ -1,12 +1,25 @@
 name: GSC Sitemap Scheduled
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
+    inputs:
+      submit:
+        description: Submit the sitemap after live and Search Console status checks
+        required: true
+        default: false
+        type: boolean
   schedule:
-    - cron: "17 * * * *"
+    - cron: "17 0 * * *"
+
+concurrency:
+  group: gsc-sitemap-yungyanggogo
+  cancel-in-progress: false
 
 jobs:
-  gsc-sitemap-submit:
+  gsc-sitemap-check:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -28,5 +41,8 @@ jobs:
           printf '%s' "$GSC_CREDENTIALS_JSON" > "$RUNNER_TEMP/gsc_credentials.json"
       - name: Verify live sitemap and robots
         run: npm run gsc:sitemap:check-live -- --credentials "$RUNNER_TEMP/gsc_credentials.json"
+      - name: Read current Search Console sitemap status
+        run: npm run gsc:sitemap:status -- --credentials "$RUNNER_TEMP/gsc_credentials.json"
       - name: Submit sitemap to GSC and wait for green status
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.submit == true }}
         run: npm run gsc:sitemap:submit -- --credentials "$RUNNER_TEMP/gsc_credentials.json" --pollAttempts 3 --pollIntervalMs 300000

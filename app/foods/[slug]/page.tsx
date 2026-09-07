@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: FoodPageProps): Promise<Metad
     alternates: {
       canonical: getFoodUrl(food)
     },
+    robots: slug === "protein-ready-meal-sample" ? { index: false, follow: true } : undefined,
     openGraph: {
       type: "article",
       title: `${food.name} 영양성분 | ${siteConfig.name}`,

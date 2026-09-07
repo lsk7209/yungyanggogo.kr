@@ -12,13 +12,17 @@ type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamic = "force-dynamic";
-
+// generateStaticParams가 있으므로 빌드 시 정적 생성 — force-dynamic은 모순이므로 제거
+// 블로그 포스트는 파일시스템 읽기만 하여 DB 히트 없음
 export function generateStaticParams() {
-  return getAllPosts({ includeScheduled: true }).map((post) => ({ slug: post.slug }));
+  return getAllPosts({ includeScheduled: true }).map((post) => ({
+    slug: post.slug,
+  }));
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
@@ -32,7 +36,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     title: post.title,
     description: post.description,
     alternates: {
-      canonical: getPostUrl(post)
+      canonical: getPostUrl(post),
     },
     openGraph: {
       type: "article",
@@ -46,17 +50,19 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
           url: thumbnailUrl,
           width: 960,
           height: 420,
-          alt: `${post.title} 썸네일`
-        }
-      ]
+          alt: `${post.title} 썸네일`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: [thumbnailUrl]
+      images: [thumbnailUrl],
     },
-    robots: post.noindex ? { index: false, follow: true } : { index: true, follow: true }
+    robots: post.noindex
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
   };
 }
 
@@ -81,12 +87,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     mainEntityOfPage: getPostUrl(post),
     image: thumbnailUrl,
     publisher: {
-      "@id": absoluteUrl("/#organization")
+      "@id": absoluteUrl("/#organization"),
     },
     author: {
       "@type": "Organization",
-      name: `${siteConfig.name} 데이터 편집팀`
-    }
+      name: `${siteConfig.name} 데이터 편집팀`,
+    },
   };
 
   const breadcrumbSchema = {
@@ -97,28 +103,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         "@type": "ListItem",
         position: 1,
         name: "홈",
-        item: absoluteUrl("/")
+        item: absoluteUrl("/"),
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "블로그",
-        item: absoluteUrl("/blog")
+        item: absoluteUrl("/blog"),
       },
       {
         "@type": "ListItem",
         position: 3,
         name: post.title,
-        item: getPostUrl(post)
-      }
-    ]
+        item: getPostUrl(post),
+      },
+    ],
   };
 
   return (
     <article className="article-shell" data-theme={post.accentTheme || "green"}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([articleSchema, breadcrumbSchema]),
+        }}
       />
       <header className="article-header">
         <p className="eyebrow">{post.category}</p>
@@ -200,7 +208,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     <strong>{metric.label}</strong>
                     <span>{metric.note}</span>
                   </div>
-                  <b style={{ "--metric": `${metric.value}%` } as React.CSSProperties} />
+                  <b
+                    style={
+                      { "--metric": `${metric.value}%` } as React.CSSProperties
+                    }
+                  />
                 </article>
               ))}
             </div>
@@ -278,8 +290,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <section id="next-actions" className="article-links">
           <h2>식품영양성분 비교를 계속 확인하기</h2>
           <p>
-            아래 링크에서 영양고고의 비교 원칙과 관련 글을 이어서 확인할 수 있습니다. 공식 데이터 출처도 함께
-            남겨 수치의 기준을 직접 검토할 수 있게 했습니다.
+            아래 링크에서 영양고고의 비교 원칙과 관련 글을 이어서 확인할 수
+            있습니다. 공식 데이터 출처도 함께 남겨 수치의 기준을 직접 검토할 수
+            있게 했습니다.
           </p>
           <div className="link-panel">
             <h3>내부 링크</h3>
