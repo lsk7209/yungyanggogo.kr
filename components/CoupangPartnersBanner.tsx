@@ -30,6 +30,7 @@ export function CoupangPartnersBanner() {
           loading="lazy"
           src={`${DASHBOARD_BASE}/api/banner-management/image?${query}`}
           width="728"
+          style={{ maxWidth: "100%", height: "auto", display: "block" }}
         />
       </a>
       <p>{DISCLOSURE}</p>

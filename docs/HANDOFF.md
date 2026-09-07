@@ -2,6 +2,8 @@
 
 ## 2026-09-07 AdSense product-trust repair locally verified
 
+- First release15f52220 hosting Production6309611184 success13:23:09Z; live3route semantic+sitemap checks pass. Live390 browser found pre-existing banner image overflow728, masked locally by unrelated dirty unpublished stylesheet. Actual overflowing elements only banner anchor/img. Narrow component-inline maxWidth100%/heightauto/displayblock candidate reduces actual live DOM728->390 without source stylesheet changes. Fifth regression failed before fix and passes after; type/scopedlint pass (existing img warning). Follow-up release still required; no claim all mobile fixed yet.
+
 - Goal: distinguish synthetic UI examples from actual food records across home/comparison/detail. Current production demo incorrectly combines example disclosure with MFDS provenance/Product schema; four comparison links all target it. Actual live HTML200 and current origin/main aa3de14 verified.
 - Primary checkout reconciled via merge ee40474; git cherry proved local248b791 already patch-equivalent upstream, and staged/committed tree exactly matched origin/main. No source changes introduced by merge. Existing dirty globals.css/package/lock/audit and scheduled content preserved, not part of repair.
 - Selected edits: app/page.tsx (remove fabricated counts, label preview, correct unavailable search/ranking claims); app/rankings/page.tsx (comparison criteria, no representative fake-product links); lib/foods.ts (explicit example flag); app/foods/[slug]/page.tsx (first-screen example identity, no real-source/review block or Product schema for demo); scripts/test-example-boundary.mjs.
