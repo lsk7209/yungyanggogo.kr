@@ -6,10 +6,10 @@
 - User goal: deploy the verified SEO, AdSense-readiness, editorial and Coupang-removal changes.
 - Exact state: deployment commit `294096a` (`feat: improve SEO content and ad readiness`) was pushed from local `main` to `origin/main`. The push included 161 product, content, test and durable audit files and deliberately excluded `.goal-harness`, `.omc`, `.playwright-cli`, and `output` local runtime/test artifacts.
 - Pre-push evidence: local and remote `main` were 0/0 after fetch; all 29 regression scripts, typecheck, lint and the production build passed; eight blog detail paths were generated; Coupang runtime references were zero; the staged diff passed whitespace and credential-pattern checks; an independent Luna(max) read-only scope review agreed with the exclusions.
-- Push evidence: GitHub accepted `60dfbe6..294096a  main -> main`. GitHub also reported 23 existing/default-branch dependency alerts (2 critical, 14 high, 7 moderate); these were not modified or suppressed during this deployment.
+- Push evidence: GitHub accepted product commit `60dfbe6..294096a` and handoff commit `294096a..bf378ee` on `main`; local and `origin/main` both resolved to `bf378ee0ed7164c1cc0c4b1eb1f5b3e9fd9981e9` after fetch. The latest push response reported 24 default-branch dependency alerts (2 critical, 15 high, 7 moderate); these were not modified or suppressed during this deployment.
 - External boundary: no Vercel CLI/API action, environment-variable mutation, DNS change, SSH session, database write, GSC/AdSense submission, account mutation or ad click was performed. A Git-connected host may deploy from the push, but production rollout and public URL behavior remain unverified until checked separately.
 - Rollback: create and push a revert of `294096a`; do not force-push or reset shared history.
-- Single next step: reconcile this handoff commit on `origin/main`, then separately verify the Git-connected production deployment and public routes if that external verification is requested or available without mutation.
+- Single next step: separately verify the Git-connected production deployment and public routes; Git push completion alone is not production-runtime proof.
 
 ## 2026-09-13 seven-candidate local public promotion complete
 
