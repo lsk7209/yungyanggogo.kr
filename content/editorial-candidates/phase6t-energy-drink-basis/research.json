@@ -1,0 +1,48 @@
+{
+  "article_id": "phase6t-energy-drink-basis",
+  "accessed": "2026-09-12",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "에너지음료 구매자가 법정 고카페인 표시와 영양성분표를 어떤 순서로 읽어야 한 캔 섭취량을 과소평가하지 않는가?",
+  "reader_outcome": "카페인 농도, 총카페인 함량, 용기 총량, 당류 기준을 구분해 두 제품을 같은 조건으로 비교한다.",
+  "original_contribution": {
+    "type": "decision_sequence",
+    "description": "고카페인 문구 확인에서 멈추지 않고 총카페인 함량을 캔 수로 합산한 뒤 당류 기준량을 확인하는 4칸 메모 절차",
+    "source_ids": ["S1", "S2", "S3", "S5"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 고카페인 총카페인 2025", "date": "2026-09-12", "purpose": "current official labeling rule"},
+    {"query": "국가법령정보센터 최신 식품등의 표시기준 카페인 0.15", "date": "2026-09-12", "purpose": "current legal text cross-check"},
+    {"query": "식품안전나라 청소년 고카페인 음료 총카페인 표시", "date": "2026-09-12", "purpose": "official consumer warning and use context"},
+    {"query": "공공데이터포털 식품영양성분DB정보 기준량 데이터기준일자", "date": "2026-09-12", "purpose": "current dataset scope and freshness fields"}
+  ],
+  "search_intent_insight": "검색자는 추상적인 카페인 설명보다 캔 앞면에서 어느 숫자를 찾아 실제 마실 양으로 어떻게 합산하는지 필요로 한다.",
+  "competitor_gap": "기존 일반 안내는 권고량이나 부작용을 나열하는 데 그치기 쉬워, 농도 기준과 제품별 총함량을 구분한 구매 전 기록 절차가 부족하다.",
+  "unique_angle": "법정 표시 문구를 출발점으로 삼되 한 캔 총량과 당류 기준을 같은 메모표에 옮기는 실전 판독 절차",
+  "angle_supporting_detail": {"claim": "최신 표시기준은 고카페인 대상에 주표시면의 고카페인 함유 및 총카페인 함량 표시를 요구한다.", "source_id": "S1"},
+  "source_interpretation": "표시기준은 법률 판정에 쓰지 않고 소비자가 찾아야 할 필드의 위치와 명칭을 정하는 데 사용한다. 식품안전나라 자료는 개인 치료 조언이 아니라 민감군 주의와 캔 수 합산 필요성을 설명하는 데 한정한다. 공공데이터 메타데이터는 제품 포장 확인을 대체하지 않고 데이터 기준일자 확인 필요성을 뒷받침한다.",
+  "article_specific_details": [
+    {"claim": "1mL당 0.15mg 기준은 고카페인 표시 대상 판별 기준이고, 소비자가 실제 섭취량을 계산할 때는 주표시면의 총카페인 함량을 사용해야 한다.", "source_id": "S2"},
+    {"claim": "식품영양성분DB정보는 기준량과 데이터기준일자를 제공하므로 포장 표시와 데이터 시점을 별도로 확인할 수 있다.", "source_id": "S5"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(고시 제2025-60호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14917", "publisher": "식품의약품안전처", "date": "2025-08-29", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 표시기준의 버전과 고카페인 표시 근거"},
+    {"id": "S2", "title": "식품등의 표시기준 별표 2 고카페인의 함유 표시", "url": "https://law.go.kr/flDownload.do?flSeq=156389449", "publisher": "국가법령정보센터", "date": "2025", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "0.15mg/mL 대상 기준과 표시 항목 원문 확인"},
+    {"id": "S3", "title": "청소년과 함께하는 카페인 섭취 줄이기", "url": "https://www.foodsafetykorea.go.kr/portal/sympathyplus/infographicDetail.do?bbs_no=bbs001&menu_no=2892&ntctxt_no=1088790", "publisher": "식품안전나라", "date": "2022-01-21", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "recent", "used_for": "총카페인 표시와 민감군 주의문구 설명"},
+    {"id": "S4", "title": "청소년 식생활 가이드북", "url": "https://various.foodsafetykorea.go.kr/nq/data/youth_guidebook.pdf", "publisher": "식품의약품안전처", "date": "2023", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "recent", "used_for": "여러 카페인 식품 섭취량을 합산해야 하는 사례"},
+    {"id": "S5", "title": "식품의약품안전처 식품영양성분DB정보", "url": "https://www.data.go.kr/catalog/15127578/openapi.json", "publisher": "공공데이터포털", "date": "2025-12-05", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "기준량, 식품중량, 출처, 데이터기준일자 제공 범위"},
+    {"id": "S6", "title": "식품 영양성분 정보 외 Open API 폐기 안내", "url": "https://www.data.go.kr/bbs/ntc/selectNotice.do?originId=NOTICE_0000000003737", "publisher": "공공데이터포털", "date": "2024-08-13", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "recent", "used_for": "구 API가 새 식품영양성분DB정보로 통합됐다는 데이터 경로 검증"}
+  ],
+  "data_points": [
+    {"claim": "고카페인 표시 대상 기준은 액체 식품 1mL당 카페인 0.15mg 이상이다.", "source_id": "S2", "claim_type": "policy", "source_date": "2026", "supports_section": "고카페인 함유 문구는 섭취량이 아니라 확인 시작점입니다"},
+    {"claim": "대상 제품은 고카페인 함유, 총카페인 함량, 민감군 주의문구를 표시한다.", "source_id": "S1", "claim_type": "policy", "source_date": "2025-08-29", "supports_section": "캔 앞면에서는 총카페인 함량과 용기 전체 양을 짝지어 봅니다"},
+    {"claim": "식품영양성분DB정보는 영양성분 기준량, 식품중량, 출처, 데이터기준일자를 제공한다.", "source_id": "S5", "claim_type": "procedure", "source_date": "2025-12-05", "supports_section": "공공데이터 수치와 현재 포장 표시는 날짜를 나눠 봅니다"},
+    {"claim": "기존 식품영양성분 API 일부는 새 식품영양성분DB정보로 통합·대체됐다.", "source_id": "S6", "claim_type": "date", "source_date": "2024-08-13", "supports_section": "공공데이터 수치와 현재 포장 표시는 날짜를 나눠 봅니다"},
+    {"claim": "공식 청소년 자료는 고카페인 표시와 총카페인 함량을 구매 전에 확인하도록 안내한다.", "source_id": "S3", "claim_type": "procedure", "source_date": "2022-01-21", "supports_section": "두 캔째를 고민한다면 음료 밖의 카페인도 합산합니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [],
+  "conflict_note": "개인별 의학적 허용량과 약물 상호작용은 다루지 않으며 의료진 상담 영역으로 남긴다."
+}

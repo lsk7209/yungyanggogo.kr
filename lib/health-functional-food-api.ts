@@ -1,3 +1,6 @@
+import { fetchTextWithRetry } from "./fetch-with-retry";
+import { resolveNationalNutritionDbTotalCount } from "./nutrition-count";
+
 export const HEALTH_FUNCTIONAL_FOOD_API_ENDPOINT = "https://openapi.foodsafetykorea.go.kr/api";
 export const HEALTH_FUNCTIONAL_FOOD_SERVICE_ID = "C003";
 export const HEALTH_FUNCTIONAL_FOOD_SOURCE = "건강기능식품 품목제조신고(원재료)";
@@ -75,15 +78,10 @@ export async function fetchHealthFunctionalFoodItems({
   const safeStart = Math.max(1, Math.floor(startIdx));
   const safeEnd = Math.min(MAX_END_IDX, Math.max(safeStart, Math.floor(endIdx)));
   const url = `${HEALTH_FUNCTIONAL_FOOD_API_ENDPOINT}/${serviceKey}/${HEALTH_FUNCTIONAL_FOOD_SERVICE_ID}/json/${safeStart}/${safeEnd}`;
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
   try {
-    const response = await fetch(url, {
+    const { response, text } = await fetchTextWithRetry(url, {
       next: { revalidate: 86400 },
-      signal: controller.signal
-    });
-    const text = await response.text();
+    }, { timeoutMs: REQUEST_TIMEOUT_MS });
 
     if (!response.ok) {
       return {
@@ -123,8 +121,6 @@ export async function fetchHealthFunctionalFoodItems({
       foods: [] as HealthFunctionalFoodItem[],
       message
     };
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
@@ -161,7 +157,7 @@ export function extractHealthFunctionalFoodItems(payload: unknown) {
 
   return {
     rows,
-    totalCount: Number(record.total_count || rows.length),
+    totalCount: resolveNationalNutritionDbTotalCount(record.total_count, rows.length),
     resultCode: record.RESULT?.CODE || "",
     resultMessage: record.RESULT?.MSG || ""
   };

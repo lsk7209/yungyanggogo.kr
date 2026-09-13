@@ -1,0 +1,52 @@
+{
+  "article_id": "phase6t-konjac-jelly-basis",
+  "reviewed_at": "2026-09-12",
+  "status": "approval_candidate_pending_human_review",
+  "score": 95,
+  "category_scores": {"content_quality": 29, "seo": 24, "eeat": 14, "technical_elements": 14, "ai_citation_readiness": 14},
+  "hard_gate_results": {
+    "persona_consistency": "pass",
+    "fact_traceability": "pass",
+    "research_gate": "pass",
+    "per_article_research_packet": "pass",
+    "source_interpretation": "pass",
+    "freshness": "pass",
+    "ymyl": "pass",
+    "content_uniqueness": "pass",
+    "google_quality_substance": "pass",
+    "article_contract_uniqueness": "pass",
+    "title_template_uniqueness": "pass",
+    "title_subtitle_keyword_coverage": "pass",
+    "title_map_alignment": "pass",
+    "structure_variation": "pass",
+    "content_template_variation": "pass",
+    "batch_anti_template": "pass",
+    "qa_evidence": "pass",
+    "visual_elements": "pass",
+    "heading_quality": "pass",
+    "body_length": "pass"
+  },
+  "compared_rows": ["phase6t-konjac-jelly-mistake", "phase6t-konjac-jelly-compare", "phase6t-konjac-jelly-routine", "phase6t-konjac-jelly-faq", "phase6t-dried-fruit-basis", "phase6t-energy-drink-basis", "phase6t-salad-topping-basis", "nutrition-label-comparison-basis"],
+  "similarity_signals": {
+    "opening_frame": "distinct: a low-calorie front-label number followed by a five-field evidence gap",
+    "h2_sequence": "distinct: five-field label record -> denominator calculation -> claim boundary -> product/eater safety -> data freshness -> four-way action -> residual questions",
+    "faq_shape": "four narrow residual questions after the full decision matrix, not the article structure",
+    "ending_cta": "complete one five-field product record and leave unverifiable fields blank",
+    "source_interpretation": "current Korean law and databases support label reading; historical safety sources are explicitly limited to context rather than current incidence"
+  },
+  "repair_attempted": true,
+  "repair_summary": "Replaced the legacy seven-heading template, malformed Korean particles, unsupported metric bars, generic source list, and product-name generalizations with a five-field label-and-safety decision matrix.",
+  "body_characters": 6086,
+  "body_korean_characters": 3709,
+  "h2_count": 7,
+  "h3_count": 4,
+  "internal_link_count": 3,
+  "external_citation_count": 6,
+  "remaining_risks": [
+    "Human approval has not occurred; candidate must remain non-public.",
+    "The worked nutrition values are explicitly hypothetical and cannot be reused as real product data.",
+    "Current product food type, ingredients, warnings and values must be checked on the package.",
+    "Historical safety sources do not establish current incident rates or identical risk across product forms.",
+    "The same-slug legacy row must be replaced only after human approval."
+  ]
+}

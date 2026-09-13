@@ -1,4 +1,5 @@
 import { createClient } from "@libsql/client";
+import { extractStandardDataGoKrItems } from "../lib/data-go-kr-response.ts";
 
 const datasets = [
   {
@@ -147,12 +148,10 @@ async function fetchDatasetPage(dataset, pageNo, numOfRows) {
     throw new Error(`${dataset.slug} result ${header?.resultCode || "unknown"}: ${header?.resultMsg || text.slice(0, 200)}`);
   }
 
-  const body = payload?.response?.body || {};
-  const items = body.items;
-  const rows = Array.isArray(items) ? items : items ? [items] : [];
+  const { rows, totalCount } = extractStandardDataGoKrItems(payload);
 
   return {
-    totalCount: Number(body.totalCount || rows.length),
+    totalCount,
     rows
   };
 }

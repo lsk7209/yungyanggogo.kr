@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AdsenseScript } from "../components/AdsenseScript";
-import { CoupangPartnersBanner } from "../components/CoupangPartnersBanner";
 import { GAProvider } from "../components/GAProvider";
 import { absoluteUrl, siteConfig } from "../lib/site";
 import { staticInfoPages } from "../lib/static-pages";
@@ -15,9 +13,6 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`
   },
   description: siteConfig.description,
-  alternates: {
-    canonical: absoluteUrl("/")
-  },
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
@@ -75,7 +70,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ko">
       <body>
         <GAProvider />
-        <AdsenseScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationSchema, websiteSchema]) }}
@@ -91,6 +85,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <nav className="site-nav" aria-label="주요 메뉴">
             <Link href="/rankings">랭킹</Link>
             <Link href="/nutrition-data">통합영양</Link>
+            <Link href="/compare">식품비교</Link>
             <Link href="/health-functional-foods">건기식</Link>
             <Link href="/health-functional-food-nutrition">영양DB</Link>
             <Link href="/blog">블로그</Link>
@@ -98,7 +93,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </nav>
         </header>
         <main>{children}</main>
-        <CoupangPartnersBanner />
         <footer className="site-footer">
           <div>
             <p>출처, 기준량, 검토일을 함께 표시하는 식품영양 데이터 사이트입니다.</p>

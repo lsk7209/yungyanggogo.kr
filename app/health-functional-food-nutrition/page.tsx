@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   fetchHealthFunctionalFoodNutritionItems,
   getHealthFunctionalFoodNutritionApiKey,
-  HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT,
   HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE
 } from "../../lib/health-functional-food-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../lib/site";
@@ -11,26 +10,29 @@ import { absoluteUrl, siteConfig } from "../../lib/site";
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
 
-export const metadata: Metadata = {
-  title: "건강기능식품 영양DB 제품 영양성분 조회",
-  description:
-    "건강기능식품 영양DB에서 제품별 에너지, 단백질, 지방, 탄수화물, 당류, 나트륨, 비타민, 품목제조신고번호를 확인하는 영양고고 데이터 페이지입니다.",
-  alternates: {
-    canonical: absoluteUrl("/health-functional-food-nutrition")
-  },
-  openGraph: {
-    title: `건강기능식품 영양DB 제품 영양성분 조회 | ${siteConfig.name}`,
-    description:
-      "공공데이터포털 전국건강기능식품영양성분정보표준데이터를 기준으로 건기식 제품의 영양성분과 신고번호를 확인합니다.",
-    url: absoluteUrl("/health-functional-food-nutrition")
-  }
-};
-
 type PageProps = {
   searchParams?: Promise<{
     q?: string;
   }>;
 };
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const query = params?.q?.trim() || "";
+  return {
+    title: "건강기능식품 영양DB 제품 영양성분 조회",
+    description:
+      "건강기능식품 영양DB에서 제품별 에너지, 단백질, 지방, 탄수화물, 당류, 나트륨, 비타민, 품목제조신고번호를 확인하는 영양고고 데이터 페이지입니다.",
+    alternates: { canonical: absoluteUrl("/health-functional-food-nutrition") },
+    robots: query ? { index: false, follow: true } : undefined,
+    openGraph: {
+      title: `건강기능식품 영양DB 제품 영양성분 조회 | ${siteConfig.name}`,
+      description:
+        "공공데이터포털 전국건강기능식품영양성분정보표준데이터를 기준으로 건기식 제품의 영양성분과 신고번호를 확인합니다.",
+      url: absoluteUrl("/health-functional-food-nutrition")
+    }
+  };
+}
 
 const faqItems = [
   {
@@ -118,12 +120,11 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
         </div>
       </form>
 
-      <div className={hasApiKey ? "api-status api-status--ok" : "api-status api-status--warn"}>
-        <strong>{hasApiKey ? "건강기능식품 영양DB API 연동 준비됨" : "공공데이터포털 API 활용신청 필요"}</strong>
+      <div className="api-status api-status--ok">
+        <strong>공식 데이터 출처</strong>
         <p>
-          출처는 {HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE}이며 요청주소는{" "}
-          <code>{HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}</code> 입니다. 현재 키가 해당 표준데이터에 등록되어
-          있어야 실제 제품 영양성분이 표시됩니다.
+          출처는 {HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE}입니다. 수치는 제품 라벨과 시점 차이가 있을 수 있으므로
+          품목제조신고번호와 데이터 기준일을 함께 확인하세요.
         </p>
       </div>
 
@@ -184,14 +185,6 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>자동승인</dd>
           </div>
           <div>
-            <dt>신청유형</dt>
-            <dd>개발계정 | 활용신청</dd>
-          </div>
-          <div>
-            <dt>활용기간</dt>
-            <dd>2026-06-07 ~ 2028-06-07</dd>
-          </div>
-          <div>
             <dt>서비스정보</dt>
             <dd>건강기능식품 제품별 영양성분 정보 REST API</dd>
           </div>
@@ -200,24 +193,8 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
             <dd>JSON+XML</dd>
           </div>
           <div>
-            <dt>End Point</dt>
-            <dd>{HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}</dd>
-          </div>
-          <div>
-            <dt>인증키 적용</dt>
-            <dd>API 환경 또는 호출 조건에 따라 Encoding/Decoding 인증키 중 실제 구동되는 키를 서버 환경변수에 등록합니다.</dd>
-          </div>
-          <div>
             <dt>활용정보</dt>
             <dd>사이트개발, 웹사이트 연동 및 운영, 제품별 영양성분 조회 화면 구성</dd>
-          </div>
-          <div>
-            <dt>자동승인</dt>
-            <dd>개발계정 활용신청은 자동승인 대상입니다.</dd>
-          </div>
-          <div>
-            <dt>승인</dt>
-            <dd>활용신청이 승인된 data.go.kr 서비스키를 서버 환경변수에 등록해야 실데이터가 표시됩니다.</dd>
           </div>
           <div>
             <dt>미리보기</dt>
@@ -315,8 +292,8 @@ export default async function HealthFunctionalFoodNutritionPage({ searchParams }
 
       {apiResult && !apiResult.ok ? (
         <div className="api-status api-status--warn">
-          <strong>건강기능식품 영양DB API 응답 확인 필요</strong>
-          <p>{apiResult.message}</p>
+          <strong>현재 공식 데이터를 불러오지 못했습니다</strong>
+          <p>일시적인 데이터 제공 상태일 수 있습니다. 잠시 후 다시 검색하거나 제품 라벨과 신고번호를 직접 확인해 주세요.</p>
         </div>
       ) : null}
 

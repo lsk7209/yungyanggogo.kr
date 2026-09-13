@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { getDb, isTursoConfigured } from "./db";
+import { resolveNationalNutritionDbTotalCount } from "./nutrition-count";
 import {
   fetchNationalNutritionItems,
   getNationalNutritionDataset,
@@ -102,7 +103,7 @@ export async function fetchNationalNutritionItemsWithDbCache({
     pageNo,
     numOfRows,
   });
-  if (result.foods.length > 0) {
+  if (!query && result.ok && !result.fallback && result.foods.length > 0) {
     await saveNationalNutritionItemsToDb({
       dataset,
       query,
@@ -183,26 +184,63 @@ export async function readNationalNutritionItemsFromDb({
   numOfRows = 12,
 }: FetchCachedNationalNutritionOptions = {}) {
   const db = getDb();
-  const queryKey = normalizeQueryKey(query);
   const limit = Math.max(1, Math.floor(numOfRows));
   const offset = (Math.max(1, Math.floor(pageNo)) - 1) * limit;
 
-  const [syncResult, rowsResult] = await Promise.all([
+  if (query?.trim()) {
+    const pattern = `%${escapeSqlLike(query.trim())}%`;
+    const [countResult, rowsResult] = await Promise.all([
+      db.execute({
+        sql: `SELECT COUNT(DISTINCT food_code) AS total_count
+          FROM national_nutrition_items
+          WHERE dataset_slug = ? AND food_name LIKE ? ESCAPE '\\'`,
+        args: [dataset, pattern],
+      }),
+      db.execute({
+        sql: `WITH ranked AS (
+            SELECT *, ROW_NUMBER() OVER (
+              PARTITION BY food_code ORDER BY synced_at DESC, query_key ASC
+            ) AS row_rank
+            FROM national_nutrition_items
+            WHERE dataset_slug = ? AND food_name LIKE ? ESCAPE '\\'
+          )
+          SELECT * FROM ranked
+          WHERE row_rank = 1
+          ORDER BY food_name ASC, food_code ASC
+          LIMIT ? OFFSET ?`,
+        args: [dataset, pattern, limit, offset],
+      }),
+    ]);
+    return {
+      totalCount: resolveNationalNutritionDbTotalCount(countResult.rows[0]?.total_count, rowsResult.rows.length),
+      foods: rowsResult.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow)),
+    };
+  }
+
+  const [countResult, rowsResult] = await Promise.all([
     db.execute({
-      sql: "SELECT total_count FROM national_nutrition_syncs WHERE dataset_slug = ? AND query_key = ?",
-      args: [dataset, queryKey],
+      sql: "SELECT COUNT(DISTINCT food_code) AS total_count FROM national_nutrition_items WHERE dataset_slug = ?",
+      args: [dataset],
     }),
     db.execute({
-      sql: `SELECT * FROM national_nutrition_items
-        WHERE dataset_slug = ? AND query_key = ?
-        ORDER BY synced_at DESC, food_name ASC
+      sql: `WITH ranked AS (
+          SELECT *, ROW_NUMBER() OVER (
+            PARTITION BY food_code ORDER BY synced_at DESC, query_key ASC
+          ) AS row_rank
+          FROM national_nutrition_items
+          WHERE dataset_slug = ?
+        )
+        SELECT * FROM ranked
+        WHERE row_rank = 1
+        ORDER BY food_name ASC, food_code ASC
         LIMIT ? OFFSET ?`,
-      args: [dataset, queryKey, limit, offset],
+      args: [dataset, limit, offset],
     }),
   ]);
 
-  const totalCount = Number(
-    syncResult.rows[0]?.total_count || rowsResult.rows.length,
+  const totalCount = resolveNationalNutritionDbTotalCount(
+    countResult.rows[0]?.total_count,
+    rowsResult.rows.length,
   );
   const foods = rowsResult.rows.map((row) =>
     mapNationalNutritionRow(row as unknown as NationalNutritionRow),
@@ -286,16 +324,53 @@ export async function fetchNationalNutritionItemDetail({
     };
   }
 
-  const result = await fetchNationalNutritionItemsWithDbCache({
+  const result = await fetchNationalNutritionItems({
     dataset,
-    numOfRows: 50,
+    foodCode,
+    numOfRows: 1,
   });
   const item = result.foods.find((food) => food.foodCode === foodCode) || null;
 
   return {
     item,
-    cacheSource: result.cacheSource,
+    cacheSource: isTursoConfigured ? ("api" as const) : ("api_no_db" as const),
   };
+}
+
+export async function countNationalNutritionSitemapItems(
+  dataset: NationalNutritionDatasetSlug,
+) {
+  const result = await getDb().execute({
+    sql: "SELECT COUNT(DISTINCT food_code) AS total_count FROM national_nutrition_items WHERE dataset_slug = ?",
+    args: [dataset],
+  });
+  return resolveNationalNutritionDbTotalCount(result.rows[0]?.total_count, 0);
+}
+
+export async function readNationalNutritionSitemapItems({
+  dataset,
+  page,
+  pageSize,
+}: {
+  dataset: NationalNutritionDatasetSlug;
+  page: number;
+  pageSize: number;
+}) {
+  const safePage = Math.max(0, Math.floor(page));
+  const safePageSize = Math.min(10_000, Math.max(1, Math.floor(pageSize)));
+  const result = await getDb().execute({
+    sql: `SELECT food_code, MAX(NULLIF(updated_at, '')) AS updated_at
+      FROM national_nutrition_items
+      WHERE dataset_slug = ?
+      GROUP BY food_code
+      ORDER BY food_code ASC
+      LIMIT ? OFFSET ?`,
+    args: [dataset, safePageSize, safePage * safePageSize],
+  });
+  return result.rows.map((row) => ({
+    foodCode: String(row.food_code || ""),
+    updatedAt: row.updated_at ? String(row.updated_at) : null,
+  })).filter((row) => row.foodCode);
 }
 
 export async function saveNationalNutritionItemsToDb({
@@ -445,11 +520,15 @@ function normalizeQueryKey(query?: string) {
   return query?.trim() || DEFAULT_QUERY_KEY;
 }
 
+export function escapeSqlLike(value: string) {
+  return value.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
+}
+
 // force-dynamic 페이지(searchParams 사용)에서도 동일 쿼리는 Next.js 데이터 캐시로 서빙
 // 봇이 같은 URL을 반복 방문해도 1시간 내 DB 재조회 없음
 export const fetchNationalNutritionItemsWithDbCacheCached = unstable_cache(
   (options: FetchCachedNationalNutritionOptions) =>
     fetchNationalNutritionItemsWithDbCache(options),
-  ["national-nutrition-db"],
+  ["national-nutrition-db-v2"],
   { revalidate: 3600, tags: ["national-nutrition"] },
 );

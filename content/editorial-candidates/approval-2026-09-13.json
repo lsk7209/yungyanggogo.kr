@@ -1,0 +1,16 @@
+{
+  "approved_at": "2026-09-13T12:50:00+09:00",
+  "approval_scope": "local_public_snapshot",
+  "approval_source": "user_instruction_gg",
+  "deployment_authorized": false,
+  "adsense_submission_authorized": false,
+  "candidate_ids": [
+    "bakery-snack-serving-basis",
+    "phase6t-bagel-basis",
+    "phase6t-dried-fruit-basis",
+    "phase6t-energy-drink-basis",
+    "phase6t-konjac-jelly-basis",
+    "phase6t-pickle-basis",
+    "phase6t-salad-topping-basis"
+  ]
+}

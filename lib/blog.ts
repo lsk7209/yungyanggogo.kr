@@ -20,6 +20,7 @@ export type BlogPost = {
   updatedAt: string;
   readingMinutes: number;
   noindex?: boolean;
+  humanReview?: "approved" | "pending";
   accentTheme?: "green" | "amber" | "slate" | "terra" | "gray";
   summaryCards: {
     label: string;
@@ -82,12 +83,12 @@ export const seedBlogPosts: BlogPost[] = [
     slug: "nutrition-label-comparison-basis",
     title: "영양성분표 비교: 100g·100kcal 기준으로 식품영양성분 읽는 법",
     subtitle:
-      "식품영양성분 비교에서 1회제공량 착시를 줄이고, 저당·저열량·고단백 표시 기준까지 함께 확인하는 실전 해석 가이드",
+      "식품영양성분 비교에서 1회제공량 착시를 줄이고, 100g·100ml·100kcal 기준의 차이를 구분하는 실전 해석 가이드",
     description:
       "영양성분표 비교는 100g, 100ml, 100kcal, 1회제공량을 구분해야 정확합니다. 식품영양성분을 목적별로 읽는 기준과 주의점을 정리합니다.",
     category: "데이터 기준",
     mainKeyword: "영양성분표 비교",
-    expandedKeywords: ["식품영양성분", "100g 기준", "100kcal 기준", "1회제공량", "저당 표시 기준"],
+    expandedKeywords: ["식품영양성분", "100g 기준", "100ml 기준", "100kcal 기준", "1회제공량"],
     publishedAt: "2026-06-06",
     updatedAt: "2026-06-06",
     readingMinutes: 9,
@@ -133,7 +134,7 @@ export const seedBlogPosts: BlogPost[] = [
     checklist: [
       "제품명만 보지 말고 기준량이 100g인지, 1회제공량인지 먼저 확인합니다.",
       "단백질이 높은 제품은 나트륨과 포화지방도 같이 확인합니다.",
-      "저당, 저열량, 고단백 같은 표현은 수치와 법정 기준을 함께 봅니다.",
+      "저당, 저열량, 고단백 같은 표시를 보더라도 이 글만으로 법정 충족 여부를 판정하지 않습니다.",
       "공식 데이터 기준일자와 제품 포장지의 최신 표시가 다른지 확인합니다.",
       "랭킹은 선택을 돕는 도구일 뿐, 건강 효능을 보증하는 문장으로 읽지 않습니다."
     ],
@@ -153,7 +154,8 @@ export const seedBlogPosts: BlogPost[] = [
         body: [
           "100g 기준은 같은 무게로 비교하는 방식입니다. 과자, 시리얼, 즉석식품처럼 제품마다 포장량과 1회제공량이 다른 경우에 유용합니다. 100g당 당류가 낮은지, 나트륨이 높은지, 단백질이 어느 정도인지 보면 제품 자체의 영양 밀도를 비교하기 쉽습니다.",
           "반면 100kcal 기준은 같은 열량 안에서 무엇을 얼마나 얻는지 보는 방식입니다. 단백질 식품을 고를 때 특히 중요합니다. A 제품은 200kcal에 단백질 18g이고, B 제품은 120kcal에 단백질 10g이라면 단순 단백질 총량은 A가 높지만 100kcal당 단백질은 각각 9g, 8.3g입니다. 차이는 있지만 생각보다 작을 수 있습니다.",
-          "두 기준은 우열이 아니라 역할이 다릅니다. 100g 기준은 제품의 농도를 보고, 100kcal 기준은 열량 대비 효율을 봅니다. 영양성분표 비교 글이나 랭킹에서 두 기준을 섞어 쓰면 사용자는 왜 어떤 제품이 위에 있는지 이해하기 어렵습니다."
+          "환산은 표시된 영양성분 값에 목표 섭취량을 곱한 뒤 표시 기준량으로 나누는 방식입니다. 예를 들어 30g당 당류 7g인 제품을 45g 먹는다면 7×45÷30으로 계산합니다. 봉지 전체나 실제 섭취량도 같은 식으로 계산하되, 0인 기준량은 계산하지 않습니다. 무게인 g과 부피인 mL는 제품 밀도 근거가 없으면 서로 바꾸지 않습니다.",
+          "두 기준은 우열이 아니라 역할이 다릅니다. 100g 기준은 제품의 농도를 보고, 100kcal 기준은 열량 대비 효율을 봅니다. 영양성분표 비교 글이나 랭킹에서 두 기준을 섞어 쓰면 사용자는 왜 어떤 제품이 위에 있는지 이해하기 어렵습니다. 같은 기준으로 환산했더라도 음료와 과자처럼 제품군과 섭취 방식이 다른 식품을 하나의 순위로 섞지 말고, 동일한 식품군과 사용 목적 안에서만 비교해야 합니다."
         ]
       },
       {
@@ -167,11 +169,11 @@ export const seedBlogPosts: BlogPost[] = [
       },
       {
         id: "claim-guardrails",
-        title: "저당·저열량·고단백 표현은 수치와 기준을 함께 봐야 합니다",
+        title: "저당·저열량·고단백 표현은 이 비교표만으로 판정하지 않습니다",
         body: [
-          "저당, 저열량, 고단백 같은 표현은 클릭을 유도하기 좋은 말이지만, 영양성분표 비교에서는 더 엄격하게 다뤄야 합니다. 이런 표현은 단순한 느낌표가 아니라 기준과 수치가 같이 있어야 사용자가 오해하지 않습니다.",
+          "저당, 저열량, 고단백 같은 표현은 적용 식품 유형, 표시 기준량, 시행 중인 규정과 추가 조건을 함께 확인해야 합니다. 영양고고의 일반 비교 수치만으로 법적 표시기준 충족 여부를 판정하거나 인증처럼 보여주지 않습니다.",
           "예를 들어 당류가 낮아 보이는 제품도 기준량이 작으면 100g당 당류는 높을 수 있습니다. 단백질이 높은 제품도 나트륨이 높거나 포화지방이 높은 경우가 있습니다. 고단백이라는 한 단어만 보고 선택하면 다른 지표를 놓치기 쉽습니다.",
-          "영양고고에서는 강조표시를 ‘좋다’ 또는 ‘나쁘다’로 단정하지 않고, 충족 여부와 판단 기준을 나란히 보여주는 방식을 택합니다. 충족은 초록색 체크, 미충족은 회색 대시로 표시해 불필요한 공포감을 줄이는 것도 같은 이유입니다."
+          "따라서 비교 화면은 원자료 값, 기준량, 단위, 출처와 갱신일을 먼저 보여주며, 확인되지 않은 법정 기준 배지를 만들지 않습니다. 제품의 현재 포장 표시와 적용 규정은 별도로 확인해야 합니다."
         ]
       },
       {
@@ -201,13 +203,18 @@ export const seedBlogPosts: BlogPost[] = [
       },
       {
         href: "/rankings",
-        label: "식품영양성분 목적별 랭킹",
-        description: "단백질, 저당, 저나트륨 등 기준별 랭킹 화면으로 이동합니다."
+        label: "식품영양성분 목적별 비교 기준",
+        description: "단백질, 당류, 나트륨 등 목적별로 어떤 기준을 먼저 확인할지 안내합니다."
+      },
+      {
+        href: "/nutrition-data",
+        label: "실제 영양성분 데이터 찾기",
+        description: "원천 식품코드, 기준량, 출처와 갱신일이 있는 저장 데이터를 검색합니다."
       },
       {
         href: "/foods/protein-ready-meal-sample",
-        label: "제품 상세 데이터 화면 예시",
-        description: "수치, 기준량, 출처, 강조표시 판정이 어떻게 표시되는지 확인합니다."
+        label: "제품 상세 화면 설명용 예시",
+        description: "실제 판매 제품이나 공식 데이터가 아닌 UI 설명용 예시 화면을 확인합니다."
       }
     ],
     sourceLinks: [
@@ -227,6 +234,7 @@ export const seedBlogPosts: BlogPost[] = [
 
 type GetPostsOptions = {
   includeScheduled?: boolean;
+  includePending?: boolean;
   now?: Date;
 };
 
@@ -242,7 +250,12 @@ function loadGeneratedPosts(): BlogPost[] {
     .flatMap((file) => {
       const raw = readFileSync(path.join(BLOG_CONTENT_DIR, file), "utf8");
       const parsed = JSON.parse(raw) as BlogPost | BlogPost[];
-      return Array.isArray(parsed) ? parsed : [parsed];
+      const posts = Array.isArray(parsed) ? parsed : [parsed];
+      return posts.map((post) => ({
+        ...post,
+        humanReview: post.humanReview || "pending",
+        noindex: post.humanReview === "approved" ? post.noindex : true,
+      }));
     });
 }
 
@@ -250,23 +263,44 @@ export function isPostPublished(post: BlogPost, now = new Date()) {
   return new Date(post.publishedAt).getTime() <= now.getTime();
 }
 
+function isPostPublic(post: BlogPost) {
+  return post.humanReview !== "pending";
+}
+
+function keepUniqueSlugs(posts: BlogPost[]) {
+  const slugCounts = new Map<string, number>();
+
+  for (const post of posts) {
+    slugCounts.set(post.slug, (slugCounts.get(post.slug) || 0) + 1);
+  }
+
+  return posts.filter((post) => slugCounts.get(post.slug) === 1);
+}
+
 export const blogPosts: BlogPost[] = [...seedBlogPosts, ...loadGeneratedPosts()];
 
 export function getAllPosts(options: GetPostsOptions = {}) {
   const now = options.now || new Date();
-  return [...blogPosts]
-    .filter((post) => options.includeScheduled || isPostPublished(post, now))
+  const eligiblePosts = [...blogPosts]
+    .filter((post) => options.includePending || isPostPublic(post))
+    .filter((post) => options.includeScheduled || isPostPublished(post, now));
+
+  return keepUniqueSlugs(eligiblePosts)
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 
 export function getPostBySlug(slug: string, options: GetPostsOptions = {}) {
-  const post = blogPosts.find((item) => item.slug === slug);
+  const now = options.now || new Date();
+  const matches = blogPosts
+    .filter((item) => item.slug === slug)
+    .filter((post) => options.includePending || isPostPublic(post))
+    .filter((post) => options.includeScheduled || isPostPublished(post, now));
 
-  if (!post || (!options.includeScheduled && !isPostPublished(post, options.now || new Date()))) {
+  if (matches.length !== 1) {
     return undefined;
   }
 
-  return post;
+  return matches[0];
 }
 
 export function getPostUrl(post: BlogPost) {

@@ -3,34 +3,35 @@ import Link from "next/link";
 import {
   fetchHealthFunctionalFoodItems,
   getFoodSafetyKoreaApiKey,
-  HEALTH_FUNCTIONAL_FOOD_API_ENDPOINT,
-  HEALTH_FUNCTIONAL_FOOD_SERVICE_ID,
   HEALTH_FUNCTIONAL_FOOD_SOURCE
 } from "../../lib/health-functional-food-api";
 import { absoluteUrl, siteConfig } from "../../lib/site";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "건강기능식품 신고번호 조회 원재료 확인",
-  description:
-    "건강기능식품 신고번호 조회, 원재료 확인, 기능성 내용, 섭취 시 주의사항을 식품안전나라 공공 API 기준으로 확인하는 영양고고 건기식 데이터 페이지입니다.",
-  alternates: {
-    canonical: absoluteUrl("/health-functional-foods")
-  },
-  openGraph: {
-    title: `건강기능식품 신고번호 조회 원재료 확인 | ${siteConfig.name}`,
-    description:
-      "건강기능식품 품목제조신고 원재료 데이터를 제품명, 업체명, 신고번호, 기능성 내용, 주의사항 중심으로 정리합니다.",
-    url: absoluteUrl("/health-functional-foods")
-  }
+type PageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-type PageProps = {
-  searchParams?: Promise<{
-    q?: string;
-  }>;
-};
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const hasSearchParams = Object.values(params || {}).some((value) =>
+    Array.isArray(value) ? value.some(Boolean) : Boolean(value),
+  );
+  return {
+    title: "건강기능식품 신고번호 조회 원재료 확인",
+    description:
+      "건강기능식품 신고번호 조회, 원재료 확인, 기능성 내용, 섭취 시 주의사항을 식품안전나라 공공 API 기준으로 확인하는 영양고고 건기식 데이터 페이지입니다.",
+    alternates: { canonical: absoluteUrl("/health-functional-foods") },
+    robots: hasSearchParams ? { index: false, follow: true } : undefined,
+    openGraph: {
+      title: `건강기능식품 신고번호 조회 원재료 확인 | ${siteConfig.name}`,
+      description:
+        "건강기능식품 품목제조신고 원재료 데이터를 제품명, 업체명, 신고번호, 기능성 내용, 주의사항 중심으로 정리합니다.",
+      url: absoluteUrl("/health-functional-foods")
+    }
+  };
+}
 
 const faqItems = [
   {
@@ -51,11 +52,10 @@ const faqItems = [
 ];
 
 export default async function HealthFunctionalFoodsPage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const query = params?.q?.trim() || "";
+  await searchParams;
   const hasApiKey = Boolean(getFoodSafetyKoreaApiKey());
   const apiResult = hasApiKey
-    ? await fetchHealthFunctionalFoodItems({ query, startIdx: 1, endIdx: query ? 80 : 12 })
+    ? await fetchHealthFunctionalFoodItems({ startIdx: 1, endIdx: 12 })
     : null;
 
   const pageSchema = {
@@ -104,28 +104,16 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
         </p>
       </div>
 
-      <form className="data-search" action="/health-functional-foods">
-        <label htmlFor="health-food-search">건강기능식품 제품명, 업체명, 기능성 키워드 검색</label>
-        <div>
-          <input
-            id="health-food-search"
-            name="q"
-            type="search"
-            defaultValue={query}
-            placeholder="예: 비타민, 칼슘, 유산균"
-          />
-          <button type="submit">검색</button>
-        </div>
-      </form>
+      <div className="api-status api-status--warn">
+        <strong>전체 품목 검색은 준비 중입니다</strong>
+        <p>현재 화면은 원천의 첫 12개 확인 범위만 표시합니다. 이 범위의 결과 없음으로 미등록을 판단하지 않습니다.</p>
+      </div>
 
-      <div className={hasApiKey ? "api-status api-status--ok" : "api-status api-status--warn"}>
-        <strong>{hasApiKey ? "공식 API 연동 활성화" : "공식 API 키 설정 필요"}</strong>
+      <div className="api-status api-status--ok">
+        <strong>공식 데이터 출처</strong>
         <p>
-          출처는 {HEALTH_FUNCTIONAL_FOOD_SOURCE}이며, 호출 경로는 FoodSafetyKorea{" "}
-          <code>
-            {HEALTH_FUNCTIONAL_FOOD_API_ENDPOINT}/&#123;key&#125;/{HEALTH_FUNCTIONAL_FOOD_SERVICE_ID}/json/1/12
-          </code>
-          입니다. 이 페이지는 구매 추천이나 효능 보증이 아니라 신고 데이터 확인을 돕는 정보 페이지입니다.
+          출처는 {HEALTH_FUNCTIONAL_FOOD_SOURCE}입니다. 이 페이지는 구매 추천이나 효능 보증이 아니라
+          신고번호·업체명·주의사항을 제품 라벨과 대조하도록 돕는 정보 페이지입니다.
         </p>
       </div>
 
@@ -159,7 +147,7 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
       {apiResult?.ok ? (
         <div className="api-sample" aria-label="건강기능식품 품목제조신고 API 데이터">
           <div className="api-sample__head">
-            <strong>{query ? `"${query}" 검색 결과` : "건강기능식품 신고 데이터 샘플"}</strong>
+            <strong>건강기능식품 신고 데이터 확인 범위</strong>
             <span>
               전체 {apiResult.totalCount.toLocaleString("ko-KR")}건 중 {apiResult.foods.length}건 표시
             </span>
@@ -204,10 +192,9 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
             </div>
           ) : (
             <div className="api-status api-status--warn">
-              <strong>표시할 검색 결과가 없습니다</strong>
+              <strong>현재 확인 범위에 표시할 항목이 없습니다</strong>
               <p>
-                현재 API 호출 범위 안에서 일치 항목이 없었습니다. 제품명 일부, 업체명, 비타민·칼슘·유산균
-                같은 기능성 키워드로 다시 검색해 보세요.
+                전체 품목 부재나 미등록을 뜻하지 않습니다. 식품안전나라에서 신고번호를 직접 확인해 주세요.
               </p>
             </div>
           )}
@@ -216,8 +203,8 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
 
       {apiResult && !apiResult.ok ? (
         <div className="api-status api-status--warn">
-          <strong>FoodSafetyKorea API 응답 확인 필요</strong>
-          <p>{apiResult.message}</p>
+          <strong>현재 공식 신고 데이터를 불러오지 못했습니다</strong>
+          <p>일시적인 데이터 제공 상태일 수 있습니다. 잠시 후 다시 검색하거나 식품안전나라에서 신고번호를 확인해 주세요.</p>
         </div>
       ) : null}
 

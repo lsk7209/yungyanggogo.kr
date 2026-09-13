@@ -16,9 +16,7 @@ export async function GET(request: Request) {
       {
         ok: false,
         source: PUBLIC_FOOD_API_SOURCE,
-        endpoint: FOOD_NUTRITION_API_ENDPOINT,
-        message:
-          "공공데이터포털 서비스키가 서버 환경변수에 없습니다. PUBLIC_DATA_SERVICE_KEY 또는 DATA_GO_KR_SERVICE_KEY를 설정하면 실제 API 데이터를 표시합니다."
+        message: "현재 공식 식품영양성분 데이터를 제공할 수 없습니다."
       },
       { status: 503 }
     );
@@ -36,7 +34,7 @@ export async function GET(request: Request) {
         ok: false,
         source: PUBLIC_FOOD_API_SOURCE,
         status: result.status,
-        message: result.message
+        message: "공식 식품영양성분 데이터 제공 중 오류가 발생했습니다."
       },
       { status: 502 }
     );

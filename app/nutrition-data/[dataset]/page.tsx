@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fetchNationalNutritionItemsWithDbCacheCached } from "../../../lib/national-nutrition-db";
+import { isTursoConfigured } from "../../../lib/db";
+import { normalizeNutritionSearchQuery, parseBoundedPositiveInteger } from "../../../lib/nutrition-query";
 import {
   getNationalNutritionApiKey,
   getNationalNutritionDataset,
@@ -10,6 +12,7 @@ import {
   type NationalNutritionDatasetSlug,
 } from "../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
+import { buildComparisonItemValue, parseComparisonSelection } from "../../../lib/comparison-selection";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -21,6 +24,7 @@ type PageProps = {
   searchParams?: Promise<{
     page?: string;
     q?: string;
+    item?: string | string[];
   }>;
 };
 
@@ -30,6 +34,7 @@ const datasetSlugs = new Set(
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: PageProps): Promise<Metadata> {
   const { dataset } = await params;
   if (!isDatasetSlug(dataset)) {
@@ -37,19 +42,26 @@ export async function generateMetadata({
   }
 
   const datasetInfo = getNationalNutritionDataset(dataset);
-  const title = `${datasetInfo.shortName} 영양성분표 데이터 목록`;
+  const queryParams = await searchParams;
+  const query = normalizeNutritionSearchQuery(queryParams?.q);
+  const page = parseBoundedPositiveInteger(queryParams?.page, 1, 10_000);
+  const canonicalPath = page > 1
+    ? `/nutrition-data/${dataset}?page=${page}`
+    : `/nutrition-data/${dataset}`;
+  const title = `${datasetInfo.shortName} 영양성분표 데이터 목록${page > 1 ? ` ${page}페이지` : ""}`;
   const description = `${datasetInfo.name}의 열량, 단백질, 당류, 나트륨, 출처, 갱신일을 DB 저장 데이터 기준으로 확인합니다.`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: absoluteUrl(`/nutrition-data/${dataset}`),
+      canonical: absoluteUrl(canonicalPath),
     },
+    robots: query || queryParams?.item ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,
-      url: absoluteUrl(`/nutrition-data/${dataset}`),
+      url: absoluteUrl(canonicalPath),
     },
   };
 }
@@ -64,11 +76,18 @@ export default async function NutritionDatasetPage({
   }
 
   const queryParams = await searchParams;
-  const query = queryParams?.q?.trim() || "";
-  const page = Math.max(1, Number(queryParams?.page || "1") || 1);
+  const query = normalizeNutritionSearchQuery(queryParams?.q);
+  const carriedItems = Array.isArray(queryParams?.item)
+    ? queryParams.item
+    : queryParams?.item ? [queryParams.item] : [];
+  const carriedSelection = parseComparisonSelection(carriedItems);
+  const page = parseBoundedPositiveInteger(queryParams?.page, 1, 10_000);
+  const canonicalPath = page > 1
+    ? `/nutrition-data/${dataset}?page=${page}`
+    : `/nutrition-data/${dataset}`;
   const datasetInfo = getNationalNutritionDataset(dataset);
   const hasApiKey = Boolean(getNationalNutritionApiKey());
-  const result = hasApiKey
+  const result = hasApiKey || isTursoConfigured
     ? await fetchNationalNutritionItemsWithDbCacheCached({
         dataset,
         query,
@@ -77,7 +96,10 @@ export default async function NutritionDatasetPage({
       })
     : null;
   const hasPrevious = page > 1;
-  const hasNext = Boolean(result && result.count === 50);
+  const hasNext = Boolean(result?.ok && page * 50 < result.totalCount);
+  if (result?.ok && page > 1 && (page - 1) * 50 >= result.totalCount) {
+    notFound();
+  }
   const pageQuery = query ? `&q=${encodeURIComponent(query)}` : "";
 
   const schema = {
@@ -85,7 +107,7 @@ export default async function NutritionDatasetPage({
     "@type": "CollectionPage",
     name: `${datasetInfo.shortName} 영양성분표 데이터 목록`,
     description: datasetInfo.description,
-    url: absoluteUrl(`/nutrition-data/${dataset}`),
+    url: absoluteUrl(canonicalPath),
     isPartOf: {
       "@type": "WebSite",
       name: siteConfig.name,
@@ -136,32 +158,53 @@ export default async function NutritionDatasetPage({
 
       <div
         className={
-          result?.cacheSource === "db"
+          result?.foods.length
             ? "api-status api-status--ok"
             : "api-status api-status--warn"
         }
       >
         <strong>
-          {result?.cacheSource === "db"
-            ? `Turso DB 저장 데이터 ${result.count.toLocaleString("ko-KR")}개 표시`
-            : hasApiKey
-              ? "API 수집 데이터 표시"
-              : "공공데이터포털 API 키 설정 필요"}
+          {result?.foods.length
+            ? `현재 ${result.count.toLocaleString("ko-KR")}개 항목 표시`
+            : "현재 표시할 데이터를 불러오지 못했습니다"}
         </strong>
-        <p>
-          전체 기준 건수는 {result?.totalCount.toLocaleString("ko-KR") || "-"}
-          건입니다. 이 목록은 상세 페이지로 연결되어 각 식품의 영양성분표, 출처,
-          갱신일을 개별 URL에서 확인할 수 있습니다.
-        </p>
+        {result?.ok ? (
+          <p>
+            전체 기준 건수는 {result.totalCount.toLocaleString("ko-KR")}건입니다.
+            이 목록은 상세 페이지로 연결되어 각 식품의 영양성분표, 출처, 갱신일을
+            개별 URL에서 확인할 수 있습니다.
+          </p>
+        ) : (
+          <p>원천 전체 건수는 응답이 복구된 뒤 표시합니다. 실패를 0건으로 해석하지 않습니다.</p>
+        )}
       </div>
 
-      <div className="nutrition-dataset-grid">
-        {result?.foods.map((food) => (
+      {result?.foods.length ? (
+        <form action="/compare" className="comparison-picker">
+          {carriedSelection.selectedRefs.map((ref) => (
+            <input key={ref.value} type="hidden" name="item" value={ref.value} />
+          ))}
+          <div className="comparison-picker__head">
+            <div><strong>나란히 비교하기</strong><p>식품 2~3개를 선택하세요. 중복 선택은 한 번만 처리됩니다.</p></div>
+            <button type="submit">선택한 식품 비교</button>
+          </div>
+          <div className="nutrition-dataset-grid">
+          {result.foods.map((food) => (
           <article
             key={food.foodCode || food.name}
             className="health-nutrition-card"
           >
             <div className="health-food-card__head">
+              <label className="comparison-check">
+                <input
+                  type="checkbox"
+                  name="item"
+                  value={buildComparisonItemValue(dataset, food.foodCode)}
+                  defaultChecked={carriedSelection.selectedRefs.some((ref) => ref.value === buildComparisonItemValue(dataset, food.foodCode))}
+                  disabled={carriedSelection.selectedRefs.some((ref) => ref.value === buildComparisonItemValue(dataset, food.foodCode))}
+                />
+                <span>비교 선택</span>
+              </label>
               <span>{food.typeName || datasetInfo.shortName}</span>
               <strong>
                 <Link
@@ -205,8 +248,10 @@ export default async function NutritionDatasetPage({
               </div>
             </dl>
           </article>
-        ))}
-      </div>
+          ))}
+          </div>
+        </form>
+      ) : null}
 
       <nav
         className="pagination-nav"

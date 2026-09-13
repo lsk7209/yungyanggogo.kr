@@ -1,0 +1,11 @@
+url,page_type,http_status,title,h1,canonical,robots,sitemap_included,internal_links_in,ad_state,content_state,source_id,issue_ids,proposed_action,evidence
+/,home,200,영양고고,무엇을 기준으로 찾을까요,self,index,yes,many,no-request-default,improved,local,CLAIMS-01,keep-and-verify,local production HTTP
+/rankings,guide,200,식품영양성분 목적별 비교 기준,식품영양성분 목적별 비교 기준,self,index,yes,many,no-request-default,guide-only,MFDS,PUBLIC-OPS-01,keep-as-guide,local production HTTP
+/nutrition-data,data-index,200,전국통합 식품영양성분정보 표준데이터 조회,전국통합 식품영양성분정보 표준데이터 조회,self,index,yes,many,no-request-default,conditional,DATA-GO-KR,PUBLIC-OPS-01,verify-empty-error,local production HTTP
+/nutrition-data/all,data-list,200,전국통합 영양성분표 데이터 목록,전국통합 영양성분표 데이터 목록,self,index,yes,some,no-request-default,conditional,DATA-GO-KR,SEARCH-01,keep-db-first-pagination,local fixture HTTP
+/nutrition-data/food/fixture-snack-80g,data-detail,200,E2E 나트륨 스낵 영양성분표,E2E 나트륨 스낵 영양성분표,self,index,dynamic-db,some,disabled-by-flags,test-only,local-fixture,COMPARE-01,fixture-only-do-not-publish,local fixture HTTP
+/compare?item=fixture-pair,comparison,200,식품 영양성분 2~3개 비교,식품 영양성분 2~3개 비교,self,noindex,no,some,no-ad,fixture-verified,local-fixture,COMPARE-01,keep-query-state,Playwright 360px
+/health-functional-foods,data-search,200,건강기능식품 신고번호 조회 원재료 확인,건강기능식품 신고번호 조회 원재료 확인,self,index,yes,some,no-request-default,conditional,FoodSafetyKorea,PUBLIC-OPS-01,keep-with-safe-error,local production HTTP
+/health-functional-food-nutrition,data-search,200,건강기능식품 영양DB 제품 영양성분 조회,건강기능식품 영양DB 제품 영양성분 조회,self,index,yes,some,no-request-default,conditional,DATA-GO-KR,DATA-ENVELOPE-01,keep-with-safe-error,local production HTTP
+/foods/protein-ready-meal-sample,example-detail,200,화면 설명용 예시,화면 설명용 예시,self,"noindex,follow",no,some,no-request-default,explicit-example,local-example,CLAIMS-01,retain-example-boundary,local HTML and sitemap
+/does-not-exist,invalid,404,not-found,not-found,none,none,no,none,no-ad,not-found,none,SEO-08,keep-404,local production HTTP

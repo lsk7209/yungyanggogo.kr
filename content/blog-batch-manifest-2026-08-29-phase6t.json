@@ -1,0 +1,14 @@
+{
+  "site": "yungyanggogo",
+  "target": "nextjs-local-json",
+  "phase": "6T",
+  "count": 100,
+  "scheduleStart": "2026-08-29T08:00:00+09:00",
+  "scheduleIntervalHours": 5,
+  "scheduleEnd": "2026-09-18T23:00:00+09:00",
+  "qualityFloor": 90,
+  "generationPolicy": "Codex host-authored, no external LLM API, official source links first, unique title/slug/mainKeyword checks",
+  "files": [
+    "content\\blog\\scheduled-2026-08-29-phase6t.json"
+  ]
+}

@@ -1,9 +1,9 @@
 import Script from "next/script";
 
 export function GAProvider() {
-  const measurementId = process.env.NEXT_PUBLIC_GA_ID || "G-92QVJS88F8";
+  const measurementId = process.env.NEXT_PUBLIC_GA_ID;
 
-  if (!measurementId) {
+  if (process.env.NEXT_PUBLIC_ANALYTICS_ENABLED !== "true" || !measurementId) {
     return null;
   }
 

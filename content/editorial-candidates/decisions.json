@@ -1,0 +1,2544 @@
+{
+  "updatedAt": "2026-09-13T10:18:43+09:00",
+  "policy": "A legacy row remains non-public unless an independent contract, research packet, draft, QA, and human approval exist.",
+  "decisions": [
+    {
+      "slug": "public-data-nutrition-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This public-data nutrition owner lacks a defensible agency/provider, dataset/API identity, jurisdiction and purpose, dataset/schema/API version, release/effective/retrieval/update dates, licence/terms and attribution requirements, record population, coverage and exclusions, and food versus marketed-product distinction. It also lacks field definitions, units, null and rounding rules, source-to-site transformations, normalization, joins, deduplication and provenance, record identifiers and update currency, pagination/limits/outage/error/cache/fallback behavior, and conflict, correction, archive and rollback evidence. Keep it non-public and out of drafting priority while separating it from data-update-date, food-category-code, dataset pages and API operational documentation, and excluding unsupported official, complete, comprehensive, current, real-time, accurate, verified, guaranteed or ranking claims."
+    },
+    {
+      "slug": "noodle-topping-calorie-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This noodle-topping calorie owner lacks a defensible noodle class and dry/fresh/frozen/instant state, exact included versus optional noodles, flakes, protein, egg, cheese, oil, sauce, broth and user-added toppings, current brand/SKU and label dates, as-sold/dry versus prepared yield, water/oil/milk additions, solids/sauce/broth/toppings actually consumed or left over, and serving/package/actual-intake denominators. It also lacks numeric calorie/carbohydrate/sugar/protein/fat/saturated-fat/sodium/fiber values on one denominator, ingredients, allergens, cross-contact and ambient/refrigerated/frozen/opened/prepared-leftover storage, cooking or reheating-safety evidence. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from cup-noodle, cold-noodle, pasta, sauce and complete-meal owners, and excluding unsupported healthier, diet, weight, satiety, safe, best or ranking claims."
+    },
+    {
+      "slug": "ingredient-list-reading-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This ingredient-list-reading owner lacks an applicable jurisdiction, regulation/version and effective date, current label observation date, exact brand/SKU/product/formulation identity, ingredient-order basis and exceptions, compound ingredients and subingredients, and percentages only where disclosed or required. It also lacks defensible handling of additives, processing aids, flavors, colors and sweeteners, common/scientific names and synonyms, exact allergen/cross-contact/facility wording, reformulation and label-version drift, absent versus not-disclosed versus zero distinctions, and legible source-image or transcription provenance. Keep it non-public and out of drafting priority while separating it from nutrition-label arithmetic, regulated claim wording, product-specific allergen and no-sugar owners, and excluding unsupported safe, unsafe, toxic, natural, clean, chemical-free, healthy, disease, allergy-free, best or ranking claims."
+    },
+    {
+      "slug": "per-100g-food-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This per-100-g food owner lacks a defensible comparable food population, edible portion versus as-sold/net/drained identity, raw/cooked/prepared/reconstituted state, current brand/SKU or authoritative record with dataset/version and observation date, original source basis and denominator, and an explicit per-100-g conversion formula with units, rounding and missing or zero-weight handling. It also lacks density, yield, water, oil and addition accounting and numeric calorie/protein/fat/saturated-fat/carbohydrate/sugar/fiber/sodium values from the same record, state and denominator. Keep it non-public and out of drafting priority while separating nutrient density from serving/package/actual intake and from per-100-kcal, serving-size, label-reading and ranking owners, and excluding unsupported healthier, better, high, low, diet, weight, disease, safe, best or ranking claims."
+    },
+    {
+      "slug": "food-category-code-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This food-category-code owner lacks a defensible classification authority, jurisdiction and purpose, code system, dataset/schema version, release and effective date, hierarchy with parent/child labels, and record-to-code provenance with mapping method and date. It also lacks separation of source codes from the site's normalized taxonomy, one-to-many and many-to-one mapping rules, deprecated/replaced/unknown/unmapped-code handling, multilingual labels, validation, conflict resolution, change detection, archive and rollback evidence. Keep it non-public and out of drafting priority while separating it from public-data use, nutrition-label normalization, search filters and dataset-specific documentation owners, and excluding unsupported official, exhaustive, complete, correct, current, standard or ranking claims."
+    },
+    {
+      "slug": "icecream-satfat-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This ice-cream saturated-fat owner lacks a defensible ice-cream/ice-milk/gelato/sorbet/frozen-yogurt/plant-based-frozen-dessert class and bar/cone/cup/tub format, disclosed dairy or plant fat source and percentage, flavor, mix-in, coating and cone composition, current brand/SKU and label dates, piece/scoop/volume/weight/serving/container/package/actual-intake denominators, frozen/softened/melted state, and numeric calorie/fat/saturated-fat/trans-fat/carbohydrate/sugar/protein/sodium values on one denominator. Density or overrun is unsupported unless directly evidenced, and ingredients, allergens, cross-contact, frozen-chain, thaw-refreeze, opened-storage and use-by evidence are missing. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from yogurt, dairy dessert, chocolate and other frozen-snack owners, and excluding unsupported heart, cholesterol, weight, diabetes, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "data-update-date-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This data-update-date owner lacks a defensible source, dataset and record/page scope, explicit observation, retrieval, publication, revision, effective and expiration dates with timezone, separation of source-reported from site-derived dates, dataset/API/schema version or release identity, authoritative refresh cadence, and per-record versus dataset-wide currency rules. It also lacks deterministic stale, unknown and missing-date handling, change detection, provenance or archive evidence, conflict resolution and rollback rules. Keep it non-public and out of drafting priority while separating it from product-label dates, article editorial dates, API availability and dataset-specific documentation owners, and excluding unsupported real-time, latest, current, complete, accurate, official, guaranteed or ranking claims."
+    },
+    {
+      "slug": "mini-snack-total-amount-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This mini-snack total-amount owner lacks a defensible snack class and exact included unit, flavor, filling, coating or component mix, current brand/SKU and label dates, outer multipack versus individual-pack identity, package net content and count, piece/unit weight, serving/package/actual-intake and leftover denominators, edible/as-sold versus prepared state, and numeric calorie/carbohydrate/sugar/fat/saturated-fat/protein/fiber/sodium values on one denominator. It also lacks ingredients, allergens, cross-contact and ambient/opened storage or use-by evidence. Keep it non-public and out of drafting priority while separating it from biscuit, cracker, chocolate, candy, nuts, rice-cake, bakery and other snack-class owners, and excluding unsupported small-package, low-calorie, diet, weight, satiety, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "nuts-serving-size-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This nuts-serving-size owner lacks a defensible single-nut or mixed-nut population with species and disclosed mixture percentages, raw/roasted/fried/salted/sweetened/flavored/coated processing state, current brand/SKU and label dates, edible-kernel versus in-shell/net weight, piece/weight/serving/package/actual-intake denominators, added oil/salt/sugar or coating treatment, and numeric calorie/fat/saturated-fat/carbohydrate/sugar/fiber/protein/sodium values on one denominator. It also lacks ingredients, allergens, cross-contact and ambient/opened storage, rancidity or use-by evidence. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T mixed-nut siblings, separating it from nut-butter, granola, trail-mix, seed and other snack owners, and excluding unsupported heart, cholesterol, weight, satiety, diabetes, brain, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "instant-rice-carbs-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This instant-rice owner lacks a defensible white/brown/multigrain/konjac/seasoned rice population and disclosed grain or addition percentages, current brand/SKU and label dates, edible/as-sold/heated/prepared state, tray/cup/package/serving/weight/actual-intake denominators, water loss/gain or additions and yield, and numeric carbohydrate/calorie/protein/fat/fiber/sugar/sodium values on one denominator. Resistant-starch or glycemic statements are unsupported without direct evidence, and ingredients, allergens, cross-contact and ambient/frozen/opened/prepared-leftover storage, use-by or reheating-safety evidence are missing. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from curry, rice-ball and other grain or meal owners, and excluding unsupported glycemic, diabetes, weight, satiety, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "bread-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This bread owner lacks a defensible plain-sliced/roll/sweet-bread/pastry/filled/topped/coated product population, flour or whole-grain and filling/topping composition with disclosed percentages, current brand/SKU and label dates, slice/piece/weight/serving/package/actual-intake denominators, as-sold versus toasted or prepared state with additions and yield, and numeric sugar/carbohydrate/fiber/calorie/protein/fat/saturated-fat/sodium values on one denominator. Naturally occurring versus added sugar is unsupported unless explicitly labeled, and ingredients, allergens, cross-contact and ambient/frozen/opened storage or use-by evidence are missing. Keep it non-public and out of drafting priority while separating it from sandwich, bagel, bakery-snack and jam owners, and exclude unsupported whole-grain, glycemic, diabetes, satiety, weight, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "no-sugar-label-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This no-sugar-label owner lacks a defensible jurisdiction, regulation/version and effective date, exact sugar-free/no-sugar/no-added-sugar/unsweetened/zero wording and language, threshold, reference amount and rounding rule, product category and exceptions, naturally occurring versus added and total sugar distinction, carbohydrate/polyol/sweetener identity and disclosed amounts, calorie implications, and current brand/SKU label capture. Comparative claims also lack a reference product and required qualifiers. Keep it non-public and out of drafting priority while separating regulated wording from the zero-sugar drink population and general nutrition-claim owner, making no invented compliant/noncompliant verdict, and excluding unsupported diabetes, weight, dental, gut, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "instant-curry-calorie-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This instant-curry owner lacks a defensible retort-pouch/roux/powder/concentrate/complete-meal category, meat/vegetable and other component composition, current brand/SKU and label dates, as-sold concentrate versus prepared-sauce state, added water/oil/milk/coconut milk/rice/toppings, prepared yield, sauce/solids/rice actually consumed or left over, serving/package/actual-intake denominators, and numeric calorie/sodium/fat/saturated-fat/carbohydrate/sugar/protein/fiber values on one denominator. It also lacks ingredients, allergens, cross-contact and ambient/refrigerated/opened/prepared-leftover storage, use-by or reheating-safety evidence. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from generic sauce, rice and complete-meal owners, and excluding unsupported healthy, diet, weight, safe, best or ranking claims."
+    },
+    {
+      "slug": "salad-lunchbox-dressing-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This salad-lunchbox owner lacks a defensible product population and exact greens, protein, grain, cheese, nuts, croutons and other included/excluded component set, current brand/SKU and label dates, dressing identity and included-packet versus amount-actually-used distinction, as-sold/separated/mixed and drained/liquid states, serving/package/actual-intake and leftover denominators, and numeric calorie/sodium/fat/saturated-fat/carbohydrate/sugar/protein/fiber values on one denominator. It also lacks ingredients, allergens, cross-contact, cold-chain/opened storage, use-by and time-temperature safety evidence. Keep it non-public and out of drafting priority while separating it from dressing-only, topping-only and generic lunchbox owners, and exclude unsupported healthy, diet, weight, satiety, safe, best or ranking claims."
+    },
+    {
+      "slug": "nutrition-claim-wording-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This nutrition-claim wording owner lacks a defensible jurisdiction, regulation/version and effective date, exact on-pack claim wording and language, nutrient or energy threshold, reference amount such as per serving/100 g/100 ml or applicable category basis, product-category exceptions, analytical or label-data source and date, and current brand/SKU label capture. Comparative claims also lack a defined reference product, required percentage or absolute difference and mandatory qualifiers/disclosures. Keep it non-public and out of drafting priority while separating general claim interpretation from product-specific no-sugar, low-sodium and other nutrient owners, making no invented compliant/noncompliant verdict, and excluding unsupported disease-treatment/prevention, implied-health, safety, best or ranking claims."
+    },
+    {
+      "slug": "per-100kcal-protein-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This protein-per-100-kcal owner lacks a defensible comparable food population, edible/as-sold/drained/prepared/cooked state, current brand/SKU or authoritative source and observation date, calorie and protein values from the same record and denominator, an explicit protein-per-100-kcal formula with rounding plus missing or zero-energy handling, and separation of density from serving/package/actual intake. It also lacks preparation, yield and addition accounting, supported protein-source/quality evidence and relevant nutrient, ingredient, allergen, storage or safety boundaries. Keep it non-public and out of drafting priority while separating it from product-class protein owners and per-100-g comparisons, and exclude unsupported muscle, satiety, weight, disease, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "cereal-milk-combo-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This cereal-and-milk combination owner lacks a defensible cereal category/composition and milk or other liquid type, fat level and sweetening state, current brand/SKU and label dates, dry cereal amount, poured liquid amount, prepared total and actual cereal/liquid consumed or left over, weight/volume/serving/package/actual-intake denominators, and numeric calorie/carbohydrate/sugar/fiber/protein/fat/saturated-fat/sodium/calcium values with dry-only and combined math on one denominator. It also lacks ingredient, allergen, cross-contact and ambient/refrigerated/opened storage or use-by evidence. Keep it non-public and out of drafting priority while separating it from dry cereal, dairy/flavored milk, soy milk, yogurt and complete-meal owners, and exclude unsupported complete-breakfast, satiety, weight, glycemic, heart, bone, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "soy-milk-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This soy-milk owner lacks a defensible beverage/soy-drink classification and applicable jurisdiction, disclosed whole-soybean/soy-solids/soy-protein/isolate composition and percentages, exact sweetened/unsweetened/no-added-sugar claim wording and current label date, current brand/SKU identity, container/serving/package/actual-intake denominators, numeric sugar/carbohydrate/calorie/protein/fat/saturated-fat/sodium/calcium and fortification values on one denominator, ingredients/sweeteners/allergens/cross-contact and ambient/refrigerated/opened storage or use-by directions. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from dairy milk, flavored milk, other plant drinks, tofu and meal-replacement drinks, and excluding unsupported hormone/estrogen, thyroid, cancer, diabetes, weight, muscle, healthy, safe, best or ranking claims."
+    },
+    {
+      "slug": "convenience-protein-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This convenience-store protein-food owner lacks a defensible food population and retail-channel boundary, animal/plant protein source and percentage, ready-to-eat versus required cooking/preparation state, current brand/SKU and label dates, piece/weight/serving/package/actual-intake denominators, numeric protein/calorie/sodium/fat/saturated-fat/carbohydrate/sugar/fiber values on one denominator, ingredients/allergens/cross-contact and refrigerated/frozen/ambient/opened storage, use-by or cooking-safety directions. Keep it non-public and out of drafting priority while separating it from chicken-breast, egg, tofu, protein-bar, protein-drink/shake and complete-meal owners, and exclude unsupported protein-quality/completeness, muscle-gain, satiety, weight-loss, healthy, safe, best, lowest or ranking claims."
+    },
+    {
+      "slug": "tteokbokki-mealkit-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This tteokbokki meal-kit owner lacks a defensible kit population with exact rice-cake, sauce and included/excluded topping components, current brand/SKU and label dates, sauce-use fraction, added water/oil/ingredients, as-sold versus prepared yield, solids/sauce/broth-consumed states, package/serving/actual-intake denominators, numeric sodium/calorie/carbohydrate/sugar/protein/fat values on one denominator, ingredients/allergens/cross-contact and refrigerated/frozen/opened/prepared-leftover storage, use-by or cooking-safety directions. Keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from plain rice-cake, generic spicy-sauce and other meal-kit owners, and excluding unsupported healthy, diet, disease, safe, best, lowest or ranking claims."
+    },
+    {
+      "slug": "zero-sugar-drink-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This zero-sugar drink owner lacks a defensible beverage class spanning carbonated/noncarbonated, dairy, tea, coffee and energy products; the applicable jurisdiction, exact zero/no-sugar claim wording and current label date; current brand/SKU identity; container, serving, package and actual-intake denominators; numeric sugar, carbohydrate, calorie, sodium and caffeine values on one denominator; disclosed sweetener types and amounts plus caffeine, taurine, vitamins or other active ingredients; ingredients, allergens and cross-contact; and unopened/opened storage and use-by directions. Keep it non-public and out of drafting priority while preserving adjacent energy-drink, coffee-drink, soy-milk and sparkling-water owners, and exclude unsupported weight-loss, diabetes, dental, gut, healthy, safe, best, lowest or ranking claims."
+    },
+    {
+      "slug": "chicken-sausage-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This chicken-sausage owner lacks a defensible poultry/meat species and percentage population, current brand/SKU and label dates, formulation/emulsion/casing and smoked/cured/raw/ready-to-eat state, piece/weight/serving/package/actual-intake denominators, as-sold versus boiled/pan/air-fryer-cooked state with oil/additions and yield, numeric sodium/calorie/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, ingredients/additives/nitrite/allergens/cross-contact and refrigerated/frozen/opened/prepared-leftover storage, use-by or cooking-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from generic sausage, chicken breast, ham and frozen-hotdog owners, and excluding unsupported high-protein, low-fat, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "pasta-sauce-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This pasta-sauce owner lacks a defensible tomato/cream/oil/pesto/meat style and ready-to-use/concentrate/powder product population, current brand/SKU and label dates, as-sold sauce amount, dilution or oil/water/ingredient additions, pasta amount and prepared-dish yield, sauce-only/serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, ingredients/additives/allergens/cross-contact and unopened/opened/prepared-leftover storage, use-by or cooking-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from generic sauce, soup-base, dressing and cold-noodle-sauce owners, and excluding unsupported low-sodium, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "kimchi-sodium-label-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This kimchi owner lacks a defensible kimchi type/cut/fermentation-stage and packaged-versus-measured-homemade population, current brand/SKU and label or recipe dates, net/drained/undrained weight and separate solids/brine/seasoning treatment, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/carbohydrate/sugar values on one denominator, ingredients/additives/allergens/cross-contact and unopened/opened/fermenting refrigeration, storage, use-by or food-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from pickle and generic side-dish owners, and excluding unsupported rinsing/draining reduction percentages, probiotic, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "soup-base-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This soup-base owner lacks a defensible concentrate/powder/liquid/paste product population, current brand/SKU and label dates, as-sold amount and concentration, exact dilution ratio/water/additions and prepared yield, base-used/serving/package/actual-broth-intake denominators, separate solids/toppings, numeric sodium/calorie/protein/fat/carbohydrate/sugar values on one denominator, ingredients/additives/allergens/cross-contact and unopened/opened/reconstituted storage, use-by or cooking-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T low-sodium siblings, separating it from finished soup, noodle and meal-kit owners, and excluding unsupported low-sodium, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "triangle-kimbap-calorie-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This triangle-kimbap owner lacks a defensible packaged triangular product population, current brand/SKU and label dates, whole-unit/net-weight identity, separate rice/filling/seaweed/sauce/oil composition, edible versus excluded packaging, as-sold versus heated state, unit/serving/package/actual-intake denominators, numeric calorie/sodium/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, ingredients/allergens/cross-contact and chilled/ambient/opened storage, use-by or reheating-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings, separating it from whole-roll gimbap and lunchbox owners, and excluding unsupported low-calorie, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "frozen-food-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This broad frozen-food owner lacks a defensible single subclass or explicitly stratified population, current brand/SKU and label dates, breaded/unbreaded and raw/precooked state, separate product/filling/sauce components, as-sold versus oven/air-fryer/pan/microwave-cooked state, oil/additions and prepared yield, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, ingredients/allergens/cross-contact and frozen/thawed/opened/prepared-leftover storage, use-by or cooking-safety directions; keep it non-public and out of drafting priority until it is narrowed or stratified, retain its four siblings behind this owner, and exclude unsupported low-sodium, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "cup-noodle-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This cup-noodle owner lacks a defensible cup/bowl and fried/nonfried product population, current brand/SKU and label dates, dry/as-sold versus prepared state, exact water volume and prepared yield, separate noodle/powder-soup/liquid-soup/topping weights, solids-eaten versus broth-consumed amounts, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, ingredients/allergens/cross-contact and unopened/opened/prepared-leftover storage, use-by or cooking-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "frozen-pizza-label-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This frozen-pizza owner lacks a defensible product population, current brand/SKU and label dates, pizza style/diameter/whole weight/slice-count strata, separate crust/sauce/cheese/meat/vegetable topping treatment, as-sold versus oven/air-fryer/microwave-cooked state and additions or prepared yield, slice/serving/whole-package/actual-intake denominators, numeric calorie/sodium/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, ingredients/allergens/cross-contact and frozen/thawed/opened/prepared-leftover storage, use-by or cooking-safety directions; keep it non-public and out of drafting priority while retaining its four siblings behind this owner and excluding unsupported low-calorie, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "lunchbox-calorie-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This lunchbox owner lacks a defensible convenience-store/chilled/frozen/ambient or measured home-prepared population, current brand/SKU and label dates, separate rice/noodle/protein main and side-dish/sauce weights, as-sold versus heated state and exact reheating method, serving/package/actual-intake denominators, numeric calorie/sodium/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, edible and excluded components, ingredients/allergens/cross-contact and chilled/frozen/ambient/opened storage, use-by, reheating or cooking-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-calorie, healthy, balanced, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "fried-rice-meal-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This fried-rice meal owner lacks a defensible frozen/chilled/ambient or measured home-prepared population, current brand/SKU and label dates, rice/protein/vegetable/sauce variants, as-sold versus microwave/pan/air-fryer-cooked state, required or optional oil/additions and yield, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/saturated-fat/carbohydrate/sugar values on one denominator, sauce/oil/egg/topping treatment, ingredients/allergens/cross-contact and frozen/chilled/opened/thawed/prepared-leftover storage, use-by, reheating or cooking-safety directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "fishcake-soup-mealkit-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This fishcake-soup meal-kit owner lacks a defensible chilled/frozen/ambient kit population, current brand/SKU and label dates, separate fishcake/solid/broth/soup-base/topping weights, as-sold versus prepared state, required water/additions and yield, solids-eaten versus broth-consumed amounts, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/carbohydrate/sugar values on one denominator, fish content/additives, ingredients/allergens/cross-contact and unopened/opened/thawed/prepared-leftover storage or cooking directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "gimbap-line-nutrition-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This whole-roll gimbap owner lacks a defensible current product population and brand/SKU or measured recipe set, label/measurement dates, whole-roll/piece/serving/package/actual-intake weights, rice-versus-filling proportions, numeric sodium/calorie/protein/fat/carbohydrate/sugar values on one denominator, sesame oil/salt/sauce/condiment treatment, ingredients/allergens/cross-contact and chilled/room-temperature/opened storage or use-by directions; keep it non-public and out of drafting priority, keep triangle kimbap and lunchbox/meal owners separate, and exclude unsupported healthy, diet, safety, disease or ranking claims."
+    },
+    {
+      "slug": "cheese-protein-fat-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This cheese owner lacks a defensible natural/processed/fresh/soft/semi-hard/hard/string/slice/spread product population, current brand/SKU and label dates, moisture and milk-fat classification, as-sold slice/piece/serving/package/actual-intake weights, numeric protein/fat/saturated-fat/sodium/calorie/carbohydrate/sugar values on one denominator, milk source and additives, product-specific lactose/calcium/culture evidence and claim limits, ingredients/allergens/cross-contact and unopened/opened/refrigerated/freezing storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported high-protein, low-fat, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "seaweed-snack-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This seaweed-snack owner lacks a defensible plain/roasted/seasoned/oiled/fried product population, current brand/SKU and label dates, sheet/piece/mini-pack/package/actual-intake weights, numeric sodium/calorie/fat/saturated-fat/sugar/protein values on one denominator, oil/salt/seasoning/additive composition, iodine/mineral evidence and claim limits, ingredients/allergens/cross-contact and unopened/opened moisture or rancidity storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "porridge-soup-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This porridge/soup owner lacks a defensible porridge-versus-soup scope decision, ready-to-eat/concentrate/powder/frozen/chilled product population, current brand/SKU and label dates, as-sold versus prepared state, water/milk/addition and yield rules, solid-versus-liquid or broth-consumption amounts, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/carbohydrate/sugar values, ingredients/allergens/cross-contact and unopened/opened/prepared storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T porridge siblings, keeping narrower cup-soup and soup-base contracts separate, and excluding unsupported low-sodium, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "dumpling-sodium-calorie-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This dumpling owner lacks a defensible steamed/boiled/pan-fried/deep-fried/baked, meat/kimchi/vegetable and frozen/chilled product population, current brand/SKU and label dates, as-sold versus cooked state and water/oil/yield rules, piece weight, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/carbohydrate/sugar values, wrapper/filling/dipping-sauce separation, ingredients/additives/allergens/cross-contact and frozen/thawed/cooked-leftover storage or cooking directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "rice-cake-snack-carbs-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This rice-cake snack owner lacks a defensible plain/filled/coated/flavored and shelf-stable/chilled/frozen product population, current brand/SKU and label dates, as-sold versus prepared state, piece weight, serving/package/actual-intake denominators, numeric carbohydrate/total-sugar/calorie/protein/fat/sodium values, filling/coating/sweetener composition, ingredients/allergens/cross-contact and unopened/opened/prepared storage or use-by directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sugar, healthy, choking/age-safety, disease or ranking claims."
+    },
+    {
+      "slug": "beef-jerky-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This beef-jerky owner lacks a defensible current product set, brand/SKU and label dates, exact meat and drying/curing/seasoning population, as-sold weight, serving/package/actual-intake denominators, numeric sodium/calorie/protein/fat/sugar values, moisture-concentration limits, ingredients/additives/allergens/cross-contact and unopened/opened storage or use-by directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, high-protein, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "instant-udon-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This instant-udon owner lacks a defensible product-form and current product set, brand/SKU and label dates, noodle/soup-powder/liquid-seasoning/topping separation, as-sold versus prepared weight/volume and added-water rules, serving/package/actual-noodle/actual-broth-intake denominators, numeric sodium/calorie/macronutrient values, ingredients/allergens and shelf/opened/prepared storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported low-sodium, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "nutrition-serving-size-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The public nutrition-label comparison owner already answers the same serving-size normalization job across 100 g, 100 mL, 100 kcal and labeled serving bases with worked arithmetic and explicit comparison cautions; the generic legacy basis adds no independent reader outcome.",
+      "mergeTarget": "nutrition-label-comparison-basis"
+    },
+    {
+      "slug": "nutrition-serving-size-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its serving-size mistake is already a failure branch of the public owner's denominator-matching and actual-intake guidance.",
+      "mergeTarget": "nutrition-label-comparison-basis"
+    },
+    {
+      "slug": "nutrition-serving-size-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It repeats the public owner's 100 g, 100 mL, 100 kcal and serving comparison without a separate product population or decision outcome.",
+      "mergeTarget": "nutrition-label-comparison-basis"
+    },
+    {
+      "slug": "nutrition-serving-size-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its checking routine duplicates the public owner's basis-first normalization, package-total and actual-intake workflow.",
+      "mergeTarget": "nutrition-label-comparison-basis"
+    },
+    {
+      "slug": "nutrition-serving-size-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same serving-size and denominator topic already answered by the public owner.",
+      "mergeTarget": "nutrition-label-comparison-basis"
+    },
+    {
+      "slug": "frozen-hotdog-satfat-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This frozen-hotdog owner lacks a defensible Korean battered corn-dog versus sausage-in-bun boundary and current product set, brand/SKU and label dates, frozen/as-sold versus microwave/air-fried/deep-fried cooking state, piece/serving/package/actual-intake denominators, numeric saturated-fat/total-fat/sodium/calorie/protein/carbohydrate values, added oil/sauce treatment, sausage/batter/cheese ingredients, allergens/cross-contact and frozen/opened/cooked storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported healthy, safety, disease, processed-meat-risk, low-fat or ranking claims."
+    },
+    {
+      "slug": "ready-side-dish-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This ready-side-dish owner lacks a defensible chilled/shelf-stable side-dish population and form boundary, current product set, brand/SKU and label dates, solids/sauce/broth/drained and serving/container/actual-intake denominators, numeric sodium/calorie/macronutrient values, preparation or sauce-consumption rules, ingredients/allergens and unopened/opened/refrigerated storage or use-by directions; keep it non-public and out of drafting priority while excluding unsupported low-sodium, healthy, safety, disease or ranking claims."
+    },
+    {
+      "slug": "granola-fat-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This granola owner lacks a defensible granola versus muesli/cereal boundary and current product set, brand/SKU and label dates, dry 100 g/serving/package/actual-intake denominators, separate milk/yogurt/fruit additions, numeric fat/saturated-fat/sugar/fiber/protein/calorie values, grain/nut/seed/oil/sweetener ingredients, allergens/cross-contact and opened-storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported healthy, diet, weight-loss, low-sugar, high-protein or ranking claims."
+    },
+    {
+      "slug": "energy-drink-label-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The researched Phase 6T energy-drink candidate already owns the same energy-drink label-reading decision with a stronger current official evidence packet, explicit high-caffeine marker, total-can caffeine, sugar, container-volume and actual-can intake contract; the generic legacy basis adds no independent reader outcome.",
+      "mergeTarget": "phase6t-energy-drink-basis"
+    },
+    {
+      "slug": "energy-drink-label-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its caffeine, sugar, calories and serving-basis warning is already a failure branch of the researched Phase 6T energy-drink decision sequence.",
+      "mergeTarget": "phase6t-energy-drink-basis"
+    },
+    {
+      "slug": "energy-drink-label-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same energy-drink label fields without a separate product population, current label set or decision that survives the candidate's per-can caffeine and sugar worksheet.",
+      "mergeTarget": "phase6t-energy-drink-basis"
+    },
+    {
+      "slug": "energy-drink-label-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the candidate's high-caffeine marker, container volume, total caffeine, sugar and actual-can intake workflow.",
+      "mergeTarget": "phase6t-energy-drink-basis"
+    },
+    {
+      "slug": "energy-drink-label-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same energy-drink caffeine, sugar, total-can and sensitive-reader safety boundary already covered by the candidate.",
+      "mergeTarget": "phase6t-energy-drink-basis"
+    },
+    {
+      "slug": "tofu-snack-protein-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This tofu-snack owner lacks a defensible processed-snack identity and current product set, brand/SKU and label dates, tofu/soy ingredient amount and baked/fried/formulation separation, piece/serving/package/actual-intake denominators, numeric protein/sodium/fat/saturated-fat/calorie values, ingredients/additives, soy/wheat/milk allergens or cross-contact and unopened/opened storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported high-protein, healthy, diet, weight-loss, safety or ranking claims."
+    },
+    {
+      "slug": "canned-tuna-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This canned-tuna owner lacks a defensible tuna form and current product set, brand/SKU/species where declared and label dates, water/oil/seasoned packing-medium separation, net/drained/serving/can/actual-intake denominators and whether packing liquid is consumed, numeric sodium/fat/saturated-fat/protein values, ingredients/additives, fish allergens/cross-contact and can-integrity/opened-refrigerated storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported mercury, pregnancy, disease, healthy, safety or ranking claims."
+    },
+    {
+      "slug": "meal-replacement-drink-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This meal-replacement drink owner lacks a defensible meal-replacement identity/claim and ready-to-drink versus powder/prepared boundary, current product set, brand/SKU and label dates, serving/package/prepared-volume/actual-intake denominators, numeric energy/protein/carbohydrate/fat/fiber and micronutrient values, added-liquid calculations, ingredients/allergens and dry/refrigerated/opened storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T meal-drink siblings and excluding unsupported meal-completeness, satiety, weight-loss, healthy or disease claims."
+    },
+    {
+      "slug": "greek-yogurt-protein-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This Greek-yogurt owner lacks a defensible Greek/strained-style product boundary and current product set, brand/SKU and label dates, plain/unsweetened versus sweetened/flavored separation, serving/package/actual-intake denominators, numeric protein/total-sugar/fat values, added-sugar/sweetener/straining and culture evidence, ingredients/milk allergens and refrigerated opened-storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported probiotic, digestion, gut-health, weight, disease, healthy or ranking claims."
+    },
+    {
+      "slug": "ham-sausage-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This ham-and-sausage owner lacks defensible ham, sausage and broader processed-meat category boundaries and a comparable current product set, brand/SKU and label dates, slice/piece/serving/package/actual-intake denominators, numeric sodium/fat/saturated-fat/protein values, meat content and curing/preservative ingredient evidence, allergens/cross-contact and cooking/opened-refrigerated storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported cancer, disease, healthy, safety or ranking claims."
+    },
+    {
+      "slug": "low-sugar-snack-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This low-sugar snack owner lacks a defensible comparable snack category and current product set, brand/SKU and label dates, evidence for each low-sugar or sugar-free nutrition claim under the applicable current criteria, 100 g/serving/package/actual-intake denominators, numeric total-sugar/carbohydrate/calorie values, added-sugar/sugar-alcohol/non-sugar-sweetener identities, ingredients/allergens and storage directions; keep it non-public and out of drafting priority while excluding unsupported glycemic, disease, weight, healthy or child-suitability claims."
+    },
+    {
+      "slug": "coconut-water-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This coconut-water owner lacks a defensible pure-versus-sweetened/blended product boundary and current product set, brand/SKU and label dates, 100 mL/serving/package/actual-intake denominators, numeric total-sugar/potassium/sodium and other electrolyte values, added-sugar/sweetener and ingredient evidence, allergens/cross-contact and opened-storage directions; keep it non-public and out of drafting priority while excluding unsupported hydration, recovery, healthy, natural or disease claims."
+    },
+    {
+      "slug": "sports-drink-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This sports-drink owner lacks a defensible product-category and current product set, brand/SKU and label dates, 100 mL/serving/package/actual-intake denominators, numeric total-sugar/carbohydrate/sodium and other electrolyte values, added-sugar/sweetener/caffeine and ingredient evidence, allergens/cross-contact and opened-storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported exercise, hydration, recovery, health or disease claims."
+    },
+    {
+      "slug": "cereal-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This bowl-cereal owner lacks a defensible ready-to-eat cereal category and current product set, brand/SKU and label dates, dry serving/package/actual-intake denominators, numeric total-sugar/fiber values, separately measured milk type and volume for combined calculations, added-sugar and ingredient evidence, allergens/cross-contact and opened-storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported child, health or disease claims."
+    },
+    {
+      "slug": "kids-drink-100ml-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This children's-drink owner lacks a defensible age and beverage-category boundary, current product set, brand/SKU and label dates, 100 mL/serving/package/actual-intake denominators, numeric sugar and nutrient values, juice percentage and added-sugar/sweetener/caffeine composition, ingredients/allergens and refrigerated/opened-storage evidence; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported child-directed health or safety claims."
+    },
+    {
+      "slug": "protein-shake-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This protein-shake owner lacks a defensible powder-versus-ready-to-drink and food-category boundary, current product set, brand/SKU and label dates, scoop/serving/package/prepared-volume/actual-intake denominators, added-liquid calculations, numeric protein/sugar and composition evidence, ingredients/allergens and dry/refrigerated storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and excluding unsupported performance or health claims."
+    },
+    {
+      "slug": "dried-sweet-potato-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This dried-sweet-potato owner lacks a defensible single-ingredient versus sweetened/seasoned product boundary, current product set, brand/SKU and label dates, piece/serving/package/actual-intake denominators, numeric total-sugar/fiber and moisture-concentration evidence, added-sugar/additive ingredients, allergens/cross-contact and opened-storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings and the separate researched dried-fruit owner."
+    },
+    {
+      "slug": "flavored-milk-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This flavored-milk owner lacks a defensible processed-milk product boundary, current product set, brand/SKU and label dates, 100 mL/serving/package/actual-intake denominators, numeric sugar and nutrient values, milk-solids/flavoring/sweetener composition, milk and other allergen evidence and refrigerated opened-storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings."
+    },
+    {
+      "slug": "powder-drink-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This powdered-drink owner lacks a defensible product-class boundary, current product set, brand/SKU and label dates, dry-powder/stick/package/prepared-volume and actual-intake denominators, water-versus-milk preparation calculations, numeric sugar and composition evidence, ingredients/allergens and dry/prepared storage directions; keep it non-public and out of drafting priority while retaining its already-merged Phase 6T siblings."
+    },
+    {
+      "slug": "salad-dressing-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This salad-dressing owner lacks a defensible dressing-category and generic-sauce boundary, current product set, brand/SKU and label dates, serving/package/actual-use and tablespoon denominators, numeric sugar/fat/sodium values, emulsion/oil and density evidence, ingredients/allergens and opened-storage directions; keep it non-public and out of drafting priority while preserving its already-merged Phase 6T siblings and the separate salad-meal composition owner."
+    },
+    {
+      "slug": "drink-per-100ml-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This broad 100 mL beverage-comparison owner lacks a defensible beverage-category and prepared-versus-packaged boundary, current product set, brand/SKU and label dates, 100 mL/serving/package/actual-intake denominators, numeric sugar/caffeine and composition evidence, ingredients/allergens and storage directions; keep it non-public and out of drafting priority until an educational normalization contract is researched without absorbing beverage-specific owners."
+    },
+    {
+      "slug": "kids-snack-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This broad child-snack owner lacks a defensible age and food-category boundary, current product set, brand/SKU and label dates, serving/package/actual-intake denominators, numeric sugar and nutrient values, ingredients/allergens and product-specific choking or preparation evidence; keep it non-public and out of drafting priority until that contract is researched without absorbing child drinks or category-specific snack owners."
+    },
+    {
+      "slug": "sauce-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving generic table-sauce owner lacks a defensible sauce-category and dressing boundary, current product set, brand/SKU and label dates, serving/actual-use and package denominators, numeric sodium/sugar values, concentrate-or-ready-to-use identity, ingredients/allergens and opened-storage evidence; keep it non-public and out of drafting priority until that contract is researched without absorbing product-specific sauce owners."
+    },
+    {
+      "slug": "jelly-drink-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This distinct jelly-drink owner lacks a defined beverage-versus-gel and konjac boundary, current product set, brand/SKU and label dates, pouch/serving/100 mL and actual-intake denominators, numeric sugar/calorie values, sweetener and gelling-ingredient evidence, ingredients/allergens and storage directions; keep it non-public and out of drafting priority until that contract is researched rather than merging it into the narrower konjac-jelly safety candidate."
+    },
+    {
+      "slug": "cracker-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving cracker owner lacks a defined current cracker product set, brand/SKU and label dates, piece/serving/package and actual-intake denominators, numeric sodium/fat/sugar values, cheese-flavor ingredient evidence, ingredients/allergens and opened-storage directions; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "jam-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving jam owner lacks a defined current jam/fruit-spread product set, brand/SKU and label dates, spoon/serving/package and actual-spread denominators, numeric total and added sugar values, fruit-content and sweetener evidence, ingredients/allergens and opened-storage directions; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "instant-oat-cup-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This distinct cup-oat owner lacks a defined current product set, dry mix and prepared serving denominators, manufacturer water-or-milk directions and measurable liquid quantities, numeric sugar/fiber values, topping and powder-sachet boundaries, ingredients/allergens and storage evidence; keep it non-public and out of drafting priority until that contract is researched rather than merging it into plain oatmeal."
+    },
+    {
+      "slug": "coffee-drink-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving coffee-drink owner lacks a defined current product set and beverage-format boundary, brand/SKU and label dates, package/serving/100 mL denominators, numeric sugar and caffeine values, milk/coffee/sweetener composition, ingredients/allergens, preparation and storage evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "cold-noodle-sauce-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving sugar-led cold-noodle sauce owner lacks a defined broth-versus-bibim product set, current labels, package/100g/100mL/prepared-serving denominators, dilution and actual-consumed-sauce amounts, numeric sugar/sodium values, ingredients/allergens and storage evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "oatmeal-fiber-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving oatmeal owner lacks a defined product type and current product set, brand/SKU and label dates, dry-versus-prepared weights, water-or-milk preparation and absorption assumptions, serving and actual-intake denominators, numeric fiber/sugar values, topping/add-in boundaries, ingredients/allergens and storage evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "cup-soup-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving cup-soup owner lacks a defined current product set, powder and prepared-volume denominators, manufacturer directions for water-versus-milk preparation, measurable added-liquid quantities, current sugar/sodium/fat values, ingredients/allergens and storage evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "canned-corn-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This surviving canned-corn owner lacks a defined current product set, brand/SKU and label dates, total/net/drained-weight and serving denominators, packing-liquid composition and consumption assumptions, numeric sugar/added-sugar/sodium values, ingredients/allergens, storage and preparation evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "pudding-sugar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This pudding topic lacks a defined product set, cup/package/serving denominators, dairy-versus-plant composition, current sugar/sweetener/fat values, ingredient and allergen declarations, and refrigerated-storage evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "dried-fruit-sugar-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The researched phase6t dried-fruit candidate owns the same package-denominator, actual-intake sugar calculation and ingredient-list reader job with current official evidence; the legacy basis has no independent research or QA packet.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "dried-fruit-sugar-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its serving-size and total-sugar mistakes are already explicit failure branches of the researched candidate's worked calculation and total-sugar-versus-ingredient-evidence boundary.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "dried-fruit-sugar-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It offers no distinct product population or decision outcome beyond the candidate's same-unit package comparison and separate ingredient-list check.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "dried-fruit-sugar-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its routine is the four-field package-record action sequence already contained in the researched basis article, not an independent search intent.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "dried-fruit-sugar-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting only restates the same serving denominator, package-total and added-sugar evidence questions answered by the researched topic owner.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "pickle-sodium-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The researched phase6t pickle candidate owns the same sodium and serving reader job with a stronger solids-versus-brine denominator audit; the legacy basis has no per-article research or QA evidence.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "pickle-sodium-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium and serving mistakes are already core failure branches of the candidate's package-field, edible-boundary and calculation-eligibility audit.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "pickle-sodium-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "A valid pickle comparison requires the same product identity and edible-boundary checks; this row adds no distinct population, evidence plan or decision outcome.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "pickle-sodium-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its label-reading routine is the candidate's final package-field and intake-form recording action, not a separate search intent.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "pickle-sodium-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting only restates the candidate's denominator uncertainty, draining and comparison questions without independent evidence or reader value.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "protein-bar-fat-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This is the surviving protein-bar topic owner, but it lacks a defined product set, one-bar and multipack denominators, current protein/fat/saturated-fat/sugar values, sweetener and ingredient evidence, and allergen declarations; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "salad-topping-calorie-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The researched phase6t salad-topping candidate now owns this reader job with a measured-input calculation workflow; the legacy page incorrectly treats unlike topping categories as comparable signals and lacks actual-use denominators.",
+      "mergeTarget": "phase6t-salad-topping-basis"
+    },
+    {
+      "slug": "salad-topping-calorie-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its generic serving and category-comparison mistakes are already handled by the candidate's explicit per-topping denominator, actual-weight conversion and same-nutrient summation checks.",
+      "mergeTarget": "phase6t-salad-topping-basis"
+    },
+    {
+      "slug": "salad-topping-calorie-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares croutons, cheese and nuts without product inputs or actual added weights, while the researched candidate supplies the only evidence-backed comparison and calculation contract.",
+      "mergeTarget": "phase6t-salad-topping-basis"
+    },
+    {
+      "slug": "salad-topping-calorie-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its generic label-reading routine is superseded by the candidate's measured-input ledger and does not create a separate reader decision.",
+      "mergeTarget": "phase6t-salad-topping-basis"
+    },
+    {
+      "slug": "salad-topping-calorie-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the researched candidate's actual-added-weight calculation, scope fence and denominator-error workflow.",
+      "mergeTarget": "phase6t-salad-topping-basis"
+    },
+    {
+      "slug": "sandwich-sodium-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "This is the surviving sandwich topic owner, but it lacks a product set, bread/filling/sauce composition, one-sandwich weight, current sodium and nutrient labels, allergen declarations and refrigerated-storage evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "phase6t-instant-rice-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier instant-rice-carbs cluster already owns the same instant-rice identity, total content, one-container intake, carbohydrate, calorie and serving-basis contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "instant-rice-carbs-basis"
+    },
+    {
+      "slug": "phase6t-instant-rice-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its carbohydrate, total-content, calorie and serving-denominator mistake is already a failure branch of the earlier instant-rice contract.",
+      "mergeTarget": "instant-rice-carbs-basis"
+    },
+    {
+      "slug": "phase6t-instant-rice-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same instant-rice class without distinct product identity, packaged-versus-cooked weight, one-container intake, current nutrient label or preparation evidence.",
+      "mergeTarget": "instant-rice-carbs-basis"
+    },
+    {
+      "slug": "phase6t-instant-rice-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's total-content, carbohydrate, calorie, actual-intake and official-label workflow without an independent contract.",
+      "mergeTarget": "instant-rice-carbs-basis"
+    },
+    {
+      "slug": "phase6t-instant-rice-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same instant-rice portion, carbohydrate, calorie, storage and label topic owner.",
+      "mergeTarget": "instant-rice-carbs-basis"
+    },
+    {
+      "slug": "phase6t-low-sodium-soup-base-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier soup-base-sodium cluster already owns the same soup-base identity, concentrate-versus-prepared amount, dilution ratio, broth intake and sodium contract; the unverified low-sodium label does not create a distinct reader outcome.",
+      "mergeTarget": "soup-base-sodium-basis"
+    },
+    {
+      "slug": "phase6t-low-sodium-soup-base-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, dilution, broth-intake and serving-denominator mistake is already a failure branch of the earlier soup-base contract.",
+      "mergeTarget": "soup-base-sodium-basis"
+    },
+    {
+      "slug": "phase6t-low-sodium-soup-base-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same soup-base class without a distinct product, concentrate dose, prepared volume, consumed-broth amount or current low-sodium label evidence.",
+      "mergeTarget": "soup-base-sodium-basis"
+    },
+    {
+      "slug": "phase6t-low-sodium-soup-base-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's concentrate, dilution-ratio, broth-intake, sodium and official-label workflow without an independent contract.",
+      "mergeTarget": "soup-base-sodium-basis"
+    },
+    {
+      "slug": "phase6t-low-sodium-soup-base-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same soup-base dilution, prepared-volume, sodium, ingredient and allergen topic owner.",
+      "mergeTarget": "soup-base-sodium-basis"
+    },
+    {
+      "slug": "phase6t-pasta-sauce-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier pasta-sauce-sodium cluster already owns the same pasta-sauce identity, one-use amount, tomato-versus-cream distinction, sodium and current-label contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "pasta-sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-pasta-sauce-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, serving-size and sauce-type mistake is already a failure branch of the earlier pasta-sauce contract.",
+      "mergeTarget": "pasta-sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-pasta-sauce-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same sauce class without distinct product, prepared-plate denominator, dilution, additions or current-label evidence; 100 g and 100 ml are not interchangeable without density evidence.",
+      "mergeTarget": "pasta-sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-pasta-sauce-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's one-use amount, tomato-or-cream identity, sodium and ingredient-label workflow without an independent contract.",
+      "mergeTarget": "pasta-sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-pasta-sauce-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same pasta-sauce serving, sauce-type, nutrient and allergen topic owner.",
+      "mergeTarget": "pasta-sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-kids-drink-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier kids-drink-100ml cluster already owns the same children's beverage identity, sugar, 100 ml, package-volume and fruit-beverage label contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "kids-drink-100ml-basis"
+    },
+    {
+      "slug": "phase6t-kids-drink-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, 100 ml, fruit-content and serving-size mistake is already a failure branch of the earlier children's-drink contract.",
+      "mergeTarget": "kids-drink-100ml-basis"
+    },
+    {
+      "slug": "phase6t-kids-drink-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same children's beverage class as the earlier owner, without distinct age-suitability, added-sugar/sweetener, caffeine or current-label evidence.",
+      "mergeTarget": "kids-drink-100ml-basis"
+    },
+    {
+      "slug": "phase6t-kids-drink-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sugar, 100 ml, package volume and fruit-beverage workflow without an independent contract.",
+      "mergeTarget": "kids-drink-100ml-basis"
+    },
+    {
+      "slug": "phase6t-kids-drink-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same children's-drink composition, sugar and serving-basis topic owner.",
+      "mergeTarget": "kids-drink-100ml-basis"
+    },
+    {
+      "slug": "phase6t-fishcake-soup-kit-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier fishcake-soup-mealkit cluster already owns the same fishcake-soup kit identity, broth, fishcake weight, sodium and serving-basis contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "fishcake-soup-mealkit-basis"
+    },
+    {
+      "slug": "phase6t-fishcake-soup-kit-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its broth, fishcake-weight, sodium and serving-size mistake is already a failure branch of the earlier fishcake-soup kit contract.",
+      "mergeTarget": "fishcake-soup-mealkit-basis"
+    },
+    {
+      "slug": "phase6t-fishcake-soup-kit-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same fishcake-soup kit class as the earlier owner, without distinct solid/liquid component, prepared-volume, broth-consumption or current-label evidence.",
+      "mergeTarget": "fishcake-soup-mealkit-basis"
+    },
+    {
+      "slug": "phase6t-fishcake-soup-kit-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's broth, fishcake weight, sodium and serving workflow without an independent contract.",
+      "mergeTarget": "fishcake-soup-mealkit-basis"
+    },
+    {
+      "slug": "phase6t-fishcake-soup-kit-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same fishcake-soup kit component, nutrient and serving-basis topic owner.",
+      "mergeTarget": "fishcake-soup-mealkit-basis"
+    },
+    {
+      "slug": "phase6t-fried-rice-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier fried-rice-meal-sodium cluster already owns the same frozen fried-rice identity, sauce, sodium, calories and whole-package serving contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "fried-rice-meal-sodium-basis"
+    },
+    {
+      "slug": "phase6t-fried-rice-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, calorie, sauce and serving-size mistake is already a failure branch of the earlier fried-rice contract.",
+      "mergeTarget": "fried-rice-meal-sodium-basis"
+    },
+    {
+      "slug": "phase6t-fried-rice-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same frozen fried-rice class as the earlier owner, without distinct cooked weight, oil/add-in, reheating-method or current-label evidence.",
+      "mergeTarget": "fried-rice-meal-sodium-basis"
+    },
+    {
+      "slug": "phase6t-fried-rice-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's frozen-rice, sauce, sodium, calorie and serving workflow without an independent contract.",
+      "mergeTarget": "fried-rice-meal-sodium-basis"
+    },
+    {
+      "slug": "phase6t-fried-rice-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same frozen fried-rice composition, nutrient and serving-basis topic owner.",
+      "mergeTarget": "fried-rice-meal-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cold-lunchbox-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier lunchbox-calorie cluster already owns the same packaged-lunchbox identity, calories, protein, sodium and whole-meal serving contract; the cold-storage modifier has no distinct evidence or reader outcome here.",
+      "mergeTarget": "lunchbox-calorie-basis"
+    },
+    {
+      "slug": "phase6t-cold-lunchbox-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its calorie, protein, sodium and serving-size mistake is already a failure branch of the earlier lunchbox contract.",
+      "mergeTarget": "lunchbox-calorie-basis"
+    },
+    {
+      "slug": "phase6t-cold-lunchbox-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same packaged-lunchbox class as the earlier owner, without distinct component weights, cold-consumption, reheating, storage or current-label evidence.",
+      "mergeTarget": "lunchbox-calorie-basis"
+    },
+    {
+      "slug": "phase6t-cold-lunchbox-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's lunchbox, calorie, protein, sodium and serving workflow without an independent contract.",
+      "mergeTarget": "lunchbox-calorie-basis"
+    },
+    {
+      "slug": "phase6t-cold-lunchbox-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same packaged-lunchbox composition, nutrient and serving-basis topic owner.",
+      "mergeTarget": "lunchbox-calorie-basis"
+    },
+    {
+      "slug": "phase6t-kimchi-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier kimchi-sodium-label cluster already owns the same kimchi identity, salted cabbage, seasoning, sodium, 100 g and actual-serving contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "kimchi-sodium-label-basis"
+    },
+    {
+      "slug": "phase6t-kimchi-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, 100 g and actual-serving mistake is already a failure branch of the earlier kimchi-label contract.",
+      "mergeTarget": "kimchi-sodium-label-basis"
+    },
+    {
+      "slug": "phase6t-kimchi-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same kimchi class as the earlier owner, without distinct brine consumption, fermentation-state, ingredient or current-label evidence.",
+      "mergeTarget": "kimchi-sodium-label-basis"
+    },
+    {
+      "slug": "phase6t-kimchi-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's kimchi, sodium, seasoning and serving-basis workflow without an independent contract.",
+      "mergeTarget": "kimchi-sodium-label-basis"
+    },
+    {
+      "slug": "phase6t-kimchi-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same kimchi composition, sodium and serving-basis topic owner.",
+      "mergeTarget": "kimchi-sodium-label-basis"
+    },
+    {
+      "slug": "phase6t-chicken-sausage-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier chicken-sausage-sodium cluster already owns the same chicken-breast sausage identity, processed-meat, protein, sodium and per-piece serving contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "chicken-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-chicken-sausage-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein, sodium, processed-meat and serving-size mistake is already a failure branch of the earlier chicken-sausage contract.",
+      "mergeTarget": "chicken-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-chicken-sausage-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same chicken-sausage class as the earlier owner, without distinct piece weight, chicken content, additive, preservation or current-label evidence.",
+      "mergeTarget": "chicken-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-chicken-sausage-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's processed-meat, protein, sodium and serving workflow without an independent contract.",
+      "mergeTarget": "chicken-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-chicken-sausage-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same chicken-sausage nutrient, composition and serving-basis topic owner.",
+      "mergeTarget": "chicken-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-frozen-dumpling-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier dumpling-sodium-calorie cluster already owns the same dumpling identity, steamed-versus-pan-fried preparation, sodium, calories and serving-basis contract; frozen storage does not create a distinct reader outcome here.",
+      "mergeTarget": "dumpling-sodium-calorie-basis"
+    },
+    {
+      "slug": "phase6t-frozen-dumpling-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, fat, cooking-method and serving-size mistake is already a failure branch of the earlier dumpling contract.",
+      "mergeTarget": "dumpling-sodium-calorie-basis"
+    },
+    {
+      "slug": "phase6t-frozen-dumpling-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same dumpling class as the earlier owner, without distinct piece weight, wrapper/filling, cooking-method or current-label evidence.",
+      "mergeTarget": "dumpling-sodium-calorie-basis"
+    },
+    {
+      "slug": "phase6t-frozen-dumpling-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's dumpling, sodium, calorie, preparation and serving workflow without an independent contract.",
+      "mergeTarget": "dumpling-sodium-calorie-basis"
+    },
+    {
+      "slug": "phase6t-frozen-dumpling-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same dumpling preparation, nutrient and serving-basis topic owner.",
+      "mergeTarget": "dumpling-sodium-calorie-basis"
+    },
+    {
+      "slug": "phase6t-frozen-hotdog-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier frozen-hotdog-satfat cluster already owns the same frozen-hotdog identity, coating, sausage, saturated-fat and calorie contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "frozen-hotdog-satfat-basis"
+    },
+    {
+      "slug": "phase6t-frozen-hotdog-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its saturated-fat, calorie and sausage mistake is already a failure branch of the earlier frozen-hotdog contract.",
+      "mergeTarget": "frozen-hotdog-satfat-basis"
+    },
+    {
+      "slug": "phase6t-frozen-hotdog-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same frozen-hotdog class as the earlier owner, without distinct item weight, coating/filling, cooking-method or current-label evidence.",
+      "mergeTarget": "frozen-hotdog-satfat-basis"
+    },
+    {
+      "slug": "phase6t-frozen-hotdog-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's coating, sausage, saturated-fat and calorie workflow without an independent contract.",
+      "mergeTarget": "frozen-hotdog-satfat-basis"
+    },
+    {
+      "slug": "phase6t-frozen-hotdog-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same frozen-hotdog composition, nutrient and serving-basis topic owner.",
+      "mergeTarget": "frozen-hotdog-satfat-basis"
+    },
+    {
+      "slug": "phase6t-ham-sausage-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier ham-sausage-sodium cluster already owns the same ham-and-sausage identity, processed-meat classification, sodium and serving contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "ham-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-ham-sausage-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, processed-meat and serving-size mistake is already a failure branch of the earlier ham-and-sausage contract.",
+      "mergeTarget": "ham-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-ham-sausage-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same ham-and-sausage class as the earlier owner, without distinct item weight, meat content, additive, preservation or current-label evidence.",
+      "mergeTarget": "ham-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-ham-sausage-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's processed-meat, sodium, protein and serving workflow without an independent contract.",
+      "mergeTarget": "ham-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-ham-sausage-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same ham-and-sausage nutrient and serving-basis topic owner.",
+      "mergeTarget": "ham-sausage-sodium-basis"
+    },
+    {
+      "slug": "phase6t-canned-tuna-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier canned-tuna-sodium cluster already owns the same canned-tuna identity, oil-or-water packing medium, sodium and protein contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "canned-tuna-sodium-basis"
+    },
+    {
+      "slug": "phase6t-canned-tuna-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein, sodium and oil-or-water mistake is already a failure branch of the earlier canned-tuna contract.",
+      "mergeTarget": "canned-tuna-sodium-basis"
+    },
+    {
+      "slug": "phase6t-canned-tuna-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same canned-tuna class as the earlier owner, without distinct net/drained weight, consumed packing medium, fish species or current-label evidence.",
+      "mergeTarget": "canned-tuna-sodium-basis"
+    },
+    {
+      "slug": "phase6t-canned-tuna-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's packing-medium, sodium and protein workflow without an independent contract.",
+      "mergeTarget": "canned-tuna-sodium-basis"
+    },
+    {
+      "slug": "phase6t-canned-tuna-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same canned-tuna nutrient, packing-liquid and serving-basis topic owner.",
+      "mergeTarget": "canned-tuna-sodium-basis"
+    },
+    {
+      "slug": "phase6t-instant-udon-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier instant-udon-sodium cluster already owns the same instant-udon identity, sodium, broth, noodle-weight and sauce contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "instant-udon-sodium-basis"
+    },
+    {
+      "slug": "phase6t-instant-udon-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, broth and noodle-weight mistake is already a failure branch of the earlier instant-udon contract.",
+      "mergeTarget": "instant-udon-sodium-basis"
+    },
+    {
+      "slug": "phase6t-instant-udon-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same instant-udon class as the earlier owner, without distinct dry/prepared weight, broth intake, sauce packet, topping or current-label evidence.",
+      "mergeTarget": "instant-udon-sodium-basis"
+    },
+    {
+      "slug": "phase6t-instant-udon-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sodium, broth, noodle-weight and sauce workflow without an independent contract.",
+      "mergeTarget": "instant-udon-sodium-basis"
+    },
+    {
+      "slug": "phase6t-instant-udon-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same instant-udon nutrient, broth and serving-basis topic owner.",
+      "mergeTarget": "instant-udon-sodium-basis"
+    },
+    {
+      "slug": "phase6t-tofu-snack-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier tofu-snack-protein cluster already owns the same tofu-snack identity, protein, fat and sodium contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "tofu-snack-protein-basis"
+    },
+    {
+      "slug": "phase6t-tofu-snack-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein, fat and sodium mistake is already a failure branch of the earlier tofu-snack contract.",
+      "mergeTarget": "tofu-snack-protein-basis"
+    },
+    {
+      "slug": "phase6t-tofu-snack-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same tofu-snack product class as the earlier owner, without distinct tofu/soy proportion, piece weight, oil, flour or current-label evidence.",
+      "mergeTarget": "tofu-snack-protein-basis"
+    },
+    {
+      "slug": "phase6t-tofu-snack-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's snack classification, protein, fat and sodium workflow without an independent contract.",
+      "mergeTarget": "tofu-snack-protein-basis"
+    },
+    {
+      "slug": "phase6t-tofu-snack-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same tofu-snack nutrient and serving-basis topic owner.",
+      "mergeTarget": "tofu-snack-protein-basis"
+    },
+    {
+      "slug": "phase6t-cup-noodle-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier cup-noodle-sodium cluster already owns the same cup-noodle identity, sodium, broth-consumption and serving-denominator contract; total-content wording does not create a distinct reader outcome.",
+      "mergeTarget": "cup-noodle-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cup-noodle-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, broth-consumption and total-content mistake is already a failure branch of the earlier cup-noodle contract.",
+      "mergeTarget": "cup-noodle-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cup-noodle-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same cup-noodle product class as the earlier owner, without distinct dry/prepared weight, broth intake, soup-powder, topping or current-label evidence.",
+      "mergeTarget": "cup-noodle-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cup-noodle-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sodium, broth and serving-basis workflow without an independent contract.",
+      "mergeTarget": "cup-noodle-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cup-noodle-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same cup-noodle nutrient, broth and serving-basis topic owner.",
+      "mergeTarget": "cup-noodle-sodium-basis"
+    },
+    {
+      "slug": "phase6t-seaweed-snack-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier seaweed-snack-sodium cluster already owns the same seasoned seaweed-snack identity, sodium, snack form and one-package contract; adding fat to the field order does not create a distinct reader outcome.",
+      "mergeTarget": "seaweed-snack-sodium-basis"
+    },
+    {
+      "slug": "phase6t-seaweed-snack-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, fat and one-package mistake is already a failure branch of the earlier seaweed-snack contract.",
+      "mergeTarget": "seaweed-snack-sodium-basis"
+    },
+    {
+      "slug": "phase6t-seaweed-snack-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same seaweed-snack class as the earlier owner, without distinct sheet weight, oil, seasoning, iodine or current-label evidence.",
+      "mergeTarget": "seaweed-snack-sodium-basis"
+    },
+    {
+      "slug": "phase6t-seaweed-snack-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's seasoned-seaweed, sodium and package-serving workflow without an independent contract.",
+      "mergeTarget": "seaweed-snack-sodium-basis"
+    },
+    {
+      "slug": "phase6t-seaweed-snack-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same seaweed-snack nutrient and serving-basis topic owner.",
+      "mergeTarget": "seaweed-snack-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sandwich-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier sandwich-sodium cluster already owns the same chilled-sandwich identity, sodium, sauce, filling and protein contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "sandwich-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sandwich-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, sauce and protein mistake is already a failure branch of the earlier sandwich contract.",
+      "mergeTarget": "sandwich-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sandwich-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same sandwich product class as the earlier owner, without distinct whole-item weight, bread, filling, sauce or current-label evidence.",
+      "mergeTarget": "sandwich-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sandwich-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sodium, sauce, filling and protein workflow without an independent contract.",
+      "mergeTarget": "sandwich-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sandwich-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same sandwich nutrient and serving-basis topic owner.",
+      "mergeTarget": "sandwich-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cracker-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier cracker-sodium cluster already owns the same cracker identity, sodium, cheese-flavor and package-serving contract; adding fat to the field order does not create a distinct reader outcome.",
+      "mergeTarget": "cracker-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cracker-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, fat and cheese-flavor mistake is already a failure branch of the earlier cracker contract.",
+      "mergeTarget": "cracker-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cracker-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same cracker product class as the earlier owner, without distinct piece weight, package serving, cheese ingredient or current-label evidence.",
+      "mergeTarget": "cracker-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cracker-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sodium, package-serving and cheese-flavor workflow without an independent contract.",
+      "mergeTarget": "cracker-sodium-basis"
+    },
+    {
+      "slug": "phase6t-cracker-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same cracker nutrient and serving-basis topic owner.",
+      "mergeTarget": "cracker-sodium-basis"
+    },
+    {
+      "slug": "phase6t-porridge-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier porridge-soup-sodium cluster already owns the same ready-to-eat porridge identity, sodium, total-content and thin-meal contract; adding calories to the field order does not create a distinct reader outcome.",
+      "mergeTarget": "porridge-soup-sodium-basis"
+    },
+    {
+      "slug": "phase6t-porridge-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, calorie and total-content mistake is already a failure branch of the earlier porridge contract.",
+      "mergeTarget": "porridge-soup-sodium-basis"
+    },
+    {
+      "slug": "phase6t-porridge-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same ready-to-eat porridge class and package denominator as the earlier owner, without distinct rice ratio, ingredient, cooked-weight or current-label evidence.",
+      "mergeTarget": "porridge-soup-sodium-basis"
+    },
+    {
+      "slug": "phase6t-porridge-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sodium, thin-food and total-content workflow without an independent contract.",
+      "mergeTarget": "porridge-soup-sodium-basis"
+    },
+    {
+      "slug": "phase6t-porridge-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same porridge nutrient and serving-basis topic owner.",
+      "mergeTarget": "porridge-soup-sodium-basis"
+    },
+    {
+      "slug": "phase6t-beef-jerky-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier beef-jerky-sodium cluster already owns the same jerky identity, sodium, protein and small-package contract; generic label-reading framing does not create a distinct reader outcome.",
+      "mergeTarget": "beef-jerky-sodium-basis"
+    },
+    {
+      "slug": "phase6t-beef-jerky-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, protein and small-package mistake is already a failure branch of the earlier beef-jerky contract.",
+      "mergeTarget": "beef-jerky-sodium-basis"
+    },
+    {
+      "slug": "phase6t-beef-jerky-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same jerky product class and serving denominator as the earlier owner, without distinct meat-content, curing, seasoning or current-label evidence.",
+      "mergeTarget": "beef-jerky-sodium-basis"
+    },
+    {
+      "slug": "phase6t-beef-jerky-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sodium, protein, package and serving workflow without an independent contract.",
+      "mergeTarget": "beef-jerky-sodium-basis"
+    },
+    {
+      "slug": "phase6t-beef-jerky-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same jerky nutrient and serving-basis topic owner.",
+      "mergeTarget": "beef-jerky-sodium-basis"
+    },
+    {
+      "slug": "phase6t-mixed-nuts-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier nuts-serving-size cluster already owns the same nut-product identity, small-package serving, fat and calorie-density contract; generic health-snack framing does not create a distinct reader outcome.",
+      "mergeTarget": "nuts-serving-size-basis"
+    },
+    {
+      "slug": "phase6t-mixed-nuts-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its fat, total-calorie and small-package mistake is already a failure branch of the earlier nut serving-size contract.",
+      "mergeTarget": "nuts-serving-size-basis"
+    },
+    {
+      "slug": "phase6t-mixed-nuts-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same nut product class and serving denominator as the earlier owner, without distinct nut-composition, seasoning or current-label evidence.",
+      "mergeTarget": "nuts-serving-size-basis"
+    },
+    {
+      "slug": "phase6t-mixed-nuts-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's package, serving, fat and calorie workflow without an independent contract.",
+      "mergeTarget": "nuts-serving-size-basis"
+    },
+    {
+      "slug": "phase6t-mixed-nuts-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same nut serving-size and nutrient-density topic owner.",
+      "mergeTarget": "nuts-serving-size-basis"
+    },
+    {
+      "slug": "phase6t-salad-dressing-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier salad-dressing-sugar cluster already owns the same salad-dressing identity, sugar, sauce classification and one-use denominator; adding sodium to the field order does not create a distinct contract.",
+      "mergeTarget": "salad-dressing-sugar-basis"
+    },
+    {
+      "slug": "phase6t-salad-dressing-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, sodium and one-use mistake is already a failure branch of the earlier salad-dressing contract.",
+      "mergeTarget": "salad-dressing-sugar-basis"
+    },
+    {
+      "slug": "phase6t-salad-dressing-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same dressing product class and actual-use denominator as the earlier owner, without distinct tablespoon, density, oil or emulsion evidence.",
+      "mergeTarget": "salad-dressing-sugar-basis"
+    },
+    {
+      "slug": "phase6t-salad-dressing-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sugar, sauce-class and one-use workflow without a separate reader outcome.",
+      "mergeTarget": "salad-dressing-sugar-basis"
+    },
+    {
+      "slug": "phase6t-salad-dressing-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same salad-dressing nutrient and serving-basis contract.",
+      "mergeTarget": "salad-dressing-sugar-basis"
+    },
+    {
+      "slug": "phase6t-canned-corn-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier canned-corn-sugar cluster already owns the same canned-corn identity, sugar, sodium, packing liquid and total-content contract; salad use is a consumption context, not a distinct product owner.",
+      "mergeTarget": "canned-corn-sugar-basis"
+    },
+    {
+      "slug": "phase6t-canned-corn-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, sodium and salad-use mistake is already a failure branch of the earlier canned-corn contract, which must distinguish packing liquid from consumed solids.",
+      "mergeTarget": "canned-corn-sugar-basis"
+    },
+    {
+      "slug": "phase6t-canned-corn-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same canned-corn class and nutrient fields as the earlier owner, without distinct drained-weight, liquid-inclusion or ingredient evidence.",
+      "mergeTarget": "canned-corn-sugar-basis"
+    },
+    {
+      "slug": "phase6t-canned-corn-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sugar, sodium, packing-liquid and actual-intake workflow without a separate reader outcome.",
+      "mergeTarget": "canned-corn-sugar-basis"
+    },
+    {
+      "slug": "phase6t-canned-corn-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same canned-corn nutrient, liquid and serving-basis contract.",
+      "mergeTarget": "canned-corn-sugar-basis"
+    },
+    {
+      "slug": "phase6t-protein-shake-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier protein-shake-sugar cluster already owns the same protein-shake identity, powder-versus-liquid distinction, sugar and protein-density contract; one-serving normalization is part of that same reader decision.",
+      "mergeTarget": "protein-shake-sugar-basis"
+    },
+    {
+      "slug": "phase6t-protein-shake-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein, sugar and one-serving mistake is already a failure branch of the earlier protein-shake contract.",
+      "mergeTarget": "protein-shake-sugar-basis"
+    },
+    {
+      "slug": "phase6t-protein-shake-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same protein-shake class and nutrient denominator as the earlier owner, without product-specific mixing-liquid or serving evidence.",
+      "mergeTarget": "protein-shake-sugar-basis"
+    },
+    {
+      "slug": "phase6t-protein-shake-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's powder/liquid, protein-density, sugar and serving workflow without a distinct reader outcome.",
+      "mergeTarget": "protein-shake-sugar-basis"
+    },
+    {
+      "slug": "phase6t-protein-shake-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same protein-shake identity, sugar and serving-basis contract.",
+      "mergeTarget": "protein-shake-sugar-basis"
+    },
+    {
+      "slug": "phase6t-fruit-veg-juice-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "Fruit/vegetable juice is a distinct product contract with no current topic owner, but the legacy row lacks product classification, juice percentage, concentrate/reconstitution, ingredient, package-volume and comparable current-label evidence. Keep the cluster non-public and out of drafting priority until those gates are satisfied."
+    },
+    {
+      "slug": "phase6t-powder-drink-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier powder-drink-sugar cluster already owns the same powdered-beverage identity, one-stick serving, water-versus-milk preparation and sugar comparison contract.",
+      "mergeTarget": "powder-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-powder-drink-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, one-stick and preparation-liquid mistake is already a failure branch of the earlier powdered-drink contract.",
+      "mergeTarget": "powder-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-powder-drink-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same powdered-drink class, water-or-milk preparation and one-stick denominator as the earlier owner, without a distinct dilution evidence set.",
+      "mergeTarget": "powder-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-powder-drink-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sugar, stick-serving and preparation workflow without a separate reader decision.",
+      "mergeTarget": "powder-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-powder-drink-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same powdered-drink sugar and preparation-basis contract.",
+      "mergeTarget": "powder-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-meal-drink-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier meal-replacement-drink cluster already owns the same meal-replacement beverage identity and protein, sugar and fiber comparison contract; wording compression does not create a distinct reader decision.",
+      "mergeTarget": "meal-replacement-drink-basis"
+    },
+    {
+      "slug": "phase6t-meal-drink-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein, sugar, fiber and serving-denominator mistake is already a failure branch of the earlier meal-replacement beverage contract.",
+      "mergeTarget": "meal-replacement-drink-basis"
+    },
+    {
+      "slug": "phase6t-meal-drink-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same meal-replacement beverage class and nutrient fields as the earlier owner, without product-specific evidence supporting a separate complete-meal contract.",
+      "mergeTarget": "meal-replacement-drink-basis"
+    },
+    {
+      "slug": "phase6t-meal-drink-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's protein, sugar, fiber and actual-intake workflow without a distinct reader outcome.",
+      "mergeTarget": "meal-replacement-drink-basis"
+    },
+    {
+      "slug": "phase6t-meal-drink-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same meal-replacement beverage nutrient and serving-basis contract.",
+      "mergeTarget": "meal-replacement-drink-basis"
+    },
+    {
+      "slug": "phase6t-flavored-milk-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier flavored-milk-sugar cluster already owns the same flavored-milk identity, sugar and 100 ml comparison denominator; total package volume is part of actual-intake normalization, not a distinct contract.",
+      "mergeTarget": "flavored-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-flavored-milk-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, 100 ml and total-volume mistake is already a failure branch of the earlier flavored-milk contract.",
+      "mergeTarget": "flavored-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-flavored-milk-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same flavored-milk product class, sugar field and volume denominator as the earlier owner, without a distinct milk-solids or ingredient evidence set.",
+      "mergeTarget": "flavored-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-flavored-milk-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sugar and volume-normalization workflow without a separate reader decision.",
+      "mergeTarget": "flavored-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-flavored-milk-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same flavored-milk sugar and serving-volume contract.",
+      "mergeTarget": "flavored-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-granola-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier granola-fat cluster already owns the same granola identity, fat, sugar, nut-topping composition and serving-size denominator; reordered wording does not create a distinct contract.",
+      "mergeTarget": "granola-fat-basis"
+    },
+    {
+      "slug": "phase6t-granola-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its fat, sugar, nut-topping and serving-size mistake is already a failure branch of the earlier granola contract.",
+      "mergeTarget": "granola-fat-basis"
+    },
+    {
+      "slug": "phase6t-granola-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same granola product class, nutrient fields and serving denominator as the earlier owner, without a distinct composition evidence set.",
+      "mergeTarget": "granola-fat-basis"
+    },
+    {
+      "slug": "phase6t-granola-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's fat, sugar, nut-topping and serving-size workflow without a separate reader decision.",
+      "mergeTarget": "granola-fat-basis"
+    },
+    {
+      "slug": "phase6t-granola-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same granola composition, nutrient and serving-basis contract.",
+      "mergeTarget": "granola-fat-basis"
+    },
+    {
+      "slug": "phase6t-dried-sweet-potato-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier dried-sweet-potato-sugar cluster already owns the same dried sweet-potato identity, sugar, total contents, fiber and actual-intake denominator; changing the field order does not create a distinct contract.",
+      "mergeTarget": "dried-sweet-potato-sugar-basis"
+    },
+    {
+      "slug": "phase6t-dried-sweet-potato-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, total-content and fiber mistake is already a failure branch of the earlier dried sweet-potato contract.",
+      "mergeTarget": "dried-sweet-potato-sugar-basis"
+    },
+    {
+      "slug": "phase6t-dried-sweet-potato-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same dried sweet-potato product class and serving denominator as the earlier owner, without a separate moisture or drying-method evidence plan.",
+      "mergeTarget": "dried-sweet-potato-sugar-basis"
+    },
+    {
+      "slug": "phase6t-dried-sweet-potato-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's total-content, actual-intake, sugar and fiber workflow without a distinct reader decision.",
+      "mergeTarget": "dried-sweet-potato-sugar-basis"
+    },
+    {
+      "slug": "phase6t-dried-sweet-potato-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same dried sweet-potato sugar and serving-basis contract.",
+      "mergeTarget": "dried-sweet-potato-sugar-basis"
+    },
+    {
+      "slug": "phase6t-tteokbokki-kit-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier tteokbokki-mealkit-sodium cluster already owns the same meal-kit identity, sauce amount, cooked weight, sodium and actual-serving denominator; sugar is only a supporting field, not a distinct contract.",
+      "mergeTarget": "tteokbokki-mealkit-sodium-basis"
+    },
+    {
+      "slug": "phase6t-tteokbokki-kit-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, sugar and sauce-use mistake is already a failure branch of the earlier tteokbokki meal-kit contract.",
+      "mergeTarget": "tteokbokki-mealkit-sodium-basis"
+    },
+    {
+      "slug": "phase6t-tteokbokki-kit-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same tteokbokki meal-kit class, sauce amount and serving denominator as the earlier owner.",
+      "mergeTarget": "tteokbokki-mealkit-sodium-basis"
+    },
+    {
+      "slug": "phase6t-tteokbokki-kit-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sauce, cooked-weight and actual-intake workflow without a distinct reader decision.",
+      "mergeTarget": "tteokbokki-mealkit-sodium-basis"
+    },
+    {
+      "slug": "phase6t-tteokbokki-kit-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same sodium, sauce-use and serving-basis contract.",
+      "mergeTarget": "tteokbokki-mealkit-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sports-drink-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier sports-drink-sugar cluster already owns the same sports-drink identity, sugar, electrolytes, 500 ml total volume and actual-intake denominator; field ordering does not create a distinct contract.",
+      "mergeTarget": "sports-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-sports-drink-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, electrolyte and volume mistake is already a failure branch of the earlier sports-drink contract.",
+      "mergeTarget": "sports-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-sports-drink-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same sports-drink product class, sugar and 500 ml serving denominator as the earlier owner.",
+      "mergeTarget": "sports-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-sports-drink-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sports-drink label workflow without a distinct product subtype or reader decision.",
+      "mergeTarget": "sports-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-sports-drink-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same sugar, electrolyte and total-volume contract.",
+      "mergeTarget": "sports-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-bakery-snack-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The researched bakery-snack-serving candidate already owns the stronger whole-item, measured-partial and hold decision for the same bakery-snack identity, weight, sugar and saturated-fat problem; a second broad basis would cannibalize it.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "phase6t-bakery-snack-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its weight and nutrient mistake is already handled by the candidate's recordable, estimate and hold evidence ladder.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "phase6t-bakery-snack-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same bakery-snack products without improving on the candidate's measured portion and product-identity contract.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "phase6t-bakery-snack-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine is a support branch of the researched candidate's whole-item and partial-portion workflow.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "phase6t-bakery-snack-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions belong under the same evidence-backed bakery serving owner rather than a second Phase 6T URL.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "phase6t-icecream-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier icecream-satfat cluster already owns the same general ice-cream identity, saturated fat, sugar and package-volume denominator; field ordering does not create a distinct format or reader contract.",
+      "mergeTarget": "icecream-satfat-basis"
+    },
+    {
+      "slug": "phase6t-icecream-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its saturated-fat, sugar and volume mistake is already a failure branch of the earlier ice-cream contract.",
+      "mergeTarget": "icecream-satfat-basis"
+    },
+    {
+      "slug": "phase6t-icecream-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same general ice-cream class, nutrients and serving or total-volume denominator as the earlier owner.",
+      "mergeTarget": "icecream-satfat-basis"
+    },
+    {
+      "slug": "phase6t-icecream-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's ice-cream label workflow without a distinct bar, cone or cup decision.",
+      "mergeTarget": "icecream-satfat-basis"
+    },
+    {
+      "slug": "phase6t-icecream-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same saturated-fat, sugar and volume contract.",
+      "mergeTarget": "icecream-satfat-basis"
+    },
+    {
+      "slug": "phase6t-cereal-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier cereal-sugar cluster already owns the same cereal identity, sugar, serving-size and milk-combination decision; wording and indicator order do not create a distinct contract.",
+      "mergeTarget": "cereal-sugar-basis"
+    },
+    {
+      "slug": "phase6t-cereal-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, serving and milk-combination mistake is already a failure branch of the earlier cereal contract.",
+      "mergeTarget": "cereal-sugar-basis"
+    },
+    {
+      "slug": "phase6t-cereal-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same cereal product class, sugar and serving denominator as the earlier owner.",
+      "mergeTarget": "cereal-sugar-basis"
+    },
+    {
+      "slug": "phase6t-cereal-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's cereal label and milk-combination workflow without a distinct reader decision.",
+      "mergeTarget": "cereal-sugar-basis"
+    },
+    {
+      "slug": "phase6t-cereal-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same sugar, serving-size and milk-combination contract.",
+      "mergeTarget": "cereal-sugar-basis"
+    },
+    {
+      "slug": "phase6t-triangle-kimbap-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier triangle-kimbap-calorie cluster already owns the same triangle-kimbap identity, calories, carbohydrates, sodium and actual-serving denominator; indicator ordering does not create a distinct contract.",
+      "mergeTarget": "triangle-kimbap-calorie-basis"
+    },
+    {
+      "slug": "phase6t-triangle-kimbap-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its calorie, carbohydrate and sodium mistake is already a failure branch of the earlier triangle-kimbap contract.",
+      "mergeTarget": "triangle-kimbap-calorie-basis"
+    },
+    {
+      "slug": "phase6t-triangle-kimbap-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same triangle-kimbap product class, nutrients and whole-package serving basis as the earlier owner.",
+      "mergeTarget": "triangle-kimbap-calorie-basis"
+    },
+    {
+      "slug": "phase6t-triangle-kimbap-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's triangle-kimbap label workflow without a distinct filling or reader decision.",
+      "mergeTarget": "triangle-kimbap-calorie-basis"
+    },
+    {
+      "slug": "phase6t-triangle-kimbap-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same calories, carbohydrates, sodium and serving-denominator contract.",
+      "mergeTarget": "triangle-kimbap-calorie-basis"
+    },
+    {
+      "slug": "phase6t-soy-milk-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier soy-milk-sugar cluster already owns the same soy-milk identity, sweetened-versus-unsweetened decision, sugar and 100 ml serving denominator; wording changes do not create a distinct contract.",
+      "mergeTarget": "soy-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-soy-milk-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sugar, unsweetened-label and serving-basis mistake is already a failure branch of the earlier soy-milk contract.",
+      "mergeTarget": "soy-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-soy-milk-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same soy-milk product class, sugar status and 100 ml denominator as the earlier owner.",
+      "mergeTarget": "soy-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-soy-milk-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sweetened-versus-unsweetened soy-milk label workflow without a distinct reader decision.",
+      "mergeTarget": "soy-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-soy-milk-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same sugar, unsweetened-label and serving-denominator contract.",
+      "mergeTarget": "soy-milk-sugar-basis"
+    },
+    {
+      "slug": "phase6t-greek-yogurt-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier greek-yogurt-protein cluster already owns the same Greek-yogurt identity, protein, sugar, fat and serving-denominator decision; nutrient ordering alone does not create a distinct contract.",
+      "mergeTarget": "greek-yogurt-protein-basis"
+    },
+    {
+      "slug": "phase6t-greek-yogurt-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein, fat and sugar mistake is already a failure branch of the earlier Greek-yogurt contract.",
+      "mergeTarget": "greek-yogurt-protein-basis"
+    },
+    {
+      "slug": "phase6t-greek-yogurt-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same Greek-yogurt product class, nutrients and serving denominator as the earlier owner.",
+      "mergeTarget": "greek-yogurt-protein-basis"
+    },
+    {
+      "slug": "phase6t-greek-yogurt-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's Greek-yogurt label workflow without a distinct product or reader decision.",
+      "mergeTarget": "greek-yogurt-protein-basis"
+    },
+    {
+      "slug": "phase6t-greek-yogurt-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same protein, sugar, fat and serving-basis contract.",
+      "mergeTarget": "greek-yogurt-protein-basis"
+    },
+    {
+      "slug": "phase6t-unsweetened-yogurt-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "A plain unsweetened-yogurt contract may distinctly separate naturally occurring milk sugars, added sugar and toppings, but the generated row lacks a fixed product boundary, current ingredient labels, serving weights and comparable sugar and protein evidence; keep it non-public rather than merging it into Greek yogurt or generic no-sugar label content."
+    },
+    {
+      "slug": "phase6t-sweetener-snack-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "A snack-specific alternative-sweetener contract cannot be defined from the generated row: it does not distinguish low-sugar, sugar-free-labelled or alternative-sweetener snacks and lacks current product labels, serving denominators, sweetener identities, sugar and calorie evidence; keep it non-public until the product and label boundary is researched."
+    },
+    {
+      "slug": "phase6t-table-sauce-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier sauce-sodium cluster already owns the same generic sauce or dressing identity, sodium and sugar comparison, small-use amount and actual-intake denominator; wording changes do not create a distinct contract.",
+      "mergeTarget": "sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-table-sauce-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its sodium, sugar and small-use mistake is already a failure branch of the earlier generic sauce contract.",
+      "mergeTarget": "sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-table-sauce-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same generic sauce class, nutrients and actual-use denominator as the earlier owner.",
+      "mergeTarget": "sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-table-sauce-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's small-portion sauce label workflow without a distinct product or reader decision.",
+      "mergeTarget": "sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-table-sauce-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same sodium, sugar, serving-basis and actual-consumption contract.",
+      "mergeTarget": "sauce-sodium-basis"
+    },
+    {
+      "slug": "phase6t-sparkling-water-drink-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "A distinct plain or unsweetened flavored sparkling-water contract may exist, but the generated row does not distinguish it from sweetened carbonated or zero-sugar drinks and lacks current ingredient labels, container volumes and comparable sugar, calorie, sweetener and flavoring evidence; keep it non-public until product identity is researched."
+    },
+    {
+      "slug": "phase6t-instant-curry-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier instant-curry-calorie cluster already owns the same retort-curry sauce weight, rice combination, calories, sodium and actual-intake denominator decision; nutrient ordering alone does not create a distinct contract.",
+      "mergeTarget": "instant-curry-calorie-basis"
+    },
+    {
+      "slug": "phase6t-instant-curry-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its calorie, sodium and rice-combination mistake is already a failure branch of the earlier instant-curry contract.",
+      "mergeTarget": "instant-curry-calorie-basis"
+    },
+    {
+      "slug": "phase6t-instant-curry-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same retort-curry product class, nutrients and serving denominator as the earlier owner.",
+      "mergeTarget": "instant-curry-calorie-basis"
+    },
+    {
+      "slug": "phase6t-instant-curry-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's sauce-weight, rice-combination and sodium workflow without a distinct preparation or reader decision.",
+      "mergeTarget": "instant-curry-calorie-basis"
+    },
+    {
+      "slug": "phase6t-instant-curry-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same calories, sodium, rice-combination and serving-basis contract.",
+      "mergeTarget": "instant-curry-calorie-basis"
+    },
+    {
+      "slug": "phase6t-protein-bar-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier protein-bar-fat cluster already owns the same protein, sugar, saturated-fat and serving-denominator decision for the same protein-bar reader intent; nutrient ordering alone does not create a distinct contract.",
+      "mergeTarget": "protein-bar-fat-basis"
+    },
+    {
+      "slug": "phase6t-protein-bar-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its protein-bar label mistake is already a failure branch of the earlier protein, saturated-fat and sugar contract.",
+      "mergeTarget": "protein-bar-fat-basis"
+    },
+    {
+      "slug": "phase6t-protein-bar-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same product class, nutrients and serving denominator as the earlier protein-bar owner.",
+      "mergeTarget": "protein-bar-fat-basis"
+    },
+    {
+      "slug": "phase6t-protein-bar-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its purchase routine repeats the earlier owner's protein-bar label-reading workflow without a distinct reader decision or evidence plan.",
+      "mergeTarget": "protein-bar-fat-basis"
+    },
+    {
+      "slug": "phase6t-protein-bar-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its questions are support branches of the same protein, sugar, saturated-fat and serving-basis contract.",
+      "mergeTarget": "protein-bar-fat-basis"
+    },
+    {
+      "slug": "phase6t-cereal-bar-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "A one-piece cereal or snack-bar decision is distinct from protein-first protein-bar and bowl-based granola contracts, but the legacy row lacks current product identity, exact bar weight, serving count and comparable label evidence; keep it non-public and out of drafting priority until multiple current product labels support the contract."
+    },
+    {
+      "slug": "phase6t-cold-noodle-sauce-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "The Phase 6T cluster has a potentially distinct sodium-first actual-sauce-amount decision rather than the earlier broth-versus-bibim sugar comparison, but it lacks measurable product, dilution and consumed-sauce evidence; keep it non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "phase6t-cup-soup-basis",
+      "legacyDecision": "defer_research_needed",
+      "candidateStatus": "research_needed",
+      "reason": "A distinct water-versus-added-milk recalculation contract is plausible, but no primary product or manufacturer evidence with a measurable milk quantity, current powder and milk labels, prepared-state guidance, ingredients/allergens or storage evidence has been captured; keep this cluster non-public and out of drafting priority until that contract is researched."
+    },
+    {
+      "slug": "phase6t-coffee-drink-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier coffee-drink-sugar cluster already owns the same sugar, caffeine, serving-volume and actual-intake decision across latte and canned coffee; a second basis would split one search intent.",
+      "mergeTarget": "coffee-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-coffee-drink-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its serving-denominator and overlooked-sugar mistakes are already failure branches of the earlier coffee-drink contract.",
+      "mergeTarget": "coffee-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-coffee-drink-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same sugar, caffeine and total-volume fields with no distinct beverage format, preparation identity or evidence plan.",
+      "mergeTarget": "coffee-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-coffee-drink-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The purchase sequence repeats the earlier coffee-drink basis article's action path rather than creating an independent reader outcome.",
+      "mergeTarget": "coffee-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-coffee-drink-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting adds no new reader job, serving boundary or source interpretation beyond the earlier coffee-drink cluster.",
+      "mergeTarget": "coffee-drink-sugar-basis"
+    },
+    {
+      "slug": "phase6t-rice-cake-snack-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier rice-cake-snack-carbs cluster already owns the same bite-size portion, carbohydrate, sugar, total-energy and actual-intake decision; a second basis would split one search intent.",
+      "mergeTarget": "rice-cake-snack-carbs-basis"
+    },
+    {
+      "slug": "phase6t-rice-cake-snack-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its serving-denominator and single-number mistakes are already failure branches of the earlier rice-cake snack contract.",
+      "mergeTarget": "rice-cake-snack-carbs-basis"
+    },
+    {
+      "slug": "phase6t-rice-cake-snack-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same portion, carbohydrate, sugar and total-energy fields with no distinct product or preparation identity.",
+      "mergeTarget": "rice-cake-snack-carbs-basis"
+    },
+    {
+      "slug": "phase6t-rice-cake-snack-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The purchase and portion-recording sequence repeats the earlier basis article's action path rather than creating an independent reader outcome.",
+      "mergeTarget": "rice-cake-snack-carbs-basis"
+    },
+    {
+      "slug": "phase6t-rice-cake-snack-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting adds no new reader job, calculation boundary or source interpretation beyond the earlier rice-cake snack cluster.",
+      "mergeTarget": "rice-cake-snack-carbs-basis"
+    },
+    {
+      "slug": "phase6t-jam-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier jam-sugar cluster already owns the same spoon-basis, sugar, total-content and actual-intake decision; a second jam basis would split one search intent.",
+      "mergeTarget": "jam-sugar-basis"
+    },
+    {
+      "slug": "phase6t-jam-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its denominator and single-sugar-number mistakes are already failure branches of the earlier jam-sugar contract.",
+      "mergeTarget": "jam-sugar-basis"
+    },
+    {
+      "slug": "phase6t-jam-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same spoon serving, sugar and total-content fields with no distinct jam type, product identity or evidence plan.",
+      "mergeTarget": "jam-sugar-basis"
+    },
+    {
+      "slug": "phase6t-jam-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The purchase sequence repeats the earlier jam basis article's action path rather than creating an independent reader outcome.",
+      "mergeTarget": "jam-sugar-basis"
+    },
+    {
+      "slug": "phase6t-jam-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting adds no new reader job, calculation boundary or source interpretation beyond the earlier jam cluster.",
+      "mergeTarget": "jam-sugar-basis"
+    },
+    {
+      "slug": "phase6t-oatmeal-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier oatmeal-fiber cluster already owns the same fiber, serving-size, sugar and actual-intake decision; a second oatmeal basis would split one search intent.",
+      "mergeTarget": "oatmeal-fiber-basis"
+    },
+    {
+      "slug": "phase6t-oatmeal-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its denominator and single-nutrient mistakes are already failure branches of the earlier oatmeal-fiber contract.",
+      "mergeTarget": "oatmeal-fiber-basis"
+    },
+    {
+      "slug": "phase6t-oatmeal-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same fiber, serving-size and sugar fields with the same normalization path and no distinct product population.",
+      "mergeTarget": "oatmeal-fiber-basis"
+    },
+    {
+      "slug": "phase6t-oatmeal-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The purchase sequence repeats the earlier oatmeal basis article's action path rather than creating an independent reader outcome.",
+      "mergeTarget": "oatmeal-fiber-basis"
+    },
+    {
+      "slug": "phase6t-oatmeal-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting adds no new reader job, decision boundary or evidence interpretation beyond the earlier oatmeal cluster.",
+      "mergeTarget": "oatmeal-fiber-basis"
+    },
+    {
+      "slug": "phase6t-cheese-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The earlier cheese-protein-fat cluster already owns the same protein, saturated-fat, sodium and serving-unit decision; a second cheese basis would split one search intent.",
+      "mergeTarget": "cheese-protein-fat-basis"
+    },
+    {
+      "slug": "phase6t-cheese-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its serving denominator and nutrient-priority mistakes are already failure branches of the earlier cheese contract.",
+      "mergeTarget": "cheese-protein-fat-basis"
+    },
+    {
+      "slug": "phase6t-cheese-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It compares the same protein, saturated-fat and sodium fields with no distinct cheese population or evidence plan.",
+      "mergeTarget": "cheese-protein-fat-basis"
+    },
+    {
+      "slug": "phase6t-cheese-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The purchase sequence is the earlier cheese basis article's action path rather than a separate reader outcome.",
+      "mergeTarget": "cheese-protein-fat-basis"
+    },
+    {
+      "slug": "phase6t-cheese-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting adds no new reader job, decision moment or source interpretation beyond the earlier cheese cluster.",
+      "mergeTarget": "cheese-protein-fat-basis"
+    },
+    {
+      "slug": "phase6t-noodle-topping-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "An earlier noodle-topping-calorie cluster already owns the same noodle-topping, fried garnish, dried garnish, oil and portion-reading decision; a second basis URL would split one search intent.",
+      "mergeTarget": "noodle-topping-calorie-basis"
+    },
+    {
+      "slug": "phase6t-noodle-topping-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its denominator and oil mistakes repeat the earlier noodle-topping-calorie contract and do not create a separate reader outcome.",
+      "mergeTarget": "noodle-topping-calorie-basis"
+    },
+    {
+      "slug": "phase6t-noodle-topping-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The comparison uses the same topping identity, portion normalization and nutrient ledger as the earlier cluster.",
+      "mergeTarget": "noodle-topping-calorie-basis"
+    },
+    {
+      "slug": "phase6t-noodle-topping-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The purchase routine is the action sequence of the earlier noodle-topping-calorie basis rather than an independent contract.",
+      "mergeTarget": "noodle-topping-calorie-basis"
+    },
+    {
+      "slug": "phase6t-noodle-topping-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not establish a new reader job or evidence plan beyond the earlier noodle-topping-calorie cluster.",
+      "mergeTarget": "noodle-topping-calorie-basis"
+    },
+    {
+      "slug": "bakery-snack-serving-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/bakery-snack-serving-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt as a partial-portion evidence ladder that separates whole-item certainty, weight-proportional estimates, and unresolved bakery-counter products."
+    },
+    {
+      "slug": "bakery-snack-serving-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Assuming an exact half is already the rebuilt basis article's opening failure branch, not a separate reader decision.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "bakery-snack-serving-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Comparison is permitted only after the same whole-versus-part evidence audit and does not create a distinct evidence plan.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "bakery-snack-serving-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Pre-cut weighing and estimation labeling are the basis article's final action rather than a separate routine contract.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "bakery-snack-serving-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not create a separate reader job; uncertainty cases are handled by the three evidence states.",
+      "mergeTarget": "bakery-snack-serving-basis"
+    },
+    {
+      "slug": "bagel-carbs-basis",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its actual-weight, carbohydrate, cream-cheese and evidence-date decision is already covered by the broader phase6t bagel comparability candidate; a second URL would split the same search intent.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "bagel-carbs-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its denominator and cream-cheese mistakes are failure branches of the existing bagel comparability audit, not a separate reader decision.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "bagel-carbs-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The comparison uses the same product identity, weight normalization and evidence hierarchy already required by the phase6t bagel candidate.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "bagel-carbs-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The weighing and topping ledger is the existing bagel candidate's final action, so a routine URL would duplicate its contract.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "bagel-carbs-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not create a distinct evidence plan; the residual questions belong in the existing bagel candidate.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "phase6t-pickle-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/phase6t-pickle-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt as a solid-versus-brine denominator audit that records when a product-specific sodium calculation is not supported."
+    },
+    {
+      "slug": "phase6t-pickle-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its denominator and sodium warnings are already the basis audit's core failure branches, not a separate reader decision.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "phase6t-pickle-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "A valid comparison depends on the same edible-boundary audit and does not establish a separate evidence plan.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "phase6t-pickle-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The recording routine is the final action of the rebuilt basis article; separating it would duplicate the same contract.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "phase6t-pickle-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not create a distinct reader job; uncertainty cases are handled by the three audit outcomes.",
+      "mergeTarget": "phase6t-pickle-basis"
+    },
+    {
+      "slug": "phase6t-bagel-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/phase6t-bagel-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt as a cross-channel comparability tree that separates package evidence, bakery references, denominator normalization, and toppings."
+    },
+    {
+      "slug": "phase6t-bagel-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its denominator mistakes and generic-data warnings are required branches of the rebuilt basis article, not a separate reader job.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "phase6t-bagel-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The valid comparison method is the basis article's core decision; a comparison suffix does not establish a different population or outcome.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "phase6t-bagel-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "A daily routine would add unsupported dietary advice while repeating the same weighing and evidence workflow.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "phase6t-bagel-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not create a separate decision or evidence plan; residual questions are resolved in the comparability branches.",
+      "mergeTarget": "phase6t-bagel-basis"
+    },
+    {
+      "slug": "phase6t-konjac-jelly-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/phase6t-konjac-jelly-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt as a five-field label-and-safety decision matrix that separates product nutrition evidence, advertising limits, and product/eater safety conditions."
+    },
+    {
+      "slug": "phase6t-konjac-jelly-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "Its low-calorie and denominator warnings are already necessary steps inside the rebuilt basis decision matrix, not a separate reader job.",
+      "mergeTarget": "phase6t-konjac-jelly-basis"
+    },
+    {
+      "slug": "phase6t-konjac-jelly-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It lacks a defensible comparison population and repeats the same package fields; product ranking would overstate unlike formulations.",
+      "mergeTarget": "phase6t-konjac-jelly-basis"
+    },
+    {
+      "slug": "phase6t-konjac-jelly-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "A daily eating routine would require individualized dietary and swallowing judgments outside this site's evidence; the safe label check belongs in the basis article.",
+      "mergeTarget": "phase6t-konjac-jelly-basis"
+    },
+    {
+      "slug": "phase6t-konjac-jelly-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not create a separate decision or evidence plan; narrow residual questions are included after the basis decision matrix.",
+      "mergeTarget": "phase6t-konjac-jelly-basis"
+    },
+    {
+      "slug": "phase6t-energy-drink-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/phase6t-energy-drink-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt around a distinct label-reading decision sequence with current official evidence."
+    },
+    {
+      "slug": "phase6t-energy-drink-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It shares the same reader situation, label fields, evidence path, opening, and decision outcome as the rebuilt basis article; adding a warning section does not justify a separate URL.",
+      "mergeTarget": "phase6t-energy-drink-basis"
+    },
+    {
+      "slug": "phase6t-dried-fruit-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/phase6t-dried-fruit-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt as a 5,432-character worked example with seven official sources; it separates serving-size arithmetic, total sugar, and ingredient-list evidence while retaining human review and noindex gates. Same-slug legacy replacement must occur only after approval."
+    },
+    {
+      "slug": "phase6t-dried-fruit-mistake",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The warning angle repeats the basis row's reader job and evidence path; its caution belongs inside the rebuilt worked example.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "phase6t-dried-fruit-compare",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The comparison angle uses the same package-total calculation without a distinct comparison population or decision outcome.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "phase6t-dried-fruit-routine",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "The routine is the action sequence of the rebuilt basis article, not a separate search intent.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "phase6t-dried-fruit-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "FAQ formatting does not create a separate reader decision or evidence plan.",
+      "mergeTarget": "phase6t-dried-fruit-basis"
+    },
+    {
+      "slug": "phase6t-salad-topping-basis",
+      "legacyDecision": "replace_after_human_approval",
+      "candidatePath": "content/editorial-candidates/phase6t-salad-topping-basis",
+      "candidateStatus": "approval_candidate_pending_human_review",
+      "reason": "Rebuilt as a measured-input calculation workflow: unlike topping categories are not ranked, and each package value is converted to the actual added weight before same-nutrient totals are summed."
+    },
+    {
+      "slug": "phase6t-salad-topping-faq",
+      "legacyDecision": "reject_cannibalizing_sibling",
+      "candidateStatus": "failed",
+      "reason": "It repeats the salad-topping basis article's reader job and evidence plan; the FAQ suffix alone is not a distinct search intent.",
+      "mergeTarget": "phase6t-salad-topping-basis"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+export const NUTRITION_SITEMAP_PAGE_SIZE = 10_000;

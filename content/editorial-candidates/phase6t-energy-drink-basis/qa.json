@@ -1,0 +1,61 @@
+{
+  "article_id": "phase6t-energy-drink-basis",
+  "reviewed_at": "2026-09-12",
+  "status": "approval_candidate_pending_human_review",
+  "score": 93,
+  "category_scores": {
+    "content_quality": 28,
+    "seo": 23,
+    "eeat": 14,
+    "technical_elements": 14,
+    "ai_citation_readiness": 14
+  },
+  "hard_gate_results": {
+    "persona_consistency": "pass",
+    "fact_traceability": "pass",
+    "research_gate": "pass",
+    "per_article_research_packet": "pass",
+    "source_interpretation": "pass",
+    "freshness": "pass",
+    "ymyl": "pass",
+    "content_uniqueness": "pass",
+    "google_quality_substance": "pass",
+    "article_contract_uniqueness": "pass",
+    "title_template_uniqueness": "pass",
+    "title_subtitle_keyword_coverage": "pass",
+    "title_map_alignment": "pass",
+    "structure_variation": "pass",
+    "content_template_variation": "pass",
+    "batch_anti_template": "pass",
+    "qa_evidence": "pass",
+    "visual_elements": "pass",
+    "heading_quality": "pass",
+    "body_length": "pass"
+  },
+  "compared_rows": [
+    "phase6t-energy-drink-mistake",
+    "phase6t-dried-fruit-basis",
+    "phase6t-salad-topping-basis",
+    "phase6t-salad-topping-faq",
+    "nutrition-label-comparison-basis"
+  ],
+  "similarity_signals": {
+    "opening_frame": "distinct: product-label decision at shelf rather than generic basis explanation",
+    "h2_sequence": "distinct: legal marker -> total can -> sugar basis -> multi-source sum -> freshness -> memo",
+    "faq_shape": "none",
+    "ending_cta": "five-field product memo",
+    "source_interpretation": "label fields drive a consumer decision sequence; no generic product ranking"
+  },
+  "repair_attempted": true,
+  "repair_summary": "Discarded the seven-heading legacy skeleton, arbitrary metric bars, unsupported numeric score, generic database-only sourcing, and malformed Korean particles.",
+  "body_characters": 5656,
+  "body_korean_characters": 3504,
+  "h2_count": 6,
+  "internal_link_count": 3,
+  "external_citation_count": 5,
+  "remaining_risks": [
+    "Human approval has not occurred; candidate must remain non-public.",
+    "No specific commercial product label was inspected, so the draft deliberately contains no brand-level comparison.",
+    "Individual medical suitability and medication interactions are outside scope."
+  ]
+}

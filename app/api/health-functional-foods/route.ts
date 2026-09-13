@@ -15,9 +15,7 @@ export async function GET(request: Request) {
       {
         ok: false,
         source: HEALTH_FUNCTIONAL_FOOD_SOURCE,
-        endpoint: `${HEALTH_FUNCTIONAL_FOOD_API_ENDPOINT}/{key}/${HEALTH_FUNCTIONAL_FOOD_SERVICE_ID}/json/{start}/{end}`,
-        message:
-          "FOODSAFETYKOREA_API_KEY가 서버 환경변수에 없어 건강기능식품 품목제조신고 데이터를 표시할 수 없습니다."
+        message: "현재 건강기능식품 품목제조신고 데이터를 제공할 수 없습니다."
       },
       { status: 503 }
     );
@@ -40,7 +38,7 @@ export async function GET(request: Request) {
         source: HEALTH_FUNCTIONAL_FOOD_SOURCE,
         status: result.status,
         resultCode: result.resultCode || null,
-        message: result.message
+        message: "건강기능식품 신고 데이터 제공 중 오류가 발생했습니다."
       },
       { status: 502 }
     );

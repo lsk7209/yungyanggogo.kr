@@ -1,0 +1,53 @@
+{
+  "article_id": "phase6t-pickle-basis",
+  "accessed": "2026-09-13",
+  "source_rechecked_at": "2026-09-13",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "절임액에 담긴 피클에서 포장 영양성분표의 기준과 실제로 건져 먹은 부분이 다를 때 어디까지 계산할 수 있는가?",
+  "reader_outcome": "포장에 선언된 기준과 실제 섭취 형태를 대조해 계산 가능, 표시 범위 기록, 계산 보류 가운데 하나로 남긴다.",
+  "original_contribution": {
+    "type": "solid_liquid_denominator_audit",
+    "description": "내용량, 별도 고형물 표기 여부, 영양정보 기준량, 실제 먹은 고형물과 절임액을 하나의 음식 경계 감사표에 연결한다.",
+    "source_ids": ["S1", "S2", "S3", "S4", "S5", "S6"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 2026 내용량 영양성분", "date": "2026-09-12", "purpose": "현재 한국 포장 표시기준 확인"},
+    {"query": "K-FIND 피클 식품 검색 나트륨 자료원", "date": "2026-09-12", "purpose": "피클 검색 결과의 분류·자료원 선택 구조 확인"},
+    {"query": "K-FIND 나트륨 코드 음식 DB 가공식품 DB", "date": "2026-09-12", "purpose": "나트륨 항목과 데이터베이스 범위 확인"},
+    {"query": "K-FIND 중량 입력 영양성분 비교 공공데이터", "date": "2026-09-12", "purpose": "중량 기록과 비교·데이터 접근 경로 확인"}
+  ],
+  "search_intent_insight": "검색자는 피클의 대표 나트륨 수치보다 건더기만 먹었을 때 포장값을 어떻게 다뤄야 하는지에서 막힌다.",
+  "competitor_gap": "단순 저나트륨 선택법은 절임액 포함 여부와 영양정보 분모를 생략한다. 이 글은 계산할 수 없는 상황을 별도 결과로 인정하고 음식 경계를 기록한다.",
+  "unique_angle": "액체에 담긴 피클의 표시 분모와 실제 섭취 경계를 대조하는 나트륨 기록 감사",
+  "angle_supporting_detail": {"claim": "K-FIND 검색은 가공식품·음식 등 데이터베이스와 자료원별로 결과를 구분하므로, 피클이라는 이름만 같다고 한 행의 나트륨을 다른 제품에 옮길 수 없다.", "source_id": "S2"},
+  "source_interpretation": "현행 표시 고시는 현재 포장의 선언 항목을 읽는 최우선 근거로 쓴다. K-FIND의 검색·코드·자료원·비교·섭취량 화면은 식품 행과 중량을 명시하는 기록 도구로만 사용하며, 절임액을 버렸을 때 특정 제품의 나트륨 감소율을 증명하는 자료로 사용하지 않는다.",
+  "article_specific_details": [
+    {"claim": "편집적 추론: 피클 포장에서 영양정보 기준량과 별도 고형물 기준이 연결되지 않으면 건져 먹은 조각만의 정확한 나트륨을 표시값에서 역산하지 않는다.", "source_id": "S1", "inference": true, "evidence_limit": "S1은 표시 항목 확인의 근거다. 고형물 나트륨 역산 보류는 다른 분모 사이에서 근거 없는 정밀도를 만들지 않기 위한 사이트 계산 정책이며 법령의 직접 문구로 인용하지 않는다."},
+    {"claim": "K-FIND 식품 검색은 가공식품·음식·원재료성 식품을 구분하고 자료원·제조사 등으로 상세 검색할 수 있어 선택한 피클 행의 정체성을 기록할 수 있다.", "source_id": "S2"},
+    {"claim": "K-FIND 영양성분 코드 화면은 나트륨을 A002로 제시하고 가공식품 DB와 음식 DB 등 자료원별 수록 여부를 구분한다.", "source_id": "S3"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(식약처 고시 제2026-37호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14968", "publisher": "식품의약품안전처", "date": "2026-05-12", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 포장의 내용량과 영양성분 표시 항목을 우선 확인하는 기준"},
+    {"id": "S2", "title": "K-FIND 식품으로 찾아보기", "url": "https://various.foodsafetykorea.go.kr/nutrient/general/food/firstList.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-13", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "가공식품·음식·원재료성 식품과 자료원·제조사별 검색 결과 구분"},
+    {"id": "S3", "title": "K-FIND 영양성분 전체보기", "url": "https://various.foodsafetykorea.go.kr/nutrient/general/nutr/listPop.do", "publisher": "식품의약품안전처", "date": "2026 database", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "나트륨 A002 코드와 가공식품 DB·음식 DB 자료 수록 구분"},
+    {"id": "S4", "title": "K-FIND 구축에 사용된 자료원", "url": "https://various.foodsafetykorea.go.kr/nutrient/intro/data/dataInfo.do", "publisher": "식품의약품안전처", "date": "2026", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "가공식품 DB 등 자료원의 버전과 범위를 기록하는 근거"},
+    {"id": "S5", "title": "K-FIND 나의 영양성분 섭취량", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/meal/list.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-13", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "선택한 식품의 중량 입력과 에너지·7개 영양성분 확인 흐름"},
+    {"id": "S6", "title": "K-FIND 영양성분 비교하기", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/compare/list.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-13", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "선택한 식품 행을 비교함에 담아 최대 5개까지 비교하는 방식"},
+    {"id": "S7", "title": "K-FIND 공공데이터 Open API 안내", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/openApi/info.do", "publisher": "식품의약품안전처", "date": "current", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "가공식품과 음식 표준데이터를 분리해 제공하는 공식 데이터 접근 경로"}
+  ],
+  "data_points": [
+    {"claim": "식약처는 2026년 5월 12일 식품등의 표시기준 고시 제2026-37호 전문을 게시했다.", "source_id": "S1", "claim_type": "policy_version", "source_date": "2026-05-12", "supports_section": "피클 나트륨 계산은 포장의 네 필드에서 시작합니다"},
+    {"claim": "K-FIND 식품 검색은 가공식품·음식·원재료성 식품을 구분하고 자료원·제조사 등 상세검색 항목을 제공한다.", "source_id": "S2", "claim_type": "tool_function", "source_date": "current", "supports_section": "다른 피클의 DB 값은 현재 병의 빈칸을 채우지 못합니다"},
+    {"claim": "K-FIND 영양성분 목록은 나트륨을 A002로 표시하고 자료원별 수록 여부를 제공한다.", "source_id": "S3", "claim_type": "data_dictionary", "source_date": "2026", "supports_section": "다른 피클의 DB 값은 현재 병의 빈칸을 채우지 못합니다"},
+    {"claim": "K-FIND 자료원 화면은 식약처 가공식품 DB의 버전과 수록 범위를 공개한다.", "source_id": "S4", "claim_type": "data_provenance", "source_date": "2026", "supports_section": "다른 피클의 DB 값은 현재 병의 빈칸을 채우지 못합니다"},
+    {"claim": "K-FIND 섭취량 화면은 식품 중량 입력과 에너지·단백질 등 7개 영양성분 함량 확인 기능을 설명한다.", "source_id": "S5", "claim_type": "tool_function", "source_date": "current", "supports_section": "표시 기준과 먹은 부분이 같을 때만 중량으로 환산합니다"},
+    {"claim": "K-FIND 비교 화면은 선택한 식품을 최대 5개까지 비교함에 추가할 수 있다.", "source_id": "S6", "claim_type": "tool_function", "source_date": "current", "supports_section": "피클 두 제품은 같은 섭취 경계에서만 비교합니다"},
+    {"claim": "K-FIND Open API 안내는 가공식품 표준데이터와 음식 표준데이터를 별도 링크로 제공한다.", "source_id": "S7", "claim_type": "data_access", "source_date": "current", "supports_section": "다른 피클의 DB 값은 현재 병의 빈칸을 채우지 못합니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [],
+  "conflict_note": "포장에 고형물과 절임액의 영양값이 별도로 제시되지 않으면 건져 먹은 고형물만의 정확한 감소율을 주장하지 않는다. 현재 제품 포장이 DB보다 우선하며 질환별 권고나 세척 효과는 다루지 않는다."
+}

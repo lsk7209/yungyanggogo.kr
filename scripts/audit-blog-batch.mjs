@@ -126,8 +126,9 @@ if (byPublished[0]?.publishedAt !== "2026-06-07T00:00:00+09:00") {
   fail(`unexpected schedule start: ${byPublished[0]?.publishedAt}`);
 }
 
-if (byPublished.at(-1)?.publishedAt !== "2026-08-29T03:00:00+09:00") {
-  fail(`unexpected schedule end: ${byPublished.at(-1)?.publishedAt}`);
+const targetCoverageAt = process.env.CONTENT_AUDIT_TARGET_AT || "2026-10-21T23:59:59+09:00";
+if (new Date(byPublished.at(-1)?.publishedAt || 0).getTime() < new Date(targetCoverageAt).getTime()) {
+  fail(`schedule end before target ${targetCoverageAt}: ${byPublished.at(-1)?.publishedAt}`);
 }
 
 if (failures.length > 0) {

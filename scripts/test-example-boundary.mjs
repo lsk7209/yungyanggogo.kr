@@ -32,10 +32,10 @@ test('example detail has explicit identity and omits product provenance/schema',
 });
 
 test('discovery policy follows example identity and retained blog link is labeled', () => {
-  assert.ok(source('app/sitemap.ts').includes('foods.filter((food) => !food.isExample)'));
+  assert.ok(source('app/sitemaps/core.xml/route.ts').includes('foods.filter((food) => !food.isExample)'));
   assert.match(source('lib/blog.ts'), /href: "\/foods\/protein-ready-meal-sample",\s+label: "[^"]*예시"/);
 });
 
-test('banner image constrains intrinsic width without unpublished stylesheet rules', () => {
-  assert.ok(source('components/CoupangPartnersBanner.tsx').includes('style={{ maxWidth: "100%", height: "auto", display: "block" }}'));
+test('public detail no longer embeds the removed Coupang affiliate banner', () => {
+  assert.ok(!source('app/nutrition-data/[dataset]/[foodCode]/page.tsx').includes('CoupangPartnersBanner'));
 });

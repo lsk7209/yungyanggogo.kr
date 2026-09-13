@@ -1,0 +1,52 @@
+{
+  "article_id": "phase6t-salad-topping-basis",
+  "accessed": "2026-09-12",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "서로 다른 기준으로 표시된 여러 샐러드 토핑의 영양성분을 실제 투입 중량으로 환산하고, 완성 샐러드에 더해진 부분만 과장 없이 합산하려면 어떤 입력값과 예외를 기록해야 하는가?",
+  "reader_outcome": "각 토핑의 표시 기준량, 표시값, 실제 넣은 양을 확보해 성분별 추가분을 계산하고 비교 불가능하거나 불명확한 값은 합계에서 분리한다.",
+  "original_contribution": {
+    "type": "multi-ingredient_calculation_ledger",
+    "description": "토핑 범주 간 100g 순위를 버리고 세 토핑의 실제 투입량을 각각 환산해 열량과 나트륨 추가분을 합산하며, 채소·드레싱은 범위 밖으로 명시하는 계산 장부",
+    "source_ids": ["S1", "S2", "S3", "S4", "S6"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 2026-37 영양성분 총내용량", "date": "2026-09-12", "purpose": "current official Korean labeling source"},
+    {"query": "식약처 한눈에 보는 영양표시 가이드라인 2025 표시 방법", "date": "2026-09-12", "purpose": "current official implementation guide"},
+    {"query": "국가법령정보센터 1회 섭취참고량 총 내용량 100g 식약처 해석", "date": "2026-09-12", "purpose": "official denominator interpretation and limitations"},
+    {"query": "USDA FoodData Central nutrient value portion formula 100 g", "date": "2026-09-12", "purpose": "primary formula for converting 100g values to actual gram portions"}
+  ],
+  "search_intent_insight": "검색자는 토핑 하나의 일반 영양 설명보다 여러 포장에 적힌 서로 다른 분모를 실제 한 그릇의 추가분으로 바꾸는 계산 절차를 필요로 한다.",
+  "competitor_gap": "크루통·견과·치즈처럼 식품 성격이 다른 대상을 100g 숫자로 곧바로 순위화하면 실제 사용량과 비교 목적이 사라지므로, 투입 중량과 합산 범위를 고정한 설명이 필요하다.",
+  "unique_angle": "범주별 우열이 아니라 각 제품의 실제 사용량별 추가분을 계산하고 동일 성분끼리만 합산하는 한 그릇 단위 장부",
+  "angle_supporting_detail": {"claim": "USDA FoodData Central은 100g당 값 V와 실제 분량 중량 W를 사용할 때 N=(V×W)/100으로 분량 값을 계산한다고 명시한다.", "source_id": "S6"},
+  "source_interpretation": "식약처 고시와 가이드는 한국 제품 포장에서 읽을 표시 항목과 최신 기준 확인 경로로 사용한다. 국가법령정보센터의 식약처 해석은 총내용량·100g·1회 섭취참고량 관계를 설명하는 보조 자료이며 법제처 판단이 아니고 변경 가능하다는 경고를 함께 둔다. 공공데이터는 기준량·식품중량·출처·기준일자 확인에 사용하며 개별 제품의 최신 포장을 대체하지 않는다. USDA 공식은 산술 절차만 보조하고 한국 표시 의무나 제품 영양값의 출처로 사용하지 않는다.",
+  "article_specific_details": [
+    {"claim": "식약처의 2026년 고시 전문은 고시 제2026-37호와 2026년 5월 12일 날짜를 명시한다.", "source_id": "S1"},
+    {"claim": "식약처 부처 해석은 1회 섭취참고량당 표시를 추가할 때 총내용량당 표시를 병행해야 한다고 설명한다.", "source_id": "S3"},
+    {"claim": "FoodData Central은 100g당 값에서 실제 g 분량으로 바꾸는 N=(V×W)/100 공식을 직접 제공한다.", "source_id": "S6"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(식약처 고시 제2026-37호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14968", "publisher": "식품의약품안전처", "date": "2026-05-12", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 공개된 한국 식품 표시기준의 버전과 원문 확인"},
+    {"id": "S2", "title": "한눈에 보는 영양표시 가이드라인", "url": "https://www.mfds.go.kr/brd/m_1060/view.do?seq=15805", "publisher": "식품의약품안전처", "date": "2025-12-29", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "영양표시 방법과 주요 질의응답의 공식 확인 경로"},
+    {"id": "S3", "title": "식품의 1회 섭취참고량이 1식일 때의 식약처 법령해석", "url": "https://www.law.go.kr/LSW/cgmExpcInfoP.do?cgmExpcDatSeq=422340&mode=2&ofiClsCd=350123", "publisher": "국가법령정보센터", "date": "2024", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "recent", "used_for": "총내용량당, 100g·100mL당, 1회 섭취참고량당 표시 관계와 비구속적 해석 한계"},
+    {"id": "S4", "title": "식품의약품안전처 식품영양성분DB정보", "url": "https://www.data.go.kr/data/15127578/openapi.do", "publisher": "공공데이터포털", "date": "2025-12-05", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "영양성분 기준량, 식품중량, 출처와 데이터기준일자 필드 확인"},
+    {"id": "S5", "title": "식품 영양성분 Open API 폐기 및 통합 안내", "url": "https://www.data.go.kr/bbs/ntc/selectNotice.do?originId=NOTICE_0000000003737", "publisher": "공공데이터포털", "date": "2024-08-13", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "recent", "used_for": "오래된 영양성분 API 대신 현재 통합 데이터 경로를 확인해야 하는 이유"},
+    {"id": "S6", "title": "Foundation Foods Documentation", "url": "https://fdc.nal.usda.gov/Foundation_Foods_Documentation/", "publisher": "USDA FoodData Central", "date": "2026", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "100g당 영양값을 실제 g 분량으로 환산하는 공식과 정량한계 값 주의"},
+    {"id": "S7", "title": "FoodData Central FAQs", "url": "https://fdc.nal.usda.gov/faq/", "publisher": "USDA FoodData Central", "date": "2026", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "데이터 유형별 serving size 맥락 차이와 시점 스냅샷 한계"}
+  ],
+  "data_points": [
+    {"claim": "식약처의 현재 공개 고시 전문은 제2026-37호이며 고시일은 2026년 5월 12일이다.", "source_id": "S1", "claim_type": "date", "source_date": "2026-05-12", "supports_section": "토핑 이름보다 표시값의 분모를 먼저 적습니다"},
+    {"claim": "식약처 가이드는 영양표시 제도 목적, 표시 방법과 주요 질의응답을 정리한다.", "source_id": "S2", "claim_type": "procedure", "source_date": "2025-12-29", "supports_section": "토핑 이름보다 표시값의 분모를 먼저 적습니다"},
+    {"claim": "식약처 부처 해석은 총내용량당 표시 원칙과 일정 조건의 100g·100mL당 표시, 1회 섭취참고량당 병행표시를 설명한다.", "source_id": "S3", "claim_type": "policy_interpretation", "source_date": "2024", "supports_section": "총내용량당과 100g당은 계산 시작점이 다릅니다"},
+    {"claim": "식품영양성분DB정보는 기준량, 식품중량, 출처와 데이터기준일자 등 비교에 필요한 메타데이터를 제공한다.", "source_id": "S4", "claim_type": "procedure", "source_date": "2025-12-05", "supports_section": "공공데이터는 포장을 대체하지 않습니다"},
+    {"claim": "공공데이터포털은 옛 영양성분 API가 현재 식품영양성분DB정보로 통합·대체됐다고 공지했다.", "source_id": "S5", "claim_type": "date", "source_date": "2024-08-13", "supports_section": "공공데이터는 포장을 대체하지 않습니다"},
+    {"claim": "FoodData Central은 100g당 값 V와 실제 중량 W에서 분량 값 N을 N=(V×W)/100으로 계산한다.", "source_id": "S6", "claim_type": "formula", "source_date": "2026", "supports_section": "세 토핑을 실제 넣은 양으로 환산하는 가상 예시"},
+    {"claim": "FoodData Central은 데이터 유형에 따라 serving size의 맥락이 다르고 값은 특정 시점의 스냅샷일 수 있다고 설명한다.", "source_id": "S7", "claim_type": "limitation", "source_date": "2026", "supports_section": "합계에 넣지 말아야 할 값도 표시합니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [],
+  "conflict_note": "2026-37호의 개정 조항별 시행 시점과 제품별 적용례는 이 소비자 계산 글에서 단정하지 않는다. 실제 제품 포장의 표시 기준을 먼저 읽고 최신 공식 고시를 확인하도록 제한한다. USDA 자료는 환산 공식과 데이터 한계만 보조하며 한국 제품 수치나 표시 의무를 제공하지 않는다."
+}

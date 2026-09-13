@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 3,
+  "generatedAt": "2026-09-13T02:00:00+09:00",
+  "target": "https://yungyanggogo.kr",
+  "mode": "local_repository_audit",
+  "readiness": "needs_review",
+  "scope": {
+    "repository": "observed",
+    "localProductionBuild": "observed",
+    "liveDeployment": "not_verified",
+    "searchConsole": "not_verified",
+    "adsenseAccount": "not_verified",
+    "consentPlatform": "not_verified"
+  },
+  "sample": {
+    "pathsChecked": 15,
+    "successfulPaths": 14,
+    "intentionalNotFoundPaths": 1,
+    "families": [
+      "home",
+      "blog-index",
+      "blog-detail",
+      "trust-pages",
+      "robots",
+      "sitemaps",
+      "feed",
+      "ads.txt",
+      "llms.txt",
+      "nutrition-detail-404"
+    ]
+  },
+  "observations": [
+    {
+      "id": "CANONICAL_404_INHERITANCE",
+      "severity": "medium",
+      "tier": "T2_APPLIED_AND_VERIFIED",
+      "status": "resolved_local",
+      "evidence": "The root-layout canonical was removed and the homepage now owns its explicit canonical. A production HTTP check returned homepage 200 with https://yungyanggogo.kr and missing nutrition detail 404 with noindex and no canonical.",
+      "minimumFix": "Completed in app/layout.tsx and app/page.tsx.",
+      "verification": "scripts/test-canonical-metadata-boundary.mjs passed 2 assertions; typecheck, lint and production build passed; live local production HTML confirmed the boundary."
+    },
+    {
+      "id": "LEGACY_CONTENT_VALUE_RISK",
+      "severity": "high",
+      "tier": "T3_EDITORIAL_REVIEW",
+      "status": "observed_internal",
+      "evidence": "The current corpus map keeps 700 legacy rows behind review boundaries; only the seed blog detail is exposed by the local production build and seven researched candidates remain pending/noindex.",
+      "minimumFix": "Continue replacing or merging legacy contracts only after distinct intent, research, originality, QA and human approval are evidenced.",
+      "verification": "Regenerate the corpus and readiness reports, run editorial boundary tests, then inspect the production route manifest."
+    },
+    {
+      "id": "CONSENT_RUNTIME_UNKNOWN",
+      "severity": "review",
+      "tier": "T3_EXTERNAL_REVIEW",
+      "status": "not_verified",
+      "evidence": "No repository CMP/TCF implementation was observed. Visitor regions, live ad mode and AdSense privacy-message configuration were not available to this local audit.",
+      "minimumFix": "Before enabling personalized ads, verify the live consent design and account configuration for the actual visitor regions.",
+      "verification": "Use a live browser with regional test conditions and inspect consent, storage and ad requests without clicking ads."
+    },
+    {
+      "id": "ADS_RUNTIME_DISABLED_LOCAL",
+      "severity": "informational",
+      "tier": "T1_OBSERVATION",
+      "status": "observed",
+      "evidence": ".env.example defaults NEXT_PUBLIC_ADSENSE_ENABLED to false; the sampled local build therefore emitted no AdSense loader.",
+      "minimumFix": "No local code change. Verify the intended production environment separately before any review or rollout.",
+      "verification": "Inspect the deployed environment and page source through an authorized read-only check."
+    }
+  ],
+  "positiveSignals": [
+    "public/ads.txt contains the same publisher identifier as lib/site.ts",
+    "AdSense loading is controlled by an explicit environment flag and a narrow real-detail route gate",
+    "About, contact, privacy, terms and editorial-policy routes returned 200 in the local production smoke",
+    "Sampled indexable HTML emitted self-referencing yungyanggogo.kr canonicals, and a missing detail no longer inherits the homepage canonical",
+    "robots, sitemap index, core sitemap, feed, ads.txt and llms.txt returned 200 with expected content types",
+    "Organization, WebSite, Article and Breadcrumb structured data exist in the relevant templates"
+  ],
+  "decision": {
+    "resubmission": "not_checked",
+    "reason": "A local repository audit cannot establish current AdSense account status, live consent behavior, deployed crawl behavior or approval eligibility."
+  }
+}

@@ -39,7 +39,11 @@ export function getPostThumbnail(post: BlogPost) {
 }
 
 export function getPostThumbnailUrl(post: BlogPost) {
-  return absoluteUrl(`/blog/${post.slug}/thumbnail.svg`);
+  return absoluteUrl(getPostThumbnailPath(post));
+}
+
+export function getPostThumbnailPath(post: BlogPost) {
+  return `/blog/${post.slug}/thumbnail.svg`;
 }
 
 export function getPostThumbnailSvg(post: BlogPost) {

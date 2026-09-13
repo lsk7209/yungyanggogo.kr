@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-09-13T00:28:00+09:00",
+  "scope": "rolling five most recent candidates after bakery partial-portion review",
+  "decision": "CONTINUE",
+  "candidateCount": 5,
+  "candidateIds": [
+    "phase6t-salad-topping-basis",
+    "phase6t-konjac-jelly-basis",
+    "phase6t-bagel-basis",
+    "phase6t-pickle-basis",
+    "bakery-snack-serving-basis"
+  ],
+  "uniqueStructureTypes": 5,
+  "uniqueOpeningFrames": 5,
+  "uniqueH2Sequences": 5,
+  "uniqueEndingDirections": 5,
+  "uniqueSourceInterpretations": 5,
+  "humanReviewPendingCount": 5,
+  "noindexCount": 5,
+  "candidates": [
+    {"id": "phase6t-salad-topping-basis", "structureType": "calculation-workflow", "openingFrame": "three measured topping packages", "sectionLogic": "separate inputs to same-nutrient sum", "endingAction": "weigh and complete a three-column calculation", "sourceInterpretation": "label inputs plus portion arithmetic"},
+    {"id": "phase6t-konjac-jelly-basis", "structureType": "decision-matrix", "openingFrame": "low-calorie claim with five evidence gaps", "sectionLogic": "label and safety fields to action matrix", "endingAction": "leave unverifiable fields blank", "sourceInterpretation": "current law separated from historical safety context"},
+    {"id": "phase6t-bagel-basis", "structureType": "comparability-decision-tree", "openingFrame": "packaged versus bakery-counter choice", "sectionLogic": "evidence ladder to compare-or-hold decision", "endingAction": "complete seven fields or hold comparison", "sourceInterpretation": "package priority plus identified-row database use"},
+    {"id": "phase6t-pickle-basis", "structureType": "denominator-audit", "openingFrame": "solids removed from brine under an ambiguous package basis", "sectionLogic": "package fields to edible-boundary audit and uncertainty preservation", "endingAction": "record solids and brine behavior without inventing a reduction", "sourceInterpretation": "label transcription and data identity without brine-removal inference"},
+    {"id": "bakery-snack-serving-basis", "structureType": "partial-portion-evidence-ladder", "openingFrame": "a cream bun is cut and an exact half is falsely assumed", "sectionLogic": "whole-item certainty to partial estimate and three-state record", "endingAction": "weigh before cutting and label partial values as estimates", "sourceInterpretation": "label fields establish whole-item evidence while K-FIND supports conversion without proving filling distribution"}
+  ],
+  "blockingSignals": [],
+  "reviewSignals": [
+    "The bakery and bagel candidates both mention bakery-counter products, but bagel decides whether two sales channels are comparable while bakery decides whether one partly eaten item can be recorded precisely.",
+    "Nutrition-label and K-FIND sources recur, but the bakery article uses them to grade partial-portion evidence rather than compare products, total a package, sum ingredients, screen safety, or separate solids from brine.",
+    "All candidates remain pending human review and outside the public content loader."
+  ],
+  "nextRule": "Continue one anchor at a time only after cross-cluster overlap and a distinct evidence plan are both documented."
+}

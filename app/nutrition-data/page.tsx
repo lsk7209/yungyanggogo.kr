@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { fetchNationalNutritionItemsWithDbCacheCached } from "../../lib/national-nutrition-db";
+import { isTursoConfigured } from "../../lib/db";
+import { normalizeNutritionSearchQuery } from "../../lib/nutrition-query";
 import {
   getNationalNutritionApiKey,
   NATIONAL_NUTRITION_DATASETS,
@@ -11,32 +13,33 @@ import { absoluteUrl, siteConfig } from "../../lib/site";
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
 
-export const metadata: Metadata = {
-  title: "전국통합 식품영양성분정보 표준데이터 조회",
-  description:
-    "전국통합식품영양성분정보, 음식, 가공식품, 원재료성 식품, 건강기능식품 영양성분 표준데이터를 한 화면에서 확인합니다.",
-  alternates: {
-    canonical: absoluteUrl("/nutrition-data"),
-  },
-  openGraph: {
-    title: `전국통합 식품영양성분정보 표준데이터 조회 | ${siteConfig.name}`,
-    description:
-      "공공데이터포털 전국통합식품영양성분정보 표준데이터의 열량, 단백질, 당류, 나트륨, 미량영양소, 출처 정보를 확인합니다.",
-    url: absoluteUrl("/nutrition-data"),
-  },
-};
-
 type PageProps = {
   searchParams?: Promise<{
     q?: string;
   }>;
 };
 
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const hasSearch = Boolean(normalizeNutritionSearchQuery(params?.q));
+  return {
+    title: "전국통합 식품영양성분정보 표준데이터 조회",
+    description: "전국통합식품영양성분정보, 음식, 가공식품, 원재료성 식품, 건강기능식품 영양성분 표준데이터를 한 화면에서 확인합니다.",
+    alternates: { canonical: absoluteUrl("/nutrition-data") },
+    robots: hasSearch ? { index: false, follow: true } : undefined,
+    openGraph: {
+      title: `전국통합 식품영양성분정보 표준데이터 조회 | ${siteConfig.name}`,
+      description: "공공데이터포털 전국통합식품영양성분정보 표준데이터의 열량, 단백질, 당류, 나트륨, 미량영양소, 출처 정보를 확인합니다.",
+      url: absoluteUrl("/nutrition-data"),
+    },
+  };
+}
+
 export default async function NutritionDataPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const query = params?.q?.trim() || "";
+  const query = normalizeNutritionSearchQuery(params?.q);
   const hasApiKey = Boolean(getNationalNutritionApiKey());
-  const results = hasApiKey
+  const results = hasApiKey || isTursoConfigured
     ? await Promise.all(
         NATIONAL_NUTRITION_DATASETS.map((dataset) =>
           fetchNationalNutritionItemsWithDbCacheCached({
@@ -47,7 +50,8 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
         ),
       )
     : [];
-  const totalVisible = results.reduce((sum, result) => sum + result.count, 0);
+  const successfulResults = results.filter((result) => result.ok);
+  const totalVisible = successfulResults.reduce((sum, result) => sum + result.count, 0);
 
   const datasetSchema = {
     "@context": "https://schema.org",
@@ -103,21 +107,11 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
         </div>
       </form>
 
-      <div
-        className={
-          hasApiKey
-            ? "api-status api-status--ok"
-            : "api-status api-status--warn"
-        }
-      >
-        <strong>
-          {hasApiKey
-            ? "전국통합 영양성분 API 연결 준비됨"
-            : "공공데이터포털 API 키 설정 필요"}
-        </strong>
+      <div className="api-status api-status--ok">
+        <strong>공식 데이터 출처</strong>
         <p>
-          승인된 활용신청의 일일 트래픽은 데이터셋별 1,000건입니다. 인증키는
-          서버 환경변수에서만 읽고, 화면에는 노출하지 않습니다.
+          원천은 공공데이터포털의 전국통합식품영양성분정보 표준데이터입니다.
+          수치의 기준량, 제공기관과 갱신일을 상세 페이지에서 함께 확인하세요.
         </p>
       </div>
 
@@ -127,7 +121,7 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
       >
         <div>
           <p className="eyebrow">Data License</p>
-          <h2>활용신청 기본정보와 표시 범위</h2>
+          <h2>데이터 출처와 표시 범위</h2>
           <p>
             활용목적은 웹 사이트 개발이며, 이용허락범위에 따라 출처와
             저작자표시, 제3자 권리 포함 가능성을 함께 표시합니다.
@@ -141,14 +135,6 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
           <div>
             <dt>서비스유형</dt>
             <dd>REST</dd>
-          </div>
-          <div>
-            <dt>신청유형</dt>
-            <dd>개발계정 | 활용신청</dd>
-          </div>
-          <div>
-            <dt>활용기간</dt>
-            <dd>2026-06-07 ~ 2028-06-07</dd>
           </div>
           <div>
             <dt>데이터포맷</dt>
@@ -175,10 +161,7 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
               </Link>
             </h2>
             <p>{dataset.description}</p>
-            <small>
-              일일 트래픽 {dataset.dailyTraffic.toLocaleString("ko-KR")}건
-            </small>
-            <code>{dataset.endpoint}</code>
+            <small>개별 항목에서 기준량과 데이터 갱신일을 확인할 수 있습니다.</small>
           </article>
         ))}
       </div>
@@ -192,7 +175,11 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
             <strong>
               {query ? `"${query}" 통합 검색 결과` : "전국통합 영양성분 샘플"}
             </strong>
-            <span>{totalVisible.toLocaleString("ko-KR")}개 항목 표시</span>
+            <span>
+              {successfulResults.length > 0
+                ? `${totalVisible.toLocaleString("ko-KR")}개 항목 표시`
+                : "원천 응답을 확인하지 못했습니다"}
+            </span>
           </div>
 
           <div className="nutrition-dataset-grid">
@@ -204,11 +191,11 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
                     <h2>{result.dataset.name}</h2>
                   </div>
                   <small>
-                    {result.cacheSource === "db"
-                      ? `DB 저장 데이터 · 전체 ${result.totalCount.toLocaleString("ko-KR")}건`
+                    {!result.ok
+                      ? "원천 전체 건수 확인 불가"
                       : result.fallback
-                        ? "검증 샘플 표시"
-                        : `API 수집 데이터 · 전체 ${result.totalCount.toLocaleString("ko-KR")}건`}
+                      ? "마지막으로 확인된 예시 자료"
+                      : `원천 전체 ${result.totalCount.toLocaleString("ko-KR")}건 중 현재 목록`}
                   </small>
                 </div>
                 {result.foods.length > 0 ? (
@@ -287,7 +274,7 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
                     <strong>
                       {result.dataset.shortName} 데이터 응답 확인 필요
                     </strong>
-                    <p>{result.message || "현재 표시할 항목이 없습니다."}</p>
+                    <p>일시적인 데이터 제공 상태일 수 있습니다. 잠시 후 다시 검색해 주세요.</p>
                   </div>
                 )}
               </section>

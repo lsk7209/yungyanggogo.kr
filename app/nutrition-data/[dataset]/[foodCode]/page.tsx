@@ -13,6 +13,8 @@ import {
   type NationalNutritionItem,
 } from "../../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../../lib/site";
+import { AdsenseScript } from "../../../../components/AdsenseScript";
+import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
 // 식품 영양성분 데이터는 거의 변하지 않으므로 1일 캐싱으로 DB reads 대폭 절감
@@ -175,7 +177,16 @@ export default async function NationalNutritionDetailPage({
             {cacheSource === "db" ? "Turso DB 저장 데이터" : "API 확인 데이터"}
           </span>
         </div>
+        <Link className="button" href={buildComparisonHref({
+          refs: [{ dataset: datasetSlug, foodCode: item.foodCode, value: buildComparisonItemValue(datasetSlug, item.foodCode) }],
+          basis: "reported",
+          targetServingUnit: "120g",
+        })}>
+          이 식품을 비교 목록에 담기
+        </Link>
       </header>
+
+      <AdsenseScript />
 
       <section className="nutrition-detail-summary">
         {primaryMetrics.slice(0, 4).map(([label, value]) => (

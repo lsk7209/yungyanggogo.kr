@@ -1,3 +1,5 @@
+import { fetchTextWithRetry } from "./fetch-with-retry";
+
 export const FOOD_NUTRITION_API_ENDPOINT =
   "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo02/getFoodNtrCpntDbInq02";
 export const PUBLIC_FOOD_API_SOURCE = "식품의약품안전처_식품영양성분DB정보";
@@ -79,10 +81,20 @@ export async function fetchPublicFoodItems({ query, pageNo = "1", numOfRows = "2
     url.searchParams.set("FOOD_NM_KR", query);
   }
 
-  const response = await fetch(url, {
-    next: { revalidate: 86400 }
-  });
-  const text = await response.text();
+  let response: Response;
+  let text: string;
+  try {
+    ({ response, text } = await fetchTextWithRetry(url, {
+      next: { revalidate: 86400 },
+    }));
+  } catch {
+    return {
+      ok: false,
+      status: 502,
+      foods: [] as PublicFoodApiItem[],
+      message: "식품영양성분 API 응답을 처리하지 못했습니다.",
+    };
+  }
 
   if (!response.ok) {
     return {

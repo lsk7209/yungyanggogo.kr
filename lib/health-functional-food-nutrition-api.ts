@@ -1,4 +1,5 @@
-import { healthFunctionalFoodNutritionSnapshot } from "./health-functional-food-nutrition-snapshot";
+import { extractStandardDataGoKrItems } from "./data-go-kr-response";
+import { fetchTextWithRetry } from "./fetch-with-retry";
 
 export const HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT =
   "https://api.data.go.kr/openapi/tn_pubr_public_health_functional_food_nutrition_info_api";
@@ -133,12 +134,11 @@ export async function fetchHealthFunctionalFoodNutritionItems({
 
   const url = buildHealthFunctionalFoodNutritionUrl({ serviceKey, query, pageNo, numOfRows });
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
   try {
-    const response = await fetchHealthFunctionalFoodNutritionResponse(url, controller.signal);
-    const text = await response.text();
+    const { response, text } = await fetchTextWithRetry(url, {
+      headers: REQUEST_HEADERS,
+      next: { revalidate: 86400 },
+    }, { timeoutMs: REQUEST_TIMEOUT_MS });
 
     if (!response.ok) {
       return {
@@ -165,48 +165,21 @@ export async function fetchHealthFunctionalFoodNutritionItems({
     };
   } catch (error) {
     return {
-      ok: true,
-      status: 200,
-      totalCount: healthFunctionalFoodNutritionSnapshot.totalCount,
-      resultCode: "SNAPSHOT",
-      foods: healthFunctionalFoodNutritionSnapshot.foods,
-      fallback: true,
+      ok: false,
+      status: 503,
+      totalCount: 0,
+      foods: [] as HealthFunctionalFoodNutritionItem[],
+      fallback: false,
       message:
         error instanceof Error
-          ? `Live API fetch failed; using verified snapshot from ${healthFunctionalFoodNutritionSnapshot.fetchedAt}. ${error.message}`
-          : `Live API fetch failed; using verified snapshot from ${healthFunctionalFoodNutritionSnapshot.fetchedAt}.`
+          ? error.message
+          : "건강기능식품 영양DB 응답을 처리하지 못했습니다."
     };
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
 export function extractHealthFunctionalFoodNutritionItems(payload: unknown) {
-  if (!payload || typeof payload !== "object") {
-    return emptyExtract();
-  }
-
-  const response = (payload as { response?: unknown }).response;
-  if (!response || typeof response !== "object") {
-    return emptyExtract();
-  }
-
-  const header = (response as { header?: { resultCode?: string; resultMsg?: string } }).header;
-  const body = (response as { body?: unknown }).body;
-  const bodyRecord = body && typeof body === "object" ? (body as { items?: unknown; totalCount?: number }) : null;
-  const items = bodyRecord?.items;
-  const rows = Array.isArray(items)
-    ? (items as RawHealthFunctionalFoodNutritionItem[])
-    : items && typeof items === "object"
-      ? [items as RawHealthFunctionalFoodNutritionItem]
-      : [];
-
-  return {
-    rows,
-    totalCount: Number(bodyRecord?.totalCount || rows.length),
-    resultCode: header?.resultCode || "",
-    resultMessage: header?.resultMsg || ""
-  };
+  return extractStandardDataGoKrItems<RawHealthFunctionalFoodNutritionItem>(payload);
 }
 
 export function buildHealthFunctionalFoodNutritionUrl({
@@ -225,36 +198,6 @@ export function buildHealthFunctionalFoodNutritionUrl({
   }
 
   return `${HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT}?serviceKey=${serviceKey}&${params.toString()}`;
-}
-
-async function fetchHealthFunctionalFoodNutritionResponse(url: string, signal: AbortSignal) {
-  try {
-    return await fetch(url, {
-      headers: REQUEST_HEADERS,
-      next: { revalidate: 86400 },
-      signal
-    });
-  } catch (error) {
-    const httpUrl = url.replace("https://api.data.go.kr/", "http://api.data.go.kr/");
-    if (httpUrl === url) {
-      throw error;
-    }
-
-    return fetch(httpUrl, {
-      headers: REQUEST_HEADERS,
-      next: { revalidate: 86400 },
-      signal
-    });
-  }
-}
-
-function emptyExtract() {
-  return {
-    rows: [] as RawHealthFunctionalFoodNutritionItem[],
-    totalCount: 0,
-    resultCode: "",
-    resultMessage: ""
-  };
 }
 
 function formatDate(value: string) {

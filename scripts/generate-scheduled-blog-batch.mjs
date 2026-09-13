@@ -1,6 +1,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+throw new Error(
+  "Legacy template generation is disabled: run the persona-writer research, article-contract, and per-article QA workflow instead.",
+);
+
 const outDir = path.join(process.cwd(), "content", "blog");
 const intervalHours = 5;
 

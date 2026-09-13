@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-09-13T00:08:00+09:00",
+  "scope": "rolling five most recent Phase 6T candidates after pickle",
+  "decision": "CONTINUE",
+  "candidateCount": 5,
+  "candidateIds": [
+    "phase6t-dried-fruit-basis",
+    "phase6t-salad-topping-basis",
+    "phase6t-konjac-jelly-basis",
+    "phase6t-bagel-basis",
+    "phase6t-pickle-basis"
+  ],
+  "uniqueStructureTypes": 5,
+  "uniqueOpeningFrames": 5,
+  "uniqueH2Sequences": 5,
+  "uniqueEndingDirections": 5,
+  "uniqueSourceInterpretations": 5,
+  "humanReviewPendingCount": 5,
+  "noindexCount": 5,
+  "candidates": [
+    {"id": "phase6t-dried-fruit-basis", "structureType": "worked-example", "openingFrame": "single-package denominator ambiguity", "sectionLogic": "package arithmetic to ingredient evidence", "endingAction": "complete a four-field package record", "sourceInterpretation": "Korean label rules plus jurisdiction-limited definitions"},
+    {"id": "phase6t-salad-topping-basis", "structureType": "calculation-workflow", "openingFrame": "three measured topping packages", "sectionLogic": "separate inputs to same-nutrient sum", "endingAction": "weigh and complete a three-column calculation", "sourceInterpretation": "label inputs plus portion arithmetic"},
+    {"id": "phase6t-konjac-jelly-basis", "structureType": "decision-matrix", "openingFrame": "low-calorie claim with five evidence gaps", "sectionLogic": "label and safety fields to action matrix", "endingAction": "leave unverifiable fields blank", "sourceInterpretation": "current law separated from historical safety context"},
+    {"id": "phase6t-bagel-basis", "structureType": "comparability-decision-tree", "openingFrame": "packaged versus bakery-counter choice", "sectionLogic": "evidence ladder to compare-or-hold decision", "endingAction": "complete seven fields or hold comparison", "sourceInterpretation": "package priority plus identified-row database use"},
+    {"id": "phase6t-pickle-basis", "structureType": "denominator-audit", "openingFrame": "solids removed from brine under an ambiguous package basis", "sectionLogic": "package fields to edible-boundary audit and uncertainty preservation", "endingAction": "record solids and brine behavior without inventing a reduction", "sourceInterpretation": "label transcription and data identity without brine-removal inference"}
+  ],
+  "blockingSignals": [],
+  "reviewSignals": [
+    "Nutrition-label sources recur, but the pickle article uses them for solid-liquid food-boundary auditing rather than package arithmetic, multi-input summation, safety screening, or cross-channel comparison.",
+    "The pickle and bagel articles both permit a hold outcome, but they use different reader situations, evidence objects, section sequences, visuals, and final records.",
+    "All candidates remain pending human review and outside the public content loader."
+  ],
+  "nextRule": "Continue only from an accepted non-overlapping contract and rerun this rolling window after the next full candidate."
+}

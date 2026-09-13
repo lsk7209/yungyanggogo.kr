@@ -1,0 +1,7 @@
+url,content_type,current_state,decision,reason,original_preserved,human_review,status
+/,home,mixed-example-and-guidance,improve,Remove fabricated metrics and unverified criteria while preserving navigation,yes,required,implemented-local
+/rankings,comparison-guide,guide-only,keep,Accurately states no product ranking exists,yes,required,implemented-local
+/blog/nutrition-label-comparison-basis,article,indexed-guide,improve,Remove unsupported legal-label verdict language and connect to actual nutrition search,yes,required,implemented-local-ai-review-only
+/blog/meal-replacement-drink-faq,article,previous-audit-observation,review,Requires source and editorial record review before merge/archive,yes,required,blocked
+/foods/protein-ready-meal-sample,explicit-example,noindex-example,keep,Existing regression separates synthetic UI example from real product data,yes,not-applicable,verified-by-existing-test
+/blog/* generated JSON,generated-article-batch,human-review-pending,noindex-until-approved,All generated records preserve their URLs but default to noindex until an explicit per-post humanReview approved value exists,yes,required,policy-enforced-local

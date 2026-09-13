@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-09-12T23:59:00+09:00",
+  "scope": "first five rebuilt Phase 6T editorial candidates",
+  "decision": "CONTINUE",
+  "candidateCount": 5,
+  "minimumBodyCharacters": 4502,
+  "uniqueStructureTypes": 5,
+  "uniqueOpeningFrames": 5,
+  "uniqueH2Sequences": 5,
+  "uniqueEndingDirections": 5,
+  "uniqueSourceInterpretations": 5,
+  "humanReviewPendingCount": 5,
+  "noindexCount": 5,
+  "candidates": [
+    {"id": "phase6t-energy-drink-basis", "structureType": "decision-tree", "openingFrame": "shelf label decision", "sectionLogic": "legal marker to one-can memo", "endingAction": "record total caffeine and sugar basis", "sourceInterpretation": "label fields drive a product decision"},
+    {"id": "phase6t-dried-fruit-basis", "structureType": "worked-example", "openingFrame": "single-package denominator ambiguity", "sectionLogic": "package arithmetic to ingredient evidence", "endingAction": "complete a four-field package record", "sourceInterpretation": "Korean label rules plus jurisdiction-limited definitions"},
+    {"id": "phase6t-salad-topping-basis", "structureType": "calculation-workflow", "openingFrame": "three measured topping packages", "sectionLogic": "separate inputs to same-nutrient sum", "endingAction": "weigh and complete a three-column calculation", "sourceInterpretation": "label inputs plus portion arithmetic"},
+    {"id": "phase6t-konjac-jelly-basis", "structureType": "decision-matrix", "openingFrame": "low-calorie claim with five evidence gaps", "sectionLogic": "label and safety fields to action matrix", "endingAction": "leave unverifiable fields blank", "sourceInterpretation": "current law separated from historical safety context"},
+    {"id": "phase6t-bagel-basis", "structureType": "comparability-decision-tree", "openingFrame": "packaged versus bakery-counter choice", "sectionLogic": "evidence ladder to compare-or-hold decision", "endingAction": "complete seven fields or hold comparison", "sourceInterpretation": "package priority plus identified-row database use"}
+  ],
+  "blockingSignals": [],
+  "reviewSignals": [
+    "All five articles remain nutrition-label adjacent and reuse some official domains; source roles and article-specific interpretations were checked separately.",
+    "Decision-support tables recur, but their inputs, row semantics, section sequences, and reader decisions differ.",
+    "Human editorial approval is still required before any legacy-row replacement or publication."
+  ],
+  "nextRule": "Continue one accepted contract at a time; rerun the rolling five-draft comparison after each new candidate and stop if an opening frame plus another strong pattern repeats."
+}

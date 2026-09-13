@@ -1,0 +1,52 @@
+{
+  "article_id": "phase6t-konjac-jelly-basis",
+  "accessed": "2026-09-12",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "곤약젤리의 낮은 열량 문구에 끌린 구매자가 제품별 표시값과 섭취 안전을 혼동하지 않으려면 포장의 어떤 근거를 어떤 순서로 확인해야 하는가?",
+  "reader_outcome": "한 제품의 식품유형, 표시 기준량, 총내용량, 영양값, 원재료와 섭취 주의를 기록하고 확인 불가능하거나 위험 조건이 있으면 구매·섭취를 보류한다.",
+  "original_contribution": {
+    "type": "label_and_safety_decision_matrix",
+    "description": "한 포장 영양값 판독과 식품 형태·섭취자 조건을 분리하지 않고 다섯 칸 기록표와 행동 분기로 연결한다.",
+    "source_ids": ["S1", "S2", "S3", "S4", "S6", "S7"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 영양성분 총내용량 2026", "date": "2026-09-12", "purpose": "현재 한국 식품 표시기준 확인"},
+    {"query": "식품안전나라 곤약젤리 열량 제품 검색", "date": "2026-09-12", "purpose": "실제 등록 제품별 열량과 내용량 차이 확인"},
+    {"query": "식품 표시광고법 질병 예방 치료 오인 부당 광고", "date": "2026-09-12", "purpose": "체중감량과 치료성 표현 경계 확인"},
+    {"query": "식약처 곤약젤리 질식 안전 컵모양 젤리", "date": "2026-09-12", "purpose": "제품 형태와 섭취 안전의 공식 역사 자료 확인"}
+  ],
+  "search_intent_insight": "검색자는 단순한 곤약 원료 설명보다 손에 든 제품의 낮은 숫자가 무엇을 뜻하는지와 먹어도 되는 조건을 동시에 확인할 필요가 있다.",
+  "competitor_gap": "원료의 일반 특성이나 저열량 제품 목록만 제시하면 현재 포장의 기준량·식품유형·섭취 경고가 빠진다. 이 글은 영양 판독과 섭취 조건을 같은 결정표에 둔다.",
+  "unique_angle": "한 포장 영양성분 판독과 제품 형태·삼킴 조건을 연결하는 다섯 칸 구매 기록",
+  "angle_supporting_detail": {"claim": "식품안전나라의 공식 검색 결과에서도 곤약젤리라는 이름을 공유하는 제품의 표시 열량과 내용량은 서로 다르므로 제품명만으로 한 값을 일반화할 수 없다.", "source_id": "S4"},
+  "source_interpretation": "현행 법령과 식약처 표시기준은 소비자가 현재 포장에서 읽을 항목과 과장 표현의 경계를 정하는 데 사용한다. K-FIND와 식품안전나라 검색은 제품별 값과 데이터 기준일의 차이를 보여 주는 보조 자료이며 현재 포장을 대체하지 않는다. 질식 관련 자료는 오래된 공공기관 안전자료이므로 현재 발생률을 주장하지 않고, 제품 형태와 섭취 조건을 확인해야 하는 역사적 근거로만 제한한다.",
+  "article_specific_details": [
+    {"claim": "2026년 9월 9일 갱신된 K-FIND 화면은 데이터가 계속 업데이트됨을 보여 주므로 DB 값과 현재 포장의 날짜를 함께 확인해야 한다.", "source_id": "S3"},
+    {"claim": "식품안전나라의 곤약 검색 결과에는 1~45kcal 수준과 100~150g 단위 등 서로 다른 등록 사례가 함께 나타나 제품명만으로 열량을 일반화할 수 없다.", "source_id": "S4"},
+    {"claim": "식약처 안전자료는 컵 모양 등 젤리의 물성과 곤약 글루코만난 사용 제한을 질식 예방 맥락에서 설명한다.", "source_id": "S6"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(식약처 고시 제2026-37호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14968", "publisher": "식품의약품안전처", "date": "2026-05-12", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 공개된 영양성분과 내용량 표시 고시 전문 확인"},
+    {"id": "S2", "title": "식품 등의 표시·광고에 관한 법률", "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=269957", "publisher": "국가법령정보센터", "date": "2025-09-19", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "질병 예방·치료 오인과 거짓·과장 표시광고 금지 경계"},
+    {"id": "S3", "title": "K-FIND 식품영양성분 데이터베이스", "url": "https://various.foodsafetykorea.go.kr/nutrient/", "publisher": "식품의약품안전처", "date": "2026-09-09", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "공식 영양정보 검색·비교 기능과 최신 갱신일 확인"},
+    {"id": "S4", "title": "고열량·저영양 식품 알림e 곤약 제품 검색", "url": "https://www.foodsafetykorea.go.kr/hilow/qfood/sfoodlist.do?searchValue=%EA%B3%A4%EC%95%BD&x=0&y=0", "publisher": "식품안전나라", "date": "current database", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "곤약젤리 등록 제품마다 열량과 내용량이 다르다는 실제 데이터 예시"},
+    {"id": "S5", "title": "식품등의 부당한 표시 또는 광고의 내용 기준", "url": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000269428&chrClsCd=010201", "publisher": "국가법령정보센터·식품의약품안전처", "date": "2025-12-04", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "곤약젤리를 체중감량 또는 치료 식품으로 과장하지 않는 표현 기준"},
+    {"id": "S6", "title": "식품 안전관리 요소 중 컵모양 젤리 압착강도와 곤약 글루코만난 제한", "url": "https://www.foodsafetykorea.go.kr/upload/residue/6-1200.pdf", "publisher": "식품안전나라·식품의약품안전처", "date": "2017", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "historical", "used_for": "제품 형태와 물성을 섭취 안전 판단에서 분리하면 안 되는 역사적 규제 근거"},
+    {"id": "S7", "title": "곤약젤리 해외 위해정보", "url": "https://impfood.mfds.go.kr/CFCAA01F02/getCntntsDetail?cntntsSn=247696", "publisher": "식품의약품안전처 수입식품정보마루", "date": "2012-05-25", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "historical", "used_for": "곤약젤리 물성과 질식 위험 논의가 있었음을 보여 주는 역사적 맥락; 현재 발생률 근거로는 사용하지 않음"}
+  ],
+  "data_points": [
+    {"claim": "식약처는 2026년 5월 12일 식품등의 표시기준 고시 제2026-37호 전문을 게시했다.", "source_id": "S1", "claim_type": "policy_version", "source_date": "2026-05-12", "supports_section": "곤약젤리 영양성분표는 다섯 칸으로 읽습니다"},
+    {"claim": "식품 등의 표시·광고에 관한 법률은 질병 예방·치료 효능으로 오인할 우려가 있거나 거짓·과장된 표시광고를 금지한다.", "source_id": "S2", "claim_type": "law", "source_date": "2025-09-19", "supports_section": "낮은 열량이 체중감량 효과를 증명하지는 않습니다"},
+    {"claim": "K-FIND는 공식 영양정보 검색·비교 기능을 제공하며 2026년 9월 9일 업데이트 공지를 표시한다.", "source_id": "S3", "claim_type": "data_freshness", "source_date": "2026-09-09", "supports_section": "공공데이터와 현재 포장의 날짜를 나눠 봅니다"},
+    {"claim": "식품안전나라 곤약 검색 결과에는 표시 열량과 내용량이 서로 다른 다수 제품이 존재한다.", "source_id": "S4", "claim_type": "primary_data", "source_date": "current", "supports_section": "한 포장 열량과 당류를 같은 분모로 맞춥니다"},
+    {"claim": "부당 표시광고 기준은 일반식품을 건강기능식품이나 의약품처럼 오인하게 하는 표현을 제한한다.", "source_id": "S5", "claim_type": "policy", "source_date": "2025-12-04", "supports_section": "낮은 열량이 체중감량 효과를 증명하지는 않습니다"},
+    {"claim": "식약처 안전자료는 컵모양 젤리에 압착강도 기준을 두고 컵모양 등 젤리의 곤약 글루코만난 사용 제한을 설명한다.", "source_id": "S6", "claim_type": "safety_policy", "source_date": "2017", "supports_section": "영양값과 별개로 제품 형태와 먹는 사람을 확인합니다"},
+    {"claim": "식약처의 2012년 해외 위해정보는 곤약젤리의 단단하고 쉽게 부서지지 않는 물성을 질식 위험 맥락에서 설명했다.", "source_id": "S7", "claim_type": "historical_context", "source_date": "2012-05-25", "supports_section": "영양값과 별개로 제품 형태와 먹는 사람을 확인합니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [],
+  "conflict_note": "제품별 식품유형, 영양값, 원재료와 섭취방법은 현재 포장을 최우선으로 확인한다. 오래된 안전자료는 현재 사고 빈도나 모든 파우치형 제품의 위험을 증명하지 않으며 역사적 주의 근거로만 사용한다. 일반식품의 체중감량·질병 효과는 주장하지 않는다."
+}

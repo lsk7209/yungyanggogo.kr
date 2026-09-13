@@ -1,3 +1,7 @@
+import { extractStandardDataGoKrItems } from "./data-go-kr-response";
+import { createEmptyNutritionFailure } from "./nutrition-failure";
+import { fetchTextWithRetry } from "./fetch-with-retry";
+
 export type NationalNutritionDatasetSlug = "all" | "food" | "process" | "material" | "health";
 
 export type NationalNutritionDataset = {
@@ -49,6 +53,7 @@ type RawNationalNutritionItem = Record<string, string | number | null | undefine
 type FetchNationalNutritionOptions = {
   dataset?: NationalNutritionDatasetSlug;
   query?: string;
+  foodCode?: string;
   pageNo?: number;
   numOfRows?: number;
 };
@@ -257,6 +262,7 @@ export async function fetchNationalNutritionDatasets({
 export async function fetchNationalNutritionItems({
   dataset = "all",
   query,
+  foodCode,
   pageNo = 1,
   numOfRows = 12
 }: FetchNationalNutritionOptions = {}): Promise<NationalNutritionResult> {
@@ -280,18 +286,18 @@ export async function fetchNationalNutritionItems({
     endpoint: selectedDataset.endpoint,
     serviceKey,
     query,
+    foodCode,
     pageNo,
     numOfRows
   });
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
   try {
-    const response = await fetchNationalNutritionResponse(url, controller.signal);
-    const text = await response.text();
+    const { response, text } = await fetchTextWithRetry(url, {
+      headers: REQUEST_HEADERS,
+      next: { revalidate: 86400 },
+    }, { timeoutMs: REQUEST_TIMEOUT_MS });
 
     if (!response.ok) {
-      return fallbackNationalNutritionResult(selectedDataset, response.status, text.slice(0, 300));
+      return createNationalNutritionFailureResult(selectedDataset, response.status, text.slice(0, 300));
     }
 
     const payload = JSON.parse(text) as unknown;
@@ -299,7 +305,7 @@ export async function fetchNationalNutritionItems({
     const foods = rows.map(normalizeNationalNutritionItem);
 
     if (resultCode !== "00") {
-      return fallbackNationalNutritionResult(selectedDataset, response.status, resultMessage || text.slice(0, 300));
+      return createNationalNutritionFailureResult(selectedDataset, response.status, resultMessage || text.slice(0, 300));
     }
 
     return {
@@ -313,13 +319,11 @@ export async function fetchNationalNutritionItems({
       message: ""
     };
   } catch (error) {
-    return fallbackNationalNutritionResult(
+    return createNationalNutritionFailureResult(
       selectedDataset,
-      200,
+      502,
       error instanceof Error ? error.message : "전국통합식품영양성분정보 API 응답을 처리하지 못했습니다."
     );
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
@@ -361,31 +365,7 @@ export function normalizeNationalNutritionItem(item: RawNationalNutritionItem): 
 }
 
 export function extractNationalNutritionItems(payload: unknown) {
-  if (!payload || typeof payload !== "object") {
-    return emptyExtract();
-  }
-
-  const response = (payload as { response?: unknown }).response;
-  if (!response || typeof response !== "object") {
-    return emptyExtract();
-  }
-
-  const header = (response as { header?: { resultCode?: string; resultMsg?: string } }).header;
-  const body = (response as { body?: unknown }).body;
-  const bodyRecord = body && typeof body === "object" ? (body as { items?: unknown; totalCount?: number | string }) : null;
-  const items = bodyRecord?.items;
-  const rows = Array.isArray(items)
-    ? (items as RawNationalNutritionItem[])
-    : items && typeof items === "object"
-      ? [items as RawNationalNutritionItem]
-      : [];
-
-  return {
-    rows,
-    totalCount: Number(bodyRecord?.totalCount || rows.length),
-    resultCode: header?.resultCode || "",
-    resultMessage: header?.resultMsg || ""
-  };
+  return extractStandardDataGoKrItems<RawNationalNutritionItem>(payload);
 }
 
 export function getNationalNutritionDataset(slug: NationalNutritionDatasetSlug = "all") {
@@ -396,12 +376,14 @@ function buildNationalNutritionUrl({
   endpoint,
   serviceKey,
   query,
+  foodCode,
   pageNo,
   numOfRows
 }: {
   endpoint: string;
   serviceKey: string;
   query?: string;
+  foodCode?: string;
   pageNo: number;
   numOfRows: number;
 }) {
@@ -413,62 +395,23 @@ function buildNationalNutritionUrl({
   if (query?.trim()) {
     params.set("foodNm", query.trim());
   }
+  if (foodCode?.trim()) {
+    params.set("foodCd", foodCode.trim());
+  }
 
   return `${endpoint}?serviceKey=${serializeServiceKey(serviceKey)}&${params.toString()}`;
 }
 
-async function fetchNationalNutritionResponse(url: string, signal: AbortSignal) {
-  try {
-    return await fetch(url, {
-      headers: REQUEST_HEADERS,
-      next: { revalidate: 86400 },
-      signal
-    });
-  } catch (error) {
-    const httpUrl = url.replace("https://api.data.go.kr/", "http://api.data.go.kr/");
-    if (httpUrl === url) {
-      throw error;
-    }
-
-    return fetch(httpUrl, {
-      headers: REQUEST_HEADERS,
-      next: { revalidate: 86400 },
-      signal
-    });
-  }
-}
-
-function fallbackNationalNutritionResult(
+export function createNationalNutritionFailureResult(
   dataset: NationalNutritionDataset,
   status: number,
   message: string
 ): NationalNutritionResult {
-  const foods = NATIONAL_NUTRITION_SNAPSHOT[dataset.slug];
-
-  return {
-    ok: foods.length > 0,
-    status,
-    dataset,
-    totalCount: foods.length,
-    count: foods.length,
-    foods,
-    fallback: foods.length > 0,
-    resultCode: foods.length > 0 ? "SNAPSHOT" : undefined,
-    message: foods.length > 0 ? `Live API fetch failed; using verified API sample. ${message}` : message
-  };
+  return createEmptyNutritionFailure<NationalNutritionDataset, NationalNutritionItem>(dataset, status, message);
 }
 
 function serializeServiceKey(serviceKey: string) {
   return /%[0-9a-f]{2}/i.test(serviceKey) ? serviceKey : encodeURIComponent(serviceKey);
-}
-
-function emptyExtract() {
-  return {
-    rows: [] as RawNationalNutritionItem[],
-    totalCount: 0,
-    resultCode: "",
-    resultMessage: ""
-  };
 }
 
 function formatDate(value: string) {

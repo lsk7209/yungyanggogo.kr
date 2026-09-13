@@ -1,0 +1,52 @@
+{
+  "article_id": "bakery-snack-serving-basis",
+  "reviewed_at": "2026-09-13",
+  "status": "approval_candidate_pending_human_review",
+  "score": 95,
+  "category_scores": {"content_quality": 29, "seo": 24, "eeat": 14, "technical_elements": 14, "ai_citation_readiness": 14},
+  "hard_gate_results": {
+    "persona_consistency": "pass",
+    "fact_traceability": "pass",
+    "research_gate": "pass",
+    "per_article_research_packet": "pass",
+    "source_interpretation": "pass",
+    "freshness": "pass",
+    "ymyl": "pass",
+    "content_uniqueness": "pass",
+    "google_quality_substance": "pass",
+    "article_contract_uniqueness": "pass",
+    "title_template_uniqueness": "pass",
+    "title_subtitle_keyword_coverage": "pass",
+    "title_map_alignment": "pass",
+    "structure_variation": "pass",
+    "content_template_variation": "pass",
+    "batch_anti_template": "pass",
+    "qa_evidence": "pass",
+    "visual_elements": "pass",
+    "heading_quality": "pass",
+    "body_length": "pass"
+  },
+  "compared_rows": ["bakery-snack-serving-mistake", "bakery-snack-serving-compare", "bakery-snack-serving-routine", "bakery-snack-serving-faq", "bagel-carbs-basis", "phase6t-bagel-basis", "phase6t-pickle-basis", "phase6t-konjac-jelly-basis", "phase6t-salad-topping-basis", "phase6t-dried-fruit-basis"],
+  "similarity_signals": {
+    "opening_frame": "distinct: a cream bun is cut and an exact half is falsely assumed",
+    "h2_sequence": "distinct: package unit -> whole-item certainty -> partial estimate -> nutrient/unit ledger -> unlabeled bakery hold -> three states -> compare only after state -> pre-cut weighing action",
+    "faq_shape": "none; uncertainty is resolved through an evidence ladder and three-state table",
+    "ending_cta": "weigh before cutting and label every partial value as an estimate",
+    "source_interpretation": "label fields establish whole-item evidence; K-FIND supports row identity and weight conversion without proving filling distribution"
+  },
+  "repair_attempted": true,
+  "repair_summary": "Removed the legacy cream-bread-versus-pastry ranking template and rebuilt the article around whole-item certainty versus partial-portion estimation.",
+  "body_characters": 6386,
+  "body_korean_characters": 3522,
+  "h2_count": 8,
+  "h3_count": 0,
+  "internal_link_count": 4,
+  "external_citation_count": 7,
+  "remaining_risks": [
+    "Human approval has not occurred; candidate must remain non-public.",
+    "The worked 100g and 320kcal example is hypothetical, not a commercial product measurement.",
+    "Weight-proportional estimates do not prove the nutrient distribution of filling or toppings.",
+    "Unlabeled bakery-counter products require product-specific evidence before nutrition values can be confirmed.",
+    "The same-slug legacy row must be replaced only after human approval."
+  ]
+}

@@ -89,10 +89,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     publisher: {
       "@id": absoluteUrl("/#organization"),
     },
-    author: {
-      "@type": "Organization",
-      name: `${siteConfig.name} 데이터 편집팀`,
-    },
   };
 
   const breadcrumbSchema = {
@@ -152,7 +148,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
         <div className="article-meta">
           <time dateTime={post.publishedAt}>발행 {post.publishedAt}</time>
-          <time dateTime={post.updatedAt}>검토 {post.updatedAt}</time>
+          <time dateTime={post.updatedAt}>수정 {post.updatedAt}</time>
           <span>{post.readingMinutes}분</span>
         </div>
       </header>

@@ -15,9 +15,7 @@ export async function GET(request: Request) {
       {
         ok: false,
         source: HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE,
-        endpoint: HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT,
-        message:
-          "DATA_GO_KR_HEALTH_FUNCTIONAL_FOOD_NUTRITION_KEY가 서버 환경변수에 없어 건강기능식품 영양DB 데이터를 표시할 수 없습니다."
+        message: "현재 건강기능식품 영양성분 데이터를 제공할 수 없습니다."
       },
       { status: 503 }
     );
@@ -40,7 +38,7 @@ export async function GET(request: Request) {
         source: HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE,
         status: result.status,
         resultCode: result.resultCode || null,
-        message: result.message
+        message: "건강기능식품 영양성분 데이터 제공 중 오류가 발생했습니다."
       },
       { status: 502 }
     );

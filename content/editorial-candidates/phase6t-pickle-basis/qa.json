@@ -1,0 +1,63 @@
+{
+  "article_id": "phase6t-pickle-basis",
+  "reviewed_at": "2026-09-12",
+  "status": "approval_candidate_pending_human_review",
+  "score": 95,
+  "category_scores": {"content_quality": 29, "seo": 24, "eeat": 14, "technical_elements": 14, "ai_citation_readiness": 14},
+  "hard_gate_results": {
+    "persona_consistency": "pass",
+    "fact_traceability": "pass",
+    "research_gate": "pass",
+    "per_article_research_packet": "pass",
+    "source_interpretation": "pass",
+    "freshness": "pass",
+    "ymyl": "pass",
+    "content_uniqueness": "pass",
+    "google_quality_substance": "pass",
+    "article_contract_uniqueness": "pass",
+    "title_template_uniqueness": "pass",
+    "title_subtitle_keyword_coverage": "pass",
+    "title_map_alignment": "pass",
+    "structure_variation": "pass",
+    "content_template_variation": "pass",
+    "batch_anti_template": "pass",
+    "qa_evidence": "pass",
+    "visual_elements": "pass",
+    "heading_quality": "pass",
+    "body_length": "pass"
+  },
+  "compared_rows": [
+    "phase6t-pickle-mistake",
+    "phase6t-pickle-compare",
+    "phase6t-pickle-routine",
+    "phase6t-pickle-faq",
+    "phase6t-bagel-basis",
+    "phase6t-konjac-jelly-basis",
+    "phase6t-salad-topping-basis",
+    "phase6t-dried-fruit-basis",
+    "phase6t-energy-drink-basis",
+    "nutrition-label-comparison-basis"
+  ],
+  "similarity_signals": {
+    "opening_frame": "distinct: pickle solids are removed from brine while the package shows an ambiguous product denominator",
+    "h2_sequence": "distinct: four package fields -> edible boundary log -> conditional conversion -> three outcomes -> database identity -> same-boundary comparison -> unsupported draining effect -> preserve unknown denominator",
+    "faq_shape": "none; uncertainty is handled as explicit audit outcomes",
+    "ending_cta": "record solids and brine behavior, then preserve an unknown denominator instead of inventing a reduction",
+    "source_interpretation": "label rules define what may be transcribed; K-FIND supports data identity and weight recording but does not prove brine-removal effects"
+  },
+  "repair_attempted": true,
+  "repair_summary": "Replaced the legacy generic sodium-first template with a solid-versus-brine denominator audit and removed unsupported claims about rinsing, draining, or product healthfulness.",
+  "body_characters": 6118,
+  "body_korean_characters": 3670,
+  "h2_count": 8,
+  "h3_count": 0,
+  "internal_link_count": 3,
+  "external_citation_count": 7,
+  "remaining_risks": [
+    "Human approval has not occurred; candidate must remain non-public.",
+    "The worked sodium value is hypothetical and not a real product measurement.",
+    "Package labeling may not provide a solid-only nutrition denominator.",
+    "No sodium reduction from rinsing or draining is claimed without product-specific evidence.",
+    "The same-slug legacy row must be replaced only after human approval."
+  ]
+}

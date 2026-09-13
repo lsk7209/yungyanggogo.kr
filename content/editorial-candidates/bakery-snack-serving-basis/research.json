@@ -1,0 +1,53 @@
+{
+  "article_id": "bakery-snack-serving-basis",
+  "accessed": "2026-09-13",
+  "source_rechecked_at": "2026-09-13",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "크림빵·페이스트리를 한 개보다 적게 먹었을 때 현재 표시와 공공 DB로 어느 수준까지 영양값을 기록할 수 있는가?",
+  "reader_outcome": "한 개 전체는 확정 기록, 측정한 부분은 추정 기록, 제품 식별이나 기준량이 맞지 않으면 기록 보류로 나눈다.",
+  "original_contribution": {
+    "type": "partial_portion_evidence_ladder",
+    "description": "표시 기준량, 총내용량·개수, 실제 먹은 중량, 제품 식별 수준을 연결해 부분 섭취값의 정밀도를 세 단계로 표시한다.",
+    "source_ids": ["S1", "S2", "S3", "S4", "S5", "S6"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 2026 영양성분 총내용량", "date": "2026-09-13", "purpose": "현재 한국 포장 표시기준 확인"},
+    {"query": "K-FIND 크림빵 페이스트리 기준량 식품 검색", "date": "2026-09-13", "purpose": "베이커리 식품 행과 기준량 식별 경로 확인"},
+    {"query": "K-FIND 나의 영양성분 섭취량 중량 입력", "date": "2026-09-13", "purpose": "중량 입력 기반 계산 기능의 범위 확인"},
+    {"query": "K-FIND 자료원 2026 가공식품 음식 DB", "date": "2026-09-13", "purpose": "공공 DB 값의 출처와 제품별 한계 확인"}
+  ],
+  "search_intent_insight": "검색자는 100g당 비교보다 한 개를 다 먹지 않았을 때 표시값을 절반으로 나눠도 되는지에서 막힌다.",
+  "competitor_gap": "일반적인 베이커리 영양 비교는 한 개 전체와 부분 섭취 추정의 증거 수준을 구분하지 않는다. 이 글은 숫자를 채우는 대신 추정과 보류를 명시한다.",
+  "unique_angle": "낱개 베이커리의 부분 섭취값을 확정값으로 과장하지 않는 기록 증거 사다리",
+  "angle_supporting_detail": {"claim": "K-FIND 섭취량 도구는 선택한 식품 행의 중량을 입력해 에너지를 다시 계산하지만, 다른 제품이나 한 제품 내부 속재료의 분포를 증명하지는 않는다.", "source_id": "S5", "inference": true},
+  "source_interpretation": "표시 고시는 현재 포장의 필드를 읽는 근거로 사용한다. K-FIND는 식품 행, 자료원, 기준량과 중량 계산을 확인하는 참고 도구로만 쓰며, 포장 없는 매장 제품이나 부분 조각의 실제 속재료 분포를 확정하는 근거로 사용하지 않는다.",
+  "article_specific_details": [
+    {"claim": "편집적 기록 정책: 한 개 전체 표시값은 표시 기준과 제품 단위가 일치할 때 확정 기록하되, 부분 섭취값은 실제 먹은 중량을 알더라도 추정으로 표시한다.", "source_id": "S1", "inference": true, "evidence_limit": "S1은 표시 필드의 근거이며 부분 섭취의 추정 표시는 근거 없는 정밀도를 피하기 위한 사이트 정책이다."},
+    {"claim": "K-FIND 섭취량 화면은 선택한 식품의 중량을 입력하면 에너지가 다시 계산된다고 안내한다.", "source_id": "S5"},
+    {"claim": "K-FIND의 식품 검색은 제조사·품목대표/상용제품·데이터생성방법 등으로 행을 구분하므로 이름이 비슷한 빵을 같은 제품으로 간주할 수 없다.", "source_id": "S2"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(식약처 고시 제2026-37호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14968", "publisher": "식품의약품안전처", "date": "2026-05-12", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 제품 포장의 내용량과 영양정보 표시 기준 확인"},
+    {"id": "S2", "title": "K-FIND 식품으로 찾아보기", "url": "https://various.foodsafetykorea.go.kr/nutrient/general/food/firstList.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-13", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "식품명·제조사·자료원·대표/상용제품을 구분한 행 식별"},
+    {"id": "S3", "title": "K-FIND 식품영양성분DB 소개", "url": "https://various.foodsafetykorea.go.kr/nutrient/intro/nui/intro.do", "publisher": "식품의약품안전처", "date": "current", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "일반 식품과 시판 식품을 포함하는 데이터베이스 범위 확인"},
+    {"id": "S4", "title": "K-FIND 구축에 사용된 자료원", "url": "https://various.foodsafetykorea.go.kr/nutrient/intro/data/dataInfo.do", "publisher": "식품의약품안전처", "date": "2026", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "가공식품·음식 등 자료원 버전과 범위 기록"},
+    {"id": "S5", "title": "K-FIND 나의 영양성분 섭취량", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/meal/list.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-13", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "선택한 식품의 중량 입력과 에너지 재계산 흐름"},
+    {"id": "S6", "title": "K-FIND 영양성분 전체보기", "url": "https://various.foodsafetykorea.go.kr/nutrient/general/nutr/listPop.do", "publisher": "식품의약품안전처", "date": "2026 database", "accessed": "2026-09-13", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "에너지·탄수화물·당류·포화지방산 코드와 자료원별 수록 여부"},
+    {"id": "S7", "title": "K-FIND 영양성분 비교하기", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/compare/list.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-13", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "식품 행을 최대 5개까지 비교하는 기능과 비교 전 식품 식별 필요성"}
+  ],
+  "data_points": [
+    {"claim": "식약처는 2026년 5월 12일 식품등의 표시기준 고시 제2026-37호 전문을 게시했다.", "source_id": "S1", "claim_type": "policy_version", "source_date": "2026-05-12", "supports_section": "베이커리 간식 1회분은 포장 단위부터 맞춥니다"},
+    {"claim": "K-FIND 식품 검색은 제조사, 품목대표/상용제품, 데이터생성방법 등 상세검색 조건을 제공한다.", "source_id": "S2", "claim_type": "tool_function", "source_date": "current", "supports_section": "포장 없는 매장 빵은 같은 이름의 DB 값으로 확정하지 않습니다"},
+    {"claim": "K-FIND는 일반 식품부터 시판 가공식품과 프랜차이즈 조리식품 정보를 포함한다고 설명한다.", "source_id": "S3", "claim_type": "database_scope", "source_date": "current", "supports_section": "포장 없는 매장 빵은 같은 이름의 DB 값으로 확정하지 않습니다"},
+    {"claim": "K-FIND 자료원 화면은 자료원별 버전과 수록 식품·성분 수를 공개한다.", "source_id": "S4", "claim_type": "data_provenance", "source_date": "2026", "supports_section": "포장 없는 매장 빵은 같은 이름의 DB 값으로 확정하지 않습니다"},
+    {"claim": "K-FIND 섭취량 화면은 선택한 식품의 중량을 입력하면 에너지를 다시 계산한다고 안내한다.", "source_id": "S5", "claim_type": "tool_function", "source_date": "current", "supports_section": "부분 섭취는 무게 비율로 계산해도 추정값입니다"},
+    {"claim": "K-FIND 영양성분 목록은 에너지 A001, 탄수화물 A003, 당류 A004, 포화지방산 A007을 구분하고 자료원별 수록 여부를 표시한다.", "source_id": "S6", "claim_type": "data_dictionary", "source_date": "2026", "supports_section": "부분 섭취 계산표에는 같은 영양성분과 단위만 옮깁니다"},
+    {"claim": "K-FIND 비교 기능은 검색한 식품을 최대 5개까지 비교함에 추가할 수 있다.", "source_id": "S7", "claim_type": "tool_function", "source_date": "current", "supports_section": "베이커리 간식끼리 비교하기 전에 부분 기록을 끝냅니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [],
+  "conflict_note": "실제 포장·제조사 정보가 없는 매장 낱개 제품은 공공 DB의 유사 이름 행으로 제품 영양값을 확정하지 않는다. 부분 조각의 속재료 분포도 측정하지 않았으므로 무게 비례값은 추정으로만 기록한다."
+}

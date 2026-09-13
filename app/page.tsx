@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "../lib/blog";
+import { absoluteUrl } from "../lib/site";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: absoluteUrl("/")
+  }
+};
 
 const purposeChips = ["단백질", "저칼로리", "저당", "저나트륨", "100kcal 기준", "편의점"];
 
@@ -32,17 +40,6 @@ const rankingCards = [
     tone: "terra",
     href: "/rankings"
   }
-];
-
-const categories = [
-  "라면", "스낵", "음료", "단백질식품", "즉석식품", "유제품", "시리얼", "소스류"
-];
-
-const metrics = [
-  ["열량", "198", "kcal", "1회 제공량"],
-  ["단백질", "18.4", "g", "100kcal당 9.3g"],
-  ["당류", "3.2", "g", "동일군 하위 22%"],
-  ["나트륨", "410", "mg", "동일군 중간"]
 ];
 
 export default function HomePage() {
@@ -103,45 +100,23 @@ export default function HomePage() {
       <section className="section section--surface">
         <div className="section__head">
           <p className="eyebrow">Categories</p>
-          <h2>카테고리로 둘러보기</h2>
+          <h2>공식 데이터에서 직접 찾기</h2>
+          <p>아직 실제 분류 필터를 제공하지 않으므로 카테고리별 결과를 가장하지 않습니다.</p>
         </div>
-        <div className="category-grid">
-          {categories.map((name) => (
-            <Link key={name} className="category-tile" href="/nutrition-data">
-              <strong>{name}</strong>
-              <span>공식 데이터 목록에서 찾기</span>
-            </Link>
-          ))}
-        </div>
+        <Link className="button" href="/nutrition-data">식품명으로 공식 데이터 검색</Link>
       </section>
 
       <section className="section data-preview">
         <div className="section__head">
-          <p className="eyebrow">Data Preview</p>
-          <h2>예시 데이터 — 실제 식품·판정·순위가 아닙니다</h2>
-          <p>아래 수치와 배지는 화면 설명용 가상 값이며 식약처에서 조회한 제품 기록이 아닙니다. 구매나 식단 판단에 사용하지 마세요.</p>
+          <p className="eyebrow">Data Guide</p>
+          <h2>영양성분 수치를 확인하는 순서</h2>
+          <p>제품마다 기준량과 단위가 다르므로 숫자만 비교하지 말고 원천 정보와 함께 확인하세요.</p>
         </div>
         <div className="metric-grid">
-          {metrics.map(([label, value, unit, note]) => (
-            <article key={label} className="metric-card">
-              <span>{label}</span>
-              <strong>
-                {value}
-                <small>{unit}</small>
-              </strong>
-              <em>{note}</em>
-            </article>
-          ))}
-        </div>
-        <div className="claim-panel">
-          <div>
-            <span className="badge badge--met">✓ 고단백 기준 충족</span>
-            <span className="badge badge--neutral">– 저나트륨 기준 미충족</span>
-          </div>
-          <div className="percentile">
-            <span>동일 카테고리 단백질 백분위</span>
-            <b style={{ width: "78%" }} />
-          </div>
+          <article className="metric-card"><span>1</span><strong>기준량</strong><em>100g, 100ml, 1회 제공량을 먼저 구분합니다.</em></article>
+          <article className="metric-card"><span>2</span><strong>단위</strong><em>g, mg, μg와 질량·부피 단위를 섞어 비교하지 않습니다.</em></article>
+          <article className="metric-card"><span>3</span><strong>출처</strong><em>원천 기관과 데이터 기준일을 확인합니다.</em></article>
+          <article className="metric-card"><span>4</span><strong>결측</strong><em>빈값을 영양성분 0으로 해석하지 않습니다.</em></article>
         </div>
       </section>
 
@@ -171,19 +146,18 @@ export default function HomePage() {
           <article className="guide-card">
             <h3>다이어트 식품 고르기</h3>
             <p>
-              저칼로리·저지방·저당 기준을 동시에 만족하는 제품을 찾으려면 100g 기준
-              비교가 가장 정확합니다. 1회 제공량은 제조사마다 달라 직접 비교가 어렵기
-              때문입니다. 비교 기준 안내와 실제 데이터 목록을 구분해 확인하세요.
+              저칼로리·저지방·저당을 함께 볼 때는 먼저 같은 식품군과 같은 기준량으로
+              맞출 수 있는지 확인하세요. 100g, 100ml, 1회 제공량은 목적에 따라 쓰임이
+              다릅니다. 비교 기준 안내와 실제 데이터 목록을 구분해 확인하세요.
               정렬된 제품 랭킹은 아직 제공하지 않습니다.
             </p>
           </article>
           <article className="guide-card">
             <h3>단백질 식품 선택 기준</h3>
             <p>
-              단백질 함량은 100kcal당 g 수로 비교하는 것이 더 정확합니다. 같은 단백질
-              식품이라도 열량 대비 단백질 비율이 다르면 실제 섭취 효율이 달라집니다.
-              고단백 기준은 100g당 20g 이상, 100kcal당 10g 이상을 충족해야 강조표시가
-              허용됩니다.
+              단백질 함량은 100g당 수치와 100kcal당 수치가 서로 다른 질문에 답합니다.
+              같은 식품군 안에서 기준량, 열량, 나트륨 등 보조 지표를 함께 확인하세요.
+              법정 강조표시 충족 여부는 최신 적용 조건과 제품 유형을 확인하기 전에는 판정하지 않습니다.
             </p>
           </article>
           <article className="guide-card">
@@ -191,8 +165,7 @@ export default function HomePage() {
             <p>
               나트륨은 1회 제공량 기준으로 표기되는 경우가 많아 제품 간 비교가
               어렵습니다. 공식 데이터 목록에서 기준량과 단위를 확인하세요.
-              하루 나트륨 섭취 목표를 정해두고 제품별 1회 제공량을 역산하면
-              실제 섭취 계획을 세울 수 있습니다.
+              개인별 섭취 판단이 필요하면 제품 라벨을 확인하고 의료·영양 전문가와 상의하세요.
             </p>
           </article>
           <article className="guide-card">
@@ -223,9 +196,8 @@ export default function HomePage() {
           <article className="faq-item">
             <h3>강조표시 기준이란 무엇인가요?</h3>
             <p>
-              식약처가 정한 기능성 영양 강조표시 기준을 말합니다. 예를 들어 고단백은
-              100g당 단백질 20g 이상이거나 100kcal당 10g 이상이어야 합니다. 영양고고는
-              이 기준 충족 여부를 각 제품 페이지에서 배지로 표시합니다.
+              영양강조표시는 적용되는 식품 유형, 기준량, 시행 중인 고시와 추가 조건을 함께 확인해야 합니다.
+              영양고고는 확인되지 않은 법정 기준 충족 배지를 표시하지 않습니다.
             </p>
           </article>
           <article className="faq-item">
@@ -239,8 +211,8 @@ export default function HomePage() {
           <article className="faq-item">
             <h3>제품 비교는 어떻게 하나요?</h3>
             <p>
-              공식 데이터 목록에서 기준량과 단위를 확인한 뒤 제품 라벨과 대조하세요.
-              현재 목적별 페이지는 비교 기준 안내이며, 제품 간 자동 정렬·나란히 비교 기능은 제공하지 않습니다.
+              공식 데이터 목록에서 기준량과 단위를 확인한 뒤 2~3개 식품을 비교 목록에 담으세요.
+              비교 화면에서는 보고값·100g·100ml·100kcal 기준을 구분하며, 안전하게 환산할 수 없는 값은 계산하지 않습니다.
             </p>
           </article>
           <article className="faq-item">
@@ -255,8 +227,8 @@ export default function HomePage() {
           <article className="faq-item">
             <h3>특정 제품이 목록에 없으면 어떻게 하나요?</h3>
             <p>
-              공공데이터에 등록된 식품만 수록됩니다. 수입 식품이나 소규모 제조사의
-              제품은 데이터베이스에 없을 수 있습니다. 해당 제품의 영양성분표를 직접
+              현재 검색 범위에서 결과가 없더라도 공공데이터에 미등록됐다고 단정할 수 없습니다.
+              검색어와 데이터 제공 상태를 확인하고, 해당 제품의 영양성분표를 직접
               확인해 100g당 수치로 환산하면 영양고고의 랭킹 기준과 같은 방식으로
               비교할 수 있습니다.
             </p>
@@ -276,33 +248,30 @@ export default function HomePage() {
             <p>
               제품마다 1회 제공량이 다르면 같은 숫자라도 실제 섭취량이 달라집니다.
               예를 들어 라면 한 봉지와 시리얼 한 컵의 1회 제공량은 각각 100g 이상,
-              30g 내외로 차이가 큽니다. 100g 기준으로 통일하면 카테고리가 달라도
-              같은 조건에서 비교할 수 있습니다.
+              30g 내외로 차이가 큽니다. 100g 기준은 같은 질량으로 환산 가능한 식품을
+              비교할 때 유용하지만, 식품군과 섭취 맥락이 다른 제품을 곧바로 같은 순위로 만들지는 않습니다.
             </p>
           </article>
           <article className="guide-card">
             <h3>단백질 일일 권장량과 식품 선택</h3>
             <p>
-              성인 기준 단백질 권장 섭취량은 체중 1kg당 약 0.8g입니다. 체중 60kg이면
-              하루 약 48g이 필요합니다. 고단백 식품을 고를 때는 100g당 단백질 20g
-              이상, 또는 100kcal당 10g 이상을 기준으로 삼으면 식약처 강조표시 기준과
-              일치합니다.
+              단백질 필요량은 연령, 건강 상태, 활동량과 식사 구성에 따라 달라집니다.
+              제품을 비교할 때는 같은 기준량의 단백질 수치와 열량·나트륨 등 보조 지표를 함께 보고,
+              개인 섭취 목표는 의료·영양 전문가의 안내를 따르세요.
             </p>
           </article>
           <article className="guide-card">
             <h3>당류와 첨가당 구분하기</h3>
             <p>
-              영양성분표의 당류에는 과일·우유의 천연당과 설탕 등 첨가당이 모두
-              포함됩니다. 세계보건기구는 첨가당을 하루 열량의 10% 미만으로 제한할
-              것을 권고합니다. 성분 목록에서 설탕·액상과당·포도당의 위치가 앞쪽일수록
-              첨가당 비중이 높습니다.
+              영양성분표의 총당류만으로 유리당이나 첨가당의 양을 계산할 수는 없습니다.
+              원재료명은 구성 확인에 도움을 주지만 정확한 첨가당 양을 뜻하지 않으므로,
+              총당류·첨가당·유리당을 서로 같은 값으로 취급하지 않습니다.
             </p>
           </article>
           <article className="guide-card">
             <h3>나트륨 섭취량 관리 방법</h3>
             <p>
-              한국인의 하루 평균 나트륨 섭취량은 권장량(2,000mg)을 크게 초과합니다.
-              가공식품의 나트륨 함량을 파악하면 전체 섭취량을 조절하기 쉬워집니다.
+              가공식품의 나트륨 함량과 1회 섭취량을 함께 확인하면 전체 섭취량을 점검하는 데 도움이 됩니다.
               국물 요리와 조미료 사용을 줄이고 나트륨이 낮은 가공식품을 선택하는
               것이 실질적인 감소 방법입니다.
             </p>

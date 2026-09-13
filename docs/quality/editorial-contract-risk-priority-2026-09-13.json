@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-09-13",
+  "policy": "Priority is based only on repository evidence. It is not a traffic, ranking, medical-risk, or AdSense-approval prediction.",
+  "scoring": {
+    "languageDefectEach": 20,
+    "repeatedHeadingEach": 3,
+    "duplicateHeadingGroup": 10,
+    "bodyUnder3500Characters": 5,
+    "fewerThanFiveSources": 5,
+    "ymylKeywordReviewSignal": 8
+  },
+  "summary": {
+    "rankedAnchors": 0,
+    "anchorsWithLanguageDefects": 0,
+    "anchorsWithRepeatedHeadings": 0,
+    "anchorsWithYMYLReviewSignal": 0
+  },
+  "nextAnchor": null,
+  "ranked": []
+}

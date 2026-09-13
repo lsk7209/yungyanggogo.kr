@@ -1,0 +1,54 @@
+{
+  "article_id": "phase6t-dried-fruit-basis",
+  "accessed": "2026-09-12",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "건과일 구매자가 영양정보의 표시 기준량을 실제 먹을 양으로 환산하고, 당류 수치와 원재료명을 구분해 설탕 첨가 여부를 확인하려면 어떤 순서로 읽어야 하는가?",
+  "reader_outcome": "표시 기준량, 포장 총내용량, 실제 섭취량을 같은 단위로 맞춘 뒤 원재료명을 별도 확인해 두 제품을 비교한다.",
+  "original_contribution": {
+    "type": "worked_example_and_four_field_record",
+    "description": "30g 기준 당류 18g, 90g 포장, 실제 섭취 45g이라는 명시적 가상 예시로 배수 환산을 보여 주고 기준량·총내용량·실제 섭취량·원재료명 네 칸을 분리한다.",
+    "source_ids": ["S1", "S2", "S3", "S5", "S6"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 2026-37 영양표시 총내용량", "date": "2026-09-12", "purpose": "current Korean labeling standard"},
+    {"query": "식약처 한눈에 보는 영양표시 가이드라인 2025 기준량", "date": "2026-09-12", "purpose": "current official implementation guide"},
+    {"query": "국가법령정보센터 영양성분 총 내용량 1 포장 100g 해석", "date": "2026-09-12", "purpose": "official departmental interpretation and caveat"},
+    {"query": "FDA total sugars added sugars dried fruit ingredient definition", "date": "2026-09-12", "purpose": "distinguish total sugar from added-sugar evidence without importing US rules into Korea"}
+  ],
+  "search_intent_insight": "검색자는 건과일이 건강한지에 대한 추상적 평가보다 작은 포장에 적힌 당류가 실제로 한 봉지 전체에서 몇 g인지, 설탕이 더해졌는지를 어디에서 확인할지 필요로 한다.",
+  "competitor_gap": "당류 수치만으로 첨가당을 단정하거나 1회분과 한 봉지 전체를 섞어 비교하는 설명이 많아, 환산과 원재료 확인을 분리한 실전 절차가 부족하다.",
+  "unique_angle": "영양정보의 총당류 숫자는 양 계산에, 원재료명은 첨가 여부 확인에 사용한다는 역할 분리와 실제 섭취량 환산을 한 장의 구매 기록표로 결합한다.",
+  "angle_supporting_detail": {"claim": "미국 FDA의 공식 설명에서도 Total Sugars는 자연적으로 존재하는 당과 첨가된 당을 함께 포함하므로, 총당류 숫자 하나만으로 첨가 여부를 분리할 수 없다.", "source_id": "S5"},
+  "source_interpretation": "식약처 고시와 가이드는 현재 한국 포장에서 확인할 표시 항목과 기준을 정하는 데 사용한다. 국가법령정보센터의 부처 해석은 총내용량 표시 원칙을 이해하는 보조 자료이며 법제처의 유권해석이 아니고 변경될 수 있음을 함께 밝힌다. FDA 자료는 미국의 Total Sugars와 Added Sugars 개념을 설명하는 비교 근거일 뿐 한국 표시 의무로 적용하지 않는다. WHO 자료는 free sugars의 국제 보건 정의가 첨가당이나 한국 영양정보의 당류와 동일어가 아님을 구분하는 데만 사용한다.",
+  "article_specific_details": [
+    {"claim": "식약처의 현행 식품등의 표시기준 고시 전문은 2026년 5월 12일 고시 제2026-37호다.", "source_id": "S1"},
+    {"claim": "식약처의 2025년 영양표시 가이드는 영양표시 방법과 주요 질의응답을 정리한 산업계용 공식 안내서다.", "source_id": "S2"},
+    {"claim": "FDA 비구속적 Q&A는 설탕을 더하지 않은 건조 과일과 추가 설탕을 넣은 건조 과일을 Added Sugars 판단에서 구분한다.", "source_id": "S6"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(식약처 고시 제2026-37호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14968", "publisher": "식품의약품안전처", "date": "2026-05-12", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 한국 식품 표시기준의 버전과 공식 원문"},
+    {"id": "S2", "title": "한눈에 보는 영양표시 가이드라인", "url": "https://www.mfds.go.kr/brd/m_1060/view.do?seq=15805", "publisher": "식품의약품안전처", "date": "2025-12-29", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "영양표시 방법과 질의응답 확인 경로"},
+    {"id": "S3", "title": "영양성분 표시단위 관련 식품의약품안전처 법령해석", "url": "https://www.law.go.kr/LSW/cgmExpcInfoP.do?cgmExpcDatSeq=2290695&mode=2&ofiClsCd=350123", "publisher": "국가법령정보센터", "date": "2024-07-17", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "recent", "used_for": "총내용량 1포장 기준 원칙과 예외를 이해하는 보조 근거; 법제처 판단이 아닌 부처 해석이라는 제한 포함"},
+    {"id": "S4", "title": "식품의약품안전처 식품영양성분DB정보", "url": "https://www.data.go.kr/catalog/15127578/openapi.json", "publisher": "공공데이터포털", "date": "2025-12-05", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "기준량, 식품중량, 출처, 데이터기준일자 필드 확인"},
+    {"id": "S5", "title": "Added Sugars on the Nutrition Facts Label", "url": "https://www.fda.gov/food/nutrition-facts-label/added-sugars-nutrition-facts-label", "publisher": "U.S. Food and Drug Administration", "date": "2023", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "미국 Total Sugars와 Added Sugars 개념 구분; 한국 표시 의무로 사용하지 않음"},
+    {"id": "S6", "title": "Nutrition and Supplement Facts Labels Q&A", "url": "https://www.fda.gov/media/117402/download?attachment=", "publisher": "U.S. Food and Drug Administration", "date": "2018", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "reference", "used_for": "건조 과일에 설탕을 추가했는지에 따른 미국 Added Sugars 분류 사례; 비구속적 지침"},
+    {"id": "S7", "title": "Healthy diet", "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet", "publisher": "World Health Organization", "date": "2026", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "free sugars 정의가 총당류·첨가당과 다른 범주임을 구분"}
+  ],
+  "data_points": [
+    {"claim": "현행 식품등의 표시기준 고시 전문은 제2026-37호이며 2026년 5월 12일 고시됐다.", "source_id": "S1", "claim_type": "date", "source_date": "2026-05-12", "supports_section": "먼저 표시 기준량과 포장 전체량을 따로 적습니다"},
+    {"claim": "식약처 영양표시 가이드는 표시 방법과 주요 질의응답을 정리한다.", "source_id": "S2", "claim_type": "procedure", "source_date": "2025-12-29", "supports_section": "먼저 표시 기준량과 포장 전체량을 따로 적습니다"},
+    {"claim": "식약처 부처 해석은 통상 총내용량 1포장 기준 표시를 설명하고 일정 조건에서 100g·100mL 표시 등을 허용한다고 안내한다.", "source_id": "S3", "claim_type": "policy_interpretation", "source_date": "2024-07-17", "supports_section": "먼저 표시 기준량과 포장 전체량을 따로 적습니다"},
+    {"claim": "식품영양성분DB정보는 영양성분 기준량, 식품중량, 출처와 데이터기준일자를 제공한다.", "source_id": "S4", "claim_type": "procedure", "source_date": "2025-12-05", "supports_section": "데이터베이스 값과 손에 든 포장의 날짜를 구분합니다"},
+    {"claim": "미국 FDA의 Total Sugars는 자연적으로 존재하는 당과 제품에 첨가된 당을 모두 포함한다.", "source_id": "S5", "claim_type": "definition", "source_date": "2023", "supports_section": "당류 숫자만으로 설탕 첨가 여부를 단정하지 않습니다"},
+    {"claim": "FDA 비구속적 Q&A는 설탕이 추가되지 않은 건조 과일과 설탕이 추가된 건조 과일을 Added Sugars 관점에서 구분한다.", "source_id": "S6", "claim_type": "definition", "source_date": "2018", "supports_section": "원재료명은 별도의 증거 칸입니다"},
+    {"claim": "WHO의 free sugars는 제조자·조리자·소비자가 더한 단당류·이당류와 꿀·시럽·과일주스·농축액에 자연적으로 든 당을 포함한다.", "source_id": "S7", "claim_type": "definition", "source_date": "2026", "supports_section": "총당류, 첨가당, 유리당은 같은 말이 아닙니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [
+    {"topic": "sugar terminology", "resolution": "한국 포장의 당류, 미국 FDA의 Added Sugars, WHO의 free sugars를 서로 바꿔 쓰지 않고 출처와 관할을 문장마다 명시한다."}
+  ],
+  "conflict_note": "이 글은 특정 제품의 실제 표시를 조사하지 않았고 개인별 혈당 반응이나 섭취 적합성을 판정하지 않는다. 국가법령정보센터 자료는 식약처 부처 해석이며 변경 가능성이 있으므로 현재 제품 포장과 최신 고시를 최종 확인 대상으로 둔다."
+}

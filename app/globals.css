@@ -1555,6 +1555,135 @@ h3 {
   max-width: 880px;
 }
 
+.comparison-page {
+  max-width: 1080px;
+}
+
+.comparison-picker {
+  margin-bottom: 22px;
+}
+
+.comparison-picker__head,
+.comparison-basis-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.comparison-picker__head p {
+  margin: 4px 0 0;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+.comparison-picker button,
+.comparison-basis-form button,
+.comparison-basis-form select {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 800;
+}
+
+.comparison-picker button,
+.comparison-basis-form button {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+}
+
+.comparison-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.comparison-check input {
+  width: 18px;
+  height: 18px;
+}
+
+.comparison-table {
+  min-width: 680px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.comparison-page:has(.comparison-table) {
+  overflow-x: auto;
+}
+
+.comparison-table__row {
+  display: grid;
+  grid-template-columns: minmax(130px, .7fr) repeat(3, minmax(170px, 1fr));
+  border-bottom: 1px solid var(--border);
+}
+
+.comparison-table__row:last-child {
+  border-bottom: 0;
+}
+
+.comparison-table__row > * {
+  padding: 14px;
+  border-right: 1px solid var(--border);
+}
+
+.comparison-table__row > *:last-child {
+  border-right: 0;
+}
+
+.comparison-table__head {
+  background: var(--bg-section);
+}
+
+.comparison-table__head div,
+.comparison-table__row div {
+  display: grid;
+  gap: 5px;
+}
+
+.comparison-table small,
+.comparison-source-grid span {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.comparison-table a,
+.comparison-source-grid a {
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.comparison-source-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.comparison-source-grid article {
+  display: grid;
+  gap: 5px;
+  padding: 13px;
+  border-radius: 10px;
+  background: var(--bg-section);
+}
+
 .nutrition-detail-header {
   margin-bottom: 22px;
 }
@@ -1848,6 +1977,7 @@ h3 {
   .content-guide-grid,
   .api-sample__grid,
   .nutrition-source-grid,
+  .comparison-source-grid,
   .health-food-grid,
   .data-point-panel,
   .do-dont-panel > div,
@@ -1941,6 +2071,12 @@ h3 {
   }
 
   .nutrition-dataset__head {
+    flex-direction: column;
+  }
+
+  .comparison-picker__head,
+  .comparison-basis-form {
+    align-items: stretch;
     flex-direction: column;
   }
 

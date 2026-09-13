@@ -1,0 +1,52 @@
+{
+  "article_id": "phase6t-bagel-basis",
+  "accessed": "2026-09-12",
+  "ymyl_category": "health",
+  "ymyl_review": "pass",
+  "volatile": true,
+  "article_research_question": "포장 베이글과 매장 낱개 베이글을 비교할 때 어떤 근거와 분모가 있어야 같은 숫자로 다룰 수 있는가?",
+  "reader_outcome": "두 제품의 실제 중량, 제품 상태, 기준 중량, 출처와 확인일을 기록해 직접 비교·참고 비교·비교 보류로 구분한다.",
+  "original_contribution": {
+    "type": "cross_channel_comparability_tree",
+    "description": "판매 경로가 다른 베이글을 증거 등급으로 나눈 뒤 한 개 값과 100g 값을 병렬로 계산하고 토핑을 별도 장부로 분리한다.",
+    "source_ids": ["S1", "S2", "S3", "S4", "S5", "S7"]
+  },
+  "research_runs": [
+    {"query": "식약처 식품등의 표시기준 2026 영양성분 총내용량", "date": "2026-09-12", "purpose": "현재 한국 포장 표시기준 확인"},
+    {"query": "K-FIND 식품영양성분 데이터베이스 소개 일반식품 가공식품", "date": "2026-09-12", "purpose": "공식 DB의 범위와 자료 성격 확인"},
+    {"query": "K-FIND 음식 중량 영양성분 계산 비교", "date": "2026-09-12", "purpose": "중량 환산과 비교 도구의 공식 사용 방식 확인"},
+    {"query": "FoodData Central data types branded generic API release", "date": "2026-09-12", "purpose": "브랜드 자료와 일반 식품 자료를 구분하는 보조 근거 확인"}
+  ],
+  "search_intent_insight": "검색자는 베이글의 대표 열량 하나보다 손에 든 포장 제품과 매장 낱개를 같은 기준으로 비교할 수 있는지 알고 싶어 한다.",
+  "competitor_gap": "일반적인 베이글 영양값이나 한 개 열량만 제시하면 제품 크기, 조리 상태, 출처 차이와 토핑이 섞인다. 이 글은 비교가 성립하지 않는 조건까지 명시한다.",
+  "unique_angle": "판매 경로가 다른 베이글의 증거 등급과 분모를 먼저 맞추는 비교 가능성 판단",
+  "angle_supporting_detail": {"claim": "K-FIND는 서로 다른 식품을 추가해 비교할 수 있지만, 데이터 명칭·출처와 중량을 사용자가 선택해야 하므로 비교 대상의 동일성을 먼저 확인해야 한다.", "source_id": "S4"},
+  "source_interpretation": "식약처 고시는 현재 포장 표시를 읽는 최우선 근거로, K-FIND는 일반식품과 유통식품 자료의 검색·환산·비교를 돕는 보조 근거로 사용한다. USDA 자료는 데이터 유형을 구분하고 중량 비례 계산을 설명하는 보조 자료일 뿐 한국 표시 규정이나 특정 매장 베이글의 실제 값으로 사용하지 않는다.",
+  "article_specific_details": [
+    {"claim": "K-FIND 섭취량 계산기는 선택한 식품의 중량을 입력해 에너지를 계산하므로, 매장 낱개 비교에서도 실제 한 개 중량이 계산의 시작점이 된다.", "source_id": "S5"},
+    {"claim": "K-FIND 비교 화면은 최대 5개 식품을 추가해 비교하도록 설계되어 있지만 같은 이름이라도 자료 행과 출처가 다를 수 있어 선택한 행을 기록해야 한다.", "source_id": "S4"},
+    {"claim": "K-FIND DB 갱신 이력은 가공식품 DB와 음식 DB의 갱신 내역을 구분해 보여 주므로 조회일을 남겨야 한다.", "source_id": "S3"}
+  ],
+  "sources": [
+    {"id": "S1", "title": "식품등의 표시기준 고시 전문(식약처 고시 제2026-37호)", "url": "https://www.mfds.go.kr/brd/m_211/view.do?seq=14968", "publisher": "식품의약품안전처", "date": "2026-05-12", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "현재 포장 제품의 내용량과 영양성분 표시 확인 경로"},
+    {"id": "S2", "title": "K-FIND 식품영양성분DB 소개", "url": "https://various.foodsafetykorea.go.kr/nutrient/intro/nui/intro.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "일반식품과 유통식품을 포함하는 공식 DB의 범위와 표준화 설명"},
+    {"id": "S3", "title": "K-FIND 식품영양성분DB 갱신 이력", "url": "https://various.foodsafetykorea.go.kr/nutrient/general/down/historyList.do", "publisher": "식품의약품안전처", "date": "2026-08-28", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "가공식품 DB·음식 DB 갱신 이력과 조회일 기록 필요성"},
+    {"id": "S4", "title": "K-FIND 식품 영양성분 비교", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/compare/list.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "식품을 선택해 최대 5개까지 비교하는 공식 도구와 선택 행 기록"},
+    {"id": "S5", "title": "K-FIND 섭취량 계산", "url": "https://various.foodsafetykorea.go.kr/nutrient/industry/meal/list.do", "publisher": "식품의약품안전처", "date": "current database", "accessed": "2026-09-12", "source_type": "primary", "source_role": "primary_data", "is_official": true, "freshness": "current", "used_for": "실제 입력 중량에 따른 에너지 계산 원리"},
+    {"id": "S6", "title": "식품영양성분 데이터베이스 API", "url": "https://www.data.go.kr/data/15127578/openapi.do", "publisher": "공공데이터포털·식품의약품안전처", "date": "current catalog", "accessed": "2026-09-12", "source_type": "official", "source_role": "official", "is_official": true, "freshness": "current", "used_for": "식품명·자료출처·영양성분 데이터를 구조적으로 확인하는 보조 경로"},
+    {"id": "S7", "title": "FoodData Central API Guide", "url": "https://fdc.nal.usda.gov/api-guide/", "publisher": "USDA Agricultural Research Service", "date": "current documentation", "accessed": "2026-09-12", "source_type": "official", "source_role": "expert_reference", "is_official": true, "freshness": "current", "used_for": "식품 검색 결과의 데이터 유형과 개별 식품 식별자를 구분하는 보조 근거"}
+  ],
+  "data_points": [
+    {"claim": "식약처는 2026년 5월 12일 식품등의 표시기준 고시 제2026-37호 전문을 게시했다.", "source_id": "S1", "claim_type": "policy_version", "source_date": "2026-05-12", "supports_section": "포장 베이글은 현재 표시를 실제 한 개 중량으로 환산합니다"},
+    {"claim": "K-FIND는 일반식품과 유통식품 등 여러 식품영양성분 자료를 표준화해 제공한다.", "source_id": "S2", "claim_type": "database_scope", "source_date": "current", "supports_section": "베이글 비교는 숫자보다 증거 등급부터 나눕니다"},
+    {"claim": "K-FIND 갱신 이력 화면은 가공식품 DB와 음식 DB의 갱신 내역을 구분해 제공한다.", "source_id": "S3", "claim_type": "data_freshness", "source_date": "2026-08-28", "supports_section": "매장 베이글은 무게만 알아도 영양값이 확정되지는 않습니다"},
+    {"claim": "K-FIND 비교 도구는 검색한 식품을 최대 5개까지 추가해 비교할 수 있다.", "source_id": "S4", "claim_type": "tool_function", "source_date": "current", "supports_section": "한 개 값과 100g 값을 나란히 봐야 크기 차이가 보입니다"},
+    {"claim": "K-FIND 섭취량 계산 도구는 입력한 식품 중량을 바탕으로 에너지를 계산한다.", "source_id": "S5", "claim_type": "calculation_method", "source_date": "current", "supports_section": "포장 베이글은 현재 표시를 실제 한 개 중량으로 환산합니다"},
+    {"claim": "공공데이터포털은 식품영양성분 DB를 API 형태로 제공한다.", "source_id": "S6", "claim_type": "data_access", "source_date": "current", "supports_section": "매장 베이글은 무게만 알아도 영양값이 확정되지는 않습니다"},
+    {"claim": "FoodData Central API는 검색 결과와 개별 식품 상세를 식별자로 구분해 제공한다.", "source_id": "S7", "claim_type": "reference_method", "source_date": "current", "supports_section": "일반 식품값은 매장 베이글의 확정값이 아닙니다"}
+  ],
+  "fact_traceability_pass": true,
+  "unresolved_claims": [],
+  "source_conflicts": [],
+  "conflict_note": "현재 포장 표시가 해당 포장 제품의 최우선 근거다. 매장 제품의 레시피나 자체 영양정보가 없으면 일반 DB 값은 참고치이며 확정값으로 쓰지 않는다. 질환·감량 효과는 판단하지 않는다."
+}

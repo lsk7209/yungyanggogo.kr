@@ -1,0 +1,2 @@
+source_url,target_url,reason,validation,apply_status
+,,No redirects approved in this local P0 slice,dry-run only,NOT RUN
