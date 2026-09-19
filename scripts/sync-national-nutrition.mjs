@@ -1,5 +1,6 @@
 import { createClient } from "@libsql/client";
 import { extractStandardDataGoKrItems } from "../lib/data-go-kr-response.ts";
+import { parseNutritionTotalCount } from "../lib/nutrition-count.ts";
 
 const datasets = [
   {
@@ -55,14 +56,14 @@ await ensureSchema();
 const summary = [];
 for (const dataset of datasets) {
   let saved = 0;
-  let totalCount = 0;
+  let totalCount = null;
   let errorMessage = "";
 
   for (let pageNo = 1; pageNo <= pages; pageNo += 1) {
     let result;
     try {
       result = await fetchDatasetPage(dataset, pageNo, rowsPerPage);
-      totalCount = Math.max(totalCount, result.totalCount);
+      totalCount = result.totalCount;
     } catch (error) {
       errorMessage = error instanceof Error ? error.message : String(error);
       break;
@@ -148,10 +149,10 @@ async function fetchDatasetPage(dataset, pageNo, numOfRows) {
     throw new Error(`${dataset.slug} result ${header?.resultCode || "unknown"}: ${header?.resultMsg || text.slice(0, 200)}`);
   }
 
-  const { rows, totalCount } = extractStandardDataGoKrItems(payload);
+  const { rows, reportedTotalCount } = extractStandardDataGoKrItems(payload);
 
   return {
-    totalCount,
+    totalCount: parseNutritionTotalCount(reportedTotalCount),
     rows
   };
 }
@@ -192,13 +193,13 @@ async function fetchWithHttpFallback(url) {
 
 async function saveRows(datasetSlug, totalCount, foods) {
   await db.batch([
-    {
+    ...(totalCount === null ? [] : [{
       sql: `INSERT INTO national_nutrition_syncs (dataset_slug, query_key, total_count, fetched_at)
         VALUES (?, ?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(dataset_slug, query_key)
         DO UPDATE SET total_count = excluded.total_count, fetched_at = CURRENT_TIMESTAMP`,
       args: [datasetSlug, "__default__", totalCount]
-    },
+    }]),
     ...foods.map((food) => ({
       sql: `INSERT INTO national_nutrition_items (
           dataset_slug, query_key, food_code, food_name, type_name, origin_name, large_category,

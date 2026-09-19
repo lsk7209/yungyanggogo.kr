@@ -16,11 +16,11 @@ assert.equal(resolveNationalNutritionDbTotalCount(-1, 3), 3);
 assert.equal(resolveNationalNutritionDbTotalCount(undefined, 3), 3);
 assert.match(healthAdapter, /resolveNationalNutritionDbTotalCount\(record\.total_count, rows\.length\)/);
 
-assert.match(datasetPage, /result\?\.ok && page \* 50 < result\.totalCount/);
-assert.match(datasetPage, /\(page - 1\) \* 50 >= result\.totalCount/);
+assert.match(datasetPage, /getNutritionPagination\(result, page, 50\)/);
+assert.match(datasetPage, /if \(outOfRange\)/);
 assert.match(datasetPage, /실패를 0건으로 해석하지 않습니다/);
 assert.match(nutritionIndex, /successfulResults = results\.filter\(\(result\) => result\.ok\)/);
-assert.match(nutritionIndex, /원천 전체 건수 확인 불가/);
+assert.match(nutritionIndex, /NutritionCountSummary result=\{result\} filtered=\{Boolean\(query\)\}/);
 
 assert.doesNotMatch(homePage, /const categories =/);
 assert.match(homePage, /카테고리별 결과를 가장하지 않습니다/);

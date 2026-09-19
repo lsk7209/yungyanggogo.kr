@@ -1,6 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { getDb, isTursoConfigured } from "./db";
-import { resolveNationalNutritionDbTotalCount } from "./nutrition-count";
+import { parseNutritionTotalCount } from "./nutrition-count";
 import {
   fetchNationalNutritionItems,
   getNationalNutritionDataset,
@@ -90,6 +90,9 @@ export async function fetchNationalNutritionItemsWithDbCache({
       status: 200,
       dataset: selectedDataset,
       totalCount: cached.totalCount,
+      countScope: "stored",
+      countCheckedAt: cached.countCheckedAt,
+      latestStoredAt: cached.latestStoredAt,
       count: cached.foods.length,
       foods: cached.foods,
       cacheSource: "db",
@@ -191,7 +194,7 @@ export async function readNationalNutritionItemsFromDb({
     const pattern = `%${escapeSqlLike(query.trim())}%`;
     const [countResult, rowsResult] = await Promise.all([
       db.execute({
-        sql: `SELECT COUNT(DISTINCT food_code) AS total_count
+        sql: `SELECT COUNT(DISTINCT food_code) AS total_count, MAX(synced_at) AS latest_stored_at
           FROM national_nutrition_items
           WHERE dataset_slug = ? AND food_name LIKE ? ESCAPE '\\'`,
         args: [dataset, pattern],
@@ -212,14 +215,16 @@ export async function readNationalNutritionItemsFromDb({
       }),
     ]);
     return {
-      totalCount: resolveNationalNutritionDbTotalCount(countResult.rows[0]?.total_count, rowsResult.rows.length),
+      totalCount: parseNutritionTotalCount(countResult.rows[0]?.total_count),
+      countCheckedAt: new Date().toISOString(),
+      latestStoredAt: normalizeStoredTimestamp(countResult.rows[0]?.latest_stored_at),
       foods: rowsResult.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow)),
     };
   }
 
   const [countResult, rowsResult] = await Promise.all([
     db.execute({
-      sql: "SELECT COUNT(DISTINCT food_code) AS total_count FROM national_nutrition_items WHERE dataset_slug = ?",
+      sql: "SELECT COUNT(DISTINCT food_code) AS total_count, MAX(synced_at) AS latest_stored_at FROM national_nutrition_items WHERE dataset_slug = ?",
       args: [dataset],
     }),
     db.execute({
@@ -238,15 +243,19 @@ export async function readNationalNutritionItemsFromDb({
     }),
   ]);
 
-  const totalCount = resolveNationalNutritionDbTotalCount(
+  const totalCount = parseNutritionTotalCount(
     countResult.rows[0]?.total_count,
-    rowsResult.rows.length,
   );
   const foods = rowsResult.rows.map((row) =>
     mapNationalNutritionRow(row as unknown as NationalNutritionRow),
   );
 
-  return { totalCount, foods };
+  return {
+    totalCount,
+    countCheckedAt: new Date().toISOString(),
+    latestStoredAt: normalizeStoredTimestamp(countResult.rows[0]?.latest_stored_at),
+    foods,
+  };
 }
 
 export async function readNationalNutritionItemByCodeFromDb({
@@ -344,7 +353,9 @@ export async function countNationalNutritionSitemapItems(
     sql: "SELECT COUNT(DISTINCT food_code) AS total_count FROM national_nutrition_items WHERE dataset_slug = ?",
     args: [dataset],
   });
-  return resolveNationalNutritionDbTotalCount(result.rows[0]?.total_count, 0);
+  const count = parseNutritionTotalCount(result.rows[0]?.total_count);
+  if (count === null) throw new Error("Stored nutrition count is unavailable");
+  return count;
 }
 
 export async function readNationalNutritionSitemapItems({
@@ -381,20 +392,20 @@ export async function saveNationalNutritionItemsToDb({
 }: {
   dataset: NationalNutritionDatasetSlug;
   query?: string;
-  totalCount: number;
+  totalCount: number | null;
   foods: NationalNutritionItem[];
 }) {
   const db = getDb();
   const queryKey = normalizeQueryKey(query);
 
   await db.batch([
-    {
+    ...(totalCount === null ? [] : [{
       sql: `INSERT INTO national_nutrition_syncs (dataset_slug, query_key, total_count, fetched_at)
         VALUES (?, ?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(dataset_slug, query_key)
         DO UPDATE SET total_count = excluded.total_count, fetched_at = CURRENT_TIMESTAMP`,
       args: [dataset, queryKey, totalCount],
-    },
+    }]),
     ...foods.map((food) => ({
       sql: `INSERT INTO national_nutrition_items (
           dataset_slug, query_key, food_code, food_name, type_name, origin_name, large_category,
@@ -520,6 +531,15 @@ function normalizeQueryKey(query?: string) {
   return query?.trim() || DEFAULT_QUERY_KEY;
 }
 
+function normalizeStoredTimestamp(value: unknown): string | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  // SQLite CURRENT_TIMESTAMP is UTC, unlike a source record's update date.
+  const normalized = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)
+    ? `${value.replace(" ", "T")}Z` : value;
+  const timestamp = Date.parse(normalized);
+  return Number.isFinite(timestamp) ? new Date(timestamp).toISOString() : null;
+}
+
 export function escapeSqlLike(value: string) {
   return value.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
 }
@@ -529,6 +549,6 @@ export function escapeSqlLike(value: string) {
 export const fetchNationalNutritionItemsWithDbCacheCached = unstable_cache(
   (options: FetchCachedNationalNutritionOptions) =>
     fetchNationalNutritionItemsWithDbCache(options),
-  ["national-nutrition-db-v2"],
+  ["national-nutrition-db-v3-count-provenance"],
   { revalidate: 3600, tags: ["national-nutrition"] },
 );

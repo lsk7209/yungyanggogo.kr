@@ -9,6 +9,7 @@ import {
   NATIONAL_NUTRITION_SOURCE,
 } from "../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../lib/site";
+import { NutritionCountSummary } from "../../components/NutritionCountSummary";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -190,13 +191,7 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
                     <span>{result.dataset.shortName}</span>
                     <h2>{result.dataset.name}</h2>
                   </div>
-                  <small>
-                    {!result.ok
-                      ? "원천 전체 건수 확인 불가"
-                      : result.fallback
-                      ? "마지막으로 확인된 예시 자료"
-                      : `원천 전체 ${result.totalCount.toLocaleString("ko-KR")}건 중 현재 목록`}
-                  </small>
+                  <NutritionCountSummary result={result} filtered={Boolean(query)} />
                 </div>
                 {result.foods.length > 0 ? (
                   <div className="health-nutrition-grid">

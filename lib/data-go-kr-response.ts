@@ -29,6 +29,8 @@ export function extractStandardDataGoKrItems<T extends RawItem>(payload: unknown
 
   return {
     rows,
+    // Keep the reported value separate from the legacy page-length fallback.
+    reportedTotalCount: bodyRecord?.totalCount ?? null,
     totalCount: toNonNegativeCount(bodyRecord?.totalCount, rows.length),
     resultCode: header?.resultCode || "",
     resultMessage: header?.resultMsg || ""
@@ -38,6 +40,7 @@ export function extractStandardDataGoKrItems<T extends RawItem>(payload: unknown
 function emptyStandardDataGoKrExtract<T extends RawItem>() {
   return {
     rows: [] as T[],
+    reportedTotalCount: null,
     totalCount: 0,
     resultCode: "",
     resultMessage: ""

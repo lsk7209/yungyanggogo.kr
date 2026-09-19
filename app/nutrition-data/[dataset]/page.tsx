@@ -13,6 +13,8 @@ import {
 } from "../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
 import { NutritionDatasetBrowser } from "../../../components/NutritionDatasetBrowser";
+import { NutritionCountSummary } from "../../../components/NutritionCountSummary";
+import { getNutritionPagination } from "../../../lib/nutrition-count";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -92,8 +94,8 @@ export default async function NutritionDatasetPage({
       })
     : null;
   const hasPrevious = page > 1;
-  const hasNext = Boolean(result?.ok && page * 50 < result.totalCount);
-  if (result?.ok && page > 1 && (page - 1) * 50 >= result.totalCount) {
+  const { hasNext, outOfRange } = getNutritionPagination(result, page, 50);
+  if (outOfRange) {
     notFound();
   }
 
@@ -138,19 +140,20 @@ export default async function NutritionDatasetPage({
       <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
       <div
         className={
-          result?.foods.length
+          result?.ok
             ? "api-status api-status--ok"
             : "api-status api-status--warn"
         }
       >
         <strong>
-          {result?.foods.length
+          {result?.ok
             ? `현재 ${result.count.toLocaleString("ko-KR")}개 항목 표시`
             : "현재 표시할 데이터를 불러오지 못했습니다"}
         </strong>
         {result?.ok ? (
           <p>
-            전체 기준 건수는 {result.totalCount.toLocaleString("ko-KR")}건입니다.
+            <NutritionCountSummary result={result} filtered={Boolean(query)} />
+            <br />
             이 목록은 상세 페이지로 연결되어 각 식품의 영양성분표, 출처, 갱신일을
             개별 URL에서 확인할 수 있습니다.
           </p>

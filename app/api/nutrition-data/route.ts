@@ -45,6 +45,9 @@ export async function GET(request: Request) {
         cacheSource: result.cacheSource,
         fallback: result.fallback || false,
         totalCount: result.totalCount,
+        countScope: result.countScope,
+        countCheckedAt: result.countCheckedAt,
+        latestStoredAt: result.latestStoredAt,
         count: result.count,
         foods: result.foods,
         message: result.ok ? "" : "현재 영양성분 데이터를 제공할 수 없습니다. 잠시 후 다시 시도해 주세요."
@@ -71,9 +74,13 @@ export async function GET(request: Request) {
     query: q || null,
     datasets: results.map((result) => ({
       dataset: result.dataset,
+      ok: result.ok,
       cacheSource: result.cacheSource,
       fallback: result.fallback || false,
       totalCount: result.totalCount,
+      countScope: result.countScope,
+      countCheckedAt: result.countCheckedAt,
+      latestStoredAt: result.latestStoredAt,
       count: result.count,
       foods: result.foods,
       message: result.ok ? "" : "현재 이 데이터셋을 제공할 수 없습니다."

@@ -1,6 +1,7 @@
 import { extractStandardDataGoKrItems } from "./data-go-kr-response";
 import { createEmptyNutritionFailure } from "./nutrition-failure";
 import { fetchTextWithRetry } from "./fetch-with-retry";
+import { parseNutritionTotalCount, type NutritionCountInfo } from "./nutrition-count";
 
 export type NationalNutritionDatasetSlug = "all" | "food" | "process" | "material" | "health";
 
@@ -58,11 +59,10 @@ type FetchNationalNutritionOptions = {
   numOfRows?: number;
 };
 
-export type NationalNutritionResult = {
+export type NationalNutritionResult = NutritionCountInfo & {
   ok: boolean;
   status: number;
   dataset: NationalNutritionDataset;
-  totalCount: number;
   count: number;
   foods: NationalNutritionItem[];
   fallback?: boolean;
@@ -270,16 +270,7 @@ export async function fetchNationalNutritionItems({
   const serviceKey = getNationalNutritionApiKey();
 
   if (!serviceKey) {
-    return {
-      ok: false,
-      status: 503,
-      dataset: selectedDataset,
-      totalCount: 0,
-      count: 0,
-      foods: [],
-      message:
-        "공공데이터포털 전국통합식품영양성분정보 서비스키가 서버 환경변수에 없습니다. DATA_GO_KR_NUTRITION_KEY 또는 DATA_GO_KR_SERVICE_KEY를 설정하면 실제 데이터를 표시합니다."
-    };
+    return createNationalNutritionFailureResult(selectedDataset, 503, "현재 전국통합식품영양성분정보 데이터를 제공할 수 없습니다.");
   }
 
   const url = buildNationalNutritionUrl({
@@ -301,7 +292,8 @@ export async function fetchNationalNutritionItems({
     }
 
     const payload = JSON.parse(text) as unknown;
-    const { rows, totalCount, resultCode, resultMessage } = extractNationalNutritionItems(payload);
+    const { rows, reportedTotalCount, resultCode, resultMessage } = extractNationalNutritionItems(payload);
+    const totalCount = parseNutritionTotalCount(reportedTotalCount);
     const foods = rows.map(normalizeNationalNutritionItem);
 
     if (resultCode !== "00") {
@@ -313,6 +305,9 @@ export async function fetchNationalNutritionItems({
       status: response.status,
       dataset: selectedDataset,
       totalCount,
+      countScope: "source",
+      countCheckedAt: new Date().toISOString(),
+      latestStoredAt: null,
       count: foods.length,
       foods,
       resultCode,
@@ -407,7 +402,13 @@ export function createNationalNutritionFailureResult(
   status: number,
   message: string
 ): NationalNutritionResult {
-  return createEmptyNutritionFailure<NationalNutritionDataset, NationalNutritionItem>(dataset, status, message);
+  return {
+    ...createEmptyNutritionFailure<NationalNutritionDataset, NationalNutritionItem>(dataset, status, message),
+    totalCount: null,
+    countScope: "unknown",
+    countCheckedAt: null,
+    latestStoredAt: null,
+  };
 }
 
 function serializeServiceKey(serviceKey: string) {
