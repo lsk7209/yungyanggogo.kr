@@ -1,5 +1,57 @@
 # Current Handoff
 
+## 2026-09-20T08:41:11+09:00 — verified GitHub release ready to push
+
+- User goal: 배포해; release F-001–F-004 and F-006 through origin/main.
+- Exact state: local product commits 6616a0d (article structure/mobile tables), 5a32725 (comparison selection), and 6835dc4 (nutrition count provenance) are complete. Remote main was reconciled at baseline 9f2c2d8 before local commits; push is the next action.
+- Fresh validation: 30 safe regression scripts, TypeScript and ESLint rerun PASS; 18 current product hashes match the previously passed isolated build and browser-tested runtime. Validated intermediate dataset source was used to split selection/count commits without changing the final worktree. Staged whitespace checks and credential-pattern scan PASS.
+- Independent review: bounded Luna(max) release review found no material blocker or missing runtime dependency. Existing CI does install/typecheck/build; standalone regression evidence is local.
+- Included: product code, approved article snapshot, related tests/verifier, two quality summaries and this handoff. Exact local manifest: output/releases/20260920/release-files.json.
+- Excluded/preserved: .goal-harness/.omc/.playwright-cli/output and docs/audits raw evidence. These remain local; published summaries describe them as local evidence. No package/lock dependency change.
+- Risk/rollback: main push may trigger configured CI/hosting. User explicitly authorized this release; rollback is normal revert commits plus push, never force/reset.
+- Deliberately not run: direct Vercel CLI/API action, production DB/API checks or sync, credential/account/CMP/AdSense changes. Actual production rollout is unverified separately from GitHub push.
+- Remaining: F-005 provider cause, F-010 arithmetic extremes, F-008 sitemap policy and other audit backlog. No extra product scope was added for release.
+- Single next step: push reviewed commits normally, then reconcile HEAD/origin/main/ls-remote and record evidence.
+
+---
+
+# Current Handoff
+
+## 2026-09-20T08:27:47+09:00 — F-006 count provenance complete locally
+
+- User goal: proceed with the recommended stored/source/unknown count repair.
+- State: DONE local; HEAD remains 9f2c2d85b31950d58780b330e422208fcd93226c. Current and prior F-001–F-004 source changes remain uncommitted, no push/deploy.
+- Completed: stored distinct count vs source response vs unknown; valid zero; page-length independence; query scope; nullable-aware paging; server-observation/storage timestamps with cache/source-date caveat; API fields and sync unknown-count preservation. Normal zero-row dataset title now uses success state.
+- Changed files: count helper/shared parser/national API+DB; new NutritionCountSummary; nutrition index/dataset/API route; sync script; focused/integration/static-boundary tests; isolated runner; current docs/harness. Full map: .goal-harness/FILEMAP.md.
+- Fresh validation: 30 safe regression scripts, typecheck/lint/build PASS; focused32 and integration79 assertions; browser at360/390/1280 with source5000/stored52 fixture, page2 visible2, search1, selection150g, cached time preservation PASS. Console0, source hashes18 match build, git diff --check PASS. Completion audit: output/playwright/count-provenance-20260920/completion-audit.json.
+- Review: independent Luna(max) read-only review found no material remaining issue; same scope retried after Spark Unknown model.
+- Side effects/rollback: local code/docs and synthetic fixture only. Baseline diff/source copies saved in output/playwright/count-provenance-20260920/baseline.patch and baseline/. Task browser/server3049 stopped; prior server31847 preserved; build copies retained as evidence. Revert only F-006 hunks, never reset earlier dirty work.
+- Deliberately not run: production DB/API, real sync, account changes, commit/push/deploy, two unrelated report generators. Sync CLI exercised only with mock fetch and memory DB.
+- Risks/limits: national JSON totalCount is nullable; external clients must handle null/countScope/ok. Observation may use cached source response. Historical sync totals not migrated or used as public-count evidence. F-005 provider cause remains unknown; F-010/F-008 and other backlog remain.
+- Single next step: F-010 finite arithmetic results and formatter defense; keep normal unit conversion regressions.
+- Report: docs/quality/count-provenance-2026-09-20.md.
+
+---
+
+# Current Handoff
+
+## 2026-09-20T08:05:36+09:00 — F-001–F-004 local repairs complete
+
+- User goal: implement proposed fixes 1–3: public article structure/internal instructions, mobile comparison and selection persistence. Latest question asks what remains next.
+- Exact state: DONE locally; baseline and current HEAD `9f2c2d85b31950d58780b330e422208fcd93226c`. Product changes remain uncommitted. Historical audit findings F-005 onward remain separate backlog.
+- Completed: seven approved posts retain structured tables, headings, links, record forms and source links without internal contract instructions; mobile comparison retains headers/removal; URL selection survives search, page 2, detail, Back, share, add/replace and dataset changes with applied basis/amount and max-three limits.
+- Changed files: blog converter/JSON/types/renderer; comparison helpers and three selection/render components; blog/compare/nutrition list/detail pages and CSS; focused tests and verification runner; this handoff, quality report and harness. Exact mapping: `.goal-harness/FILEMAP.md`.
+- Fresh evidence: 29 regression scripts, TypeScript, ESLint and isolated production build PASS. Eight articles at 360/390/1280px and four selection browser flows PASS. Eleven current product SHA256 hashes match final executed build; `git diff --check` PASS. Acceptance A1–A6 is recorded in `output/playwright/review-repair-20260920/completion-audit.json`.
+- Independent review: two bounded lanes completed using Luna(max) after Spark Unknown model failures. Inline links, fenced records and explicit Back query/page proof were corrected and reverified; no mandatory finding remains in this slice.
+- Side effects/rollback: repository files and synthetic local SQLite fixture only. Task browser and port 3048 server stopped; unrelated port 31847 server preserved. Build copies retained for evidence; latest path in `runtime.json`. Roll back only task-owned hunks/additions, preserving pre-existing untracked work and historical audit.
+- Deliberately not run: production DB/API access, account mutations, deployment, commit/push, or two unrelated report-generating regression scripts. Full no-JavaScript navigation is not claimed.
+- Risks/limits: actual production data, provider availability, nutrition label accuracy and account state remain unverified. F-005 onward remains unresolved; existing preferredRegion build warning retained. Full report: `docs/quality/review-repair-2026-09-20.md`.
+- Single next step: implement F-006 to distinguish locally stored records, source totals and unknown counts, preserving valid zero and recording provenance/time; then continue failure-state and arithmetic/sitemap backlog.
+
+---
+
+# Current Handoff
+
 ## 2026-09-13 Git deployment handoff complete
 
 - Timestamp: `2026-09-13T15:21:53+09:00`.
