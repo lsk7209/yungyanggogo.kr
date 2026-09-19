@@ -2,10 +2,17 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { absoluteUrl } from "./site";
 
+export type BlogBlock =
+  | { type: "paragraph" | "quote" | "code"; text: string }
+  | { type: "heading"; level: number; text: string }
+  | { type: "list"; ordered: boolean; items: string[] }
+  | { type: "table"; headers: string[]; rows: string[][] };
+
 export type BlogSection = {
   id: string;
   title: string;
   body: string[];
+  blocks?: BlogBlock[];
 };
 
 export type BlogPost = {

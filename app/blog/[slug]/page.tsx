@@ -4,6 +4,7 @@ import type React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TableOfContents } from "../../../components/TableOfContents";
+import { ArticleBlocks } from "../../../components/ArticleBlocks";
 import { getAllPosts, getPostBySlug, getPostUrl } from "../../../lib/blog";
 import { getPostThumbnailUrl } from "../../../lib/post-thumbnail";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
@@ -162,20 +163,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         ))}
       </div>
-      <div className="comparison-table" aria-label="기준량 비교 표">
-        <div className="comparison-table__head">
-          <span>비교 기준</span>
-          <span>잘 맞는 상황</span>
-          <span>주의점</span>
-        </div>
-        {post.comparisonRows.map((row) => (
-          <div key={row.basis} className="comparison-table__row">
-            <strong>{row.basis}</strong>
-            <span>{row.bestFor}</span>
-            <span>{row.caution}</span>
-          </div>
-        ))}
-      </div>
+      {post.comparisonRows.length > 0 ? <div className="article-table-scroll" role="region" aria-label="기준량 비교 표" tabIndex={0}>
+      <table>
+        <thead><tr><th scope="col">비교 기준</th><th scope="col">잘 맞는 상황</th><th scope="col">주의점</th></tr></thead>
+        <tbody>{post.comparisonRows.map((row) => <tr key={row.basis}><th scope="row">{row.basis}</th><td>{row.bestFor}</td><td>{row.caution}</td></tr>)}</tbody>
+      </table>
+      </div> : null}
       <div className="article-body">
         {post.dataPoints && post.dataPoints.length > 0 ? (
           <section className="data-point-panel" aria-label="핵심 데이터 포인트">
@@ -259,7 +252,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {post.sections.map((section) => (
           <section key={section.id} id={section.id}>
             <h2>{section.title}</h2>
-            {section.body.map((paragraph) => (
+            {section.blocks ? <ArticleBlocks blocks={section.blocks} /> : section.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </section>

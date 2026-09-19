@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { cleanInline, sectionsFromBody } from "./lib/editorial-public-content.mjs";
 
 const root = process.cwd();
 const candidatesRoot = path.join(root, "content", "editorial-candidates");
@@ -23,16 +24,6 @@ if (JSON.stringify([...approval.candidate_ids].sort()) !== JSON.stringify([...ca
   throw new Error("editorial approval does not cover the exact candidate set");
 }
 
-function cleanInline(value) {
-  return value
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\[([^\]]+)]\((?:https?:\/\/|\/)[^)]+\)/g, "$1")
-    .replace(/[`*_]/g, "")
-    .replace(/\{[^{}]*\}/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function bodyFromDraft(draft) {
   return draft.replace(/^---\s*[\s\S]*?\s*---\s*/, "");
 }
@@ -40,35 +31,6 @@ function bodyFromDraft(draft) {
 function frontmatterValue(draft, key) {
   const frontmatter = draft.match(/^---\s*([\s\S]*?)\s*---/)?.[1] ?? "";
   return frontmatter.match(new RegExp(`^${key}:\\s*["'](.+)["']\\s*$`, "m"))?.[1] ?? "";
-}
-
-function sectionsFromBody(body) {
-  const chunks = body.split(/^##\s+/gm);
-  return chunks.slice(1).map((chunk, index) => {
-    const [heading, ...lines] = chunk.split(/\r?\n/);
-    const blocks = lines.join("\n").split(/\n\s*\n/);
-    const paragraphs = blocks
-      .map((block) => block
-        .split(/\r?\n/)
-        .map((line) => line.replace(/^\s*(?:[-*]|\d+\.)\s+/, "").replace(/^\|?|\|?$/g, ""))
-        .join(" "))
-      .map(cleanInline)
-      .filter((text) => text.length >= 20 && !text.startsWith("---"));
-
-    return {
-      id: `${index + 1}-${candidateSlug(heading)}`,
-      title: cleanInline(heading),
-      body: paragraphs,
-    };
-  });
-}
-
-function candidateSlug(value) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9가-힣]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 48) || "section";
 }
 
 function internalLabel(href) {
@@ -122,11 +84,9 @@ function promote(id) {
       { label: "판단 기준", value: "대조", description: contract.decision_criterion },
       { label: "결론 범위", value: "제한", description: contract.not_answered_here },
     ],
-    comparisonRows: [
-      { basis: "판단 기준", bestFor: contract.decision_criterion, caution: "확인하지 않은 값을 0이나 확정값으로 바꾸지 않습니다." },
-      { basis: "근거 사용", bestFor: contract.evidence_plan, caution: "공공 DB와 일반 참고값은 현재 제품 포장을 자동으로 대체하지 않습니다." },
-      { basis: "별도 문서", bestFor: contract.non_overlap_claim, caution: contract.not_answered_here },
-    ],
+    // Reader-facing comparison tables are preserved from the approved draft.
+    // evidence_plan/non_overlap_claim are private editing instructions.
+    comparisonRows: [],
     checklist: bulletItems.length >= 3 ? bulletItems : [
       contract.decision_criterion,
       contract.ending_cta_direction,

@@ -31,7 +31,7 @@ for (const post of output) {
   assert.ok(post.sections.every((section) => section.title && section.body.length > 0), `${post.slug} sections retain rendered prose`);
   assert.ok(post.internalLinks.length >= 3 && post.internalLinks.length <= 5, `${post.slug} retains three to five internal links`);
   assert.ok(post.sourceLinks.length >= 5 && post.sourceLinks.length <= 8, `${post.slug} retains five to eight research sources`);
-  assert.ok(post.summaryCards.length === 3 && post.comparisonRows.length === 3, `${post.slug} satisfies the public article component contract`);
+  assert.ok(post.summaryCards.length === 3 && post.comparisonRows.length === 0, `${post.slug} uses draft tables instead of internal contract rows`);
   assert.ok(post.description.length >= 40 && post.description.length <= 160, `${post.slug} retains a bounded meta description`);
   assert.ok(post.sections.flatMap((section) => section.body).every((paragraph) => !/<\/?[a-z]|\]\(|style=|\{\{/.test(paragraph)), `${post.slug} exposes no raw MDX or HTML syntax`);
 }
