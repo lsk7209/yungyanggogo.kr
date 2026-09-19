@@ -1,17 +1,18 @@
 # Current Handoff
 
-## 2026-09-20T08:41:11+09:00 — verified GitHub release ready to push
+## 2026-09-20T08:41:57+09:00 — GitHub main release pushed and reconciled
 
-- User goal: 배포해; release F-001–F-004 and F-006 through origin/main.
-- Exact state: local product commits 6616a0d (article structure/mobile tables), 5a32725 (comparison selection), and 6835dc4 (nutrition count provenance) are complete. Remote main was reconciled at baseline 9f2c2d8 before local commits; push is the next action.
-- Fresh validation: 30 safe regression scripts, TypeScript and ESLint rerun PASS; 18 current product hashes match the previously passed isolated build and browser-tested runtime. Validated intermediate dataset source was used to split selection/count commits without changing the final worktree. Staged whitespace checks and credential-pattern scan PASS.
-- Independent review: bounded Luna(max) release review found no material blocker or missing runtime dependency. Existing CI does install/typecheck/build; standalone regression evidence is local.
-- Included: product code, approved article snapshot, related tests/verifier, two quality summaries and this handoff. Exact local manifest: output/releases/20260920/release-files.json.
-- Excluded/preserved: .goal-harness/.omc/.playwright-cli/output and docs/audits raw evidence. These remain local; published summaries describe them as local evidence. No package/lock dependency change.
-- Risk/rollback: main push may trigger configured CI/hosting. User explicitly authorized this release; rollback is normal revert commits plus push, never force/reset.
-- Deliberately not run: direct Vercel CLI/API action, production DB/API checks or sync, credential/account/CMP/AdSense changes. Actual production rollout is unverified separately from GitHub push.
-- Remaining: F-005 provider cause, F-010 arithmetic extremes, F-008 sitemap policy and other audit backlog. No extra product scope was added for release.
-- Single next step: push reviewed commits normally, then reconcile HEAD/origin/main/ls-remote and record evidence.
+- User goal: 배포해; publish the verified F-001–F-004 and F-006 changes through GitHub main.
+- Exact release state: GitHub accepted 9f2c2d8..c96bb39 on main. HEAD, origin/main and ls-remote were verified as `c96bb3998067fa628556957b1e69238e7d29161f`, with divergence 0/0. This handoff-only follow-up records the completed release; its final reconciliation is saved locally in output/releases/20260920/final-reconciliation.json.
+- Released product commits: 6616a0d preserves article structure/mobile tables; 5a32725 retains comparison selections; 6835dc4 distinguishes stored/source/unknown nutrition counts. c96bb39 contains durable quality summaries.
+- Validation: all 30 safe regression scripts, typecheck and lint passed at release; 18 product hashes match the passed isolated build and browser-tested runtime. Credential-pattern and staged whitespace checks passed. Bounded independent release review found no material blocker. CI's install/typecheck/build and actual hosting rollout are separate from local regression proof.
+- Included/excluded: 33 unique product/test/document files in the release. Local harness, .omc, Playwright data, output/ and raw docs/audits/ remain untracked and preserved. No package/lock dependency change. Earlier active server31847 was preserved.
+- External side effects: normal GitHub main push only; configured CI/hosting may run from that push. No direct Vercel CLI/API mutation, production DB/API check or sync, account/CMP/AdSense operation was run. Live production reflection remains unverified.
+- GitHub response: 24 existing default-branch dependency alerts (2 critical, 15 high, 7 moderate); no dependency update or suppression performed.
+- Rollback: normal revert of the relevant release commits, with count changes reverted before selection dependencies if reverting the whole slice; then normal push. Never force-push or reset shared history.
+- Evidence: local output/releases/20260920 plus product quality summaries in docs/quality/review-repair-2026-09-20.md and count-provenance-2026-09-20.md. Raw proof is local-only.
+- Remaining risks: API totalCount is nullable; upstream provider status/actual source freshness remain unknown. F-010/F-008 and other audit findings remain outside this release.
+- Single next step: F-010 finite arithmetic/formatter guard with normal-unit conversion regressions as a separate local task.
 
 ---
 
