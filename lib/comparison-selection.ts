@@ -50,6 +50,14 @@ export function parseComparisonBasis(value: string | undefined): ComparisonBasis
   return BASES.has(value as ComparisonBasis) ? (value as ComparisonBasis) : "reported";
 }
 
+export function toggleComparisonSelection(values: string[], value: string, checked: boolean) {
+  // An over-limit URL shows only the first three. Do not resurrect its hidden
+  // fourth value when the user removes one of the displayed selections.
+  const current = parseComparisonSelection(values).selectedRefs.map((ref) => ref.value).filter((item) => item !== value);
+  if (checked) current.push(value);
+  return parseComparisonSelection(current).selectedRefs;
+}
+
 export function normalizeComparisonAmount(value: string | undefined) {
   return (value || "120g").replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, 24) || "120g";
 }
@@ -64,11 +72,24 @@ export function buildComparisonItemValue(
 export function buildComparisonCollectionHref(
   dataset: NationalNutritionDatasetSlug,
   refs: ComparisonItemRef[],
+  options?: { basis: ComparisonBasis; targetServingUnit: string },
 ) {
+  if (options) return withComparisonState(`/nutrition-data/${dataset}`, { refs, ...options });
   const params = new URLSearchParams();
   refs.forEach((ref) => params.append("item", ref.value));
   const query = params.toString();
   return `/nutrition-data/${dataset}${query ? `?${query}` : ""}`;
+}
+
+export function withComparisonState(href: string, {
+  refs, basis, targetServingUnit,
+}: { refs: ComparisonItemRef[]; basis: ComparisonBasis; targetServingUnit: string }) {
+  const url = new URL(href, "https://local.invalid");
+  url.searchParams.delete("item");
+  parseComparisonSelection(refs.map((ref) => ref.value)).selectedRefs.forEach((ref) => url.searchParams.append("item", ref.value));
+  url.searchParams.set("basis", parseComparisonBasis(basis));
+  url.searchParams.set("amount", normalizeComparisonAmount(targetServingUnit));
+  return `${url.pathname}?${url.searchParams}${url.hash}`;
 }
 
 export function buildComparisonHref({

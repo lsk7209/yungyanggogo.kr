@@ -5,7 +5,9 @@ import {
   buildComparisonItemValue,
   normalizeComparisonAmount,
   parseComparisonBasis,
-  parseComparisonSelection
+  parseComparisonSelection,
+  withComparisonState,
+  toggleComparisonSelection
 } from "../lib/comparison-selection.ts";
 
 const selection = parseComparisonSelection([
@@ -46,4 +48,23 @@ assert.deepEqual(
   ["food|A", "material|C"],
 );
 
-console.log("comparison selection: 14 assertions passed");
+const preserved = new URL(withComparisonState("/nutrition-data/food?page=2&q=치즈&item=health%7Cold", {
+  refs: selection.refs,
+  basis: "perIntake",
+  targetServingUnit: " 150g ",
+}), "https://example.test");
+assert.deepEqual(preserved.searchParams.getAll("item"), ["food|A", "process|B", "material|C"]);
+assert.equal(preserved.searchParams.get("q"), "치즈");
+assert.equal(preserved.searchParams.get("page"), "2");
+assert.equal(preserved.searchParams.get("basis"), "perIntake");
+assert.equal(preserved.searchParams.get("amount"), "150g");
+const collection = new URL(buildComparisonCollectionHref("food", selection.selectedRefs, { basis: "perIntake", targetServingUnit: "250ml" }), "https://example.test");
+assert.equal(collection.searchParams.get("amount"), "250ml");
+assert.equal(collection.searchParams.get("basis"), "perIntake");
+const cleared = new URL(withComparisonState(preserved.pathname + preserved.search, { refs: [], basis: "reported", targetServingUnit: "120g" }), "https://example.test");
+assert.equal(cleared.searchParams.has("item"), false);
+assert.equal(cleared.searchParams.get("page"), "2");
+assert.deepEqual(toggleComparisonSelection(["food|A", "food|B", "food|C", "food|D"], "food|A", false).map((ref) => ref.value), ["food|B", "food|C"], "over-limit hidden values never reappear after removal");
+assert.deepEqual(toggleComparisonSelection(["food|A", "food|B", "food|C"], "food|D", true).map((ref) => ref.value), ["food|A", "food|B", "food|C"], "fourth item is not silently substituted");
+assert.equal(toggleComparisonSelection(["food|A"], "food|A", false).length, 0);
+console.log("comparison selection: 26 assertions passed");

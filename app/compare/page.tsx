@@ -9,7 +9,8 @@ import {
   buildComparisonCollectionHref,
   normalizeComparisonAmount,
   parseComparisonBasis,
-  parseComparisonSelection
+  parseComparisonSelection,
+  withComparisonState
 } from "../../lib/comparison-selection";
 import {
   comparisonRows,
@@ -77,7 +78,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
 
       {available.length ? (
         <p>
-          <Link href={buildComparisonCollectionHref(available[0].ref.dataset, available.map((entry) => entry.ref))}>
+          <Link href={buildComparisonCollectionHref(available[0].ref.dataset, available.map((entry) => entry.ref), { basis, targetServingUnit })}>
             현재 선택을 유지하고 항목 추가·교체하기
           </Link>
         </p>
@@ -92,7 +93,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
         <div className="api-status api-status--warn">
           <strong>비교할 식품을 2개 이상 선택하세요</strong>
           <p>영양성분 데이터 목록에서 2~3개 항목을 선택하면 이 화면에서 나란히 볼 수 있습니다.</p>
-          <Link href="/nutrition-data/all">식품 목록에서 선택하기</Link>
+          <Link href={buildComparisonCollectionHref(available[0]?.ref.dataset ?? "all", available.map((entry) => entry.ref), { basis, targetServingUnit })}>식품 목록에서 선택하기</Link>
         </div>
       ) : (
         <>
@@ -108,6 +109,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
             <button type="submit">기준 적용</button>
           </form>
 
+          <div className="comparison-table-scroll" role="region" aria-label="식품 비교표 — 가로로 이동해 모든 식품 확인" tabIndex={0}>
           <div className="comparison-table" role="table" aria-label={`${basisLabels[basis]} 영양성분 비교`}>
             <div className="comparison-table__row comparison-table__head" role="row" style={comparisonGridStyle(items.length)}>
               <strong role="columnheader">영양성분</strong>
@@ -131,6 +133,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
               </div>
             ))}
           </div>
+          </div>
 
           <section className="nutrition-detail-section">
             <h2>비교 항목의 출처와 식별 정보</h2>
@@ -141,7 +144,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
                   <span>식품코드 {result.item.foodCode}</span>
                   <span>{result.item.sourceName || "출처명 확인 필요"}</span>
                   <span>갱신일 {result.item.updatedAt || "확인 필요"}</span>
-                  <Link href={`/nutrition-data/${ref.dataset}/${encodeURIComponent(ref.foodCode)}`}>상세 보기</Link>
+                  <Link href={withComparisonState(`/nutrition-data/${ref.dataset}/${encodeURIComponent(ref.foodCode)}`, { refs: available.map((entry) => entry.ref), basis, targetServingUnit })}>상세 보기</Link>
                 </article>
               ))}
             </div>

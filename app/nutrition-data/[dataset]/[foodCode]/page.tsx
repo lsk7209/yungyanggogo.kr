@@ -13,6 +13,7 @@ import {
   type NationalNutritionItem,
 } from "../../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../../lib/site";
+import { ComparisonNavigationLink } from "../../../../components/ComparisonNavigationLink";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
@@ -177,13 +178,13 @@ export default async function NationalNutritionDetailPage({
             {cacheSource === "db" ? "Turso DB 저장 데이터" : "API 확인 데이터"}
           </span>
         </div>
-        <Link className="button" href={buildComparisonHref({
+        <ComparisonNavigationLink className="button" addItem={buildComparisonItemValue(datasetSlug, item.foodCode)} href={buildComparisonHref({
           refs: [{ dataset: datasetSlug, foodCode: item.foodCode, value: buildComparisonItemValue(datasetSlug, item.foodCode) }],
           basis: "reported",
           targetServingUnit: "120g",
         })}>
           이 식품을 비교 목록에 담기
-        </Link>
+        </ComparisonNavigationLink>
       </header>
 
       <AdsenseScript />
@@ -289,7 +290,7 @@ export default async function NationalNutritionDetailPage({
           <h2>{datasetInfo.shortName}에서 함께 보는 영양성분표</h2>
           <div className="related-nutrition-grid">
             {relatedItems.map((related) => (
-              <Link
+              <ComparisonNavigationLink
                 key={related.foodCode}
                 href={`/nutrition-data/${datasetSlug}/${encodeURIComponent(related.foodCode)}`}
               >
@@ -299,7 +300,7 @@ export default async function NationalNutritionDetailPage({
                   열량 {related.energy || "-"} kcal · 단백질{" "}
                   {related.protein || "-"} g · 나트륨 {related.sodium || "-"} mg
                 </small>
-              </Link>
+              </ComparisonNavigationLink>
             ))}
           </div>
         </section>
@@ -309,9 +310,9 @@ export default async function NationalNutritionDetailPage({
         <h2>함께 확인할 데이터</h2>
         <ul>
           <li>
-            <Link href={`/nutrition-data/${datasetSlug}`}>
+            <ComparisonNavigationLink href={`/nutrition-data/${datasetSlug}`}>
               {datasetInfo.shortName} 영양성분표 목록
-            </Link>
+            </ComparisonNavigationLink>
             <span>같은 데이터셋의 다른 식품을 이어서 확인합니다.</span>
           </li>
           <li>

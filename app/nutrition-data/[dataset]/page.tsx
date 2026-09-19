@@ -12,7 +12,7 @@ import {
   type NationalNutritionDatasetSlug,
 } from "../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
-import { buildComparisonItemValue, parseComparisonSelection } from "../../../lib/comparison-selection";
+import { NutritionDatasetBrowser } from "../../../components/NutritionDatasetBrowser";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -77,10 +77,6 @@ export default async function NutritionDatasetPage({
 
   const queryParams = await searchParams;
   const query = normalizeNutritionSearchQuery(queryParams?.q);
-  const carriedItems = Array.isArray(queryParams?.item)
-    ? queryParams.item
-    : queryParams?.item ? [queryParams.item] : [];
-  const carriedSelection = parseComparisonSelection(carriedItems);
   const page = parseBoundedPositiveInteger(queryParams?.page, 1, 10_000);
   const canonicalPath = page > 1
     ? `/nutrition-data/${dataset}?page=${page}`
@@ -100,7 +96,6 @@ export default async function NutritionDatasetPage({
   if (result?.ok && page > 1 && (page - 1) * 50 >= result.totalCount) {
     notFound();
   }
-  const pageQuery = query ? `&q=${encodeURIComponent(query)}` : "";
 
   const schema = {
     "@context": "https://schema.org",
@@ -140,22 +135,7 @@ export default async function NutritionDatasetPage({
         </p>
       </div>
 
-      <form className="data-search" action={`/nutrition-data/${dataset}`}>
-        <label htmlFor="dataset-food-search">
-          {datasetInfo.shortName} 식품명 검색
-        </label>
-        <div>
-          <input
-            id="dataset-food-search"
-            name="q"
-            type="search"
-            defaultValue={query}
-            placeholder="식품명 일부를 입력하세요"
-          />
-          <button type="submit">검색</button>
-        </div>
-      </form>
-
+      <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
       <div
         className={
           result?.foods.length
@@ -179,120 +159,7 @@ export default async function NutritionDatasetPage({
         )}
       </div>
 
-      {result?.foods.length ? (
-        <form action="/compare" className="comparison-picker">
-          {carriedSelection.selectedRefs.map((ref) => (
-            <input key={ref.value} type="hidden" name="item" value={ref.value} />
-          ))}
-          <div className="comparison-picker__head">
-            <div><strong>나란히 비교하기</strong><p>식품 2~3개를 선택하세요. 중복 선택은 한 번만 처리됩니다.</p></div>
-            <button type="submit">선택한 식품 비교</button>
-          </div>
-          <div className="nutrition-dataset-grid">
-          {result.foods.map((food) => (
-          <article
-            key={food.foodCode || food.name}
-            className="health-nutrition-card"
-          >
-            <div className="health-food-card__head">
-              <label className="comparison-check">
-                <input
-                  type="checkbox"
-                  name="item"
-                  value={buildComparisonItemValue(dataset, food.foodCode)}
-                  defaultChecked={carriedSelection.selectedRefs.some((ref) => ref.value === buildComparisonItemValue(dataset, food.foodCode))}
-                  disabled={carriedSelection.selectedRefs.some((ref) => ref.value === buildComparisonItemValue(dataset, food.foodCode))}
-                />
-                <span>비교 선택</span>
-              </label>
-              <span>{food.typeName || datasetInfo.shortName}</span>
-              <strong>
-                <Link
-                  href={`/nutrition-data/${dataset}/${encodeURIComponent(food.foodCode)}`}
-                >
-                  {food.name || "식품명 미기재"}
-                </Link>
-              </strong>
-              <small>
-                {food.maker ||
-                  food.restaurant ||
-                  food.importer ||
-                  food.sourceName ||
-                  "제공처 미기재"}
-              </small>
-            </div>
-            <dl>
-              <div>
-                <dt>기준량</dt>
-                <dd>{food.servingUnit || "-"}</dd>
-              </div>
-              <div>
-                <dt>열량</dt>
-                <dd>{food.energy || "-"} kcal</dd>
-              </div>
-              <div>
-                <dt>단백질</dt>
-                <dd>{food.protein || "-"} g</dd>
-              </div>
-              <div>
-                <dt>당류</dt>
-                <dd>{food.sugars || "-"} g</dd>
-              </div>
-              <div>
-                <dt>나트륨</dt>
-                <dd>{food.sodium || "-"} mg</dd>
-              </div>
-              <div>
-                <dt>갱신일</dt>
-                <dd>{food.updatedAt || "-"}</dd>
-              </div>
-            </dl>
-          </article>
-          ))}
-          </div>
-        </form>
-      ) : null}
-
-      <nav
-        className="pagination-nav"
-        aria-label={`${datasetInfo.shortName} 목록 페이지 이동`}
-      >
-        {hasPrevious ? (
-          <Link
-            href={`/nutrition-data/${dataset}?page=${page - 1}${pageQuery}`}
-          >
-            이전 50개
-          </Link>
-        ) : (
-          <span>이전 50개</span>
-        )}
-        <strong>{page.toLocaleString("ko-KR")}페이지</strong>
-        {hasNext ? (
-          <Link
-            href={`/nutrition-data/${dataset}?page=${page + 1}${pageQuery}`}
-          >
-            다음 50개
-          </Link>
-        ) : (
-          <span>다음 50개</span>
-        )}
-      </nav>
-
-      <section className="link-panel">
-        <h2>다른 데이터셋 보기</h2>
-        <ul>
-          {NATIONAL_NUTRITION_DATASETS.filter(
-            (item) => item.slug !== dataset,
-          ).map((item) => (
-            <li key={item.slug}>
-              <Link href={`/nutrition-data/${item.slug}`}>
-                {item.shortName} 영양성분표 데이터
-              </Link>
-              <span>{item.description}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      </NutritionDatasetBrowser>
     </section>
   );
 }
