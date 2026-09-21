@@ -12,7 +12,8 @@ on:
         default: false
         type: boolean
   schedule:
-    - cron: "17 0 * * *"
+    # Economy mode: low-frequency optional work; workflow_dispatch remains available.
+    - cron: "17 0 * * 2"
 
 concurrency:
   group: gsc-sitemap-yungyanggogo
