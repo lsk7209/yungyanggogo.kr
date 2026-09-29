@@ -28,5 +28,8 @@ function StatefulLink({ href, addItem, className, children }: Props) {
 // Keep detail nutrition data eligible for ISR; selection belongs to the URL,
 // never to the cached server result or cross-tab storage.
 export function ComparisonNavigationLink(props: Props) {
-  return <Suspense fallback={<span className={props.className} aria-busy="true">{props.children}</span>}><StatefulLink {...props} /></Suspense>;
+  // Static/ISR HTML renders this fallback, so it must be a real, crawlable link
+  // (without URL state); the stateful version replaces it after hydration.
+  const fallbackHref = props.addItem ? `/compare?item=${encodeURIComponent(props.addItem)}` : props.href;
+  return <Suspense fallback={<Link className={props.className} href={fallbackHref}>{props.children}</Link>}><StatefulLink {...props} /></Suspense>;
 }

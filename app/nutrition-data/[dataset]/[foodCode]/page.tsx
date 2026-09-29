@@ -28,6 +28,12 @@ import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/c
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
 // 식품 영양성분 데이터는 거의 변하지 않으므로 1일 캐싱으로 DB reads 대폭 절감
 export const revalidate = 86400;
+
+// An empty list makes every path ISR: rendered on first visit, then cached.
+// Without generateStaticParams Next 16 renders these routes on every request.
+export function generateStaticParams() {
+  return [];
+}
 export const preferredRegion = "icn1";
 
 type PageProps = {

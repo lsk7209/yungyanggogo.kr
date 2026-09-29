@@ -13,9 +13,14 @@ import { loadGroupItems, resolveGroup } from "../../../../../lib/nutrition-group
 import { buildComparisonItemValue } from "../../../../../lib/comparison-selection";
 import { serializeJsonLd } from "../../../../../lib/json-ld";
 import { absoluteUrl, siteConfig } from "../../../../../lib/site";
-import { ComparisonNavigationLink } from "../../../../../components/ComparisonNavigationLink";
 
 export const revalidate = 86400;
+
+// An empty list makes every path ISR: rendered on first visit, then cached.
+// Without generateStaticParams Next 16 renders these routes on every request.
+export function generateStaticParams() {
+  return [];
+}
 
 type PageProps = { params: Promise<{ dataset: string; slug: string }> };
 
@@ -149,9 +154,7 @@ export default async function NutritionGroupPage({ params }: PageProps) {
                     <td key={nutrient.key}>{formatGroupNumber(values[nutrient.key].value, nutrient.unit)}</td>
                   ))}
                   <td>
-                    <ComparisonNavigationLink addItem={buildComparisonItemValue(dataset, item.foodCode)} href="/compare">
-                      비교 담기
-                    </ComparisonNavigationLink>
+                    <Link href={`/compare?item=${encodeURIComponent(buildComparisonItemValue(dataset, item.foodCode))}`}>비교 담기</Link>
                   </td>
                 </tr>
               ))}
