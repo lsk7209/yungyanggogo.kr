@@ -20,6 +20,10 @@ type BlogPostPageProps = {
 // on-demand render whose not-found body is only client-rendered.
 export const dynamicParams = false;
 
+// Scheduled posts are prebuilt as 404 until their publish time; hourly ISR lets
+// them go live on schedule without a redeploy.
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return getAllPosts({ includeScheduled: true }).map((post) => ({
     slug: post.slug,

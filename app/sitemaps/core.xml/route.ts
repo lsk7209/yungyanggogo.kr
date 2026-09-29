@@ -5,7 +5,8 @@ import { renderUrlSet, sitemapXmlResponse, type SitemapUrl } from "../../../lib/
 import { absoluteUrl } from "../../../lib/site";
 import { staticInfoPages } from "../../../lib/static-pages";
 
-export const revalidate = 86400;
+// Hourly so scheduled posts appear in the sitemap soon after they publish.
+export const revalidate = 3600;
 
 export async function GET() {
   const urls: SitemapUrl[] = [
