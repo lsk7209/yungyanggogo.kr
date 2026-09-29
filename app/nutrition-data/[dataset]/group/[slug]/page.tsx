@@ -134,6 +134,11 @@ export default async function NutritionGroupPage({ params }: PageProps) {
             </tbody>
           </table>
         </div>
+        {analysis.basis === "per100ml" ? (
+          <p className="basis-calculator__note">
+            이 식품군은 원자료 기준량이 ml(부피)로 표기된 자료가 많아 100ml당으로 비교했습니다. 음료가 아닌 음식인데 ml로 표기된 경우도 원자료 표기를 그대로 옮긴 것이며, g 기준 식품군과는 직접 비교하지 않습니다.
+          </p>
+        ) : null}
         <p className="basis-calculator__note">
           값이 비어 있거나 미검출·미량으로 표기된 자료는 0으로 넣지 않고 계산에서 뺐습니다. &lsquo;계산된 자료 수&rsquo;가 성분마다 다른 이유입니다.
         </p>
@@ -173,16 +178,28 @@ export default async function NutritionGroupPage({ params }: PageProps) {
         </div>
       </section>
 
-      {analysis.otherDimension.length + analysis.unsupportedBasis.length > 0 ? (
+      {analysis.otherDimension.length + analysis.unsupportedBasis.length + analysis.duplicates.length > 0 ? (
         <section className="nutrition-detail-section">
           <h2>이 표에서 뺀 자료</h2>
-          <p>
-            기준량 단위가 달라(g↔ml) 밀도 정보 없이 같은 기준으로 바꿀 수 없거나 기준량이 숫자로 표기되지 않은 {analysis.otherDimension.length + analysis.unsupportedBasis.length}개 자료는 표에서 제외했습니다.
-          </p>
+          {analysis.otherDimension.length + analysis.unsupportedBasis.length > 0 ? (
+            <p>
+              기준량 단위가 달라(g↔ml) 밀도 정보 없이 같은 기준으로 바꿀 수 없거나 기준량이 숫자로 표기되지 않은 {analysis.otherDimension.length + analysis.unsupportedBasis.length}개 자료는 표에서 제외했습니다.
+            </p>
+          ) : null}
+          {analysis.duplicates.length > 0 ? (
+            <p>
+              식품명·업체·기준량·영양성분 값이 표의 다른 자료와 똑같이 한 번 더 등록된 {analysis.duplicates.length}개 자료는 중앙값이 한쪽으로 쏠리지 않도록 한 번만 셌습니다.
+            </p>
+          ) : null}
           <ul>
             {[...analysis.otherDimension, ...analysis.unsupportedBasis].slice(0, 30).map((item) => (
               <li key={item.foodCode}>
                 <Link href={`/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`}>{item.name}</Link> ({item.servingUnit || "기준량 자료 없음"})
+              </li>
+            ))}
+            {analysis.duplicates.slice(0, 30).map((item) => (
+              <li key={item.foodCode}>
+                <Link href={`/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`}>{item.name}</Link> (중복 등록 자료)
               </li>
             ))}
           </ul>

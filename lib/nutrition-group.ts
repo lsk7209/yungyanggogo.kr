@@ -33,10 +33,23 @@ export type GroupAnalysis = {
   basis: "per100g" | "per100ml";
   basisLabel: string;
   comparable: GroupRow[];
+  // Same name, seller, basis and nutrient values as a record already in
+  // `comparable` (source rows registered twice under different codes).
+  duplicates: NationalNutritionItem[];
   otherDimension: NationalNutritionItem[];
   unsupportedBasis: NationalNutritionItem[];
   stats: GroupStat[];
 };
+
+type DuplicateKeySource = Pick<NationalNutritionItem, "name" | "maker" | "restaurant" | "importer" | "servingUnit" | "energy" | "protein" | "fat" | "carbs" | "sugars" | "sodium">;
+
+// Identity of a source record by what a reader sees. Two codes with the same
+// key would be counted twice in medians and in the publish gate.
+export function groupDuplicateKey(item: DuplicateKeySource) {
+  return [item.name, item.maker || item.restaurant || item.importer, item.servingUnit, item.energy, item.protein, item.fat, item.carbs, item.sugars, item.sodium]
+    .map((value) => String(value ?? "").trim().replace(/\s+/g, " "))
+    .join("\u0001");
+}
 
 export function analyzeGroup(items: NationalNutritionItem[]): GroupAnalysis {
   const mass: NationalNutritionItem[] = [];
@@ -51,7 +64,17 @@ export function analyzeGroup(items: NationalNutritionItem[]): GroupAnalysis {
   // Compare within the dominant dimension; never convert g <-> ml.
   const useVolume = volume.length > mass.length;
   const basis: ComparisonBasis & ("per100g" | "per100ml") = useVolume ? "per100ml" : "per100g";
-  const primary = useVolume ? volume : mass;
+  const seen = new Set<string>();
+  const primary: NationalNutritionItem[] = [];
+  const duplicates: NationalNutritionItem[] = [];
+  for (const item of useVolume ? volume : mass) {
+    const key = groupDuplicateKey(item);
+    if (seen.has(key)) duplicates.push(item);
+    else {
+      seen.add(key);
+      primary.push(item);
+    }
+  }
   const otherDimension = useVolume ? mass : volume;
 
   const comparable: GroupRow[] = primary.map((item) => ({
@@ -82,7 +105,7 @@ export function analyzeGroup(items: NationalNutritionItem[]): GroupAnalysis {
     };
   });
 
-  return { basis, basisLabel: useVolume ? "100ml당" : "100g당", comparable, otherDimension, unsupportedBasis, stats };
+  return { basis, basisLabel: useVolume ? "100ml당" : "100g당", comparable, duplicates, otherDimension, unsupportedBasis, stats };
 }
 
 function median(sorted: number[]) {
@@ -98,11 +121,18 @@ export function formatGroupNumber(value: number | null, unit: string) {
 
 // Per group, the number of records in its dominant comparable dimension —
 // the same rule analyzeGroup uses to build the table.
-export function comparableCountsByGroup(rows: { name: string; servingUnit: string }[]) {
+// Rows carrying a `duplicateKey` are counted once per key, as in analyzeGroup.
+export function comparableCountsByGroup(rows: { name: string; servingUnit: string; duplicateKey?: string }[]) {
   const tally = new Map<string, { mass: number; volume: number }>();
+  const seen = new Set<string>();
   for (const row of rows) {
     const dimension = parseServingBasis(row.servingUnit).dimension;
     if (dimension === "unsupported") continue;
+    if (row.duplicateKey !== undefined) {
+      const key = `${row.name}\u0002${row.duplicateKey}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+    }
     const entry = tally.get(row.name) ?? { mass: 0, volume: 0 };
     entry[dimension] += 1;
     tally.set(row.name, entry);
