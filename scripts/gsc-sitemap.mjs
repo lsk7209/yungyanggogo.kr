@@ -311,11 +311,17 @@ async function pollSitemapStatus(token, attempts, intervalMs) {
       console.log("gsc_sitemap_green=true");
       return;
     }
+    if (errors > 0) {
+      throw new Error(`Search Console reports ${errors} sitemap error(s).`);
+    }
     if (attempt < attempts) {
       await sleep(intervalMs);
     }
   }
-  throw new Error("Sitemap was submitted, but GSC did not report green status within the polling window.");
+  // A successful submit that Google has not downloaded yet is not a failure:
+  // crawling is asynchronous and can take hours. Only reported errors fail.
+  console.log("gsc_sitemap_green=pending (submitted; Google has not downloaded it yet)");
+  console.log("::warning::Sitemap submitted, but Search Console still reports it as pending.");
 }
 
 function authHeaders(token) {
