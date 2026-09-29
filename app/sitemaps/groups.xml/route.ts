@@ -1,6 +1,6 @@
 import { isTursoConfigured } from "../../../lib/db";
 import { GROUP_DATASETS, groupSlug } from "../../../lib/nutrition-group";
-import { loadGroups } from "../../../lib/nutrition-group-data";
+import { loadPublishableGroups } from "../../../lib/nutrition-group-data";
 import { renderUrlSet, sitemapXmlResponse, type SitemapUrl } from "../../../lib/sitemap-xml";
 import { absoluteUrl } from "../../../lib/site";
 
@@ -12,7 +12,7 @@ export async function GET() {
   try {
     const urls: SitemapUrl[] = [];
     for (const dataset of GROUP_DATASETS) {
-      const groups = await loadGroups(dataset);
+      const groups = await loadPublishableGroups(dataset);
       if (!groups.length) continue;
       urls.push({ url: absoluteUrl(`/nutrition-data/${dataset}/group`), changeFrequency: "weekly", priority: 0.7 });
       for (const group of groups) {
@@ -26,7 +26,8 @@ export async function GET() {
       }
     }
     return sitemapXmlResponse(renderUrlSet(urls));
-  } catch {
+  } catch (error) {
+    console.error("groups sitemap failed", error instanceof Error ? error.message : error);
     return sitemapXmlResponse(renderUrlSet([]), { status: 503, cacheControl: "no-store" });
   }
 }
