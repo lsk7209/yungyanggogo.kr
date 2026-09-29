@@ -309,7 +309,7 @@ export async function fetchNationalNutritionItems({
     const foods = rows.map(normalizeNationalNutritionItem);
 
     if (resultCode !== "00" && resultCode !== NO_DATA_RESULT_CODE) {
-      return { ...createNationalNutritionFailureResult(selectedDataset, response.status, resultMessage || text.slice(0, 300)), failureReason: `result_${safeToken(resultCode) || "missing"}` };
+      return { ...createNationalNutritionFailureResult(selectedDataset, response.status, resultMessage || text.slice(0, 300)), failureReason: `result_${safeToken(resultCode) || `missing:${describeJsonShape(payload)}`}` };
     }
 
     return {
@@ -336,6 +336,17 @@ export async function fetchNationalNutritionItems({
       failureReason: `network_${safeToken(error instanceof Error ? error.name : "unknown") || "unknown"}`,
     };
   }
+}
+
+// Key names only (no values), e.g. "response>header>resultCode" style, for diagnosing shape drift.
+export function describeJsonShape(payload: unknown) {
+  const keysOf = (value: unknown) => value && typeof value === "object" && !Array.isArray(value) ? Object.keys(value).slice(0, 6).map(safeToken) : [];
+  const top = keysOf(payload);
+  const nested = top.slice(0, 3).map((key) => `${key}(${keysOf((payload as Record<string, unknown>)[key]).join(",")})`);
+  // Numeric status codes are safe to surface; string values never are.
+  const record = payload && typeof payload === "object" ? payload as Record<string, unknown> : {};
+  const codes = ["code", "resultCode", "status", "errorCode"].filter((key) => typeof record[key] === "number" || (typeof record[key] === "string" && /^-?\d{1,4}$/.test(record[key] as string))).map((key) => `${key}=${record[key]}`);
+  return [nested.join(";"), ...codes].filter(Boolean).join(";").slice(0, 200) || "empty";
 }
 
 function safeToken(value: string) {
