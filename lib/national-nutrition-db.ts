@@ -531,7 +531,7 @@ const RANKED_REPRESENTATIVE = `WITH ranked AS (
     WHERE dataset_slug = ? AND ${SOURCE_CODE_ONLY}
   )`;
 
-export type NutritionGroupSummary = { name: string; count: number; latestUpdatedAt: string | null };
+export type NutritionGroupSummary = { name: string; count: number; latestUpdatedAt: string | null; largeCategory: string };
 
 // Representative-food groups with at least `minimum` distinct stored records.
 export async function listNationalNutritionGroups(dataset: NationalNutritionDatasetSlug, minimum: number): Promise<NutritionGroupSummary[]> {
@@ -539,7 +539,7 @@ export async function listNationalNutritionGroups(dataset: NationalNutritionData
   await ensureNationalNutritionSchema();
   const result = await getDb().execute({
     sql: `${RANKED_REPRESENTATIVE}
-      SELECT representative_food AS name, COUNT(*) AS item_count, MAX(NULLIF(updated_at, '')) AS latest_updated_at
+      SELECT representative_food AS name, COUNT(*) AS item_count, MAX(NULLIF(updated_at, '')) AS latest_updated_at, MAX(large_category) AS large_category
       FROM ranked
       WHERE row_rank = 1 AND representative_food <> ''
       GROUP BY representative_food
@@ -551,6 +551,7 @@ export async function listNationalNutritionGroups(dataset: NationalNutritionData
     name: String(row.name),
     count: Number(row.item_count),
     latestUpdatedAt: row.latest_updated_at ? String(row.latest_updated_at) : null,
+    largeCategory: row.large_category ? String(row.large_category) : "",
   }));
 }
 

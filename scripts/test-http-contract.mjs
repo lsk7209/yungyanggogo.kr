@@ -46,6 +46,7 @@ await db.batch([
   // 5 records but only 3 share a basis (3 g + 2 ml): page exists, not indexable/listed.
   ...["MIX-1", "MIX-2", "MIX-3"].map((c) => insert("food", c, `혼합군 ${c}`, { rep: "혼합군", serving: "100g" })),
   ...["MIX-4", "MIX-5"].map((c) => insert("food", c, `혼합군 ${c}`, { rep: "혼합군", serving: "200ml" })),
+  ...["SUB-1", "SUB-2", "SUB-3", "SUB-4", "SUB-5"].map((c) => insert("food", c, `보조군 ${c}`, { rep: "보조군", serving: "100g" })),
 ]);
 db.close();
 
@@ -207,6 +208,9 @@ try {
   check("GROUP", !(await (await get(base, "/nutrition-data/food/group")).text()).includes("혼합군"), "non-publishable group is not listed in the index");
   check("GROUP", (await get(base, "/nutrition-data/health/group")).status === 404, "health (mg/capsule basis) has no group pages");
   check("GROUP", detail.includes("영양성분 비교표 보기"), "detail page links to its group");
+  const contextDetail = (await (await get(base, "/nutrition-data/food/HTTP-001")).text()).replace(/<!-- -->/g, "");
+  check("CONTEXT", contextDetail.includes("같은 식품군(테스트대표") && contextDetail.includes("중앙값 대비") && contextDetail.includes("비슷함"), "detail page shows group median context");
+  check("GROUP", groupPage.includes("함께 볼 식품군") && groupPage.includes("/nutrition-data/food/group/%EB%B3%B4%EC%A1%B0%EA%B5%B0"), "group page links related publishable groups");
 
   const llms = await (await get(base, "/llms.txt")).text();
   check("LLMS", /^# /.test(llms) && /^> /m.test(llms) && (llms.match(/\]\(https:\/\/yungyanggogo\.kr\//g) || []).length >= 5, "llms.txt has a summary and links");
@@ -228,8 +232,12 @@ try {
   check("T01-HTTP", !brokenHubHtml.includes("찾지 못했습니다"), "outage is never rendered as a zero-result message");
   const brokenList = await get(broken, "/nutrition-data/food");
   check("T01-HTTP", brokenList.status >= 500, `dataset list with DB outage is 5xx (got ${brokenList.status})`);
-  const brokenDetail = await get(broken, "/nutrition-data/food/HTTP-001");
+  // Never rendered before: an outage must be 5xx, not a false 404.
+  const brokenDetail = await get(broken, "/nutrition-data/food/HTTP-002");
   check("T01-HTTP", brokenDetail.status >= 500, `detail with DB outage is 5xx, not 404 (got ${brokenDetail.status})`);
+  // Rendered earlier: ISR keeps serving the last good page during the outage.
+  const staleDetail = await get(broken, "/nutrition-data/food/HTTP-001");
+  check("T01-HTTP", staleDetail.status === 200 && (await staleDetail.text()).includes("HTTP 테스트식품 01"), "previously rendered detail stays available during a DB outage"); 
 
   console.log(`http contract: ${assertions} assertions passed against next start (${locs.length} sitemap URLs); local file DB only`);
 } finally {
