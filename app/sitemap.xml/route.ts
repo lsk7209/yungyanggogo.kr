@@ -12,6 +12,7 @@ export async function GET() {
   const sitemapUrls = [absoluteUrl("/sitemaps/core.xml")];
 
   if (isTursoConfigured) {
+    sitemapUrls.push(absoluteUrl("/sitemaps/groups.xml"));
     try {
       const counts = await Promise.all(
         NATIONAL_NUTRITION_DATASETS.map(async (dataset) => ({

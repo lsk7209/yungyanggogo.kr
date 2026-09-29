@@ -17,6 +17,7 @@ import { NutritionCountSummary } from "../../../components/NutritionCountSummary
 import { getNutritionPagination } from "../../../lib/nutrition-count";
 import { buildDatasetSearchHref, parseSearchSource } from "../../../lib/comparison-selection";
 import { serializeJsonLd } from "../../../lib/json-ld";
+import { isGroupDataset } from "../../../lib/nutrition-group";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -149,6 +150,9 @@ export default async function NutritionDatasetPage({
         </p>
       </div>
 
+      {isGroupDataset(dataset) ? (
+        <p><Link href={`/nutrition-data/${dataset}/group`}>{datasetInfo.shortName} 식품군별 영양성분 비교 보기</Link></p>
+      ) : null}
       <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} source={effectiveSource} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
       {result?.ok && result.searchScope === "upstream" && result.scopeReason !== "no_db" ? (
         <div className="api-status" role="status">

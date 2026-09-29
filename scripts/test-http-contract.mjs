@@ -175,6 +175,24 @@ try {
   check("TOOL", locs.includes(`${siteUrl}/tools/label-converter`) && toolHtml.includes("basis-calculator") && !/noindex/.test(robotsMeta(toolHtml)), "label converter is indexable and in the sitemap");
   check("TOOL", detail.includes("먹는 양에 맞춰 계산하기"), "detail page includes the intake calculator");
 
+  // Food-group pages: sitemap index -> groups sitemap -> indexable 200 pages.
+  const indexXml = await (await get(base, "/sitemap.xml")).text();
+  check("GROUP", indexXml.includes("/sitemaps/groups.xml"), "sitemap index lists the groups sitemap");
+  const groupsXml = await (await get(base, "/sitemaps/groups.xml")).text();
+  const groupLocs = [...groupsXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  check("GROUP", groupLocs.some((loc) => loc.endsWith("/nutrition-data/food/group")) && groupLocs.some((loc) => loc.includes("/nutrition-data/food/group/%ED%85%8C%EC%8A%A4%ED%8A%B8")), `groups sitemap has index + group pages (${groupLocs.length})`);
+  for (const loc of groupLocs) {
+    const u = new URL(loc);
+    const response = await get(base, u.pathname);
+    const html = await response.text();
+    check("GROUP", response.status === 200 && !/noindex/.test(robotsMeta(html)) && sameUrl(canonical(html), loc), `${u.pathname} is 200, indexable, self-canonical`);
+  }
+  const groupPage = await (await get(base, "/nutrition-data/food/group/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%8C%80%ED%91%9C")).text();
+  check("GROUP", groupPage.includes("61종") && groupPage.includes("중앙값") && groupPage.includes("제품 순위가 아닙니다"), "group page shows count, stats and the no-ranking notice");
+  check("GROUP", (await get(base, "/nutrition-data/food/group/%EC%97%86%EB%8A%94%EA%B5%B0")).status === 404, "unknown group is 404");
+  check("GROUP", (await get(base, "/nutrition-data/health/group")).status === 404, "health (mg/capsule basis) has no group pages");
+  check("GROUP", detail.includes("영양성분 비교표 보기"), "detail page links to its group");
+
   // API bounds (T11).
   const apiJson = await (await get(base, "/api/nutrition-data?dataset=food&numOfRows=100000&pageNo=-4")).json();
   check("T11", apiJson.ok && apiJson.count === 50 && apiJson.searchScope === "stored", "API clamps numOfRows and reports scope");

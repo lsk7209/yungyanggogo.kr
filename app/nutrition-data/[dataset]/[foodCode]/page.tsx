@@ -20,6 +20,8 @@ import { serializeJsonLd } from "../../../../lib/json-ld";
 import { formatNutrientForDisplay } from "../../../../lib/nutrition-comparison";
 import { ComparisonNavigationLink } from "../../../../components/ComparisonNavigationLink";
 import { NutritionBasisCalculator } from "../../../../components/NutritionBasisCalculator";
+import { groupLinkFor } from "../../../../lib/nutrition-group-data";
+import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
@@ -118,6 +120,7 @@ export default async function NationalNutritionDetailPage({
   const { item, cacheSource, provenance } = detail;
   const syntheticCode = isSyntheticFoodCode(datasetSlug, item);
 
+  const groupLink = isGroupDataset(datasetSlug) ? await groupLinkFor(datasetSlug, item.representativeFood) : null;
   let relatedItems: Awaited<ReturnType<typeof readRelatedNationalNutritionItemsFromDb>> = [];
   try {
     relatedItems = await readRelatedNationalNutritionItemsFromDb({
@@ -341,6 +344,9 @@ export default async function NationalNutritionDetailPage({
       {relatedItems.length > 0 ? (
         <section className="nutrition-detail-section">
           <h2>같은 분류의 {datasetInfo.shortName} 영양성분표</h2>
+          {groupLink ? (
+            <p><Link href={groupLink.href}>{item.representativeFood} {groupLink.count}종 영양성분 비교표 보기</Link></p>
+          ) : null}
           <p>대표식품·중분류·대분류가 같은 저장 자료입니다. 추천이나 순위가 아닙니다.</p>
           <div className="related-nutrition-grid">
             {relatedItems.map((related) => (
