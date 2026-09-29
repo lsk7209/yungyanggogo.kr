@@ -41,8 +41,9 @@ export function parseNutrientValue(rawValue: string, unit: string): ParsedNutrie
     return { rawValue, numericValue: null, unit, state: "trace_or_below_limit" };
   }
 
-  const normalized = raw.replace(/,/g, "").replace(new RegExp(`\\s*${escapeRegExp(unit)}\\s*$`, "i"), "").trim();
-  if (!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(normalized)) {
+  const withoutUnit = raw.replace(new RegExp(`\\s*${escapeRegExp(unit)}\\s*$`, "i"), "").trim();
+  const normalized = stripThousandsSeparators(withoutUnit);
+  if (normalized === null || !/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(normalized)) {
     return { rawValue, numericValue: null, unit, state: "invalid" };
   }
 
@@ -60,16 +61,19 @@ export function parseNutrientValue(rawValue: string, unit: string): ParsedNutrie
 }
 
 export function parseServingBasis(servingUnit: string): ServingBasis {
-  const normalized = servingUnit.trim().replace(/,/g, "").replace(/µ/g, "μ");
-  const match = normalized.match(/^(\d+(?:\.\d+)?)\s*(g|mg|μg|ml)$/i);
-  if (!match) return { dimension: "unsupported", amount: null, canonicalUnit: "" };
+  const trimmed = servingUnit.trim().replace(/µ/g, "μ");
+  const unitMatch = trimmed.match(/^([\d,.]+)\s*(g|mg|μg|ml)$/i);
+  const amountText = unitMatch ? stripThousandsSeparators(unitMatch[1]) : null;
+  if (!unitMatch || amountText === null || !/^\d+(?:\.\d+)?$/.test(amountText)) {
+    return { dimension: "unsupported", amount: null, canonicalUnit: "" };
+  }
 
-  const amount = Number(match[1]);
+  const amount = Number(amountText);
   if (!Number.isFinite(amount) || amount <= 0) {
     return { dimension: "unsupported", amount: null, canonicalUnit: "" };
   }
 
-  const unit = match[2].toLowerCase();
+  const unit = unitMatch[2].toLowerCase();
   if (unit === "ml") return { dimension: "volume", amount, canonicalUnit: "ml" };
   if (unit === "g") return { dimension: "mass", amount, canonicalUnit: "g" };
   if (unit === "mg") return { dimension: "mass", amount: amount / 1000, canonicalUnit: "g" };
@@ -104,7 +108,7 @@ export function normalizeNutrientForComparison({
     if (parsedEnergy.numericValue == null || parsedEnergy.numericValue <= 0) {
       return { ...base, displayValue: null, refusalReason: "열량이 0·결측·이상값이어서 100kcal 환산을 할 수 없습니다." };
     }
-    return { ...base, displayValue: (parsed.numericValue * 100) / parsedEnergy.numericValue, refusalReason: "" };
+    return finiteResult(base, (parsed.numericValue * 100) / parsedEnergy.numericValue);
   }
 
   const serving = parseServingBasis(servingUnit);
@@ -113,13 +117,13 @@ export function normalizeNutrientForComparison({
     if (serving.dimension === "unsupported" || target.dimension === "unsupported" || serving.dimension !== target.dimension) {
       return { ...base, displayValue: null, refusalReason: "원자료와 같은 질량 또는 부피 단위의 목표 섭취량이 필요합니다." };
     }
-    return { ...base, displayValue: (parsed.numericValue * target.amount) / serving.amount, refusalReason: "" };
+    return finiteResult(base, (parsed.numericValue * target.amount) / serving.amount);
   }
   if (basis === "per100g") {
     if (serving.dimension !== "mass") {
       return { ...base, displayValue: null, refusalReason: "질량 기준량이 없어 100g 환산을 할 수 없습니다." };
     }
-    return { ...base, displayValue: (parsed.numericValue * 100) / serving.amount, refusalReason: "" };
+    return finiteResult(base, (parsed.numericValue * 100) / serving.amount);
   }
   if (serving.dimension !== "volume") {
     return { ...base, displayValue: null, refusalReason: "부피 기준량이 없어 100ml 환산을 할 수 없습니다." };
@@ -153,7 +157,7 @@ export function comparisonRows(items: NationalNutritionItem[], basis: Comparison
 }
 
 export function formatComparisonValue(value: NormalizedNutrientValue) {
-  if (value.displayValue == null) return "계산 불가";
+  if (value.displayValue == null || !Number.isFinite(value.displayValue)) return "계산 불가";
   const rounded = Math.round((value.displayValue + Number.EPSILON) * 100) / 100;
   return `${rounded.toLocaleString("ko-KR", { maximumFractionDigits: 2 })} ${value.unit}`;
 }
@@ -163,6 +167,35 @@ function valueStateReason(state: NutrientValueState) {
   if (state === "not_detected") return "미검출은 수치 0으로 바꾸지 않습니다.";
   if (state === "trace_or_below_limit") return "미량·검출한계 미만은 임의 수치로 바꾸지 않습니다.";
   return "원천값 형식이 올바르지 않아 계산하지 않습니다.";
+}
+
+// "1,234.5" is a grouped number; "1,2" or "12,34" is ambiguous and rejected.
+function stripThousandsSeparators(value: string): string | null {
+  if (!value.includes(",")) return value;
+  return /^[+-]?\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(value) ? value.replace(/,/g, "") : null;
+}
+
+function finiteResult(base: ParsedNutrientValue & { basis: ComparisonBasis }, value: number): NormalizedNutrientValue {
+  if (!Number.isFinite(value)) {
+    return { ...base, displayValue: null, refusalReason: "환산 결과가 유효한 숫자가 아니어서 표시하지 않습니다." };
+  }
+  return { ...base, displayValue: value, refusalReason: "" };
+}
+
+const DISPLAY_STATE_LABELS: Record<Exclude<NutrientValueState, "reported" | "reported_zero">, string> = {
+  missing: "자료 없음",
+  not_detected: "미검출",
+  trace_or_below_limit: "미량",
+  invalid: "형식 확인 필요",
+};
+
+// Display a stored/source value without inventing numbers: blanks, ND and trace
+// keep their meaning instead of "- g" or 0.
+export function formatNutrientForDisplay(rawValue: string, unit: string) {
+  const parsed = parseNutrientValue(rawValue ?? "", unit);
+  if (parsed.numericValue != null) return `${rawValue.trim().replace(new RegExp(`\\s*${escapeRegExp(unit)}\\s*$`, "i"), "")} ${unit}`;
+  if (parsed.state === "invalid") return `${rawValue.trim()} (형식 확인 필요)`;
+  return DISPLAY_STATE_LABELS[parsed.state as keyof typeof DISPLAY_STATE_LABELS];
 }
 
 function escapeRegExp(value: string) {

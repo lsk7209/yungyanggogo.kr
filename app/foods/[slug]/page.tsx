@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { foods, getFoodBySlug, getFoodUrl } from "../../../lib/foods";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
+import { serializeJsonLd } from "../../../lib/json-ld";
 
 type FoodPageProps = {
   params: Promise<{ slug: string }>;
@@ -56,7 +57,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
 
   return (
     <article className="article-shell food-detail">
-      {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
+      {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(productSchema) }} />}
       <header className="article-header">
         <p className="eyebrow">{food.isExample ? "실제 식품이 아닌 화면 예시" : food.category}</p>
         <h1>{food.name}{food.isExample ? " — 예시 데이터" : " 영양성분"}</h1>

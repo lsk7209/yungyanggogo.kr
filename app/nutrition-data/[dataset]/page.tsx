@@ -15,6 +15,8 @@ import { absoluteUrl, siteConfig } from "../../../lib/site";
 import { NutritionDatasetBrowser } from "../../../components/NutritionDatasetBrowser";
 import { NutritionCountSummary } from "../../../components/NutritionCountSummary";
 import { getNutritionPagination } from "../../../lib/nutrition-count";
+import { buildDatasetSearchHref, parseSearchSource } from "../../../lib/comparison-selection";
+import { serializeJsonLd } from "../../../lib/json-ld";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -27,6 +29,7 @@ type PageProps = {
     page?: string;
     q?: string;
     item?: string | string[];
+    source?: string;
   }>;
 };
 
@@ -59,7 +62,7 @@ export async function generateMetadata({
     alternates: {
       canonical: absoluteUrl(canonicalPath),
     },
-    robots: query || queryParams?.item ? { index: false, follow: true } : undefined,
+    robots: query || queryParams?.item || queryParams?.source ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,
@@ -85,14 +88,21 @@ export default async function NutritionDatasetPage({
     : `/nutrition-data/${dataset}`;
   const datasetInfo = getNationalNutritionDataset(dataset);
   const hasApiKey = Boolean(getNationalNutritionApiKey());
+  // Explicit, allow-listed scope. Without a source key the stored scope stays.
+  const source = hasApiKey ? parseSearchSource(queryParams?.source) : "stored";
   const result = hasApiKey || isTursoConfigured
     ? await fetchNationalNutritionItemsWithDbCacheCached({
         dataset,
         query,
         pageNo: page,
         numOfRows: 50,
+        source,
       })
     : null;
+  if (result && !result.ok) {
+    // A provider/DB failure is not an empty list; answer with a server error.
+    throw new Error("nutrition_lookup_unavailable");
+  }
   const hasPrevious = page > 1;
   const { hasNext, outOfRange } = getNutritionPagination(result, page, 50);
   if (outOfRange) {
@@ -117,13 +127,13 @@ export default async function NutritionDatasetPage({
     <section className="section blog-index">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
       />
 
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/">홈</Link>
         <span>/</span>
-        <Link href="/nutrition-data">통합영양</Link>
+        <Link href="/nutrition-data">식품 검색</Link>
         <span>/</span>
         <span>{datasetInfo.shortName}</span>
       </nav>
@@ -137,7 +147,16 @@ export default async function NutritionDatasetPage({
         </p>
       </div>
 
-      <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
+      <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} source={source} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
+      {result?.ok && result.searchScope === "upstream" && result.scopeReason !== "no_db" ? (
+        <div className="api-status" role="status">
+          <strong>{source === "upstream" ? "공식 원천 추가 검색 결과" : "공식 원천 응답 표시"}</strong>
+          <p>
+            영양고고 저장 자료와 별도인 조회 범위입니다. 건수와 페이지는 이 범위 안에서만 이어집니다.{" "}
+            {source === "upstream" ? <Link href={buildDatasetSearchHref(dataset, { query })}>저장 자료 검색으로 돌아가기</Link> : null}
+          </p>
+        </div>
+      ) : null}
       <div
         className={
           result?.ok
@@ -147,15 +166,28 @@ export default async function NutritionDatasetPage({
       >
         <strong>
           {result?.ok
-            ? `현재 ${result.count.toLocaleString("ko-KR")}개 항목 표시`
+            ? result.count > 0
+              ? `현재 ${result.count.toLocaleString("ko-KR")}개 항목 표시`
+              : query
+                ? result.searchScope === "stored"
+                  ? "현재 영양고고 저장 자료에서 일치하는 식품을 찾지 못했습니다"
+                  : "공식 원천 응답에서 일치하는 식품이 없었습니다"
+                : "아직 표시할 저장 자료가 없습니다"
             : "현재 표시할 데이터를 불러오지 못했습니다"}
         </strong>
         {result?.ok ? (
           <p>
             <NutritionCountSummary result={result} filtered={Boolean(query)} />
             <br />
-            이 목록은 상세 페이지로 연결되어 각 식품의 영양성분표, 출처, 갱신일을
-            개별 URL에서 확인할 수 있습니다.
+            {result.count > 0
+              ? "각 식품을 누르면 영양성분표, 출처, 원자료 기준일을 개별 페이지에서 확인할 수 있습니다."
+              : "제품명이 길다면 핵심 단어로 다시 검색해 주세요. 공식 원천 전체의 미등록을 의미하지는 않습니다."}
+            {result.count === 0 && query && hasApiKey && result.searchScope === "stored" ? (
+              <>
+                {" "}
+                <Link href={buildDatasetSearchHref(dataset, { query, source: "upstream" })}>공식 원천에서 추가 검색</Link>
+              </>
+            ) : null}
           </p>
         ) : (
           <p>원천 전체 건수는 응답이 복구된 뒤 표시합니다. 실패를 0건으로 해석하지 않습니다.</p>

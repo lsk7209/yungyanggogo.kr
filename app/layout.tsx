@@ -5,6 +5,7 @@ import { GAProvider } from "../components/GAProvider";
 import { absoluteUrl, siteConfig } from "../lib/site";
 import { staticInfoPages } from "../lib/static-pages";
 import "./globals.css";
+import { serializeJsonLd } from "../lib/json-ld";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -72,7 +73,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <GAProvider />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationSchema, websiteSchema]) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd([organizationSchema, websiteSchema]) }}
         />
         <header className="site-header">
           <Link className="brand" href="/">
@@ -83,12 +84,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <nav className="site-nav" aria-label="주요 메뉴">
-            <Link href="/rankings">랭킹</Link>
-            <Link href="/nutrition-data">통합영양</Link>
-            <Link href="/compare">식품비교</Link>
-            <Link href="/health-functional-foods">건기식</Link>
-            <Link href="/health-functional-food-nutrition">영양DB</Link>
-            <Link href="/blog">블로그</Link>
+            <Link href="/nutrition-data">식품 검색</Link>
+            <Link href="/compare">선택한 식품 비교</Link>
+            <Link href="/rankings">비교 기준</Link>
+            <Link href="/health-functional-foods">건기식 제품정보</Link>
+            <Link href="/health-functional-food-nutrition">건기식 영양정보</Link>
+            <Link href="/blog">성분표 읽는 법</Link>
             <Link href="/about">소개</Link>
           </nav>
         </header>

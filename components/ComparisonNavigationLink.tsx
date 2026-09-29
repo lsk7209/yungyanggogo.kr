@@ -18,7 +18,7 @@ function StatefulLink({ href, addItem, className, children }: Props) {
     return <Link className={className} href={buildComparisonHref({ refs: next.selectedRefs, basis, targetServingUnit })}>{children}</Link>;
   }
   const target = new URL(href, "https://local.invalid");
-  for (const key of ["q", "page"]) {
+  for (const key of ["q", "page", "source"]) {
     const value = params.get(key);
     if (value) target.searchParams.set(key, value);
   }

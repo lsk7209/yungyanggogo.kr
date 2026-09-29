@@ -5,6 +5,7 @@ import {
   getPublicDataServiceKey,
   PUBLIC_FOOD_API_SOURCE
 } from "../../../lib/public-food-api";
+import { normalizeNutritionSearchQuery, parseBoundedPositiveInteger } from "../../../lib/nutrition-query";
 
 export const dynamic = "force-dynamic";
 
@@ -23,9 +24,11 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const q = searchParams.get("q")?.trim();
-  const pageNo = searchParams.get("pageNo") || "1";
-  const numOfRows = searchParams.get("numOfRows") || "20";
+  // Bounded inputs: an arbitrary query string must not produce unbounded
+  // upstream page sizes or cache keys.
+  const q = normalizeNutritionSearchQuery(searchParams.get("q")) || undefined;
+  const pageNo = String(parseBoundedPositiveInteger(searchParams.get("pageNo"), 1, 1_000));
+  const numOfRows = String(parseBoundedPositiveInteger(searchParams.get("numOfRows"), 20, 50));
 
   const result = await fetchPublicFoodItems({ query: q, pageNo, numOfRows });
   if (!result.ok) {

@@ -8,6 +8,7 @@ import { ArticleBlocks } from "../../../components/ArticleBlocks";
 import { getAllPosts, getPostBySlug, getPostUrl } from "../../../lib/blog";
 import { getPostThumbnailUrl } from "../../../lib/post-thumbnail";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
+import { serializeJsonLd } from "../../../lib/json-ld";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -15,6 +16,10 @@ type BlogPostPageProps = {
 
 // generateStaticParams가 있으므로 빌드 시 정적 생성 — force-dynamic은 모순이므로 제거
 // 블로그 포스트는 파일시스템 읽기만 하여 DB 히트 없음
+// Unknown slugs get the prebuilt 404 document (full HTML body) instead of an
+// on-demand render whose not-found body is only client-rendered.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllPosts({ includeScheduled: true }).map((post) => ({
     slug: post.slug,
@@ -122,7 +127,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([articleSchema, breadcrumbSchema]),
+          __html: serializeJsonLd([articleSchema, breadcrumbSchema]),
         }}
       />
       <header className="article-header">

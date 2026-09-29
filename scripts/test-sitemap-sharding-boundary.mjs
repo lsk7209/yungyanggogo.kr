@@ -21,7 +21,8 @@ assert.match(shardRoute, /pageSize: NUTRITION_SITEMAP_PAGE_SIZE/);
 assert.match(shardRoute, /notFound\(\)/);
 assert.match(shardRoute, /dynamic = "force-dynamic"/);
 assert.match(db, /SELECT COUNT\(DISTINCT food_code\) AS total_count/);
-assert.match(db, /GROUP BY food_code[\s\S]*ORDER BY food_code ASC[\s\S]*LIMIT \? OFFSET \?/);
+// lastmod comes from the same representative row as the detail page.
+assert.match(db, /SELECT food_code, updated_at, ROW_NUMBER\(\) OVER \([\s\S]*WHERE row_rank = 1\s+ORDER BY food_code ASC\s+LIMIT \? OFFSET \?/);
 assert.match(xml, /escapeXml/);
 assert.match(xml, /<sitemapindex xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
 assert.match(robots, /sitemap: absoluteUrl\("\/sitemap\.xml"\)/);

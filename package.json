@@ -15,6 +15,8 @@
     "content:map": "node scripts/map-blog-editorial-corpus.mjs",
     "content:prioritize": "node scripts/rank-editorial-contract-risk.mjs",
     "test:canonical-boundary": "node scripts/test-canonical-metadata-boundary.mjs",
+    "test:regression": "node scripts/run-regression-tests.mjs",
+    "test:http": "node scripts/test-http-contract.mjs",
     "nutrition:sync": "node --experimental-strip-types scripts/sync-national-nutrition.mjs",
     "gsc:sitemap": "node scripts/gsc-sitemap.mjs all",
     "gsc:sitemap:check-live": "node scripts/gsc-sitemap.mjs check-live",

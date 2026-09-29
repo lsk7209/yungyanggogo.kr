@@ -2,8 +2,11 @@ import { unstable_cache } from "next/cache";
 import { getDb, isTursoConfigured } from "./db";
 import { parseNutritionTotalCount } from "./nutrition-count";
 import {
+  createNationalNutritionFailureResult,
   fetchNationalNutritionItems,
+  getNationalNutritionApiKey,
   getNationalNutritionDataset,
+  isSyntheticFoodCode,
   type NationalNutritionDatasetSlug,
   type NationalNutritionItem,
   type NationalNutritionResult,
@@ -14,12 +17,35 @@ const DEFAULT_QUERY_KEY = "__default__";
 // DDL을 매 요청마다 실행하지 않도록 초기화 완료 여부 추적 (프로세스 수명 동안 1회만 실행)
 let schemaReady = false;
 
+export type NutritionSearchSource = "stored" | "upstream";
+
 type FetchCachedNationalNutritionOptions = {
   dataset?: NationalNutritionDatasetSlug;
   query?: string;
   pageNo?: number;
   numOfRows?: number;
+  // Explicit user choice. The default keeps one navigation session inside the
+  // stored scope; it never silently changes source at an empty page or page end.
+  source?: NutritionSearchSource;
 };
+
+export type CachedNationalNutritionResult = NationalNutritionResult & {
+  cacheSource: "db" | "api" | "api_no_db";
+  // The range this result (and its count/pagination) belongs to.
+  searchScope: NutritionSearchSource;
+  // Why an upstream scope was used without an explicit request.
+  scopeReason?: "no_db" | "stored_dataset_empty" | "stored_unavailable";
+};
+
+// Single representative-row rule shared by list, detail, related and sitemap:
+// latest successful storage first, then a deterministic query_key tie-break.
+export const REPRESENTATIVE_ROW_ORDER = "synced_at DESC, query_key ASC";
+
+export { isSyntheticFoodCode };
+
+export function hasSourceFoodCode(food: Pick<NationalNutritionItem, "foodCode">) {
+  return Boolean(food.foodCode?.trim());
+}
 
 type NationalNutritionRow = {
   food_code: string;
@@ -54,6 +80,7 @@ type NationalNutritionRow = {
   source_name: string;
   created_at: string;
   updated_at: string;
+  synced_at?: string;
 };
 
 export async function fetchNationalNutritionItemsWithDbCache({
@@ -61,9 +88,8 @@ export async function fetchNationalNutritionItemsWithDbCache({
   query,
   pageNo = 1,
   numOfRows = 12,
-}: FetchCachedNationalNutritionOptions = {}): Promise<
-  NationalNutritionResult & { cacheSource: "db" | "api" | "api_no_db" }
-> {
+  source = "stored",
+}: FetchCachedNationalNutritionOptions = {}): Promise<CachedNationalNutritionResult> {
   const selectedDataset = getNationalNutritionDataset(dataset);
 
   if (!isTursoConfigured) {
@@ -73,49 +99,93 @@ export async function fetchNationalNutritionItemsWithDbCache({
       pageNo,
       numOfRows,
     });
-    return { ...result, cacheSource: "api_no_db" };
+    return { ...result, cacheSource: "api_no_db", searchScope: "upstream", scopeReason: "no_db" };
   }
 
-  await ensureNationalNutritionSchema();
+  if (source === "upstream") {
+    return fetchUpstreamScope({ dataset, query, pageNo, numOfRows });
+  }
 
-  const cached = await readNationalNutritionItemsFromDb({
-    dataset,
-    query,
-    pageNo,
-    numOfRows,
-  });
-  if (cached.foods.length > 0) {
+  let cached: Awaited<ReturnType<typeof readNationalNutritionItemsFromDb>>;
+  let datasetHasStoredRows = true;
+  try {
+    await ensureNationalNutritionSchema();
+    cached = await readNationalNutritionItemsFromDb({
+      dataset,
+      query,
+      pageNo,
+      numOfRows,
+    });
+    if (cached.foods.length === 0) {
+      datasetHasStoredRows = await hasStoredNationalNutritionRows(dataset);
+    }
+  } catch {
+    // A DB failure is not a valid zero. Only a fresh page-one search may use
+    // the source instead, and the result says so explicitly.
+    if (pageNo === 1 && getNationalNutritionApiKey()) {
+      return fetchUpstreamScope({ dataset, query, pageNo, numOfRows }, "stored_unavailable");
+    }
     return {
-      ok: true,
-      status: 200,
-      dataset: selectedDataset,
-      totalCount: cached.totalCount,
-      countScope: "stored",
-      countCheckedAt: cached.countCheckedAt,
-      latestStoredAt: cached.latestStoredAt,
-      count: cached.foods.length,
-      foods: cached.foods,
+      ...createNationalNutritionFailureResult(selectedDataset, 503, "stored_unavailable"),
       cacheSource: "db",
-      message: "",
+      searchScope: "stored",
     };
   }
 
+  if (!datasetHasStoredRows && getNationalNutritionApiKey()) {
+    // Nothing has been stored for this dataset yet (bootstrap). This is a
+    // dataset-level decision, never a page-end or search-zero fallback.
+    return fetchUpstreamScope({ dataset, query, pageNo, numOfRows }, "stored_dataset_empty");
+  }
+
+  return {
+    ok: true,
+    status: 200,
+    dataset: selectedDataset,
+    totalCount: cached.totalCount,
+    countScope: "stored",
+    countCheckedAt: cached.countCheckedAt,
+    latestStoredAt: cached.latestStoredAt,
+    count: cached.foods.length,
+    foods: cached.foods,
+    cacheSource: "db",
+    searchScope: "stored",
+    message: "",
+  };
+}
+
+async function fetchUpstreamScope(
+  { dataset = "all", query, pageNo = 1, numOfRows = 12 }: FetchCachedNationalNutritionOptions,
+  scopeReason?: CachedNationalNutritionResult["scopeReason"],
+): Promise<CachedNationalNutritionResult> {
   const result = await fetchNationalNutritionItems({
     dataset,
     query,
     pageNo,
     numOfRows,
   });
-  if (!query && result.ok && !result.fallback && result.foods.length > 0) {
-    await saveNationalNutritionItemsToDb({
-      dataset,
-      query,
-      totalCount: result.totalCount,
-      foods: result.foods,
-    });
+  if (!query && result.ok && !result.fallback && result.foods.length > 0 && scopeReason === "stored_dataset_empty") {
+    try {
+      await saveNationalNutritionItemsToDb({
+        dataset,
+        query,
+        totalCount: result.totalCount,
+        foods: result.foods,
+      });
+    } catch {
+      // A failed cache write must not turn a successful source answer into an error.
+    }
   }
 
-  return { ...result, cacheSource: "api" };
+  return { ...result, cacheSource: "api", searchScope: "upstream", ...(scopeReason ? { scopeReason } : {}) };
+}
+
+async function hasStoredNationalNutritionRows(dataset: NationalNutritionDatasetSlug) {
+  const result = await getDb().execute({
+    sql: "SELECT 1 AS present FROM national_nutrition_items WHERE dataset_slug = ? LIMIT 1",
+    args: [dataset],
+  });
+  return result.rows.length > 0;
 }
 
 export async function ensureNationalNutritionSchema() {
@@ -192,23 +262,32 @@ export async function readNationalNutritionItemsFromDb({
 
   if (query?.trim()) {
     const pattern = `%${escapeSqlLike(query.trim())}%`;
+    // Rank the whole dataset first so a search shows the same representative
+    // row as the detail page, then filter by name.
     const [countResult, rowsResult] = await Promise.all([
       db.execute({
-        sql: `SELECT COUNT(DISTINCT food_code) AS total_count, MAX(synced_at) AS latest_stored_at
-          FROM national_nutrition_items
-          WHERE dataset_slug = ? AND food_name LIKE ? ESCAPE '\\'`,
+        sql: `WITH ranked AS (
+            SELECT food_code, food_name, synced_at, ROW_NUMBER() OVER (
+              PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
+            ) AS row_rank
+            FROM national_nutrition_items
+            WHERE dataset_slug = ?
+          )
+          SELECT COUNT(DISTINCT food_code) AS total_count, MAX(synced_at) AS latest_stored_at
+          FROM ranked
+          WHERE row_rank = 1 AND food_name LIKE ? ESCAPE '\\'`,
         args: [dataset, pattern],
       }),
       db.execute({
         sql: `WITH ranked AS (
             SELECT *, ROW_NUMBER() OVER (
-              PARTITION BY food_code ORDER BY synced_at DESC, query_key ASC
+              PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
             ) AS row_rank
             FROM national_nutrition_items
-            WHERE dataset_slug = ? AND food_name LIKE ? ESCAPE '\\'
+            WHERE dataset_slug = ?
           )
           SELECT * FROM ranked
-          WHERE row_rank = 1
+          WHERE row_rank = 1 AND food_name LIKE ? ESCAPE '\\'
           ORDER BY food_name ASC, food_code ASC
           LIMIT ? OFFSET ?`,
         args: [dataset, pattern, limit, offset],
@@ -230,7 +309,7 @@ export async function readNationalNutritionItemsFromDb({
     db.execute({
       sql: `WITH ranked AS (
           SELECT *, ROW_NUMBER() OVER (
-            PARTITION BY food_code ORDER BY synced_at DESC, query_key ASC
+            PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
           ) AS row_rank
           FROM national_nutrition_items
           WHERE dataset_slug = ?
@@ -275,7 +354,7 @@ export async function readNationalNutritionItemByCodeFromDb({
   const result = await db.execute({
     sql: `SELECT * FROM national_nutrition_items
       WHERE dataset_slug = ? AND food_code = ?
-      ORDER BY synced_at DESC
+      ORDER BY ${REPRESENTATIVE_ROW_ORDER}
       LIMIT 1`,
     args: [dataset, foodCode],
   });
@@ -286,34 +365,82 @@ export async function readNationalNutritionItemByCodeFromDb({
     : null;
 }
 
+export type RelatedNutritionRelation = "representative_food" | "middle_category" | "large_category";
+export type RelatedNationalNutritionItem = NationalNutritionItem & { relation: RelatedNutritionRelation };
+
+export const RELATED_RELATION_LABELS: Record<RelatedNutritionRelation, string> = {
+  representative_food: "같은 대표식품",
+  middle_category: "같은 중분류",
+  large_category: "같은 대분류",
+};
+
 export async function readRelatedNationalNutritionItemsFromDb({
   dataset,
-  foodCode,
+  item,
   limit = 6,
 }: {
   dataset: NationalNutritionDatasetSlug;
-  foodCode: string;
+  item: Pick<NationalNutritionItem, "foodCode" | "representativeFood" | "middleCategory" | "largeCategory">;
   limit?: number;
-}) {
+}): Promise<RelatedNationalNutritionItem[]> {
   if (!isTursoConfigured) {
-    return [] as NationalNutritionItem[];
+    return [];
   }
+  const representative = item.representativeFood.trim();
+  const middle = item.middleCategory.trim();
+  const large = item.largeCategory.trim();
+  // Without a verifiable shared category there is no "related" claim to make.
+  if (!representative && !middle && !large) return [];
 
   await ensureNationalNutritionSchema();
 
   const db = getDb();
   const result = await db.execute({
-    sql: `SELECT * FROM national_nutrition_items
-      WHERE dataset_slug = ? AND food_code <> ?
-      ORDER BY synced_at DESC, food_name ASC
+    sql: `WITH ranked AS (
+        SELECT *, ROW_NUMBER() OVER (
+          PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
+        ) AS row_rank
+        FROM national_nutrition_items
+        WHERE dataset_slug = ?
+      ), scored AS (
+        SELECT *, CASE
+          WHEN ? <> '' AND representative_food = ? THEN 3
+          WHEN ? <> '' AND middle_category = ? THEN 2
+          WHEN ? <> '' AND large_category = ? THEN 1
+          ELSE 0 END AS relation_rank
+        FROM ranked
+        WHERE row_rank = 1 AND food_code <> ?
+      )
+      SELECT * FROM scored
+      WHERE relation_rank > 0
+      ORDER BY relation_rank DESC, food_name ASC, food_code ASC
       LIMIT ?`,
-    args: [dataset, foodCode, Math.max(1, Math.floor(limit))],
+    args: [dataset, representative, representative, middle, middle, large, large, item.foodCode, Math.max(1, Math.floor(limit))],
   });
 
-  return result.rows.map((row) =>
-    mapNationalNutritionRow(row as unknown as NationalNutritionRow),
-  );
+  return result.rows.map((row) => {
+    const rank = Number((row as unknown as { relation_rank: number }).relation_rank);
+    return {
+      ...mapNationalNutritionRow(row as unknown as NationalNutritionRow),
+      relation: rank === 3 ? "representative_food" : rank === 2 ? "middle_category" : "large_category",
+    };
+  });
 }
+
+export type NutritionDataProvenance = {
+  source: "stored" | "upstream";
+  sourceUpdatedAt: string | null; // 원자료 기준일 (source record date)
+  storedAt: string | null; // when this row was stored by the site
+  checkedAt: string | null; // when this server observed the source response
+};
+
+export type NationalNutritionDetailResult =
+  | { kind: "found"; item: NationalNutritionItem; cacheSource: "db" | "api" | "api_no_db"; provenance: NutritionDataProvenance }
+  // Stored rows were searched without error, but the source could not be asked.
+  | { kind: "not_in_stored_scope"; checkedAt: string }
+  // The source answered successfully and the code did not match.
+  | { kind: "not_found"; source: "upstream"; checkedAt: string }
+  | { kind: "temporarily_unavailable"; reasonCode: string; status: number; retryable: boolean };
 
 export async function fetchNationalNutritionItemDetail({
   dataset,
@@ -321,16 +448,35 @@ export async function fetchNationalNutritionItemDetail({
 }: {
   dataset: NationalNutritionDatasetSlug;
   foodCode: string;
-}) {
-  const cached = await readNationalNutritionItemByCodeFromDb({
-    dataset,
-    foodCode,
-  });
-  if (cached) {
-    return {
-      item: cached,
-      cacheSource: "db" as const,
-    };
+}): Promise<NationalNutritionDetailResult> {
+  let storedError = false;
+  try {
+    const cached = await readNationalNutritionItemByCodeFromDb({
+      dataset,
+      foodCode,
+    });
+    if (cached) {
+      return {
+        kind: "found",
+        item: cached,
+        cacheSource: "db",
+        provenance: {
+          source: "stored",
+          sourceUpdatedAt: cached.updatedAt || null,
+          storedAt: cached.storedAt || null,
+          checkedAt: null,
+        },
+      };
+    }
+  } catch {
+    storedError = true;
+  }
+
+  if (!getNationalNutritionApiKey()) {
+    if (storedError || !isTursoConfigured) {
+      return { kind: "temporarily_unavailable", reasonCode: storedError ? "stored_unavailable" : "no_provider", status: 503, retryable: storedError };
+    }
+    return { kind: "not_in_stored_scope", checkedAt: new Date().toISOString() };
   }
 
   const result = await fetchNationalNutritionItems({
@@ -338,19 +484,40 @@ export async function fetchNationalNutritionItemDetail({
     foodCode,
     numOfRows: 1,
   });
-  const item = result.foods.find((food) => food.foodCode === foodCode) || null;
+  if (!result.ok) {
+    return {
+      kind: "temporarily_unavailable",
+      reasonCode: result.resultCode ? `upstream_${result.resultCode}` : `upstream_http_${result.status}`,
+      status: result.status,
+      retryable: true,
+    };
+  }
+  const item = result.foods.find((food) => food.foodCode === foodCode);
+  if (!item) {
+    return { kind: "not_found", source: "upstream", checkedAt: result.countCheckedAt || new Date().toISOString() };
+  }
 
   return {
+    kind: "found",
     item,
-    cacheSource: isTursoConfigured ? ("api" as const) : ("api_no_db" as const),
+    cacheSource: isTursoConfigured ? "api" : "api_no_db",
+    provenance: {
+      source: "upstream",
+      sourceUpdatedAt: item.updatedAt || null,
+      storedAt: null,
+      checkedAt: result.countCheckedAt,
+    },
   };
 }
+
+// Excludes legacy rows whose identifier was synthesized from the name.
+const SOURCE_CODE_ONLY = "food_code <> dataset_slug || '-' || food_name";
 
 export async function countNationalNutritionSitemapItems(
   dataset: NationalNutritionDatasetSlug,
 ) {
   const result = await getDb().execute({
-    sql: "SELECT COUNT(DISTINCT food_code) AS total_count FROM national_nutrition_items WHERE dataset_slug = ?",
+    sql: `SELECT COUNT(DISTINCT food_code) AS total_count FROM national_nutrition_items WHERE dataset_slug = ? AND ${SOURCE_CODE_ONLY}`,
     args: [dataset],
   });
   const count = parseNutritionTotalCount(result.rows[0]?.total_count);
@@ -369,11 +536,18 @@ export async function readNationalNutritionSitemapItems({
 }) {
   const safePage = Math.max(0, Math.floor(page));
   const safePageSize = Math.min(10_000, Math.max(1, Math.floor(pageSize)));
+  // lastmod comes from the same representative row the detail page renders.
   const result = await getDb().execute({
-    sql: `SELECT food_code, MAX(NULLIF(updated_at, '')) AS updated_at
-      FROM national_nutrition_items
-      WHERE dataset_slug = ?
-      GROUP BY food_code
+    sql: `WITH ranked AS (
+        SELECT food_code, updated_at, ROW_NUMBER() OVER (
+          PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
+        ) AS row_rank
+        FROM national_nutrition_items
+        WHERE dataset_slug = ? AND ${SOURCE_CODE_ONLY}
+      )
+      SELECT food_code, NULLIF(updated_at, '') AS updated_at
+      FROM ranked
+      WHERE row_rank = 1
       ORDER BY food_code ASC
       LIMIT ? OFFSET ?`,
     args: [dataset, safePageSize, safePage * safePageSize],
@@ -388,7 +562,7 @@ export async function saveNationalNutritionItemsToDb({
   dataset,
   query,
   totalCount,
-  foods,
+  foods: inputFoods,
 }: {
   dataset: NationalNutritionDatasetSlug;
   query?: string;
@@ -397,6 +571,8 @@ export async function saveNationalNutritionItemsToDb({
 }) {
   const db = getDb();
   const queryKey = normalizeQueryKey(query);
+  // Rows without a source food code are not stored under an invented identifier.
+  const foods = inputFoods.filter(hasSourceFoodCode);
 
   await db.batch([
     ...(totalCount === null ? [] : [{
@@ -451,7 +627,7 @@ export async function saveNationalNutritionItemsToDb({
       args: [
         dataset,
         queryKey,
-        food.foodCode || `${dataset}-${food.name}`,
+        food.foodCode,
         food.name,
         food.typeName,
         food.originName,
@@ -524,6 +700,7 @@ function mapNationalNutritionRow(
     sourceName: row.source_name,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    storedAt: normalizeStoredTimestamp(row.synced_at) ?? undefined,
   };
 }
 
@@ -545,10 +722,39 @@ export function escapeSqlLike(value: string) {
 }
 
 // force-dynamic 페이지(searchParams 사용)에서도 동일 쿼리는 Next.js 데이터 캐시로 서빙
-// 봇이 같은 URL을 반복 방문해도 1시간 내 DB 재조회 없음
-export const fetchNationalNutritionItemsWithDbCacheCached = unstable_cache(
-  (options: FetchCachedNationalNutritionOptions) =>
-    fetchNationalNutritionItemsWithDbCache(options),
-  ["national-nutrition-db-v3-count-provenance"],
+// 봇이 같은 URL을 반복 방문해도 1시간 내 DB 재조회 없음.
+// 실패 결과는 캐시하지 않는다: 캐시 안에서 throw하면 unstable_cache가 저장하지 않으므로
+// 일시 장애가 1시간 동안 고정되지 않는다.
+class UncachedNutritionFailure extends Error {
+  readonly result: CachedNationalNutritionResult;
+  constructor(result: CachedNationalNutritionResult) {
+    super("uncached nutrition failure");
+    this.result = result;
+  }
+}
+
+const cachedSuccessfulNationalNutritionItems = unstable_cache(
+  async (options: FetchCachedNationalNutritionOptions) => {
+    const result = await fetchNationalNutritionItemsWithDbCache(options);
+    if (!result.ok) throw new UncachedNutritionFailure(result);
+    return result;
+  },
+  ["national-nutrition-db-v4-search-scope"],
   { revalidate: 3600, tags: ["national-nutrition"] },
 );
+
+export async function fetchNationalNutritionItemsWithDbCacheCached(
+  options: FetchCachedNationalNutritionOptions,
+): Promise<CachedNationalNutritionResult> {
+  try {
+    return await cachedSuccessfulNationalNutritionItems(options);
+  } catch (error) {
+    if (error instanceof UncachedNutritionFailure) return error.result;
+    // Isolate any unexpected failure to this dataset instead of the whole page.
+    return {
+      ...createNationalNutritionFailureResult(getNationalNutritionDataset(options.dataset), 503, "lookup_failed"),
+      cacheSource: isTursoConfigured ? "db" : "api_no_db",
+      searchScope: options.source === "upstream" || !isTursoConfigured ? "upstream" : "stored",
+    };
+  }
+}

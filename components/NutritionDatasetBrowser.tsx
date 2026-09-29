@@ -5,16 +5,18 @@ import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { buildComparisonHref, buildComparisonItemValue, normalizeComparisonAmount, parseComparisonBasis, parseComparisonSelection, toggleComparisonSelection, withComparisonState } from "../lib/comparison-selection";
 import { NATIONAL_NUTRITION_DATASETS, type NationalNutritionDataset, type NationalNutritionItem } from "../lib/national-nutrition-api";
+import { NutritionFoodCard } from "./NutritionFoodCard";
 
-type Props = { datasetInfo: NationalNutritionDataset; foods: NationalNutritionItem[]; query: string; page: number; hasPrevious: boolean; hasNext: boolean; children: ReactNode };
+type Props = { datasetInfo: NationalNutritionDataset; foods: NationalNutritionItem[]; query: string; source?: "stored" | "upstream"; page: number; hasPrevious: boolean; hasNext: boolean; children: ReactNode };
 
-export function NutritionDatasetBrowser({ datasetInfo, foods, query, page, hasPrevious, hasNext, children }: Props) {
+export function NutritionDatasetBrowser({ datasetInfo, foods, query, source = "stored", page, hasPrevious, hasNext, children }: Props) {
   const dataset = datasetInfo.slug;
   const params = useSearchParams();
   const selection = parseComparisonSelection(params.getAll("item"));
   const selectedRefs = selection.selectedRefs;
   const state = { refs: selectedRefs, basis: parseComparisonBasis(params.get("basis") ?? undefined), targetServingUnit: normalizeComparisonAmount(params.get("amount") ?? undefined) };
-  const pageQuery = query ? `&q=${encodeURIComponent(query)}` : "";
+  // Pagination stays inside the same q and source scope.
+  const pageQuery = `${query ? `&q=${encodeURIComponent(query)}` : ""}${source === "upstream" ? "&source=upstream" : ""}`;
   const hiddenSelection = <>
     {selectedRefs.map((ref) => <input key={ref.value} type="hidden" name="item" value={ref.value} />)}
     <input type="hidden" name="basis" value={state.basis} />
@@ -64,68 +66,33 @@ export function NutritionDatasetBrowser({ datasetInfo, foods, query, page, hasPr
             <button type="submit">선택한 식품 비교</button>
           </div>
           <div className="nutrition-dataset-grid">
-          {foods.map((food) => (
-          <article
-            key={food.foodCode || food.name}
-            className="health-nutrition-card"
-          >
-            <div className="health-food-card__head">
-              <label className="comparison-check">
-                <input
-                  type="checkbox"
-                  name="item"
-                  value={buildComparisonItemValue(dataset, food.foodCode)}
-                  checked={selectedRefs.some((ref) => ref.value === buildComparisonItemValue(dataset, food.foodCode))}
-                  onChange={(event) => toggle(buildComparisonItemValue(dataset, food.foodCode), event.target.checked)}
-                  aria-label={`${food.name || food.foodCode} 비교 선택`}
-                  disabled={selectedRefs.length >= 3 && !selectedRefs.some((ref) => ref.value === buildComparisonItemValue(dataset, food.foodCode))}
-                />
-                <span>비교 선택</span>
-              </label>
-              <span>{food.typeName || datasetInfo.shortName}</span>
-              <strong>
-                <Link
-                  href={withComparisonState(`/nutrition-data/${dataset}/${encodeURIComponent(food.foodCode)}?page=${page}${pageQuery}`, state)}
-                >
-                  {food.name || "식품명 미기재"}
-                </Link>
-              </strong>
-              <small>
-                {food.maker ||
-                  food.restaurant ||
-                  food.importer ||
-                  food.sourceName ||
-                  "제공처 미기재"}
-              </small>
-            </div>
-            <dl>
-              <div>
-                <dt>기준량</dt>
-                <dd>{food.servingUnit || "-"}</dd>
-              </div>
-              <div>
-                <dt>열량</dt>
-                <dd>{food.energy || "-"} kcal</dd>
-              </div>
-              <div>
-                <dt>단백질</dt>
-                <dd>{food.protein || "-"} g</dd>
-              </div>
-              <div>
-                <dt>당류</dt>
-                <dd>{food.sugars || "-"} g</dd>
-              </div>
-              <div>
-                <dt>나트륨</dt>
-                <dd>{food.sodium || "-"} mg</dd>
-              </div>
-              <div>
-                <dt>갱신일</dt>
-                <dd>{food.updatedAt || "-"}</dd>
-              </div>
-            </dl>
-          </article>
-          ))}
+          {foods.map((food) => {
+            const value = buildComparisonItemValue(dataset, food.foodCode);
+            const checked = selectedRefs.some((ref) => ref.value === value);
+            return (
+              <NutritionFoodCard
+                key={food.foodCode || food.name}
+                food={food}
+                dataset={dataset}
+                datasetShortName={datasetInfo.shortName}
+                href={food.foodCode ? withComparisonState(`/nutrition-data/${dataset}/${encodeURIComponent(food.foodCode)}?page=${page}${pageQuery}`, state) : undefined}
+                control={food.foodCode ? (
+                  <label className="comparison-check">
+                    <input
+                      type="checkbox"
+                      name="item"
+                      value={value}
+                      checked={checked}
+                      onChange={(event) => toggle(value, event.target.checked)}
+                      aria-label={`${food.name || food.foodCode} 비교 선택`}
+                      disabled={selectedRefs.length >= 3 && !checked}
+                    />
+                    <span>비교 선택</span>
+                  </label>
+                ) : null}
+              />
+            );
+          })}
           </div>
         </form>
       ) : null}
@@ -162,7 +129,7 @@ export function NutritionDatasetBrowser({ datasetInfo, foods, query, page, hasPr
             (item) => item.slug !== dataset,
           ).map((item) => (
             <li key={item.slug}>
-              <Link href={withComparisonState(`/nutrition-data/${item.slug}`, state)}>
+              <Link href={withComparisonState(query ? `/nutrition-data/${item.slug}?q=${encodeURIComponent(query)}` : `/nutrition-data/${item.slug}`, state)}>
                 {item.shortName} 영양성분표 데이터
               </Link>
               <span>{item.description}</span>

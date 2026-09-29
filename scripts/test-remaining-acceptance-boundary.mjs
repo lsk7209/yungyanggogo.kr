@@ -23,7 +23,8 @@ assert.match(nutritionIndex, /successfulResults = results\.filter\(\(result\) =>
 assert.match(nutritionIndex, /NutritionCountSummary result=\{result\} filtered=\{Boolean\(query\)\}/);
 
 assert.doesNotMatch(homePage, /const categories =/);
-assert.match(homePage, /카테고리별 결과를 가장하지 않습니다/);
+assert.match(homePage, /분류별 필터는 아직 제공하지 않습니다/);
+assert.match(homePage, /action="\/nutrition-data"/);
 assert.doesNotMatch(healthPage, /name="q"/);
 assert.match(healthPage, /전체 품목 검색은 준비 중입니다/);
 assert.match(healthPage, /첫 12개 확인 범위/);
@@ -31,4 +32,4 @@ assert.match(healthPage, /첫 12개 확인 범위/);
 assert.match(blogModule, /humanReview\?: "approved" \| "pending"/);
 assert.match(blogModule, /post\.humanReview === "approved" \? post\.noindex : true/);
 
-console.log("remaining acceptance boundary: 18 assertions passed");
+console.log("remaining acceptance boundary: 19 assertions passed");
