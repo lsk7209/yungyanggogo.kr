@@ -46,3 +46,12 @@ for (const name of ["national", "health-functional-nutrition"]) {
 }
 
 console.log("nutrition parser fixtures: 12 assertions passed");
+
+// Provider currently returns the unwrapped shape `{ header, body }`.
+{
+  const unwrapped = extractStandardDataGoKrItems({ header: { resultCode: "22", resultMsg: "LIMITED" }, body: {} });
+  assert.equal(unwrapped.resultCode, "22", "unwrapped header is read");
+  const unwrappedRows = extractStandardDataGoKrItems({ header: { resultCode: "00" }, body: { totalCount: 2, items: [{ foodCd: "U1" }, { foodCd: "U2" }] } });
+  assert.deepEqual(unwrappedRows.rows.map((row) => row.foodCd), ["U1", "U2"], "unwrapped body rows are read");
+  console.log("nutrition parser unwrapped shape: 2 assertions passed");
+}

@@ -5,7 +5,12 @@ export function extractStandardDataGoKrItems<T extends RawItem>(payload: unknown
     return emptyStandardDataGoKrExtract<T>();
   }
 
-  const response = (payload as { response?: unknown }).response;
+  // Accept both `{ response: { header, body } }` and the unwrapped `{ header, body }`
+  // shape that the provider currently returns.
+  const wrapped = (payload as { response?: unknown }).response;
+  const response = wrapped && typeof wrapped === "object"
+    ? wrapped
+    : "header" in (payload as object) || "body" in (payload as object) ? payload : null;
   if (!response || typeof response !== "object") {
     return emptyStandardDataGoKrExtract<T>();
   }
