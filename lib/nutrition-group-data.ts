@@ -5,7 +5,7 @@ import {
   readNationalNutritionGroupBases,
   readNationalNutritionGroupItems,
 } from "./national-nutrition-db";
-import { analyzeGroup, comparableCountsByGroup, groupSlug, MIN_GROUP_SIZE, type GroupDataset } from "./nutrition-group";
+import { analyzeGroup, comparableCountsByGroup, groupDuplicateKey, groupSlug, MIN_GROUP_SIZE, type GroupDataset } from "./nutrition-group";
 import type { NationalNutritionItem } from "./national-nutrition-api";
 
 // One aggregate query per render resolves slug -> group name and enforces the
@@ -49,7 +49,9 @@ export async function groupContextFor(dataset: GroupDataset, item: NationalNutri
     const items = await loadGroupItems(dataset, name);
     const analysis = analyzeGroup(items);
     if (analysis.comparable.length < MIN_GROUP_SIZE) return null;
-    const own = analysis.comparable.find((row) => row.item.foodCode === item.foodCode);
+    // A duplicate record is represented by the identical row kept in the table.
+    const own = analysis.comparable.find((row) => row.item.foodCode === item.foodCode)
+      ?? analysis.comparable.find((row) => groupDuplicateKey(row.item) === groupDuplicateKey(item));
     if (!own) return null;
     return {
       href: `/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(name))}`,

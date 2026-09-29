@@ -330,6 +330,15 @@ try {
   check("GROUP", listed?.count === 5 && groupItems.length === 5, "same code stored twice counts once (representative row)");
   const bases = await cache.readNationalNutritionGroupBases("process");
   check("GROUP", bases.filter((b) => b.name === "군대표").length === 5 && group.comparableCountsByGroup(bases).get("군대표") === 5, "group bases query returns one representative row per code");
+  // Same visible record registered under two codes counts once.
+  const twin = (code, name, energy) => normalize(raw(code, name, { nutConSrtrQua: "100g", enerc: energy, nat: "10", foodLv4Nm: "중복군" }));
+  const dupAnalysis = group.analyzeGroup([twin("D1", "같은식품", "100"), twin("D2", "같은식품", "100"), twin("D3", "다른식품", "300")]);
+  check("GROUP", dupAnalysis.comparable.length === 2 && dupAnalysis.duplicates.map((i) => i.foodCode).join() === "D2" && dupAnalysis.stats.find((s) => s.key === "energy").median === 200, "identical records under two codes count once in the table and median");
+  check("GROUP", group.analyzeGroup([twin("D1", "같은식품", "100"), twin("D4", "같은식품", "120")]).duplicates.length === 0, "same name with different values is not a duplicate");
+  check("GROUP", group.comparableCountsByGroup([{ name: "a", servingUnit: "100g", duplicateKey: "k" }, { name: "a", servingUnit: "100g", duplicateKey: "k" }, { name: "b", servingUnit: "100g", duplicateKey: "k" }]).get("a") === 1, "publish gate counts duplicate keys once per group");
+  await cache.saveNationalNutritionItemsToDb({ dataset: "process", totalCount: null, foods: [twin("D1", "같은식품", "100"), twin("D2", "같은식품", "100"), twin("D3", "식품3", "100"), twin("D5", "식품5", "100"), twin("D6", "식품6", "100")] });
+  const dupBases = (await cache.readNationalNutritionGroupBases("process")).filter((b) => b.name === "중복군");
+  check("GROUP", dupBases.length === 5 && group.comparableCountsByGroup(dupBases).get("중복군") === 4, "stored group of 5 codes with one duplicate is below the publish gate");
 
   // Detail page context within its group (median / range, not a rank).
   const groupData = await import("../lib/nutrition-group-data.ts");

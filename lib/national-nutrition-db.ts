@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { getDb, isTursoConfigured } from "./db";
 import { parseNutritionTotalCount } from "./nutrition-count";
+import { groupDuplicateKey } from "./nutrition-group";
 import {
   createNationalNutritionFailureResult,
   fetchNationalNutritionItems,
@@ -572,15 +573,24 @@ export async function readNationalNutritionGroupItems(dataset: NationalNutrition
 // Representative-food name and serving basis of every representative row, for
 // computing which groups have enough same-dimension records to publish.
 export async function readNationalNutritionGroupBases(dataset: NationalNutritionDatasetSlug) {
-  if (!isTursoConfigured) return [] as { name: string; servingUnit: string }[];
+  if (!isTursoConfigured) return [] as { name: string; servingUnit: string; duplicateKey: string }[];
   await ensureNationalNutritionSchema();
   const result = await getDb().execute({
     sql: `${RANKED_REPRESENTATIVE}
-      SELECT representative_food AS name, serving_unit FROM ranked
+      SELECT representative_food AS name, serving_unit, food_name, maker, restaurant, importer, energy, protein, fat, carbs, sugars, sodium FROM ranked
       WHERE row_rank = 1 AND representative_food <> ''`,
     args: [dataset],
   });
-  return result.rows.map((row) => ({ name: String(row.name), servingUnit: String(row.serving_unit ?? "") }));
+  const text = (value: unknown) => String(value ?? "");
+  return result.rows.map((row) => ({
+    name: text(row.name),
+    servingUnit: text(row.serving_unit),
+    duplicateKey: groupDuplicateKey({
+      name: text(row.food_name), maker: text(row.maker), restaurant: text(row.restaurant), importer: text(row.importer),
+      servingUnit: text(row.serving_unit), energy: text(row.energy), protein: text(row.protein), fat: text(row.fat),
+      carbs: text(row.carbs), sugars: text(row.sugars), sodium: text(row.sodium),
+    }),
+  }));
 }
 
 export async function countNationalNutritionGroupItems(dataset: NationalNutritionDatasetSlug, name: string) {
