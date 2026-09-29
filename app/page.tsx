@@ -114,7 +114,8 @@ export default function HomePage() {
           <h2>식품명으로 공식 데이터 찾기</h2>
           <p>분류별 필터는 아직 제공하지 않습니다. 식품명이나 제품명의 핵심 단어로 검색해 주세요.</p>
         </div>
-        <Link className="button" href="/nutrition-data">식품 검색으로 이동</Link>
+        <Link className="button" href="/nutrition-data">식품 검색으로 이동</Link>{" "}
+        <Link className="button button--light" href="/tools/label-converter">포장지 영양성분표 100g 환산하기</Link>
       </section>
 
       <section className="section data-preview">

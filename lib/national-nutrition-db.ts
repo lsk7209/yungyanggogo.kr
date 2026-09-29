@@ -127,6 +127,7 @@ export async function fetchNationalNutritionItemsWithDbCache({
     }
     return {
       ...createNationalNutritionFailureResult(selectedDataset, 503, "stored_unavailable"),
+      failureReason: "stored_unavailable",
       cacheSource: "db",
       searchScope: "stored",
     };
@@ -496,7 +497,7 @@ export async function fetchNationalNutritionItemDetail({
   if (!result.ok) {
     return {
       kind: "temporarily_unavailable",
-      reasonCode: result.resultCode ? `upstream_${result.resultCode}` : `upstream_http_${result.status}`,
+      reasonCode: `upstream_${result.failureReason || `http_${result.status}`}`,
       status: result.status,
       retryable: true,
     };

@@ -111,9 +111,12 @@ try {
     check("R51", sameUrl(canonical(html), loc), `${pathname} canonical is itself (got ${canonical(html)})`);
   }
   // R39: static lastmod values are not stamped with the build/request date.
-  const today = new Date().toISOString().slice(0, 10);
   const staticLastmods = [...coreXml.matchAll(/<url><loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].filter((m) => !m[1].includes("/blog/"));
-  check("R39", staticLastmods.length > 0 && staticLastmods.every((m) => !m[2].startsWith(today)), "non-post lastmod is not today's date");
+  // Each non-post lastmod must be a fixed content date written in the route source,
+  // not a value generated at build/request time.
+  const coreRouteSource = readFileSync(path.join(root, "app", "sitemaps", "core.xml", "route.ts"), "utf8");
+  check("R39", staticLastmods.length > 0 && staticLastmods.every((m) => coreRouteSource.includes(`lastModified: "${m[2].slice(0, 10)}"`)), "non-post lastmod values are fixed content dates");
+  check("R39", !/new Date\(\)/.test(coreRouteSource), "core sitemap never stamps the current date");
 
   // R35: pending / scheduled posts are not reachable and not in the sitemap.
   const blogDir = path.join(root, "content", "blog");
@@ -166,6 +169,11 @@ try {
   check("R29", compareHttp.includes('value="250"') && /<option value="ml" selected="">/.test(compareHttp), "legacy amount URL fills number + unit");
   const compareSplit = await (await get(base, "/compare?item=food%7CHTTP-001&item=process%7CHTTP-P1&basis=perIntake&amountValue=50&amountUnit=g")).text();
   check("R28", compareSplit.includes("50g당"), "no-JS form fields (amountValue/amountUnit) are honoured by the server");
+
+  // Tool page: indexable, in sitemap, calculator present in server HTML.
+  const toolHtml = await (await get(base, "/tools/label-converter")).text();
+  check("TOOL", locs.includes(`${siteUrl}/tools/label-converter`) && toolHtml.includes("basis-calculator") && !/noindex/.test(robotsMeta(toolHtml)), "label converter is indexable and in the sitemap");
+  check("TOOL", detail.includes("먹는 양에 맞춰 계산하기"), "detail page includes the intake calculator");
 
   // API bounds (T11).
   const apiJson = await (await get(base, "/api/nutrition-data?dataset=food&numOfRows=100000&pageNo=-4")).json();

@@ -281,6 +281,31 @@ try {
   check("T09-LD", serializeJsonLd({ a: "<!--&\u2028" }) === '{"a":"\\u003c!--\\u0026\\u2028"}', "HTML-significant characters escaped");
   check("T09-Schema", JSON.parse(ldBlock).publisher && !JSON.parse(ldBlock).creator, "site is publisher of the view, not creator of the source data");
 
+  // ---------- diagnostics: safe failure reasons ----------
+  upstream = () => new Response("<OpenAPI_ServiceResponse><cmmMsgHeader><errMsg>SERVICE ERROR</errMsg><returnAuthMsg>SERVICE_KEY_IS_NOT_REGISTERED_ERROR</returnAuthMsg><returnReasonCode>30</returnReasonCode></cmmMsgHeader></OpenAPI_ServiceResponse>", { status: 200 });
+  const gw = await (await nutritionApi(new Request("http://fixture.test/api/nutrition-data?dataset=food&q=x&source=upstream"))).json();
+  check("DIAG", gw.ok === false && gw.failureReason === "non_json:code30:SERVICE_KEY_IS_NOT_REGISTERED_ERROR:SERVICE_ERROR", `gateway XML error is reported as enumerated tokens (got ${gw.failureReason})`);
+  check("DIAG", !JSON.stringify(gw).includes("synthetic-followup-key"), "service key never appears in the API response");
+  upstream = () => new Response("Unauthorized", { status: 401 });
+  check("DIAG", (await (await nutritionApi(new Request("http://fixture.test/api/nutrition-data?dataset=food&q=x&source=upstream"))).json()).failureReason === "http_401:text", "HTTP status is reported");
+  upstream = () => { throw Object.assign(new Error("boom"), { name: "TypeError" }); };
+  const netDetail = await cache.fetchNationalNutritionItemDetail({ dataset: "food", foodCode: "NET-ERR" });
+  check("DIAG", netDetail.kind === "temporarily_unavailable" && netDetail.reasonCode === "upstream_network_TypeError", "network error reason reaches the detail state");
+
+  // ---------- calculator component (detail + tool) ----------
+  const { NutritionBasisCalculator } = await import("../components/NutritionBasisCalculator.tsx");
+  const { defaultLabelNutrients } = await import("../lib/label-nutrients.ts");
+  const calc = renderToStaticMarkup(createElement(NutritionBasisCalculator, {
+    servingUnit: "80g", defaultIntake: "120g",
+    nutrients: [{ key: "energy", label: "열량", unit: "kcal", raw: "200" }, { key: "sodium", label: "나트륨", unit: "mg", raw: "400" }, { key: "sugars", label: "당류", unit: "g", raw: "" }],
+  }));
+  check("CALC", calc.includes("500 mg") && calc.includes("600 mg") && calc.includes("200 mg"), "80g/400mg → 500mg per 100g, 600mg per 120g, 200mg per 100kcal");
+  check("CALC", calc.includes("100g당") && /당류<\/th><td>자료 없음<\/td>/.test(calc), "blank value stays 자료 없음, never 0");
+  const liquidCalc = renderToStaticMarkup(createElement(NutritionBasisCalculator, { servingUnit: "250ml", defaultIntake: "100g", nutrients: [{ key: "protein", label: "단백질", unit: "g", raw: "20" }] }));
+  check("CALC", liquidCalc.includes("100ml당") && liquidCalc.includes("8 g") && liquidCalc.includes("원자료와 같은 질량 또는 부피 단위"), "ml basis uses 100ml and refuses a g intake with a visible reason");
+  const tool = renderToStaticMarkup(createElement(NutritionBasisCalculator, { editable: true, servingUnit: "", nutrients: defaultLabelNutrients() }));
+  check("CALC", (tool.match(/inputMode="decimal"/g) || []).length === 9 && tool.includes("환산할 수 없습니다"), "tool renders numeric inputs and asks for a valid basis");
+
   // ---------- T11 request counts & API bounds ----------
   control.sqlLog = [];
   upstreamCalls = [];

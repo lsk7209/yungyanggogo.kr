@@ -14,6 +14,7 @@ export async function GET() {
     { url: absoluteUrl("/rankings"), lastModified: "2026-09-12", changeFrequency: "weekly", priority: 0.85 },
     { url: absoluteUrl("/nutrition-data"), lastModified: "2026-09-12", changeFrequency: "daily", priority: 0.84 },
     // /compare is intentionally absent: it is a noindex tool page.
+    { url: absoluteUrl("/tools/label-converter"), lastModified: "2026-09-29", changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/health-functional-foods"), lastModified: "2026-09-12", changeFrequency: "daily", priority: 0.82 },
     { url: absoluteUrl("/health-functional-food-nutrition"), lastModified: "2026-09-12", changeFrequency: "daily", priority: 0.82 },
     ...staticInfoPages.map((page) => ({
