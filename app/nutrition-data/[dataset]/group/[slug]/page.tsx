@@ -3,13 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getNationalNutritionDataset } from "../../../../../lib/national-nutrition-api";
 import {
+  groupSlug,
   analyzeGroup,
   formatGroupNumber,
   GROUP_NUTRIENTS,
   isGroupDataset,
   MIN_GROUP_SIZE,
 } from "../../../../../lib/nutrition-group";
-import { loadGroupItems, resolveGroup } from "../../../../../lib/nutrition-group-data";
+import { loadGroupItems, loadPublishableGroups, resolveGroup } from "../../../../../lib/nutrition-group-data";
 import { buildComparisonItemValue } from "../../../../../lib/comparison-selection";
 import { serializeJsonLd } from "../../../../../lib/json-ld";
 import { absoluteUrl, siteConfig } from "../../../../../lib/site";
@@ -59,6 +60,15 @@ export default async function NutritionGroupPage({ params }: PageProps) {
   const energy = analysis.stats.find((stat) => stat.key === "energy");
   const sodium = analysis.stats.find((stat) => stat.key === "sodium");
   const updatedDates = data.items.map((item) => item.updatedAt).filter(Boolean).sort();
+  // Related groups: same large category (source classification), largest first.
+  let related: Awaited<ReturnType<typeof loadPublishableGroups>> = [];
+  try {
+    const publishable = (await loadPublishableGroups(dataset)).filter((other) => other.name !== group.name);
+    related = group.largeCategory ? publishable.filter((other) => other.largeCategory === group.largeCategory).slice(0, 8) : [];
+    if (related.length < 3) related = [...related, ...publishable.filter((other) => !related.includes(other))].slice(0, 8);
+  } catch {
+    related = [];
+  }
 
   const schema = [
     {
@@ -173,6 +183,20 @@ export default async function NutritionGroupPage({ params }: PageProps) {
             {[...analysis.otherDimension, ...analysis.unsupportedBasis].slice(0, 30).map((item) => (
               <li key={item.foodCode}>
                 <Link href={`/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`}>{item.name}</Link> ({item.servingUnit || "기준량 자료 없음"})
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {related.length ? (
+        <section className="nutrition-detail-section">
+          <h2>{group.largeCategory && related.every((other) => other.largeCategory === group.largeCategory) ? `${group.largeCategory} 분류의 다른 식품군` : "함께 볼 식품군"}</h2>
+          <ul className="group-index">
+            {related.map((other) => (
+              <li key={other.name}>
+                <Link href={`/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(other.name))}`}>{other.name}</Link>
+                <span>{other.count}종</span>
               </li>
             ))}
           </ul>

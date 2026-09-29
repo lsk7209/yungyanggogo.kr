@@ -331,6 +331,16 @@ try {
   const bases = await cache.readNationalNutritionGroupBases("process");
   check("GROUP", bases.filter((b) => b.name === "군대표").length === 5 && group.comparableCountsByGroup(bases).get("군대표") === 5, "group bases query returns one representative row per code");
 
+  // Detail page context within its group (median / range, not a rank).
+  const groupData = await import("../lib/nutrition-group-data.ts");
+  const p1 = (await cache.fetchNationalNutritionItemDetail({ dataset: "process", foodCode: "P1" })).item;
+  const ctx = await groupData.groupContextFor("process", p1);
+  const ctxEnergy = ctx?.rows.find((row) => row.key === "energy");
+  check("CONTEXT", ctx?.name === "군대표" && ctx.count === 5 && ctxEnergy.value === 100 && ctxEnergy.median === 100 && ctxEnergy.n === 5, "detail context compares the record to its group median on the group basis");
+  check("CONTEXT", (await groupData.groupContextFor("process", { ...p1, representativeFood: "" })) === null, "no group -> no context section");
+  const listedGroups = await cache.listNationalNutritionGroups("process", 5);
+  check("CONTEXT", listedGroups.every((g) => typeof g.largeCategory === "string"), "group summaries carry the large category for related links");
+
   // Home page links to publishable food groups (ISR; section is optional on DB failure).
   const HomePage = (await import("../app/page.tsx")).default;
   const homeHtml = await render(HomePage());

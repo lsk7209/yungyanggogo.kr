@@ -20,7 +20,8 @@ import { serializeJsonLd } from "../../../../lib/json-ld";
 import { formatNutrientForDisplay } from "../../../../lib/nutrition-comparison";
 import { ComparisonNavigationLink } from "../../../../components/ComparisonNavigationLink";
 import { NutritionBasisCalculator } from "../../../../components/NutritionBasisCalculator";
-import { groupLinkFor } from "../../../../lib/nutrition-group-data";
+import { groupContextFor, groupLinkFor } from "../../../../lib/nutrition-group-data";
+import { formatGroupNumber } from "../../../../lib/nutrition-group";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
@@ -126,7 +127,9 @@ export default async function NationalNutritionDetailPage({
   const { item, cacheSource, provenance } = detail;
   const syntheticCode = isSyntheticFoodCode(datasetSlug, item);
 
-  const groupLink = isGroupDataset(datasetSlug) ? await groupLinkFor(datasetSlug, item.representativeFood) : null;
+  const [groupLink, groupContext] = isGroupDataset(datasetSlug)
+    ? await Promise.all([groupLinkFor(datasetSlug, item.representativeFood), groupContextFor(datasetSlug, item)])
+    : [null, null];
   let relatedItems: Awaited<ReturnType<typeof readRelatedNationalNutritionItemsFromDb>> = [];
   try {
     relatedItems = await readRelatedNationalNutritionItemsFromDb({
@@ -245,6 +248,39 @@ export default async function NationalNutritionDetailPage({
         </dl>
       </section>
 
+      {groupContext ? (
+        <section className="nutrition-detail-section">
+          <h2>같은 식품군({groupContext.name} {groupContext.count}종)과 비교</h2>
+          <p>
+            대표식품이 같은 공공데이터 자료의 {groupContext.basisLabel} 중앙값·범위와 이 식품의 값을 나란히 봅니다. 순위나 좋고 나쁨의 판정이 아닙니다.
+          </p>
+          <div className="comparison-table-scroll" role="region" aria-label={`${item.name}과 ${groupContext.name} 식품군 비교`} tabIndex={0}>
+            <table className="basis-calculator__table">
+              <thead>
+                <tr>
+                  <th scope="col">영양성분</th>
+                  <th scope="col">이 식품 {groupContext.basisLabel}</th>
+                  <th scope="col">식품군 중앙값</th>
+                  <th scope="col">식품군 범위</th>
+                  <th scope="col">중앙값 대비</th>
+                </tr>
+              </thead>
+              <tbody>
+                {groupContext.rows.map((row) => (
+                  <tr key={row.key}>
+                    <th scope="row">{row.label}</th>
+                    <td>{formatGroupNumber(row.value, row.unit)}</td>
+                    <td>{formatGroupNumber(row.median, row.unit)}</td>
+                    <td>{row.min === null ? "계산 불가" : `${formatGroupNumber(row.min, row.unit)} ~ ${formatGroupNumber(row.max, row.unit)}`}</td>
+                    <td>{relativeToMedian(row.value, row.median)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p><Link href={groupContext.href}>{groupContext.name} {groupContext.count}종 전체 비교표 보기</Link></p>
+        </section>
+      ) : null}
       <section className="nutrition-detail-section">
         <h2>{item.name} 먹는 양에 맞춰 계산하기</h2>
         <p>원자료 기준량을 100g(100ml)당, 100kcal당, 직접 입력한 섭취량 기준으로 바꿔 봅니다.</p>
@@ -409,4 +445,13 @@ function formatKoreanDateTime(iso: string) {
   const date = new Date(iso);
   if (!Number.isFinite(date.getTime())) return iso;
   return date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "medium", timeStyle: "short" });
+}
+
+function relativeToMedian(value: number | null, median: number | null) {
+  if (value === null || median === null || !Number.isFinite(value) || !Number.isFinite(median)) return "계산 불가";
+  if (median === 0) return value === 0 ? "같음" : "중앙값이 0";
+  const ratio = value / median;
+  if (Math.abs(ratio - 1) < 0.05) return "비슷함";
+  const percent = Math.round(Math.abs(ratio - 1) * 100);
+  return ratio > 1 ? `${percent}% 높음` : `${percent}% 낮음`;
 }
