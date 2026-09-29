@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getNationalNutritionDataset } from "../../../../lib/national-nutrition-api";
 import { groupSlug, isGroupDataset, MIN_GROUP_SIZE } from "../../../../lib/nutrition-group";
-import { loadGroups } from "../../../../lib/nutrition-group-data";
+import { loadPublishableGroups } from "../../../../lib/nutrition-group-data";
 import { absoluteUrl, siteConfig } from "../../../../lib/site";
 
 export const revalidate = 86400;
@@ -28,7 +28,7 @@ export default async function NutritionGroupIndexPage({ params }: PageProps) {
   const { dataset } = await params;
   if (!isGroupDataset(dataset)) notFound();
   const info = getNationalNutritionDataset(dataset);
-  const groups = await loadGroups(dataset);
+  const groups = await loadPublishableGroups(dataset);
 
   return (
     <section className="section blog-index">

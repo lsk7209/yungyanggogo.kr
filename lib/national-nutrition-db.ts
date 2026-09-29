@@ -568,6 +568,20 @@ export async function readNationalNutritionGroupItems(dataset: NationalNutrition
   return result.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow));
 }
 
+// Representative-food name and serving basis of every representative row, for
+// computing which groups have enough same-dimension records to publish.
+export async function readNationalNutritionGroupBases(dataset: NationalNutritionDatasetSlug) {
+  if (!isTursoConfigured) return [] as { name: string; servingUnit: string }[];
+  await ensureNationalNutritionSchema();
+  const result = await getDb().execute({
+    sql: `${RANKED_REPRESENTATIVE}
+      SELECT representative_food AS name, serving_unit FROM ranked
+      WHERE row_rank = 1 AND representative_food <> ''`,
+    args: [dataset],
+  });
+  return result.rows.map((row) => ({ name: String(row.name), servingUnit: String(row.serving_unit ?? "") }));
+}
+
 export async function countNationalNutritionGroupItems(dataset: NationalNutritionDatasetSlug, name: string) {
   if (!isTursoConfigured || !name.trim()) return 0;
   await ensureNationalNutritionSchema();

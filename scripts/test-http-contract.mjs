@@ -43,6 +43,9 @@ await db.batch([
   ...Array.from({ length: 60 }, (_, i) => insert("food", `HTTP-${String(i + 1).padStart(3, "0")}`, `HTTP 테스트식품 ${String(i + 1).padStart(2, "0")}`)),
   insert("food", "HTTP-XSS", "</script><img src=x onerror=alert(1)>"),
   insert("process", "HTTP-P1", "HTTP 가공식품"),
+  // 5 records but only 3 share a basis (3 g + 2 ml): page exists, not indexable/listed.
+  ...["MIX-1", "MIX-2", "MIX-3"].map((c) => insert("food", c, `혼합군 ${c}`, { rep: "혼합군", serving: "100g" })),
+  ...["MIX-4", "MIX-5"].map((c) => insert("food", c, `혼합군 ${c}`, { rep: "혼합군", serving: "200ml" })),
 ]);
 db.close();
 
@@ -190,6 +193,9 @@ try {
   const groupPage = await (await get(base, "/nutrition-data/food/group/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%8C%80%ED%91%9C")).text();
   check("GROUP", groupPage.includes("61종") && groupPage.includes("중앙값") && groupPage.includes("제품 순위가 아닙니다"), "group page shows count, stats and the no-ranking notice");
   check("GROUP", (await get(base, "/nutrition-data/food/group/%EC%97%86%EB%8A%94%EA%B5%B0")).status === 404, "unknown group is 404");
+  const mixed = await get(base, "/nutrition-data/food/group/%ED%98%BC%ED%95%A9%EA%B5%B0");
+  check("GROUP", mixed.status === 200 && /noindex/.test(robotsMeta(await mixed.text())) && !groupLocs.some((loc) => loc.includes("%ED%98%BC%ED%95%A9%EA%B5%B0")), "group with <5 same-basis records is noindex and not in the sitemap");
+  check("GROUP", !(await (await get(base, "/nutrition-data/food/group")).text()).includes("혼합군"), "non-publishable group is not listed in the index");
   check("GROUP", (await get(base, "/nutrition-data/health/group")).status === 404, "health (mg/capsule basis) has no group pages");
   check("GROUP", detail.includes("영양성분 비교표 보기"), "detail page links to its group");
 

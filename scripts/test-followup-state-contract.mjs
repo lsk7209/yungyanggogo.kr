@@ -319,6 +319,8 @@ try {
   check("GROUP", analysis.basis === "per100g" && analysis.comparable.length === 3 && analysis.otherDimension.length === 1 && analysis.unsupportedBasis.length === 1, "compares within the dominant dimension; g/ml and non-numeric bases are excluded, not converted");
   check("GROUP", energyStat.n === 3 && energyStat.min === 100 && energyStat.median === 200 && energyStat.max === 200, "per-100g stats: 100,200,200 kcal");
   check("GROUP", sodiumStat.n === 2 && sodiumStat.median === 100, "blank sodium is excluded from stats, not counted as 0");
+  const counts = group.comparableCountsByGroup([{ name: "a", servingUnit: "100g" }, { name: "a", servingUnit: "1인분" }, { name: "a", servingUnit: "200ml" }, { name: "a", servingUnit: "200ml" }, { name: "a", servingUnit: "300ml" }]);
+  check("GROUP", counts.get("a") === 3, "publishable count uses the dominant basis only");
   await cache.saveNationalNutritionItemsToDb({ dataset: "process", totalCount: null, foods: ["P1", "P2", "P3", "P4"].map((c) => mk(c, "100g", "100", "10")) });
   check("GROUP", !(await cache.listNationalNutritionGroups("process", 5)).some((g) => g.name === "군대표"), "a 4-item group is below the publish threshold");
   await cache.saveNationalNutritionItemsToDb({ dataset: "process", totalCount: null, foods: [mk("P5", "100g", "100", "10")] });
@@ -326,6 +328,8 @@ try {
   const listed = (await cache.listNationalNutritionGroups("process", 5)).find((g) => g.name === "군대표");
   const groupItems = await cache.readNationalNutritionGroupItems("process", "군대표");
   check("GROUP", listed?.count === 5 && groupItems.length === 5, "same code stored twice counts once (representative row)");
+  const bases = await cache.readNationalNutritionGroupBases("process");
+  check("GROUP", bases.filter((b) => b.name === "군대표").length === 5 && group.comparableCountsByGroup(bases).get("군대표") === 5, "group bases query returns one representative row per code");
 
   // ---------- T11 request counts & API bounds ----------
   control.sqlLog = [];

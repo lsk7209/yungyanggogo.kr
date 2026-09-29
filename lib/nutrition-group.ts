@@ -95,3 +95,17 @@ export function formatGroupNumber(value: number | null, unit: string) {
   const rounded = Math.round((value + Number.EPSILON) * 10) / 10;
   return `${rounded.toLocaleString("ko-KR", { maximumFractionDigits: 1 })} ${unit}`;
 }
+
+// Per group, the number of records in its dominant comparable dimension —
+// the same rule analyzeGroup uses to build the table.
+export function comparableCountsByGroup(rows: { name: string; servingUnit: string }[]) {
+  const tally = new Map<string, { mass: number; volume: number }>();
+  for (const row of rows) {
+    const dimension = parseServingBasis(row.servingUnit).dimension;
+    if (dimension === "unsupported") continue;
+    const entry = tally.get(row.name) ?? { mass: 0, volume: 0 };
+    entry[dimension] += 1;
+    tally.set(row.name, entry);
+  }
+  return new Map([...tally].map(([name, { mass, volume }]) => [name, volume > mass ? volume : mass]));
+}
