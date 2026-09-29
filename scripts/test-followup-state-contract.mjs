@@ -109,11 +109,15 @@ try {
   check("R07", pages.map((p) => p.count).join(",") === "12,12,1,0" && pages.every((p) => p.searchScope === "stored" && p.totalCount === 25), "stored scope, count and denominator stay fixed");
   check("R07", pages[3].ok === true && pages[3].foods.every((f) => f.foodCode.startsWith("S-")), "page end is a stored empty page, no mixed rows");
 
-  const storedZero = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "food", query: "없는식품" });
-  check("R08", upstreamCalls.length === 0 && storedZero.ok && storedZero.count === 0 && storedZero.totalCount === 0 && storedZero.searchScope === "stored", "stored-scope zero is a valid zero without a source call");
   upstream = (url) => envelope([raw("U-X", `원천 ${url.searchParams.get("foodNm")}`)], 1);
+  const storedZeroP2 = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "food", query: "없는식품", pageNo: 2 });
+  check("R08", upstreamCalls.length === 0 && storedZeroP2.ok && storedZeroP2.totalCount === 0 && storedZeroP2.searchScope === "stored", "past page 1 a stored zero stays stored (no mid-session switch)");
+  const storedZero = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "food", query: "없는식품" });
+  check("R08", upstreamCalls.length === 1 && storedZero.searchScope === "upstream" && storedZero.scopeReason === "stored_no_match" && storedZero.countScope === "source", "fresh search with no stored match opens a labelled source scope at page 1");
+  const storedHit = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "food", query: "저장식품" });
+  check("R08", upstreamCalls.length === 1 && storedHit.searchScope === "stored", "a stored match never calls the source");
   const explicit = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "food", query: "없는식품", source: "upstream" });
-  check("R08", explicit.ok && explicit.searchScope === "upstream" && explicit.countScope === "source" && upstreamCalls.length === 1, "explicit source search opens the source scope only on request");
+  check("R08", explicit.ok && explicit.searchScope === "upstream" && explicit.countScope === "source" && upstreamCalls.length === 2, "explicit source search opens the source scope");
   upstream = (url) => envelope([raw(`U-P${url.searchParams.get("pageNo")}`, "원천 페이지")], 30);
   const upstreamPage2 = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "food", query: "원천", source: "upstream", pageNo: 2 });
   check("R09", upstreamCalls.at(-1).searchParams.get("pageNo") === "2" && upstreamCalls.at(-1).searchParams.get("foodNm") === "원천" && upstreamPage2.totalCount === 30 && upstreamPage2.searchScope === "upstream", "source scope keeps q, page and its own denominator");
@@ -144,11 +148,16 @@ try {
   // "health" has no stored rows → bootstrap to source; make that source fail.
   upstream = () => new Response("upstream down", { status: 503 });
   const hubHtml = await render(HubPage({ searchParams: Promise.resolve({ q: "비교식품" }) }));
-  check("R01", hubHtml.includes("현재 영양고고 저장 자료에서 일치하는 식품을 찾지 못했습니다"), "normal zero shows the stored-scope empty message");
+  check("R01", hubHtml.includes("현재 영양고고 저장 자료에서 일치하는 식품을 찾지 못했습니다"), "stored zero stays a normal zero when the source is down");
   check("R01", (hubHtml.match(/일시적으로 불러오지 못했습니다/g) || []).length === 1, "only the failing dataset shows a failure");
   check("R03", hubHtml.includes("가공 비교식품"), "other datasets remain visible when one fails");
   check("R25", hubHtml.includes('href="/nutrition-data/process?q=%EB%B9%84%EA%B5%90%EC%8B%9D%ED%92%88"'), "\"더 보기\" keeps the same q");
   check("R26", hubHtml.includes("데이터셋별 최대 4개") && !/고유 식품 \d/.test(hubHtml), "preview count is not presented as unique foods");
+
+  // Stored has no match but the source does: labelled source scope, paging pinned to it.
+  upstream = (url) => envelope([raw(`SRC-${url.pathname.slice(-12)}`, "원천전용식품")], 1);
+  const hubSource = await render(HubPage({ searchParams: Promise.resolve({ q: "원천전용식품" }) }));
+  check("R08", hubSource.includes("공식 원천 검색 결과를 표시합니다") && hubSource.includes("source=upstream"), "hub labels a source-scope answer and pins more-links to it");
 
   upstream = () => new Response("down", { status: 503 });
   control.failDb = true;

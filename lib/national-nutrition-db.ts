@@ -34,7 +34,7 @@ export type CachedNationalNutritionResult = NationalNutritionResult & {
   // The range this result (and its count/pagination) belongs to.
   searchScope: NutritionSearchSource;
   // Why an upstream scope was used without an explicit request.
-  scopeReason?: "no_db" | "stored_dataset_empty" | "stored_unavailable";
+  scopeReason?: "no_db" | "stored_dataset_empty" | "stored_unavailable" | "stored_no_match";
 };
 
 // Single representative-row rule shared by list, detail, related and sitemap:
@@ -136,6 +136,15 @@ export async function fetchNationalNutritionItemsWithDbCache({
     // Nothing has been stored for this dataset yet (bootstrap). This is a
     // dataset-level decision, never a page-end or search-zero fallback.
     return fetchUpstreamScope({ dataset, query, pageNo, numOfRows }, "stored_dataset_empty");
+  }
+
+  if (query?.trim() && pageNo === 1 && cached.totalCount === 0 && getNationalNutritionApiKey()) {
+    // A fresh search with no stored match starts a separate, labelled source
+    // scope from page 1. Callers pin it with `source=upstream` for paging, so
+    // one session never mixes stored and source rows or denominators.
+    const sourceResult = await fetchUpstreamScope({ dataset, query, pageNo, numOfRows }, "stored_no_match");
+    // If the source cannot answer, the valid stored-scope zero remains the answer.
+    if (sourceResult.ok) return sourceResult;
   }
 
   return {

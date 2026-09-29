@@ -103,6 +103,8 @@ export default async function NutritionDatasetPage({
     // A provider/DB failure is not an empty list; answer with a server error.
     throw new Error("nutrition_lookup_unavailable");
   }
+  // Once a search is answered from the source scope, keep paging there.
+  const effectiveSource = result?.searchScope === "upstream" && result.scopeReason !== "no_db" ? "upstream" : source;
   const hasPrevious = page > 1;
   const { hasNext, outOfRange } = getNutritionPagination(result, page, 50);
   if (outOfRange) {
@@ -147,13 +149,13 @@ export default async function NutritionDatasetPage({
         </p>
       </div>
 
-      <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} source={source} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
+      <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} source={effectiveSource} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
       {result?.ok && result.searchScope === "upstream" && result.scopeReason !== "no_db" ? (
         <div className="api-status" role="status">
-          <strong>{source === "upstream" ? "공식 원천 추가 검색 결과" : "공식 원천 응답 표시"}</strong>
+          <strong>{result.scopeReason === "stored_no_match" ? "영양고고 저장 자료에 일치 항목이 없어 공식 원천 검색 결과를 표시합니다" : source === "upstream" ? "공식 원천 추가 검색 결과" : "공식 원천 응답 표시"}</strong>
           <p>
             영양고고 저장 자료와 별도인 조회 범위입니다. 건수와 페이지는 이 범위 안에서만 이어집니다.{" "}
-            {source === "upstream" ? <Link href={buildDatasetSearchHref(dataset, { query })}>저장 자료 검색으로 돌아가기</Link> : null}
+            {source === "upstream" && result.scopeReason !== "stored_no_match" ? <Link href={buildDatasetSearchHref(dataset, { query })}>저장 자료 검색으로 돌아가기</Link> : null}
           </p>
         </div>
       ) : null}
@@ -182,10 +184,10 @@ export default async function NutritionDatasetPage({
             {result.count > 0
               ? "각 식품을 누르면 영양성분표, 출처, 원자료 기준일을 개별 페이지에서 확인할 수 있습니다."
               : "제품명이 길다면 핵심 단어로 다시 검색해 주세요. 공식 원천 전체의 미등록을 의미하지는 않습니다."}
-            {result.count === 0 && query && hasApiKey && result.searchScope === "stored" ? (
+            {query && hasApiKey && result.searchScope === "stored" ? (
               <>
                 {" "}
-                <Link href={buildDatasetSearchHref(dataset, { query, source: "upstream" })}>공식 원천에서 추가 검색</Link>
+                <Link href={buildDatasetSearchHref(dataset, { query, source: "upstream" })}>{result.count > 0 ? "저장 자료 외에 공식 원천에서도 검색" : "공식 원천에서 추가 검색"}</Link>
               </>
             ) : null}
           </p>

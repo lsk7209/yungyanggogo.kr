@@ -161,7 +161,7 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
             {results.map((result) => {
               const slug = result.dataset.slug;
               // Same q and the same (default) scope rules as this preview.
-              const moreHref = withOptionalComparisonState(buildDatasetSearchHref(slug, { query }), state);
+              const moreHref = withOptionalComparisonState(buildDatasetSearchHref(slug, { query, source: result.scopeReason === "stored_no_match" ? "upstream" : undefined }), state);
               return (
                 <section key={slug} className="nutrition-dataset">
                   <div className="nutrition-dataset__head">
@@ -171,6 +171,9 @@ export default async function NutritionDataPage({ searchParams }: PageProps) {
                     </div>
                     <NutritionCountSummary result={result} filtered={Boolean(query)} />
                   </div>
+                  {result.ok && result.scopeReason === "stored_no_match" && result.foods.length > 0 ? (
+                    <p className="api-status">영양고고 저장 자료에 일치 항목이 없어 공식 원천 검색 결과를 표시합니다.</p>
+                  ) : null}
                   {result.ok && result.scopeReason === "stored_unavailable" ? (
                     <p className="api-status api-status--warn">저장 자료를 불러오지 못해 공식 원천의 첫 페이지 응답을 표시합니다.</p>
                   ) : null}
