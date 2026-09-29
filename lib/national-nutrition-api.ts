@@ -47,6 +47,8 @@ export type NationalNutritionItem = {
   sourceName: string;
   createdAt: string;
   updatedAt: string;
+  // Present only for rows read from site storage (UTC ISO). Not a source date.
+  storedAt?: string;
 };
 
 type RawNationalNutritionItem = Record<string, string | number | null | undefined>;
@@ -365,6 +367,12 @@ export function extractNationalNutritionItems(payload: unknown) {
 
 export function getNationalNutritionDataset(slug: NationalNutritionDatasetSlug = "all") {
   return NATIONAL_NUTRITION_DATASETS.find((dataset) => dataset.slug === slug) || NATIONAL_NUTRITION_DATASETS[0];
+}
+
+// Legacy storage wrote `${dataset}-${name}` when the source had no food code.
+// Such an identifier must never be presented as an official food code.
+export function isSyntheticFoodCode(dataset: string, item: Pick<NationalNutritionItem, "foodCode" | "name">) {
+  return Boolean(item.foodCode) && item.foodCode === `${dataset}-${item.name}`;
 }
 
 function buildNationalNutritionUrl({

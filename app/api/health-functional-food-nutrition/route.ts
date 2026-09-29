@@ -5,6 +5,7 @@ import {
   HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_ENDPOINT,
   HEALTH_FUNCTIONAL_FOOD_NUTRITION_SOURCE
 } from "../../../lib/health-functional-food-nutrition-api";
+import { normalizeNutritionSearchQuery, parseBoundedPositiveInteger } from "../../../lib/nutrition-query";
 
 export const dynamic = "force-dynamic";
 export const preferredRegion = "icn1";
@@ -22,13 +23,13 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url);
-  const q = searchParams.get("q")?.trim();
-  const pageNo = Number(searchParams.get("pageNo") || "1");
-  const numOfRows = Number(searchParams.get("numOfRows") || "12");
+  const q = normalizeNutritionSearchQuery(searchParams.get("q")) || undefined;
+  const pageNo = parseBoundedPositiveInteger(searchParams.get("pageNo"), 1, 1_000);
+  const numOfRows = parseBoundedPositiveInteger(searchParams.get("numOfRows"), 12, 50);
   const result = await fetchHealthFunctionalFoodNutritionItems({
     query: q,
-    pageNo: Number.isFinite(pageNo) ? pageNo : 1,
-    numOfRows: Number.isFinite(numOfRows) ? numOfRows : 12
+    pageNo,
+    numOfRows
   });
 
   if (!result.ok) {

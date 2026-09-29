@@ -6,6 +6,7 @@ import {
   HEALTH_FUNCTIONAL_FOOD_SOURCE
 } from "../../lib/health-functional-food-api";
 import { absoluteUrl, siteConfig } from "../../lib/site";
+import { serializeJsonLd } from "../../lib/json-ld";
 
 export const dynamic = "force-dynamic";
 
@@ -91,7 +92,7 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
     <section className="section blog-index">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([pageSchema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd([pageSchema, faqSchema]) }}
       />
 
       <div className="section__head">

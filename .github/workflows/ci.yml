@@ -11,12 +11,19 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    # No provider credentials are passed: tests use in-memory / local file
+    # SQLite and mocked fetch only.
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
-      - run: npm install
+      - run: npm ci
       - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:regression
+      # Report generators run inside the regression suite must be deterministic.
+      - run: git diff --exit-code
       - run: npm run build
+      - run: npm run test:http

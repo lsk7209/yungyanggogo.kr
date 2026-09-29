@@ -11,7 +11,7 @@ const healthNutrition = await readFile(new URL("../app/health-functional-food-nu
 assert.doesNotMatch(robots, /"\/\*\?"/);
 assert.match(robots, /const CRAWL_BLOCK = \["\/api\/"\]/);
 assert.match(nutritionIndex, /robots: hasSearch \? \{ index: false, follow: true \} : undefined/);
-assert.match(dataset, /robots: query \|\| queryParams\?\.item \? \{ index: false, follow: true \} : undefined/);
+assert.match(dataset, /robots: query \|\| queryParams\?\.item \|\| queryParams\?\.source \? \{ index: false, follow: true \} : undefined/);
 assert.match(dataset, /`\/nutrition-data\/\$\{dataset\}\?page=\$\{page\}`/);
 assert.match(dataset, /url: absoluteUrl\(canonicalPath\)/);
 assert.match(blog, /`\/blog\?page=\$\{page\}`/);

@@ -1,0 +1,191 @@
+// HTTP contract test against a real `next start` of the current build.
+// Uses only a local file: SQLite database under output/playwright/ and no
+// provider keys, so nothing reaches production systems. Requires `npm run build`.
+import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { createClient } from "@libsql/client";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+if (!existsSync(path.join(root, ".next", "BUILD_ID"))) {
+  console.error("http contract: NOT RUN — no production build (.next/BUILD_ID). Run `npm run build` first.");
+  process.exit(1);
+}
+
+const workDir = path.join(root, "output", "playwright", "http-contract");
+rmSync(workDir, { recursive: true, force: true });
+mkdirSync(workDir, { recursive: true });
+const dbPath = path.join(workDir, "fixture.db");
+const dbUrl = pathToFileURL(dbPath).href.replace("file:///", "file:/");
+// R49: never seed anything except a local file: DB under output/playwright/.
+function assertLocalFixture(url) {
+  if (!url.startsWith("file:") || !url.replaceAll("\\", "/").includes("/output/playwright/")) {
+    throw new Error(`Refusing non-local fixture database: ${url}`);
+  }
+}
+assert.throws(() => assertLocalFixture("libsql://prod.example.turso.io"), /Refusing/);
+assertLocalFixture(dbUrl);
+
+// Create tables with the application's own DDL (single source of truth).
+const dbSource = readFileSync(path.join(root, "lib", "national-nutrition-db.ts"), "utf8");
+const ddl = [...dbSource.matchAll(/`(CREATE TABLE IF NOT EXISTS[\s\S]*?)`/g)].map((m) => m[1]);
+assert.equal(ddl.length, 2, "found both CREATE TABLE statements");
+const db = createClient({ url: dbUrl });
+await db.batch(ddl);
+const insert = (dataset, code, name, extra = {}) => ({
+  sql: `INSERT INTO national_nutrition_items (dataset_slug, query_key, food_code, food_name, serving_unit, energy, protein, sodium, source_name, updated_at, representative_food, synced_at)
+    VALUES (?, '__default__', ?, ?, ?, ?, '5', '50', '로컬 테스트 전용', '2025-01-01', ?, CURRENT_TIMESTAMP)`,
+  args: [dataset, code, name, extra.serving ?? "100g", extra.energy ?? "100", extra.rep ?? "테스트대표"],
+});
+await db.batch([
+  ...Array.from({ length: 60 }, (_, i) => insert("food", `HTTP-${String(i + 1).padStart(3, "0")}`, `HTTP 테스트식품 ${String(i + 1).padStart(2, "0")}`)),
+  insert("food", "HTTP-XSS", "</script><img src=x onerror=alert(1)>"),
+  insert("process", "HTTP-P1", "HTTP 가공식품"),
+]);
+db.close();
+
+const children = [];
+async function startServer(port, env) {
+  // unstable_cache persists on disk between `next start` runs; clear it so each
+  // server answers from its own fixture DB and not from an earlier run.
+  for (const dir of ["fetch-cache", "images"]) rmSync(path.join(root, ".next", "cache", dir), { recursive: true, force: true });
+  const child = spawn(process.execPath, [path.join(root, "node_modules", "next", "dist", "bin", "next"), "start", "-p", String(port)], {
+    cwd: root,
+    env: {
+      ...process.env,
+      TURSO_DATABASE_URL: "", TURSO_AUTH_TOKEN: "",
+      DATA_GO_KR_NUTRITION_KEY: "", DATA_GO_KR_HEALTH_FUNCTIONAL_FOOD_NUTRITION_KEY: "",
+      PUBLIC_DATA_SERVICE_KEY: "", DATA_GO_KR_SERVICE_KEY: "", FOOD_NUTRITION_API_KEY: "", FOOD_SAFETY_KOREA_API_KEY: "",
+      FOODSAFETY_API_KEY: "", FOODSAFETYKOREA_API_KEY: "", HEALTH_FUNCTIONAL_FOOD_NUTRITION_API_KEY: "", MFDS_FOOD_API_KEY: "",
+      ...env,
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  children.push(child);
+  let log = "";
+  child.stdout.on("data", (d) => { log += d; });
+  child.stderr.on("data", (d) => { log += d; });
+  const base = `http://127.0.0.1:${port}`;
+  for (let i = 0; i < 120; i += 1) {
+    try {
+      await fetch(`${base}/robots.txt`);
+      return base;
+    } catch {
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  throw new Error(`server on ${port} did not start:\n${log}`);
+}
+
+let assertions = 0;
+function check(id, condition, message) {
+  assert.ok(condition, `${id}: ${message}`);
+  assertions += 1;
+}
+const get = (base, p) => fetch(`${base}${p}`, { redirect: "manual" });
+const robotsMeta = (html) => html.match(/<meta name="robots" content="([^"]+)"/)?.[1] ?? "";
+const canonical = (html) => html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? "";
+// "https://host" and "https://host/" are the same URL.
+const sameUrl = (a, b) => { try { return new URL(a).href === new URL(b).href; } catch { return false; } };
+
+try {
+  const base = await startServer(3197, { TURSO_DATABASE_URL: dbUrl, TURSO_AUTH_TOKEN: "local-e2e" });
+  const siteUrl = "https://yungyanggogo.kr";
+
+  // R33 + R51: sitemap URLs must actually be indexable 200 pages with a self canonical.
+  const core = await get(base, "/sitemaps/core.xml");
+  const coreXml = await core.text();
+  const locs = [...coreXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  check("R33", core.status === 200 && locs.length > 10, "core sitemap served");
+  check("R33", !locs.some((loc) => new URL(loc).pathname === "/compare"), "noindex /compare is not in the sitemap");
+  const compare = await get(base, "/compare");
+  check("R33", compare.status === 200 && /noindex/.test(robotsMeta(await compare.text())), "/compare stays noindex");
+  for (const loc of locs) {
+    const pathname = new URL(loc).pathname + new URL(loc).search;
+    const response = await get(base, pathname);
+    const html = await response.text();
+    check("R51", response.status === 200, `${pathname} returns 200 (got ${response.status})`);
+    check("R51", !/noindex/.test(robotsMeta(html)), `${pathname} is not noindex`);
+    check("R51", sameUrl(canonical(html), loc), `${pathname} canonical is itself (got ${canonical(html)})`);
+  }
+  // R39: static lastmod values are not stamped with the build/request date.
+  const today = new Date().toISOString().slice(0, 10);
+  const staticLastmods = [...coreXml.matchAll(/<url><loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].filter((m) => !m[1].includes("/blog/"));
+  check("R39", staticLastmods.length > 0 && staticLastmods.every((m) => !m[2].startsWith(today)), "non-post lastmod is not today's date");
+
+  // R35: pending / scheduled posts are not reachable and not in the sitemap.
+  const blogDir = path.join(root, "content", "blog");
+  const allPosts = readdirSync(blogDir).filter((f) => f.endsWith(".json")).flatMap((f) => JSON.parse(readFileSync(path.join(blogDir, f), "utf8")));
+  const pending = allPosts.filter((p) => p && p.slug && p.humanReview !== "approved");
+  check("R35", pending.length > 0, "fixture has pending posts to test");
+  for (const post of pending.slice(0, 5)) {
+    check("R35", (await get(base, `/blog/${post.slug}`)).status === 404, `pending post ${post.slug} is 404`);
+    check("R35", !locs.some((loc) => loc.endsWith(`/blog/${post.slug}`)), `pending post ${post.slug} not in sitemap`);
+  }
+
+  // R36: removed article stays a real 404 (no home redirect), with a search path.
+  const removed = await get(base, "/blog/triangle-kimbap-calorie-compare");
+  const removedHtml = await removed.text();
+  check("R36", removed.status === 404 && !removed.headers.get("location"), "removed post is 404 without redirect");
+  // Check the server-rendered body, not only the client (RSC) payload.
+  const removedBody = removedHtml.replace(/<script[\s\S]*?<\/script>/g, "");
+  check("R36", removedBody.includes("요청한 페이지를 찾을 수 없습니다") && removedBody.includes('action="/nutrition-data"') && /noindex/.test(robotsMeta(removedHtml)), "useful Korean 404 with search in the HTML body");
+
+  // R34: page 2 has its own content and self canonical; out-of-range is 404.
+  const page1 = await (await get(base, "/nutrition-data/food")).text();
+  const page2Response = await get(base, "/nutrition-data/food?page=2");
+  const page2 = await page2Response.text();
+  check("R34", page2Response.status === 200 && canonical(page2) === `${siteUrl}/nutrition-data/food?page=2` && canonical(page1) === `${siteUrl}/nutrition-data/food`, "page 1 and page 2 have self canonicals");
+  check("R34", page1.includes("HTTP 테스트식품 01") && !page1.includes("HTTP 테스트식품 51") && page2.includes("HTTP 테스트식품 51"), "page 2 shows different rows");
+  check("R34", (await get(base, "/nutrition-data/food?page=9")).status === 404, "known out-of-range page is 404");
+
+  // Query and selection URLs stay noindex; hub "more" link keeps q.
+  const hub = await (await get(base, "/nutrition-data?q=HTTP")).text();
+  check("T07", /noindex/.test(robotsMeta(hub)), "search URL is noindex");
+  check("R25", hub.includes('href="/nutrition-data/food?q=HTTP"'), "hub more-link keeps q");
+  check("T07", /noindex/.test(robotsMeta(await (await get(base, "/nutrition-data/food?item=food%7CHTTP-001")).text())), "selection URL is noindex");
+  const zero = await (await get(base, "/nutrition-data/food?q=%EC%97%86%EB%8A%94%EC%8B%9D%ED%92%88")).text();
+  check("R01", zero.includes("현재 영양고고 저장 자료에서 일치하는 식품을 찾지 못했습니다") && !zero.includes("불러오지 못했습니다"), "HTTP: stored-scope zero is not a failure");
+
+  // Detail: found 200 with escaped JSON-LD; stored-scope miss (no source key) is 404.
+  const detailResponse = await get(base, "/nutrition-data/food/HTTP-XSS");
+  const detail = await detailResponse.text();
+  const ld = detail.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) ?? [];
+  check("T09", detailResponse.status === 200 && ld.length >= 2 && ld.every((block) => (block.match(/<\/script>/g) || []).length === 1), "JSON-LD blocks cannot be closed by source strings");
+  check("T09", !detail.includes("<img src=x onerror"), "source name is escaped in HTML");
+  check("R42/R44", !detail.includes("adsbygoogle") && !detail.includes("googletagmanager"), "ads/analytics disabled → no network script tags");
+  const missingDetail = await get(base, "/nutrition-data/food/NO-SUCH-CODE");
+  const missingDetailHtml = await missingDetail.text();
+  check("R05", missingDetail.status === 404, "stored-scope miss without a source key is 404");
+  // Known Next 16 limit: an on-demand ISR route that calls notFound() ships the
+  // 404 tree in the RSC payload (client-rendered body). Status stays 404.
+  check("R05", missingDetailHtml.includes("not-found-search"), "detail 404 carries the search-enabled not-found tree");
+  const compareHttp = await (await get(base, "/compare?item=food%7CHTTP-001&item=process%7CHTTP-P1&amount=250ml")).text();
+  check("R29", compareHttp.includes('value="250"') && /<option value="ml" selected="">/.test(compareHttp), "legacy amount URL fills number + unit");
+  const compareSplit = await (await get(base, "/compare?item=food%7CHTTP-001&item=process%7CHTTP-P1&basis=perIntake&amountValue=50&amountUnit=g")).text();
+  check("R28", compareSplit.includes("50g당"), "no-JS form fields (amountValue/amountUnit) are honoured by the server");
+
+  // API bounds (T11).
+  const apiJson = await (await get(base, "/api/nutrition-data?dataset=food&numOfRows=100000&pageNo=-4")).json();
+  check("T11", apiJson.ok && apiJson.count === 50 && apiJson.searchScope === "stored", "API clamps numOfRows and reports scope");
+
+  // T01 over HTTP: an unreadable DB yields 5xx, never an empty 200 or a 404.
+  // A file that is not SQLite: every query fails with "file is not a database".
+  const brokenDb = path.join(workDir, "corrupt.db");
+  writeFileSync(brokenDb, "this is not a sqlite database ".repeat(200));
+  const broken = await startServer(3198, { TURSO_DATABASE_URL: pathToFileURL(brokenDb).href.replace("file:///", "file:/"), TURSO_AUTH_TOKEN: "local-e2e" });
+  const brokenHub = await get(broken, "/nutrition-data");
+  const brokenHubHtml = await brokenHub.text();
+  check("T01-HTTP", brokenHub.status >= 500, `hub with DB outage is 5xx (got ${brokenHub.status})`);
+  check("T01-HTTP", !brokenHubHtml.includes("찾지 못했습니다"), "outage is never rendered as a zero-result message");
+  const brokenList = await get(broken, "/nutrition-data/food");
+  check("T01-HTTP", brokenList.status >= 500, `dataset list with DB outage is 5xx (got ${brokenList.status})`);
+  const brokenDetail = await get(broken, "/nutrition-data/food/HTTP-001");
+  check("T01-HTTP", brokenDetail.status >= 500, `detail with DB outage is 5xx, not 404 (got ${brokenDetail.status})`);
+
+  console.log(`http contract: ${assertions} assertions passed against next start (${locs.length} sitemap URLs); local file DB only`);
+} finally {
+  for (const child of children) child.kill();
+}

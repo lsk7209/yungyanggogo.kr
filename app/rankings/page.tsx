@@ -89,7 +89,7 @@ export default async function RankingsPage() {
       ) : null}
       <div className="ranking-list">
         {rankingGroups.map((ranking, index) => (
-          <article key={ranking.slug} className="rank-row">
+          <article key={ranking.slug} id={ranking.slug} className="rank-row">
             <span className="rank-row__num">{index + 1}</span>
             <div>
               <h2>{ranking.title}</h2>

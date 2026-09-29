@@ -56,6 +56,7 @@ await ensureSchema();
 const summary = [];
 for (const dataset of datasets) {
   let saved = 0;
+  let skippedWithoutCode = 0;
   let totalCount = null;
   let errorMessage = "";
 
@@ -73,11 +74,14 @@ for (const dataset of datasets) {
       break;
     }
 
-    await saveRows(dataset.slug, result.totalCount, result.rows.map(normalizeItem));
-    saved += result.rows.length;
+    // Rows without a source food code are skipped, never stored under a name-derived ID.
+    const foods = result.rows.map(normalizeItem).filter((food) => food.foodCode);
+    skippedWithoutCode += result.rows.length - foods.length;
+    await saveRows(dataset.slug, result.totalCount, foods);
+    saved += foods.length;
   }
 
-  summary.push({ dataset: dataset.slug, saved, totalCount, error: errorMessage || null });
+  summary.push({ dataset: dataset.slug, saved, skippedWithoutCode, totalCount, error: errorMessage || null });
 }
 
 console.log(JSON.stringify({ ok: true, pages, rowsPerPage, summary }, null, 2));
@@ -245,7 +249,7 @@ async function saveRows(datasetSlug, totalCount, foods) {
       args: [
         datasetSlug,
         "__default__",
-        food.foodCode || `${datasetSlug}-${food.name}`,
+        food.foodCode,
         food.name,
         food.typeName,
         food.originName,

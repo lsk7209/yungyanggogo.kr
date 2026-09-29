@@ -2132,3 +2132,70 @@ h3 {
   }
 
 }
+
+/* 2026-09-28 follow-up: search/compare flow */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+details.data-license-panel {
+  display: block;
+}
+
+details.data-license-panel summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+details.data-license-panel dl {
+  margin-top: 12px;
+}
+
+.comparison-amount-fieldset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.comparison-amount-fieldset legend {
+  float: left;
+  margin-right: 6px;
+  font-weight: 800;
+}
+
+.comparison-amount-fieldset input {
+  width: 7em;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+}
+
+.comparison-scroll-hint,
+.comparison-card-action,
+.dataset-more-link {
+  margin: 8px 0;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.comparison-card-action a,
+.dataset-more-link a {
+  font-weight: 800;
+}
+
+.home-search {
+  margin-top: 18px;
+}

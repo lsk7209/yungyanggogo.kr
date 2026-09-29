@@ -15,6 +15,8 @@ for (const [name, source] of Object.entries({ api: files.api, index: files.index
 assert.match(files.api, /!hasKey\s*&&\s*!isTursoConfigured/, "API must fail only when neither provider exists");
 assert.match(files.index, /hasApiKey\s*\|\|\s*isTursoConfigured/, "index must load from API or DB");
 assert.match(files.dataset, /hasApiKey\s*\|\|\s*isTursoConfigured/, "dataset page must load from API or DB");
-assert.match(files.cache, /readNationalNutritionItemsFromDb[\s\S]*?if \(cached\.foods\.length > 0\)/, "DB lookup must precede API fallback");
+assert.match(files.cache, /readNationalNutritionItemsFromDb[\s\S]*?if \(!datasetHasStoredRows && getNationalNutritionApiKey\(\)\)/, "DB lookup precedes the dataset-level bootstrap");
+// F03: an empty stored page or search is a stored-scope answer, not a silent source switch.
+assert.doesNotMatch(files.cache, /if \(cached\.foods\.length > 0\)/, "no page-level source fallback");
 
-console.log("nutrition provider boundary: 7 assertions passed");
+console.log("nutrition provider boundary: 8 assertions passed");

@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   }
 };
 
-const purposeChips = ["단백질", "저칼로리", "저당", "저나트륨", "100kcal 기준", "편의점"];
+const purposeChips = [
+  { label: "단백질", slug: "high-protein" },
+  { label: "저칼로리", slug: "low-calorie" },
+  { label: "저당", slug: "low-sugar" },
+  { label: "저나트륨", slug: "low-sodium" }
+];
 
 const rankingCards = [
   {
@@ -17,28 +22,28 @@ const rankingCards = [
     title: "단백질 높은 간편식",
     metric: "100kcal당 단백질",
     tone: "green",
-    href: "/rankings"
+    href: "/rankings#high-protein"
   },
   {
     icon: "열",
     title: "칼로리 낮은 간식",
     metric: "1회 제공량 열량",
     tone: "slate",
-    href: "/rankings"
+    href: "/rankings#low-calorie"
   },
   {
     icon: "당",
     title: "당류 낮은 음료",
     metric: "100ml당 당류",
     tone: "amber",
-    href: "/rankings"
+    href: "/rankings#low-sugar"
   },
   {
     icon: "나",
     title: "나트륨 낮은 라면",
     metric: "1회 제공량 나트륨",
     tone: "terra",
-    href: "/rankings"
+    href: "/rankings#low-sodium"
   }
 ];
 
@@ -51,20 +56,26 @@ export default function HomePage() {
         <div className="hero__content kk-container">
           <p className="eyebrow">식약처 공공데이터 기반 · 무료</p>
           <h1>
-            무엇을 기준으로
+            식품 영양성분,
             <br />
-            찾을까요?
+            먹는 양에 맞춰 비교하세요.
           </h1>
           <p>
-            영양고고는 공식 식품영양 자료와 100g·100kcal 비교 기준을 안내합니다.
-            실제 자료는 영양성분 데이터 메뉴에서 확인하고, 화면 설명용 예시 데이터와 구분해 이용하세요.
+            식품명을 찾고 기준량·출처를 확인한 뒤, 선택한 식품의 영양성분을 나란히 볼 수 있습니다.
+            화면 설명용 예시 데이터와 실제 공공데이터는 구분해 표시합니다.
           </p>
-          <Link className="button" href="/nutrition-data">공식 영양성분 데이터 둘러보기</Link>
-          <div className="chip-row" aria-label="목적별 기준">
-            <span>목적별</span>
+          <form className="data-search home-search" action="/nutrition-data" role="search">
+            <label htmlFor="home-food-search">식품명 검색</label>
+            <div>
+              <input id="home-food-search" name="q" type="search" placeholder="식품명의 핵심 단어를 입력하세요" />
+              <button type="submit">검색</button>
+            </div>
+          </form>
+          <div className="chip-row" aria-label="목적별 비교 기준">
+            <span>목적별 기준</span>
             {purposeChips.map((chip) => (
-              <Link key={chip} className="chip" href="/rankings">
-                {chip}
+              <Link key={chip.slug} className="chip" href={`/rankings#${chip.slug}`}>
+                {chip.label}
               </Link>
             ))}
           </div>
@@ -77,7 +88,7 @@ export default function HomePage() {
 
       <section className="section section--tight">
         <div className="section__head">
-          <p className="eyebrow">Popular Rankings</p>
+          <p className="eyebrow">Comparison Basis</p>
           <h2>목적별 비교 기준</h2>
           <p>실제 제품 순위가 아닌 비교 기준 안내입니다. 정렬된 랭킹과 상품 수는 아직 제공하지 않습니다.</p>
         </div>
@@ -99,11 +110,11 @@ export default function HomePage() {
 
       <section className="section section--surface">
         <div className="section__head">
-          <p className="eyebrow">Categories</p>
-          <h2>공식 데이터에서 직접 찾기</h2>
-          <p>아직 실제 분류 필터를 제공하지 않으므로 카테고리별 결과를 가장하지 않습니다.</p>
+          <p className="eyebrow">Find Foods</p>
+          <h2>식품명으로 공식 데이터 찾기</h2>
+          <p>분류별 필터는 아직 제공하지 않습니다. 식품명이나 제품명의 핵심 단어로 검색해 주세요.</p>
         </div>
-        <Link className="button" href="/nutrition-data">식품명으로 공식 데이터 검색</Link>
+        <Link className="button" href="/nutrition-data">식품 검색으로 이동</Link>
       </section>
 
       <section className="section data-preview">
@@ -188,7 +199,7 @@ export default function HomePage() {
             <h3>영양성분 데이터는 어디서 가져오나요?</h3>
             <p>
               식품의약품안전처 식품영양성분 데이터베이스(식품안전나라)의 공공데이터를
-              기반으로 합니다. 데이터 갱신 주기와 수집일은 각 제품 페이지에 명시합니다.
+              기반으로 합니다. 각 식품 페이지에 원자료 기준일을, 영양고고에 저장된 자료라면 저장 시각을 함께 표시합니다.
               제조사 자체 표기와 차이가 있을 수 있으므로 구매 전 실제 제품 라벨을
               반드시 확인하세요.
             </p>
@@ -218,9 +229,8 @@ export default function HomePage() {
           <article className="faq-item">
             <h3>영양고고 데이터는 얼마나 자주 갱신되나요?</h3>
             <p>
-              식품의약품안전처 식품영양성분 데이터베이스 갱신 주기에 맞춰 업데이트합니다.
-              각 제품 페이지에 데이터 수집일을 표시하므로 갱신 시점을 직접 확인할 수
-              있습니다. 제품이 단종되거나 성분이 변경된 경우 실제 라벨과 차이가 있을 수
+              갱신 주기를 약속하지 않습니다. 대신 각 식품 페이지에서 원자료 기준일과
+              영양고고 저장 시각(저장 자료인 경우)을 직접 확인할 수 있습니다. 제품이 단종되거나 성분이 변경된 경우 실제 라벨과 차이가 있을 수
               있으므로 구매 전 라벨을 반드시 확인하세요.
             </p>
           </article>
@@ -228,8 +238,8 @@ export default function HomePage() {
             <h3>특정 제품이 목록에 없으면 어떻게 하나요?</h3>
             <p>
               현재 검색 범위에서 결과가 없더라도 공공데이터에 미등록됐다고 단정할 수 없습니다.
-              검색어와 데이터 제공 상태를 확인하고, 해당 제품의 영양성분표를 직접
-              확인해 100g당 수치로 환산하면 영양고고의 랭킹 기준과 같은 방식으로
+              핵심 단어로 다시 검색하거나, 해당 제품의 영양성분표를 직접
+              확인해 100g당 수치로 환산하면 비교 기준 안내와 같은 방식으로
               비교할 수 있습니다.
             </p>
           </article>

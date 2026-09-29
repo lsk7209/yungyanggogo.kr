@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import {
   fetchNationalNutritionItemDetail,
   readRelatedNationalNutritionItemsFromDb,
+  RELATED_RELATION_LABELS,
+  type NationalNutritionDetailResult,
 } from "../../../../lib/national-nutrition-db";
 import {
   getNationalNutritionDataset,
+  isSyntheticFoodCode,
   NATIONAL_NUTRITION_DATASETS,
   NATIONAL_NUTRITION_SOURCE,
   type NationalNutritionDatasetSlug,
-  type NationalNutritionItem,
 } from "../../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../../lib/site";
+import { serializeJsonLd } from "../../../../lib/json-ld";
+import { formatNutrientForDisplay } from "../../../../lib/nutrition-comparison";
 import { ComparisonNavigationLink } from "../../../../components/ComparisonNavigationLink";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
@@ -33,6 +38,25 @@ const datasetSlugs = new Set(
   NATIONAL_NUTRITION_DATASETS.map((dataset) => dataset.slug),
 );
 
+// generateMetadata and the page share one lookup per render (no duplicate DB/API call).
+const loadDetail = cache((dataset: NationalNutritionDatasetSlug, foodCode: string) =>
+  fetchNationalNutritionItemDetail({ dataset, foodCode }),
+);
+
+// found → render; confirmed absence → 404; temporary failure → throw so the
+// response is a 5xx and a previously generated ISR page is kept, not replaced
+// by a false "not found".
+function requireFound(detail: NationalNutritionDetailResult) {
+  if (detail.kind === "found") return detail;
+  if (detail.kind === "temporarily_unavailable") {
+    throw new Error(`nutrition_detail_unavailable:${detail.reasonCode}`);
+  }
+  // not_found (source confirmed) or not_in_stored_scope (only stored data can
+  // be asked): this URL has no page here. The not-found page does not claim
+  // the food is missing from the official source.
+  notFound();
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -42,11 +66,8 @@ export async function generateMetadata({
   }
   const datasetSlug = dataset;
 
-  const { item } = await fetchNationalNutritionItemDetail({
-    dataset: datasetSlug,
-    foodCode: decodeURIComponent(foodCode),
-  });
-  if (!item) {
+  const detail = await loadDetail(datasetSlug, decodeURIComponent(foodCode));
+  if (detail.kind !== "found") {
     return {
       title: "식품영양성분 상세 정보",
       robots: {
@@ -55,10 +76,11 @@ export async function generateMetadata({
       },
     };
   }
+  const { item } = detail;
 
   const datasetInfo = getNationalNutritionDataset(datasetSlug);
   const title = `${item.name} 영양성분표: 열량·단백질·당류·나트륨`;
-  const description = `${item.name}의 기준량 ${item.servingUnit || "확인 필요"}, 열량 ${item.energy || "-"}kcal, 단백질 ${item.protein || "-"}g, 당류 ${item.sugars || "-"}g, 나트륨 ${item.sodium || "-"}mg 정보를 ${datasetInfo.shortName} 표준데이터 기준으로 확인합니다.`;
+  const description = `${item.name}의 기준량 ${item.servingUnit || "확인 필요"}, 열량 ${formatNutrientForDisplay(item.energy, "kcal")}, 단백질 ${formatNutrientForDisplay(item.protein, "g")}, 당류 ${formatNutrientForDisplay(item.sugars, "g")}, 나트륨 ${formatNutrientForDisplay(item.sodium, "mg")} 정보를 ${datasetInfo.shortName} 표준데이터 기준으로 확인합니다.`;
 
   return {
     title,
@@ -68,6 +90,8 @@ export async function generateMetadata({
         `/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`,
       ),
     },
+    // Name-derived legacy identifiers are not indexable records.
+    robots: isSyntheticFoodCode(datasetSlug, item) ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,
@@ -89,43 +113,43 @@ export default async function NationalNutritionDetailPage({
 
   const decodedFoodCode = decodeURIComponent(foodCode);
   const datasetInfo = getNationalNutritionDataset(datasetSlug);
-  const { item, cacheSource } = await fetchNationalNutritionItemDetail({
-    dataset: datasetSlug,
-    foodCode: decodedFoodCode,
-  });
+  const detail = requireFound(await loadDetail(datasetSlug, decodedFoodCode));
+  const { item, cacheSource, provenance } = detail;
+  const syntheticCode = isSyntheticFoodCode(datasetSlug, item);
 
-  if (!item) {
-    notFound();
+  let relatedItems: Awaited<ReturnType<typeof readRelatedNationalNutritionItemsFromDb>> = [];
+  try {
+    relatedItems = await readRelatedNationalNutritionItemsFromDb({
+      dataset: datasetSlug,
+      item,
+      limit: 6,
+    });
+  } catch {
+    // Related links are optional; their failure must not fail the record page.
   }
-
-  const relatedItems = await readRelatedNationalNutritionItemsFromDb({
-    dataset: datasetSlug,
-    foodCode: item.foodCode,
-    limit: 6,
-  });
 
   const pageUrl = absoluteUrl(
     `/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`,
   );
   const primaryMetrics = [
-    ["기준량", item.servingUnit || "-"],
-    ["열량", formatUnit(item.energy, "kcal")],
-    ["단백질", formatUnit(item.protein, "g")],
-    ["지방", formatUnit(item.fat, "g")],
-    ["탄수화물", formatUnit(item.carbs, "g")],
-    ["당류", formatUnit(item.sugars, "g")],
-    ["나트륨", formatUnit(item.sodium, "mg")],
-    ["식이섬유", formatUnit(item.fiber, "g")],
+    ["기준량", item.servingUnit || "자료 없음"],
+    ["열량", formatNutrientForDisplay(item.energy, "kcal")],
+    ["단백질", formatNutrientForDisplay(item.protein, "g")],
+    ["지방", formatNutrientForDisplay(item.fat, "g")],
+    ["탄수화물", formatNutrientForDisplay(item.carbs, "g")],
+    ["당류", formatNutrientForDisplay(item.sugars, "g")],
+    ["나트륨", formatNutrientForDisplay(item.sodium, "mg")],
+    ["식이섬유", formatNutrientForDisplay(item.fiber, "g")],
   ];
   const micronutrients = [
-    ["칼슘", formatUnit(item.calcium, "mg")],
-    ["철", formatUnit(item.iron, "mg")],
-    ["칼륨", formatUnit(item.potassium, "mg")],
-    ["비타민 A", formatUnit(item.vitaminA, "ug RAE")],
-    ["비타민 C", formatUnit(item.vitaminC, "mg")],
-    ["비타민 D", formatUnit(item.vitaminD, "ug")],
-    ["포화지방산", formatUnit(item.saturatedFat, "g")],
-    ["트랜스지방산", formatUnit(item.transFat, "g")],
+    ["칼슘", formatNutrientForDisplay(item.calcium, "mg")],
+    ["철", formatNutrientForDisplay(item.iron, "mg")],
+    ["칼륨", formatNutrientForDisplay(item.potassium, "mg")],
+    ["비타민 A", formatNutrientForDisplay(item.vitaminA, "ug RAE")],
+    ["비타민 C", formatNutrientForDisplay(item.vitaminC, "mg")],
+    ["비타민 D", formatNutrientForDisplay(item.vitaminD, "ug")],
+    ["포화지방산", formatNutrientForDisplay(item.saturatedFat, "g")],
+    ["트랜스지방산", formatNutrientForDisplay(item.transFat, "g")],
   ];
 
   const schema = {
@@ -135,7 +159,7 @@ export default async function NationalNutritionDetailPage({
     description: `${item.name}의 영양성분, 기준량, 출처, 갱신일을 ${datasetInfo.name} 기준으로 표시합니다.`,
     url: pageUrl,
     isBasedOn: NATIONAL_NUTRITION_SOURCE,
-    creator: {
+    publisher: {
       "@type": "Organization",
       name: siteConfig.name,
       url: absoluteUrl("/"),
@@ -151,13 +175,13 @@ export default async function NationalNutritionDetailPage({
     <article className="section nutrition-detail-page">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
       />
 
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/">홈</Link>
         <span>/</span>
-        <Link href="/nutrition-data">통합영양</Link>
+        <Link href="/nutrition-data">식품 검색</Link>
         <span>/</span>
         <span>{datasetInfo.shortName}</span>
       </nav>
@@ -175,7 +199,7 @@ export default async function NationalNutritionDetailPage({
           <span>{item.largeCategory || "대분류 미기재"}</span>
           <span>{item.representativeFood || "대표식품 미기재"}</span>
           <span>
-            {cacheSource === "db" ? "Turso DB 저장 데이터" : "API 확인 데이터"}
+            {cacheSource === "db" ? "영양고고 저장 자료" : "공식 원천 응답 자료"}
           </span>
         </div>
         <ComparisonNavigationLink className="button" addItem={buildComparisonItemValue(datasetSlug, item.foodCode)} href={buildComparisonHref({
@@ -228,7 +252,7 @@ export default async function NationalNutritionDetailPage({
         <dl className="source-detail-list">
           <div>
             <dt>식품코드</dt>
-            <dd>{item.foodCode}</dd>
+            <dd>{syntheticCode ? "원천 식품코드 없음 (내부 식별자로 저장된 과거 자료)" : item.foodCode}</dd>
           </div>
           <div>
             <dt>데이터셋</dt>
@@ -267,12 +291,24 @@ export default async function NationalNutritionDetailPage({
           </div>
           <div>
             <dt>데이터 생성일</dt>
-            <dd>{item.createdAt || "-"}</dd>
+            <dd>{item.createdAt || "자료 없음"}</dd>
           </div>
           <div>
-            <dt>데이터 갱신일</dt>
-            <dd>{item.updatedAt || "-"}</dd>
+            <dt>원자료 기준일</dt>
+            <dd>{provenance.sourceUpdatedAt || "자료 없음"}</dd>
           </div>
+          {provenance.storedAt ? (
+            <div>
+              <dt>영양고고 저장 시각</dt>
+              <dd><time dateTime={provenance.storedAt}>{formatKoreanDateTime(provenance.storedAt)}</time></dd>
+            </div>
+          ) : null}
+          {provenance.checkedAt ? (
+            <div>
+              <dt>원천 응답 확인 시각</dt>
+              <dd><time dateTime={provenance.checkedAt}>{formatKoreanDateTime(provenance.checkedAt)}</time></dd>
+            </div>
+          ) : null}
         </dl>
       </section>
 
@@ -287,18 +323,19 @@ export default async function NationalNutritionDetailPage({
 
       {relatedItems.length > 0 ? (
         <section className="nutrition-detail-section">
-          <h2>{datasetInfo.shortName}에서 함께 보는 영양성분표</h2>
+          <h2>같은 분류의 {datasetInfo.shortName} 영양성분표</h2>
+          <p>대표식품·중분류·대분류가 같은 저장 자료입니다. 추천이나 순위가 아닙니다.</p>
           <div className="related-nutrition-grid">
             {relatedItems.map((related) => (
               <ComparisonNavigationLink
                 key={related.foodCode}
                 href={`/nutrition-data/${datasetSlug}/${encodeURIComponent(related.foodCode)}`}
               >
-                <span>{related.typeName || datasetInfo.shortName}</span>
+                <span>{RELATED_RELATION_LABELS[related.relation]}</span>
                 <strong>{related.name || "식품명 미기재"}</strong>
                 <small>
-                  열량 {related.energy || "-"} kcal · 단백질{" "}
-                  {related.protein || "-"} g · 나트륨 {related.sodium || "-"} mg
+                  열량 {formatNutrientForDisplay(related.energy, "kcal")} · 단백질{" "}
+                  {formatNutrientForDisplay(related.protein, "g")} · 나트륨 {formatNutrientForDisplay(related.sodium, "mg")}
                 </small>
               </ComparisonNavigationLink>
             ))}
@@ -320,7 +357,7 @@ export default async function NationalNutritionDetailPage({
             <span>다른 음식, 가공식품, 원재료성 식품과 비교합니다.</span>
           </li>
           <li>
-            <Link href="/rankings">식품영양성분 랭킹</Link>
+            <Link href="/rankings">비교 기준 안내</Link>
             <span>
               열량, 단백질, 당류, 나트륨 기준의 비교 흐름을 확인합니다.
             </span>
@@ -339,6 +376,8 @@ function isDatasetSlug(value: string): value is NationalNutritionDatasetSlug {
   return datasetSlugs.has(value as NationalNutritionDatasetSlug);
 }
 
-function formatUnit(value: string, unit: string) {
-  return value ? `${value} ${unit}` : "-";
+function formatKoreanDateTime(iso: string) {
+  const date = new Date(iso);
+  if (!Number.isFinite(date.getTime())) return iso;
+  return date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "medium", timeStyle: "short" });
 }

@@ -15,6 +15,8 @@
     "content:map": "node scripts/map-blog-editorial-corpus.mjs",
     "content:prioritize": "node scripts/rank-editorial-contract-risk.mjs",
     "test:canonical-boundary": "node scripts/test-canonical-metadata-boundary.mjs",
+    "test:regression": "node scripts/run-regression-tests.mjs",
+    "test:http": "node scripts/test-http-contract.mjs",
     "nutrition:sync": "node --experimental-strip-types scripts/sync-national-nutrition.mjs",
     "gsc:sitemap": "node scripts/gsc-sitemap.mjs all",
     "gsc:sitemap:check-live": "node scripts/gsc-sitemap.mjs check-live",
@@ -24,7 +26,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
-    "next": "^16.2.7",
+    "next": "^16.3.7",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
@@ -33,10 +35,10 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "^16.2.7",
+    "eslint-config-next": "^16.3.7",
     "typescript": "^6.0.3"
   },
   "overrides": {
-    "postcss": "^8.5.10"
+    "postcss": "^8.5.28"
   }
 }

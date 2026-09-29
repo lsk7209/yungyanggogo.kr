@@ -62,6 +62,38 @@ export function normalizeComparisonAmount(value: string | undefined) {
   return (value || "120g").replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, 24) || "120g";
 }
 
+export type ComparisonAmountUnit = "g" | "ml";
+
+// Split a legacy "120g" / "300ml" amount into number + unit for the form.
+export function splitComparisonAmount(amount: string): { value: string; unit: ComparisonAmountUnit } {
+  const match = amount.trim().match(/^(\d+(?:\.\d+)?)\s*(g|ml)$/i);
+  if (!match) return { value: "120", unit: "g" };
+  return { value: match[1], unit: match[2].toLowerCase() as ComparisonAmountUnit };
+}
+
+// Accept either the separated form fields (amountValue + amountUnit) or the
+// legacy shared-URL `amount=120g`, always producing the legacy serialization.
+export function resolveComparisonAmount({
+  amount,
+  amountValue,
+  amountUnit,
+}: {
+  amount?: string;
+  amountValue?: string;
+  amountUnit?: string;
+}): { targetServingUnit: string; invalidInput: boolean } {
+  if (amountValue === undefined && amountUnit === undefined) {
+    return { targetServingUnit: normalizeComparisonAmount(amount), invalidInput: false };
+  }
+  const value = (amountValue || "").trim();
+  const unit = (amountUnit || "").trim().toLowerCase();
+  const numeric = Number(value);
+  if (!/^\d+(?:\.\d+)?$/.test(value) || !Number.isFinite(numeric) || numeric <= 0 || numeric > 100_000 || (unit !== "g" && unit !== "ml")) {
+    return { targetServingUnit: normalizeComparisonAmount(amount), invalidInput: true };
+  }
+  return { targetServingUnit: `${String(numeric)}${unit}`, invalidInput: false };
+}
+
 export function buildComparisonItemValue(
   dataset: NationalNutritionDatasetSlug,
   foodCode: string,
@@ -108,4 +140,52 @@ export function buildComparisonHref({
     .filter((ref) => ref.value !== removeValue)
     .forEach((ref) => params.append("item", ref.value));
   return `/compare?${params.toString()}`;
+}
+
+
+export type ComparisonState = { refs: ComparisonItemRef[]; basis: ComparisonBasis; targetServingUnit: string };
+
+// Server-side reader for the shared comparison state in page searchParams.
+export function readComparisonState(params: {
+  item?: string | string[];
+  basis?: string;
+  amount?: string;
+  amountValue?: string;
+  amountUnit?: string;
+} | undefined) {
+  const requested = Array.isArray(params?.item) ? params.item : params?.item ? [params.item] : [];
+  const selection = parseComparisonSelection(requested);
+  const amount = resolveComparisonAmount({ amount: params?.amount, amountValue: params?.amountValue, amountUnit: params?.amountUnit });
+  return {
+    selection,
+    invalidAmountInput: amount.invalidInput,
+    state: {
+      refs: selection.selectedRefs,
+      basis: parseComparisonBasis(params?.basis),
+      targetServingUnit: amount.targetServingUnit,
+    } satisfies ComparisonState,
+  };
+}
+
+// Carry comparison state only while something is selected, so plain browsing
+// URLs stay clean and canonical-friendly.
+export function withOptionalComparisonState(href: string, state: ComparisonState) {
+  return state.refs.length > 0 ? withComparisonState(href, state) : href;
+}
+
+// Explicit source scope parameter: only the allow-listed "upstream" is kept.
+export function parseSearchSource(value: string | undefined): "stored" | "upstream" {
+  return value === "upstream" ? "upstream" : "stored";
+}
+
+export function buildDatasetSearchHref(
+  dataset: NationalNutritionDatasetSlug,
+  { query, source, page }: { query?: string; source?: "stored" | "upstream"; page?: number },
+) {
+  const params = new URLSearchParams();
+  if (page && page > 1) params.set("page", String(page));
+  if (query) params.set("q", query);
+  if (source === "upstream") params.set("source", "upstream");
+  const search = params.toString();
+  return `/nutrition-data/${dataset}${search ? `?${search}` : ""}`;
 }
