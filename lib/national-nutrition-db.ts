@@ -523,6 +523,62 @@ export async function fetchNationalNutritionItemDetail({
 // Excludes legacy rows whose identifier was synthesized from the name.
 const SOURCE_CODE_ONLY = "food_code <> dataset_slug || '-' || food_name";
 
+const RANKED_REPRESENTATIVE = `WITH ranked AS (
+    SELECT *, ROW_NUMBER() OVER (
+      PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
+    ) AS row_rank
+    FROM national_nutrition_items
+    WHERE dataset_slug = ? AND ${SOURCE_CODE_ONLY}
+  )`;
+
+export type NutritionGroupSummary = { name: string; count: number; latestUpdatedAt: string | null };
+
+// Representative-food groups with at least `minimum` distinct stored records.
+export async function listNationalNutritionGroups(dataset: NationalNutritionDatasetSlug, minimum: number): Promise<NutritionGroupSummary[]> {
+  if (!isTursoConfigured) return [];
+  await ensureNationalNutritionSchema();
+  const result = await getDb().execute({
+    sql: `${RANKED_REPRESENTATIVE}
+      SELECT representative_food AS name, COUNT(*) AS item_count, MAX(NULLIF(updated_at, '')) AS latest_updated_at
+      FROM ranked
+      WHERE row_rank = 1 AND representative_food <> ''
+      GROUP BY representative_food
+      HAVING COUNT(*) >= ?
+      ORDER BY item_count DESC, representative_food ASC`,
+    args: [dataset, Math.max(1, Math.floor(minimum))],
+  });
+  return result.rows.map((row) => ({
+    name: String(row.name),
+    count: Number(row.item_count),
+    latestUpdatedAt: row.latest_updated_at ? String(row.latest_updated_at) : null,
+  }));
+}
+
+export async function readNationalNutritionGroupItems(dataset: NationalNutritionDatasetSlug, name: string, limit = 300) {
+  if (!isTursoConfigured) return [] as NationalNutritionItem[];
+  await ensureNationalNutritionSchema();
+  const result = await getDb().execute({
+    sql: `${RANKED_REPRESENTATIVE}
+      SELECT * FROM ranked
+      WHERE row_rank = 1 AND representative_food = ?
+      ORDER BY food_name ASC, food_code ASC
+      LIMIT ?`,
+    args: [dataset, name, Math.max(1, Math.floor(limit))],
+  });
+  return result.rows.map((row) => mapNationalNutritionRow(row as unknown as NationalNutritionRow));
+}
+
+export async function countNationalNutritionGroupItems(dataset: NationalNutritionDatasetSlug, name: string) {
+  if (!isTursoConfigured || !name.trim()) return 0;
+  await ensureNationalNutritionSchema();
+  const result = await getDb().execute({
+    sql: `${RANKED_REPRESENTATIVE}
+      SELECT COUNT(*) AS item_count FROM ranked WHERE row_rank = 1 AND representative_food = ?`,
+    args: [dataset, name],
+  });
+  return Number(result.rows[0]?.item_count ?? 0);
+}
+
 export async function countNationalNutritionSitemapItems(
   dataset: NationalNutritionDatasetSlug,
 ) {

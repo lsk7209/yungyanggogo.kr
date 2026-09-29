@@ -309,6 +309,24 @@ try {
   const tool = renderToStaticMarkup(createElement(NutritionBasisCalculator, { editable: true, servingUnit: "", nutrients: defaultLabelNutrients() }));
   check("CALC", (tool.match(/inputMode="decimal"/g) || []).length === 9 && tool.includes("환산할 수 없습니다"), "tool renders numeric inputs and asks for a valid basis");
 
+  // ---------- food-group comparison ----------
+  const group = await import("../lib/nutrition-group.ts");
+  check("GROUP", group.groupSlug(" 비스킷/쿠키/크래커 ") === "비스킷-쿠키-크래커" && group.groupSlug("닭볶음(닭갈비)") === "닭볶음(닭갈비)", "slug is URL-safe and stable");
+  const mk = (code, serving, energy, sodium) => normalize(raw(code, `군식품 ${code}`, { nutConSrtrQua: serving, enerc: energy, nat: sodium, foodLv4Nm: "군대표" }));
+  const analysis = group.analyzeGroup([mk("G1", "100g", "100", "100"), mk("G2", "200g", "400", ""), mk("G3", "50g", "100", "50"), mk("G4", "250ml", "100", "10"), mk("G5", "1인분", "300", "1")]);
+  const energyStat = analysis.stats.find((s) => s.key === "energy");
+  const sodiumStat = analysis.stats.find((s) => s.key === "sodium");
+  check("GROUP", analysis.basis === "per100g" && analysis.comparable.length === 3 && analysis.otherDimension.length === 1 && analysis.unsupportedBasis.length === 1, "compares within the dominant dimension; g/ml and non-numeric bases are excluded, not converted");
+  check("GROUP", energyStat.n === 3 && energyStat.min === 100 && energyStat.median === 200 && energyStat.max === 200, "per-100g stats: 100,200,200 kcal");
+  check("GROUP", sodiumStat.n === 2 && sodiumStat.median === 100, "blank sodium is excluded from stats, not counted as 0");
+  await cache.saveNationalNutritionItemsToDb({ dataset: "process", totalCount: null, foods: ["P1", "P2", "P3", "P4"].map((c) => mk(c, "100g", "100", "10")) });
+  check("GROUP", !(await cache.listNationalNutritionGroups("process", 5)).some((g) => g.name === "군대표"), "a 4-item group is below the publish threshold");
+  await cache.saveNationalNutritionItemsToDb({ dataset: "process", totalCount: null, foods: [mk("P5", "100g", "100", "10")] });
+  await cache.saveNationalNutritionItemsToDb({ dataset: "process", query: "dup", totalCount: null, foods: [mk("P5", "100g", "999", "10")] });
+  const listed = (await cache.listNationalNutritionGroups("process", 5)).find((g) => g.name === "군대표");
+  const groupItems = await cache.readNationalNutritionGroupItems("process", "군대표");
+  check("GROUP", listed?.count === 5 && groupItems.length === 5, "same code stored twice counts once (representative row)");
+
   // ---------- T11 request counts & API bounds ----------
   control.sqlLog = [];
   upstreamCalls = [];
