@@ -148,7 +148,7 @@ async function fetchDatasetPage(dataset, pageNo, numOfRows) {
   }
 
   const payload = JSON.parse(text);
-  const header = payload?.response?.header;
+  const header = payload?.response?.header ?? payload?.header;
   // "03" NODATA_ERROR: past the last page / nothing to return. End of data, not a failure.
   if (header?.resultCode === "03") {
     return { totalCount: null, rows: [] };
