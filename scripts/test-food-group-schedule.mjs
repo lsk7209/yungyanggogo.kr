@@ -7,10 +7,11 @@ import { readFileSync } from "node:fs";
 
 const file = "content/blog/drafts-2026-10-food-groups-30.json";
 const before = readFileSync(file, "utf8");
-execFileSync(process.execPath, ["scripts/build-food-group-drafts.mjs"], { stdio: "pipe" });
-assert.equal(readFileSync(file, "utf8"), before, "drafts file must equal generator output (run scripts/build-food-group-drafts.mjs)");
+const generated = execFileSync(process.execPath, ["scripts/build-food-group-drafts.mjs", "--stdout"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+assert.equal(generated, before, "drafts file must equal generator output (run scripts/build-food-group-drafts.mjs)");
 
 const posts = JSON.parse(before);
+const approvals = new Map(JSON.parse(readFileSync("content/editorial-data/food-group-approvals.json", "utf8")).approvals.map((a) => [a.slug, a]));
 const snapshot = JSON.parse(readFileSync("content/editorial-data/food-groups-2026-09-30.json", "utf8"));
 assert.equal(posts.length, 30);
 assert.equal(new Set(posts.map((p) => p.slug)).size, 30, "unique slugs");
@@ -26,8 +27,15 @@ for (const name of ["approved-editorial-2026-09-13.json", "scheduled-2026-10-10-
   for (const p of JSON.parse(readFileSync(`content/blog/${name}`, "utf8").replace(/^\uFEFF/, ""))) otherSlugs.add(p.slug);
 }
 for (const post of posts) {
-  assert.equal(post.humanReview, "pending", `${post.slug}: must stay pending until human review`);
-  assert.equal(post.noindex, true, `${post.slug}: must stay noindex until human review`);
+  const approval = approvals.get(post.slug);
+  if (approval) {
+    assert.ok(String(approval.reviewer || "").trim() && /^\d{4}-\d{2}-\d{2}$/.test(approval.reviewedAt), `${post.slug}: approval names a reviewer and date`);
+    assert.equal(post.humanReview, "approved");
+    assert.equal(post.noindex, false);
+  } else {
+    assert.equal(post.humanReview, "pending", `${post.slug}: must stay pending until a person approves it`);
+    assert.equal(post.noindex, true, `${post.slug}: must stay noindex until a person approves it`);
+  }
   assert.ok(!otherSlugs.has(post.slug), `${post.slug}: slug collides with an existing post`);
   const text = JSON.stringify(post);
   assert.ok(!/NaN|undefined|\{[a-z]+(?:\.[a-z0-9]+)?\}/.test(text), `${post.slug}: no unfilled values`);
@@ -35,10 +43,10 @@ for (const post of posts) {
   assert.ok(text.includes("가상 예시"), `${post.slug}: hypothetical calculation is labelled`);
   const groupLink = post.internalLinks[0].href;
   assert.match(groupLink, /^\/nutrition-data\/(food|process|material)\/group\//, `${post.slug}: links its group page`);
-  const group = snapshot.groups.find((g) => groupLink.endsWith(`/group/${encodeURIComponent(g.name)}`));
+  const group = snapshot.groups.find((g) => g.href === groupLink);
   assert.ok(group, `${post.slug}: group exists in snapshot`);
   const median = group.stats.energy.median.toLocaleString("ko-KR", { maximumFractionDigits: 1 });
   assert.ok(text.includes(`${median} kcal`), `${post.slug}: energy median comes from snapshot`);
   assert.ok(post.internalLinks.length >= 3 && post.sourceLinks.length >= 2, `${post.slug}: links and sources`);
 }
-console.log(`food-group schedule: 30 pending posts ${days[0]}..${days.at(-1)}, reproducible from snapshot`);
+console.log(`food-group schedule: 30 posts (${approvals.size} approved by a named reviewer) ${days[0]}..${days.at(-1)}, reproducible from snapshot`);

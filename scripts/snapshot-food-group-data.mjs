@@ -32,22 +32,40 @@ const all = JSON.parse(readFileSync("output/groups-data.json", "utf8"));
 const snapshot = wanted.map(([dataset, name]) => {
   const g = all.find((x) => x.dataset === dataset && x.name === name);
   if (!g) throw new Error(`missing ${dataset} ${name}`);
-  const rows = g.items.map((item) => Object.fromEntries(keys.map((k, i) => [k, num(item.values[i])])));
+  // Same rule as lib/nutrition-group.ts groupDuplicateKey: a record repeated
+  // under another code (same name, seller, basis, values) counts once.
+  const seen = new Set();
+  const items = g.items.filter((item) => {
+    const key = [item.name, item.meta.split(" · ")[0], item.serving, ...item.values].join("|");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const rows = items.map((item) => Object.fromEntries(keys.map((k, i) => [k, num(item.values[i])])));
+  // min/median/max/n are copied from the live page's summary table (computed
+  // server-side from unrounded values) so posts match the page exactly.
+  // Quartiles are computed here from the per-row values shown on the page,
+  // which are rounded to 0.1, so they can differ from exact values by ~0.05.
+  const labels = { energy: "열량", protein: "단백질", fat: "지방", carbs: "탄수화물", sugars: "당류", sodium: "나트륨" };
   const stats = Object.fromEntries(keys.map((k) => {
     const v = rows.map((r) => r[k]).filter((x) => x !== null).sort((a, b) => a - b);
-    return [k, { n: v.length, min: round(v[0] ?? null), q1: round(quantile(v, 0.25)), median: round(quantile(v, 0.5)), q3: round(quantile(v, 0.75)), max: round(v.at(-1) ?? null), unit: units[k] }];
+    const summary = g.stats.find((row) => row[0] === labels[k]);
+    if (!summary) throw new Error(`${g.name}: no live summary row for ${k}`);
+    const n = Number(String(summary[4]).split("/")[0].trim());
+    if (n !== v.length) throw new Error(`${g.name} ${k}: live n=${n} but table rows=${v.length} (re-collect after deploy)`);
+    return [k, { n, min: num(summary[1]), q1: round(quantile(v, 0.25)), median: num(summary[2]), q3: round(quantile(v, 0.75)), max: num(summary[3]), unit: units[k] }];
   }));
   const perKcal = (k) => {
     const v = rows.filter((r) => r[k] !== null && r.energy > 0).map((r) => (r[k] * 100) / r.energy).sort((a, b) => a - b);
     return v.length ? { n: v.length, median: round(quantile(v, 0.5)), q1: round(quantile(v, 0.25)), q3: round(quantile(v, 0.75)) } : null;
   };
   const makers = new Map();
-  for (const item of g.items) {
+  for (const item of items) {
     const maker = decode(item.meta.split(" · ")[0] || "").trim();
     if (maker && maker !== "해당없음" && maker !== "원재료성 식품") makers.set(maker, (makers.get(maker) || 0) + 1);
   }
   return {
-    dataset, name, href: g.href, total: g.count, comparable: g.items.length, basis: g.basis, largeCategory: g.large,
+    dataset, name, href: g.href, total: g.count, comparable: items.length, duplicates: (g.duplicates || 0) + g.items.length - items.length, basis: g.basis, largeCategory: g.large,
     stats, perKcal: { protein: perKcal("protein"), sugars: perKcal("sugars"), sodium: perKcal("sodium") },
     makers: [...makers].sort((a, b) => b[1] - a[1]).slice(0, 6), makerCount: makers.size,
   };

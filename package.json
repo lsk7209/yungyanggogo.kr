@@ -22,7 +22,9 @@
     "gsc:sitemap:check-live": "node scripts/gsc-sitemap.mjs check-live",
     "gsc:sitemap:status": "node scripts/gsc-sitemap.mjs status",
     "gsc:sitemap:verify": "node scripts/gsc-sitemap.mjs verify-property",
-    "gsc:sitemap:submit": "node scripts/gsc-sitemap.mjs submit"
+    "gsc:sitemap:submit": "node scripts/gsc-sitemap.mjs submit",
+    "blog:review": "node scripts/render-food-group-review.mjs",
+    "blog:approve": "node scripts/approve-food-group-post.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",

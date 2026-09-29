@@ -1,0 +1,4 @@
+{
+  "note": "Add entries only after a person has checked the post against the data. Use: npm run blog:approve -- <slug> --reviewer <name>",
+  "approvals": []
+}
