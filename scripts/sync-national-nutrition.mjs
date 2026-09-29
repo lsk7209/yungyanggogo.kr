@@ -64,7 +64,7 @@ for (const dataset of datasets) {
     let result;
     try {
       result = await fetchDatasetPage(dataset, pageNo, rowsPerPage);
-      totalCount = result.totalCount;
+      if (result.totalCount !== null) totalCount = result.totalCount;
     } catch (error) {
       errorMessage = error instanceof Error ? error.message : String(error);
       break;
@@ -149,6 +149,10 @@ async function fetchDatasetPage(dataset, pageNo, numOfRows) {
 
   const payload = JSON.parse(text);
   const header = payload?.response?.header;
+  // "03" NODATA_ERROR: past the last page / nothing to return. End of data, not a failure.
+  if (header?.resultCode === "03") {
+    return { totalCount: null, rows: [] };
+  }
   if (header?.resultCode !== "00") {
     throw new Error(`${dataset.slug} result ${header?.resultCode || "unknown"}: ${header?.resultMsg || text.slice(0, 200)}`);
   }

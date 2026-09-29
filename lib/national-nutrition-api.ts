@@ -73,6 +73,9 @@ export type NationalNutritionResult = NutritionCountInfo & {
 };
 
 const MAX_NUM_OF_ROWS = 50;
+// data.go.kr standard code "03" (NODATA_ERROR): the query succeeded and matched
+// nothing. That is a valid empty answer, not a provider failure.
+const NO_DATA_RESULT_CODE = "03";
 const REQUEST_TIMEOUT_MS = 9000;
 const REQUEST_HEADERS = {
   accept: "application/json,text/plain,*/*",
@@ -298,7 +301,7 @@ export async function fetchNationalNutritionItems({
     const totalCount = parseNutritionTotalCount(reportedTotalCount);
     const foods = rows.map(normalizeNationalNutritionItem);
 
-    if (resultCode !== "00") {
+    if (resultCode !== "00" && resultCode !== NO_DATA_RESULT_CODE) {
       return createNationalNutritionFailureResult(selectedDataset, response.status, resultMessage || text.slice(0, 300));
     }
 
@@ -311,6 +314,7 @@ export async function fetchNationalNutritionItems({
       countCheckedAt: new Date().toISOString(),
       latestStoredAt: null,
       count: foods.length,
+      ...(resultCode === NO_DATA_RESULT_CODE ? { totalCount: 0 } : {}),
       foods,
       resultCode,
       message: ""

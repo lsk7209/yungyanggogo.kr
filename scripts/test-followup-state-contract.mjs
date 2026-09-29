@@ -137,6 +137,12 @@ try {
   check("R10", dbDown1.ok && dbDown1.searchScope === "upstream" && dbDown1.scopeReason === "stored_unavailable", "page-1 fallback during DB outage is explicitly labelled");
   control.failDb = false;
 
+  // data.go.kr "03" NODATA_ERROR is a successful empty answer, not an outage.
+  upstream = () => envelope([], undefined, "03");
+  const noData = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "health", query: "x", source: "upstream" });
+  check("R05", noData.ok === true && noData.totalCount === 0 && noData.count === 0, "NODATA (03) is a valid zero");
+  const noDataDetail = await cache.fetchNationalNutritionItemDetail({ dataset: "food", foodCode: "NOPE-03" });
+  check("R05", noDataDetail.kind === "not_found", "NODATA (03) on a detail lookup is a confirmed absence -> 404");
   upstream = () => envelope([], 0, "30");
   const providerError = await cache.fetchNationalNutritionItemsWithDbCache({ dataset: "health", query: "x", source: "upstream" });
   check("R02", providerError.ok === false && providerError.totalCount === null, "HTTP 200 with provider error code is a failure, not zero");
