@@ -87,6 +87,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Link href="/nutrition-data">식품 검색</Link>
             <Link href="/compare">선택한 식품 비교</Link>
             <Link href="/rankings">비교 기준</Link>
+            <Link href="/tools/label-converter">100g 환산</Link>
             <Link href="/health-functional-foods">건기식 제품정보</Link>
             <Link href="/health-functional-food-nutrition">건기식 영양정보</Link>
             <Link href="/blog">성분표 읽는 법</Link>

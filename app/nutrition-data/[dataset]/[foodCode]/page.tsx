@@ -19,6 +19,7 @@ import { absoluteUrl, siteConfig } from "../../../../lib/site";
 import { serializeJsonLd } from "../../../../lib/json-ld";
 import { formatNutrientForDisplay } from "../../../../lib/nutrition-comparison";
 import { ComparisonNavigationLink } from "../../../../components/ComparisonNavigationLink";
+import { NutritionBasisCalculator } from "../../../../components/NutritionBasisCalculator";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
@@ -233,6 +234,22 @@ export default async function NationalNutritionDetailPage({
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="nutrition-detail-section">
+        <h2>{item.name} 먹는 양에 맞춰 계산하기</h2>
+        <p>원자료 기준량을 100g(100ml)당, 100kcal당, 직접 입력한 섭취량 기준으로 바꿔 봅니다.</p>
+        <NutritionBasisCalculator
+          servingUnit={item.servingUnit}
+          nutrients={[
+            { key: "energy", label: "열량", unit: "kcal", raw: item.energy },
+            { key: "carbs", label: "탄수화물", unit: "g", raw: item.carbs },
+            { key: "sugars", label: "당류", unit: "g", raw: item.sugars },
+            { key: "protein", label: "단백질", unit: "g", raw: item.protein },
+            { key: "fat", label: "지방", unit: "g", raw: item.fat },
+            { key: "sodium", label: "나트륨", unit: "mg", raw: item.sodium },
+          ]}
+        />
       </section>
 
       <section className="nutrition-detail-section">

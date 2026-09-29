@@ -2199,3 +2199,15 @@ details.data-license-panel dl {
 .home-search {
   margin-top: 18px;
 }
+
+.basis-calculator { margin: 16px 0 28px; }
+.basis-calculator__inputs { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 12px; }
+.basis-calculator__inputs select { min-height: 42px; padding: 0 10px; border: 1px solid var(--border); border-radius: 10px; font: inherit; }
+.basis-calculator__values { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.basis-calculator__values label { display: grid; gap: 4px; font-size: 14px; font-weight: 700; }
+.basis-calculator__values input { min-height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 10px; font: inherit; }
+.basis-calculator__table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px; }
+.basis-calculator__table th, .basis-calculator__table td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.basis-calculator__table thead th { background: var(--bg); font-weight: 800; }
+.basis-calculator__table td small { display: block; margin-top: 2px; color: var(--ink-2); font-size: 12px; }
+.basis-calculator__note { color: var(--ink-2); font-size: 13px; }

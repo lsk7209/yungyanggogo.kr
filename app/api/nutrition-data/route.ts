@@ -35,7 +35,9 @@ export async function GET(request: Request) {
   }
 
   if (dataset && datasetSlugs.has(dataset)) {
-    const result = await fetchNationalNutritionItemsWithDbCache({ dataset, query: q, pageNo, numOfRows });
+    // Allow-listed scope, same as the dataset page.
+    const source = searchParams.get("source") === "upstream" ? "upstream" : "stored";
+    const result = await fetchNationalNutritionItemsWithDbCache({ dataset, query: q, pageNo, numOfRows, source });
     return NextResponse.json(
       {
         ok: result.ok,
@@ -44,6 +46,7 @@ export async function GET(request: Request) {
         query: q || null,
         cacheSource: result.cacheSource,
         searchScope: result.searchScope,
+        ...(result.ok ? {} : { failureReason: result.failureReason ?? null }),
         fallback: result.fallback || false,
         totalCount: result.totalCount,
         countScope: result.countScope,

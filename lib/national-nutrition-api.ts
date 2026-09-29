@@ -69,6 +69,8 @@ export type NationalNutritionResult = NutritionCountInfo & {
   foods: NationalNutritionItem[];
   fallback?: boolean;
   resultCode?: string;
+  // Safe, enumerated failure reason for diagnostics (never contains the key or raw body).
+  failureReason?: string;
   message: string;
 };
 
@@ -275,7 +277,7 @@ export async function fetchNationalNutritionItems({
   const serviceKey = getNationalNutritionApiKey();
 
   if (!serviceKey) {
-    return createNationalNutritionFailureResult(selectedDataset, 503, "현재 전국통합식품영양성분정보 데이터를 제공할 수 없습니다.");
+    return { ...createNationalNutritionFailureResult(selectedDataset, 503, "현재 전국통합식품영양성분정보 데이터를 제공할 수 없습니다."), failureReason: "no_key" };
   }
 
   const url = buildNationalNutritionUrl({
@@ -293,16 +295,21 @@ export async function fetchNationalNutritionItems({
     }, { timeoutMs: REQUEST_TIMEOUT_MS });
 
     if (!response.ok) {
-      return createNationalNutritionFailureResult(selectedDataset, response.status, text.slice(0, 300));
+      return { ...createNationalNutritionFailureResult(selectedDataset, response.status, text.slice(0, 300)), failureReason: `http_${response.status}${describeGatewayError(text)}` };
     }
 
-    const payload = JSON.parse(text) as unknown;
+    let payload: unknown;
+    try {
+      payload = JSON.parse(text) as unknown;
+    } catch {
+      return { ...createNationalNutritionFailureResult(selectedDataset, 502, "non-json"), failureReason: `non_json${describeGatewayError(text)}` };
+    }
     const { rows, reportedTotalCount, resultCode, resultMessage } = extractNationalNutritionItems(payload);
     const totalCount = parseNutritionTotalCount(reportedTotalCount);
     const foods = rows.map(normalizeNationalNutritionItem);
 
     if (resultCode !== "00" && resultCode !== NO_DATA_RESULT_CODE) {
-      return createNationalNutritionFailureResult(selectedDataset, response.status, resultMessage || text.slice(0, 300));
+      return { ...createNationalNutritionFailureResult(selectedDataset, response.status, resultMessage || text.slice(0, 300)), failureReason: `result_${safeToken(resultCode) || "missing"}` };
     }
 
     return {
@@ -320,12 +327,32 @@ export async function fetchNationalNutritionItems({
       message: ""
     };
   } catch (error) {
-    return createNationalNutritionFailureResult(
-      selectedDataset,
-      502,
-      error instanceof Error ? error.message : "전국통합식품영양성분정보 API 응답을 처리하지 못했습니다."
-    );
+    return {
+      ...createNationalNutritionFailureResult(
+        selectedDataset,
+        502,
+        error instanceof Error ? error.message : "전국통합식품영양성분정보 API 응답을 처리하지 못했습니다."
+      ),
+      failureReason: `network_${safeToken(error instanceof Error ? error.name : "unknown") || "unknown"}`,
+    };
   }
+}
+
+function safeToken(value: string) {
+  return value.replace(/[^A-Za-z0-9_]/g, "").slice(0, 60);
+}
+
+// data.go.kr gateway errors are XML with enumerated codes, e.g.
+// <returnReasonCode>30</returnReasonCode><returnAuthMsg>SERVICE_KEY_IS_NOT_REGISTERED_ERROR</returnAuthMsg>.
+// Only those enumerated tokens are surfaced; the body itself is never exposed.
+export function describeGatewayError(text: string) {
+  const code = text.match(/<returnReasonCode>\s*([0-9]{1,3})\s*<\/returnReasonCode>/)?.[1];
+  const auth = text.match(/<returnAuthMsg>\s*([A-Z_]{3,60})\s*<\/returnAuthMsg>/)?.[1];
+  const errMsg = text.match(/<errMsg>\s*([A-Z_ ]{3,40})\s*<\/errMsg>/)?.[1];
+  const parts = [code && `code${code}`, auth, errMsg && safeToken(errMsg.replace(/ /g, "_"))].filter(Boolean);
+  if (parts.length) return `:${parts.join(":")}`;
+  const trimmed = text.trimStart();
+  return trimmed.startsWith("<") ? ":xml" : trimmed ? ":text" : ":empty";
 }
 
 export function normalizeNationalNutritionItem(item: RawNationalNutritionItem): NationalNutritionItem {
