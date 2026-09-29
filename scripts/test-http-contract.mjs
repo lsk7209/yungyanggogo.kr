@@ -161,6 +161,11 @@ try {
   const ld = detail.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) ?? [];
   check("T09", detailResponse.status === 200 && ld.length >= 2 && ld.every((block) => (block.match(/<\/script>/g) || []).length === 1), "JSON-LD blocks cannot be closed by source strings");
   check("T09", !detail.includes("<img src=x onerror"), "source name is escaped in HTML");
+  // ISR pages must be cacheable and keep real links in the server HTML.
+  const detailCache = detailResponse.headers.get("cache-control") || "";
+  check("ISR", !/no-store|private/.test(detailCache), `detail page is cacheable (cache-control: ${detailCache})`);
+  const detailBody = detail.replace(/<script[\s\S]*?<\/script>/g, "");
+  check("ISR", /<a[^>]+href="\/nutrition-data\/food\/HTTP-0\d\d"/.test(detailBody) && /<a[^>]+href="\/compare\?item=food%7CHTTP-XSS"/.test(detailBody), "related and add-to-compare links are real anchors in server HTML");
   check("R42/R44", !detail.includes("adsbygoogle") && !detail.includes("googletagmanager"), "ads/analytics disabled → no network script tags");
   const missingDetail = await get(base, "/nutrition-data/food/NO-SUCH-CODE");
   const missingDetailHtml = await missingDetail.text();
@@ -190,7 +195,9 @@ try {
     const html = await response.text();
     check("GROUP", response.status === 200 && !/noindex/.test(robotsMeta(html)) && sameUrl(canonical(html), loc), `${u.pathname} is 200, indexable, self-canonical`);
   }
-  const groupPage = await (await get(base, "/nutrition-data/food/group/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%8C%80%ED%91%9C")).text();
+  const groupResponse = await get(base, "/nutrition-data/food/group/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%8C%80%ED%91%9C");
+  check("ISR", !/no-store|private/.test(groupResponse.headers.get("cache-control") || ""), `group page is cacheable (${groupResponse.headers.get("cache-control")})`);
+  const groupPage = await groupResponse.text();
   check("GROUP", groupPage.includes("61종") && groupPage.includes("중앙값") && groupPage.includes("제품 순위가 아닙니다"), "group page shows count, stats and the no-ranking notice");
   check("GROUP", (await get(base, "/nutrition-data/food/group/%EC%97%86%EB%8A%94%EA%B5%B0")).status === 404, "unknown group is 404");
   const mixed = await get(base, "/nutrition-data/food/group/%ED%98%BC%ED%95%A9%EA%B5%B0");

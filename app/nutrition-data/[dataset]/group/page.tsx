@@ -8,6 +8,12 @@ import { absoluteUrl, siteConfig } from "../../../../lib/site";
 
 export const revalidate = 86400;
 
+// An empty list makes every path ISR: rendered on first visit, then cached.
+// Without generateStaticParams Next 16 renders these routes on every request.
+export function generateStaticParams() {
+  return [];
+}
+
 type PageProps = { params: Promise<{ dataset: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
