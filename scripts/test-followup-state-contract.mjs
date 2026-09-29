@@ -331,6 +331,15 @@ try {
   const bases = await cache.readNationalNutritionGroupBases("process");
   check("GROUP", bases.filter((b) => b.name === "군대표").length === 5 && group.comparableCountsByGroup(bases).get("군대표") === 5, "group bases query returns one representative row per code");
 
+  // Home page links to publishable food groups (ISR; section is optional on DB failure).
+  const HomePage = (await import("../app/page.tsx")).default;
+  const homeHtml = await render(HomePage());
+  check("HOME", homeHtml.includes("식품군별 영양성분 비교") && homeHtml.includes("/nutrition-data/process/group/%EA%B5%B0%EB%8C%80%ED%91%9C"), "home lists publishable groups");
+  control.failDb = true;
+  const homeNoDb = await render(HomePage());
+  control.failDb = false;
+  check("HOME", !homeNoDb.includes("식품군별 영양성분 비교") && homeNoDb.includes("식품 영양성분,"), "home still renders without the group section when the DB fails");
+
   // ---------- T11 request counts & API bounds ----------
   control.sqlLog = [];
   upstreamCalls = [];

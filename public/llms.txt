@@ -1,10 +1,26 @@
 # 영양고고
 
-영양고고는 식품영양성분 공공데이터를 바탕으로 식품의 영양성분을 비교하기 위한 사이트입니다.
+> 공공데이터포털 전국통합식품영양성분정보 표준데이터를 바탕으로 식품의 영양성분을 기준량·출처와 함께 검색하고, 100g·100ml·100kcal·섭취량 기준으로 비교하는 사이트입니다.
+
+## 주요 페이지
+
+- [식품 영양성분 검색](https://yungyanggogo.kr/nutrition-data): 음식·가공식품·원재료성 식품·건강기능식품 자료를 식품명으로 검색합니다.
+- [음식 식품군별 비교](https://yungyanggogo.kr/nutrition-data/food/group): 대표식품이 같은 자료를 100g(100ml)당 최저·중앙값·최고로 비교합니다.
+- [가공식품 식품군별 비교](https://yungyanggogo.kr/nutrition-data/process/group)
+- [원재료성 식품 식품군별 비교](https://yungyanggogo.kr/nutrition-data/material/group)
+- [영양성분표 100g 환산 계산기](https://yungyanggogo.kr/tools/label-converter): 포장지 영양성분표를 100g·100kcal·섭취량 기준으로 환산합니다.
+- [비교 기준 안내](https://yungyanggogo.kr/rankings): 100g·100kcal·1회 제공량 기준의 쓰임을 설명합니다.
+- [영양성분표 읽는 법](https://yungyanggogo.kr/blog): 검토를 거친 기준 설명 글입니다.
+
+## 정책
+
+- [편집·출처 정책](https://yungyanggogo.kr/editorial-policy)
+- [영양고고 소개](https://yungyanggogo.kr/about)
 
 ## Content policy
 
 - 질병 예방, 치료, 완화 효능을 주장하지 않습니다.
-- 영양강조표시는 식약처 기준과 측정값을 함께 제시하는 객관 비교 정보로만 다룹니다.
-- 제품 평가는 100g, 100kcal 등 정규화 기준과 출처, 검토일을 함께 표시합니다.
+- 영양강조표시 충족 여부는 판정하지 않으며, 측정값과 기준량을 함께 제시하는 비교 정보로만 다룹니다.
+- 비교는 100g, 100ml, 100kcal 등 같은 기준으로 환산할 수 있는 값만 계산하고 출처와 원자료 기준일을 함께 표시합니다. 제품 순위를 매기지 않습니다.
+- 빈값·미검출·미량을 0으로 바꾸지 않고, g과 ml을 밀도 없이 서로 환산하지 않습니다.
 - 건강기능식품 제휴/광고 표현은 제외합니다.
