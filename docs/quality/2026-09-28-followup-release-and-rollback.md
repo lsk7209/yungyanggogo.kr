@@ -54,3 +54,10 @@
 
 ## 다음 한 단계 (승인 필요)
 운영 DB 읽기 권한으로 ① 데이터셋별 저장 행 수 ② 합성 코드 행 수를 확인해 위 "동작 변화 1"의 영향 범위를 판단한 뒤 push/배포 여부 결정.
+
+## 2026-09-29 추가 반영 (PR #1~#5, main 병합·운영 확인)
+- **원천 API 전면 실패의 원인 (F-005 해결)**: 공급자 응답이 `{ response: { header, body } }`가 아니라 래퍼 없는 `{ header, body }`로 바뀌어 resultCode를 읽지 못하고 있었음. 이전 코드는 이 실패를 빈 결과/404로 숨겼음. 안전한 진단 코드(`failureReason`: 키 이름·숫자 코드만, 키·원문 비노출)를 배포해 운영에서 `result_missing:header(resultCode,resultMsg);body()`를 확인한 뒤 두 형태 모두 파싱하도록 수정(PR #5). 운영 확인: `/api/nutrition-data?dataset=food&q=떡볶이&source=upstream` → ok, 2건; 미저장 코드 상세 → 404.
+- sync 스크립트도 같은 파서를 쓰므로 원천 동기화가 다시 동작할 것으로 예상(예약 실행 결과는 미확인).
+- data.go.kr `03`(NODATA) = 정상 0건 (PR #2).
+- 새 기능: `/tools/label-converter`(영양성분표 100g·100kcal·섭취량 환산, 브라우저 내 계산), 상세 페이지 "먹는 양에 맞춰 계산하기" (PR #3).
+- next 16.3.7, npm audit 0건 (PR #1).
