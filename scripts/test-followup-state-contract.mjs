@@ -286,6 +286,9 @@ try {
   const gw = await (await nutritionApi(new Request("http://fixture.test/api/nutrition-data?dataset=food&q=x&source=upstream"))).json();
   check("DIAG", gw.ok === false && gw.failureReason === "non_json:code30:SERVICE_KEY_IS_NOT_REGISTERED_ERROR:SERVICE_ERROR", `gateway XML error is reported as enumerated tokens (got ${gw.failureReason})`);
   check("DIAG", !JSON.stringify(gw).includes("synthetic-followup-key"), "service key never appears in the API response");
+  upstream = () => new Response(JSON.stringify({ code: -4, msg: "secret-ish text synthetic-followup-key" }), { status: 200 });
+  const shape = await (await nutritionApi(new Request("http://fixture.test/api/nutrition-data?dataset=food&q=x&source=upstream"))).json();
+  check("DIAG", shape.failureReason === "result_missing:code();msg();code=-4" && !JSON.stringify(shape).includes("secret"), `unexpected JSON shape reports key names and numeric codes only (got ${shape.failureReason})`);
   upstream = () => new Response("Unauthorized", { status: 401 });
   check("DIAG", (await (await nutritionApi(new Request("http://fixture.test/api/nutrition-data?dataset=food&q=x&source=upstream"))).json()).failureReason === "http_401:text", "HTTP status is reported");
   upstream = () => { throw Object.assign(new Error("boom"), { name: "TypeError" }); };
