@@ -5,7 +5,11 @@
   --bg-sunken: #f0f2ef;
   --ink: #1a1d1a;
   --ink-2: #5b635b;
-  --ink-3: #8a928a;
+  --ink-3: #666e66;
+  /* Defaults so article-accent components also render outside blog articles. */
+  --article-accent: var(--accent);
+  --article-accent-ink: var(--accent-ink);
+  --article-accent-soft: var(--accent-soft);
   --accent: #2e7d5b;
   --accent-ink: #1e6446;
   --accent-soft: #e6f0ea;
@@ -535,6 +539,11 @@ h3 {
   color: white;
 }
 
+/* Brand green on the dark card is 3.4:1; use a lighter tint for AA contrast. */
+.trust-card .eyebrow {
+  color: #8fd3b1;
+}
+
 .trust-card p:not(.eyebrow) {
   max-width: 650px;
   color: rgb(255 255 255 / 68%);
@@ -730,7 +739,8 @@ h3 {
 }
 
 .keyword-row span:first-child {
-  background: var(--article-accent);
+  /* The -ink shade keeps white text at >= 4.5:1 for every theme (amber/terra accents are too light). */
+  background: var(--article-accent-ink);
   color: white;
 }
 
@@ -2216,3 +2226,6 @@ details.data-license-panel dl {
 .group-index li { display: flex; justify-content: space-between; gap: 8px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); }
 .group-index span { color: var(--ink-2); font-size: 13px; }
 .basis-calculator__table th small { display: block; color: var(--ink-2); font-size: 12px; font-weight: 400; }
+
+.home-group-block { margin-bottom: 20px; }
+.home-group-block h3 { margin: 0 0 10px; font-size: 17px; }

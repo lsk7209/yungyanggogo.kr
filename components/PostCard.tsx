@@ -12,10 +12,11 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <article className="post-card">
-      <Link className="post-card__media" href={`/blog/${post.slug}`} aria-label={`${post.title} 읽기`}>
+      {/* Duplicate of the title link for pointer users; hidden from assistive tech and tab order. */}
+      <Link className="post-card__media" href={`/blog/${post.slug}`} aria-hidden="true" tabIndex={-1}>
         <Image
           src={thumbnail}
-          alt={`${post.title} 썸네일`}
+          alt=""
           width={960}
           height={420}
           sizes="(max-width: 860px) 100vw, 50vw"

@@ -199,6 +199,11 @@ try {
   check("GROUP", (await get(base, "/nutrition-data/health/group")).status === 404, "health (mg/capsule basis) has no group pages");
   check("GROUP", detail.includes("영양성분 비교표 보기"), "detail page links to its group");
 
+  const llms = await (await get(base, "/llms.txt")).text();
+  check("LLMS", /^# /.test(llms) && /^> /m.test(llms) && (llms.match(/\]\(https:\/\/yungyanggogo\.kr\//g) || []).length >= 5, "llms.txt has a summary and links");
+  const blogIndex = await (await get(base, "/blog")).text();
+  check("A11Y", /post-card__media" aria-hidden="true" tabindex="-1"/i.test(blogIndex), "duplicate thumbnail link is hidden from assistive tech");
+
   // API bounds (T11).
   const apiJson = await (await get(base, "/api/nutrition-data?dataset=food&numOfRows=100000&pageNo=-4")).json();
   check("T11", apiJson.ok && apiJson.count === 50 && apiJson.searchScope === "stored", "API clamps numOfRows and reports scope");

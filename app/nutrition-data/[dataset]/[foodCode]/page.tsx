@@ -229,14 +229,14 @@ export default async function NationalNutritionDetailPage({
 
       <section className="nutrition-detail-section">
         <h2>{item.name} 주요 영양성분</h2>
-        <div className="nutrition-table">
+        <dl className="nutrition-table">
           {primaryMetrics.map(([label, value]) => (
             <div key={label}>
               <dt>{label}</dt>
               <dd>{value}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       </section>
 
       <section className="nutrition-detail-section">
@@ -257,14 +257,14 @@ export default async function NationalNutritionDetailPage({
 
       <section className="nutrition-detail-section">
         <h2>미량영양소와 지방산</h2>
-        <div className="nutrition-table">
+        <dl className="nutrition-table">
           {micronutrients.map(([label, value]) => (
             <div key={label}>
               <dt>{label}</dt>
               <dd>{value}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       </section>
 
       <section className="nutrition-detail-section">

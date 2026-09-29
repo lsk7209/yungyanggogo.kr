@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "../lib/blog";
 import { absoluteUrl } from "../lib/site";
+import { groupSlug, type GroupDataset } from "../lib/nutrition-group";
+import { loadPublishableGroups } from "../lib/nutrition-group-data";
+import type { NutritionGroupSummary } from "../lib/national-nutrition-db";
 
 export const metadata: Metadata = {
   alternates: {
@@ -47,8 +50,25 @@ const rankingCards = [
   }
 ];
 
-export default function HomePage() {
+// Daily ISR: food-group links come from stored data; the page never fails on it.
+export const revalidate = 86400;
+
+async function loadHomeGroups() {
+  const sections: { dataset: GroupDataset; label: string; groups: NutritionGroupSummary[] }[] = [];
+  for (const [dataset, label] of [["food", "음식"], ["process", "가공식품"]] as const) {
+    try {
+      const groups = (await loadPublishableGroups(dataset)).slice(0, 8);
+      if (groups.length) sections.push({ dataset, label, groups });
+    } catch {
+      // Optional section.
+    }
+  }
+  return sections;
+}
+
+export default async function HomePage() {
   const latestPost = getAllPosts()[0];
+  const groupSections = await loadHomeGroups();
 
   return (
     <>
@@ -117,6 +137,29 @@ export default function HomePage() {
         <Link className="button" href="/nutrition-data">식품 검색으로 이동</Link>{" "}
         <Link className="button button--light" href="/tools/label-converter">포장지 영양성분표 100g 환산하기</Link>
       </section>
+
+      {groupSections.length ? (
+        <section className="section">
+          <div className="section__head">
+            <p className="eyebrow">Food Groups</p>
+            <h2>식품군별 영양성분 비교</h2>
+            <p>대표식품이 같은 공공데이터 자료를 100g(100ml)당 최저·중앙값·최고로 비교합니다. 제품 순위가 아닙니다.</p>
+          </div>
+          {groupSections.map((section) => (
+            <div key={section.dataset} className="home-group-block">
+              <h3><Link href={`/nutrition-data/${section.dataset}/group`}>{section.label} 식품군 전체 보기</Link></h3>
+              <ul className="group-index">
+                {section.groups.map((group) => (
+                  <li key={group.name}>
+                    <Link href={`/nutrition-data/${section.dataset}/group/${encodeURIComponent(groupSlug(group.name))}`}>{group.name}</Link>
+                    <span>{group.count}종</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      ) : null}
 
       <section className="section data-preview">
         <div className="section__head">
