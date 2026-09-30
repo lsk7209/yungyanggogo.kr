@@ -1,4 +1,155 @@
 {
   "note": "Add entries only after a person has checked the post against the data. Use: npm run blog:approve -- <slug> --reviewer <name>",
-  "approvals": []
+  "approvals": [
+    {
+      "slug": "bread-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "cake-sugar-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "cookie-biscuit-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "corn-nutrition-raw-boiled-dried",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "curry-roux-nutrition-basis",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "fish-cake-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "fried-chicken-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "frozen-dumpling-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "fruit-vegetable-juice-sugar-100ml",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "ginger-tea-sugar-100ml-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "ham-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "instant-noodle-dish-nutrition-100g",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "instant-rice-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "kimchi-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "lunchbox-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "mackerel-nutrition-by-state",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "marinated-meat-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "pizza-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "porridge-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "rice-cake-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "salad-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "salmon-nutrition-by-state",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "salted-seafood-sodium-100g",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "sandwich-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "sauce-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "sausage-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "side-dish-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "snack-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "soup-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    },
+    {
+      "slug": "stew-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-09-30"
+    }
+  ]
 }

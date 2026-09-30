@@ -15,8 +15,8 @@
     "publishedAt": "2026-10-01T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -251,8 +251,8 @@
     "publishedAt": "2026-10-02T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -492,8 +492,8 @@
     "publishedAt": "2026-10-03T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -728,8 +728,8 @@
     "publishedAt": "2026-10-04T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -964,8 +964,8 @@
     "publishedAt": "2026-10-05T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -1200,8 +1200,8 @@
     "publishedAt": "2026-10-06T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -1441,8 +1441,8 @@
     "publishedAt": "2026-10-07T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -1682,8 +1682,8 @@
     "publishedAt": "2026-10-08T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -1923,8 +1923,8 @@
     "publishedAt": "2026-10-09T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -2164,8 +2164,8 @@
     "publishedAt": "2026-10-10T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -2405,8 +2405,8 @@
     "publishedAt": "2026-10-11T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -2641,8 +2641,8 @@
     "publishedAt": "2026-10-12T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -2882,8 +2882,8 @@
     "publishedAt": "2026-10-13T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -3123,8 +3123,8 @@
     "publishedAt": "2026-10-14T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -3364,8 +3364,8 @@
     "publishedAt": "2026-10-15T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -3605,8 +3605,8 @@
     "publishedAt": "2026-10-16T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -3846,8 +3846,8 @@
     "publishedAt": "2026-10-17T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -4087,8 +4087,8 @@
     "publishedAt": "2026-10-18T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -4328,8 +4328,8 @@
     "publishedAt": "2026-10-19T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -4569,8 +4569,8 @@
     "publishedAt": "2026-10-20T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -4810,8 +4810,8 @@
     "publishedAt": "2026-10-21T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -5051,8 +5051,8 @@
     "publishedAt": "2026-10-22T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -5292,8 +5292,8 @@
     "publishedAt": "2026-10-23T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
@@ -5533,8 +5533,8 @@
     "publishedAt": "2026-10-24T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -5774,8 +5774,8 @@
     "publishedAt": "2026-10-25T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -6015,8 +6015,8 @@
     "publishedAt": "2026-10-26T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -6256,8 +6256,8 @@
     "publishedAt": "2026-10-27T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -6497,8 +6497,8 @@
     "publishedAt": "2026-10-28T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -6738,8 +6738,8 @@
     "publishedAt": "2026-10-29T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -6979,8 +6979,8 @@
     "publishedAt": "2026-10-30T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
