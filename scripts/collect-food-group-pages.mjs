@@ -19,7 +19,9 @@ for (const dataset of ["food", "process", "material"]) {
     });
     const basis = (html.match(/<h2>(100(?:g|ml)당) 요약<\/h2>/) || [])[1];
     const large = (html.match(/<h2>([^<]+) 분류의 다른 식품군<\/h2>/) || [])[1] || "";
-    out.push({ dataset, ...g, basis, large, stats: statRows, items: itemRows });
+    // Records the page lists as duplicates (counted once, not in the table).
+    const duplicates = (html.match(/<\/a> \(중복 등록 자료\)<\/li>/g) || []).length;
+    out.push({ dataset, ...g, basis, large, duplicates, stats: statRows, items: itemRows });
   }
 }
 writeFileSync("output/groups-data.json", JSON.stringify(out, null, 1));

@@ -8,6 +8,7 @@
    "href": "/nutrition-data/food/group/%EC%83%8C%EB%93%9C%EC%9C%84%EC%B9%98",
    "total": 232,
    "comparable": 232,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "",
    "stats": {
@@ -120,8 +121,9 @@
    "href": "/nutrition-data/food/group/%EB%8B%AD%ED%8A%80%EA%B9%80",
    "total": 91,
    "comparable": 87,
+   "duplicates": 0,
    "basis": "100g당",
-   "largeCategory": "튀김류",
+   "largeCategory": "",
    "stats": {
     "energy": {
      "n": 87,
@@ -232,6 +234,7 @@
    "href": "/nutrition-data/food/group/%EC%83%90%EB%9F%AC%EB%93%9C",
    "total": 57,
    "comparable": 53,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "",
    "stats": {
@@ -344,6 +347,7 @@
    "href": "/nutrition-data/food/group/%ED%94%BC%EC%9E%90",
    "total": 11,
    "comparable": 11,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "",
    "stats": {
@@ -448,6 +452,7 @@
    "href": "/nutrition-data/food/group/%EC%83%9D%EA%B0%95%EC%B0%A8",
    "total": 18,
    "comparable": 12,
+   "duplicates": 0,
    "basis": "100ml당",
    "largeCategory": "",
    "stats": {
@@ -547,21 +552,22 @@
    "name": "만두",
    "href": "/nutrition-data/process/group/%EB%A7%8C%EB%91%90",
    "total": 40,
-   "comparable": 40,
+   "comparable": 39,
+   "duplicates": 1,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
     "energy": {
-     "n": 40,
+     "n": 39,
      "min": 136,
      "q1": 181,
-     "median": 192.5,
-     "q3": 210.3,
+     "median": 194,
+     "q3": 210.5,
      "max": 277,
      "unit": "kcal"
     },
     "protein": {
-     "n": 40,
+     "n": 39,
      "min": 5,
      "q1": 7,
      "median": 7.5,
@@ -570,25 +576,25 @@
      "unit": "g"
     },
     "fat": {
-     "n": 40,
+     "n": 39,
      "min": 2.1,
      "q1": 7,
-     "median": 8.8,
+     "median": 9,
      "q3": 10,
      "max": 13,
      "unit": "g"
     },
     "carbs": {
-     "n": 40,
+     "n": 39,
      "min": 11,
-     "q1": 18.9,
-     "median": 21.3,
-     "q3": 24.2,
+     "q1": 19,
+     "median": 22,
+     "q3": 24.4,
      "max": 35.3,
      "unit": "g"
     },
     "sugars": {
-     "n": 40,
+     "n": 39,
      "min": 0,
      "q1": 2,
      "median": 2.6,
@@ -597,33 +603,33 @@
      "unit": "g"
     },
     "sodium": {
-     "n": 40,
+     "n": 39,
      "min": 180,
-     "q1": 342.8,
+     "q1": 342.5,
      "median": 358,
-     "q3": 396.3,
+     "q3": 397.5,
      "max": 475,
      "unit": "mg"
     }
    },
    "perKcal": {
     "protein": {
-     "n": 40,
+     "n": 39,
      "median": 3.9,
      "q1": 3.4,
      "q3": 4.4
     },
     "sugars": {
-     "n": 40,
+     "n": 39,
      "median": 1.3,
      "q1": 1,
      "q3": 1.7
     },
     "sodium": {
-     "n": 40,
-     "median": 194.4,
-     "q1": 174.2,
-     "q3": 204.5
+     "n": 39,
+     "median": 194,
+     "q1": 171.7,
+     "q3": 202.9
     }
    },
    "makers": [
@@ -640,11 +646,11 @@
      3
     ],
     [
-     "주식회사금배고",
-     3
+     "오뚜기냉동식품주식회사",
+     2
     ],
     [
-     "오뚜기냉동식품주식회사",
+     "주식회사금배고",
      2
     ],
     [
@@ -659,89 +665,90 @@
    "name": "일반과자",
    "href": "/nutrition-data/process/group/%EC%9D%BC%EB%B0%98%EA%B3%BC%EC%9E%90",
    "total": 33,
-   "comparable": 33,
+   "comparable": 31,
+   "duplicates": 2,
    "basis": "100g당",
    "largeCategory": "과자류·빵류 또는 떡류",
    "stats": {
     "energy": {
-     "n": 33,
+     "n": 31,
      "min": 100,
-     "q1": 419,
+     "q1": 441.5,
      "median": 490,
-     "q3": 530,
+     "q3": 556.5,
      "max": 706,
      "unit": "kcal"
     },
     "protein": {
-     "n": 33,
+     "n": 31,
      "min": 1.9,
      "q1": 5.6,
-     "median": 6.7,
+     "median": 7.4,
      "q3": 10,
      "max": 13.3,
      "unit": "g"
     },
     "fat": {
-     "n": 33,
+     "n": 31,
      "min": 0,
-     "q1": 17,
+     "q1": 17.2,
      "median": 20,
-     "q3": 24.9,
+     "q3": 25,
      "max": 48,
      "unit": "g"
     },
     "carbs": {
-     "n": 33,
+     "n": 31,
      "min": 5,
-     "q1": 59.5,
+     "q1": 58.8,
      "median": 68,
-     "q3": 76.4,
+     "q3": 74,
      "max": 89.8,
      "unit": "g"
     },
     "sugars": {
-     "n": 33,
+     "n": 31,
      "min": 0,
-     "q1": 13,
-     "median": 16,
-     "q3": 25,
+     "q1": 11.6,
+     "median": 15,
+     "q3": 24.2,
      "max": 44.8,
      "unit": "g"
     },
     "sodium": {
-     "n": 33,
+     "n": 31,
      "min": 5,
-     "q1": 220,
-     "median": 350,
-     "q3": 446,
+     "q1": 212.5,
+     "median": 322,
+     "q3": 443,
      "max": 1020,
      "unit": "mg"
     }
    },
    "perKcal": {
     "protein": {
-     "n": 33,
+     "n": 31,
      "median": 1.7,
      "q1": 1.2,
      "q3": 2
     },
     "sugars": {
-     "n": 33,
-     "median": 3.7,
+     "n": 31,
+     "median": 3.6,
      "q1": 2.3,
-     "q3": 5.2
+     "q3": 5.1
     },
     "sodium": {
-     "n": 33,
-     "median": 67.7,
-     "q1": 42.8,
-     "q3": 95.5
+     "n": 31,
+     "median": 60.8,
+     "q1": 42.7,
+     "q3": 99.2
     }
    },
    "makers": [
     [
      "LOC MARIA - SITE DE LANVALLAY",
-     4
+     3
     ],
     [
      "풍전나이스제과(주)",
@@ -772,6 +779,7 @@
    "href": "/nutrition-data/process/group/%EC%96%91%EB%85%90%EC%9C%A1",
    "total": 30,
    "comparable": 30,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "식육가공품 및 포장육",
    "stats": {
@@ -883,89 +891,90 @@
    "name": "기타 소스류",
    "href": "/nutrition-data/process/group/%EA%B8%B0%ED%83%80-%EC%86%8C%EC%8A%A4%EB%A5%98",
    "total": 29,
-   "comparable": 27,
+   "comparable": 26,
+   "duplicates": 1,
    "basis": "100g당",
    "largeCategory": "",
    "stats": {
     "energy": {
-     "n": 27,
+     "n": 26,
      "min": 2,
-     "q1": 96,
-     "median": 143,
-     "q3": 197,
+     "q1": 98.3,
+     "median": 144,
+     "q3": 198.5,
      "max": 597,
      "unit": "kcal"
     },
     "protein": {
-     "n": 27,
+     "n": 26,
      "min": 0.1,
-     "q1": 1.1,
-     "median": 3.9,
+     "q1": 1,
+     "median": 3.6,
      "q3": 5,
      "max": 45,
      "unit": "g"
     },
     "fat": {
-     "n": 27,
+     "n": 26,
      "min": 0,
      "q1": 0.1,
-     "median": 1.7,
-     "q3": 3.9,
+     "median": 1.6,
+     "q3": 4,
      "max": 42,
      "unit": "g"
     },
     "carbs": {
-     "n": 27,
+     "n": 26,
      "min": 0.3,
-     "q1": 11.5,
-     "median": 28,
-     "q3": 33.4,
+     "q1": 11.6,
+     "median": 28.1,
+     "q3": 33.5,
      "max": 58,
      "unit": "g"
     },
     "sugars": {
-     "n": 27,
+     "n": 26,
      "min": 0,
-     "q1": 5.6,
-     "median": 15.5,
-     "q3": 26.9,
+     "q1": 6.4,
+     "median": 16.1,
+     "q3": 27.4,
      "max": 42.5,
      "unit": "g"
     },
     "sodium": {
-     "n": 27,
+     "n": 26,
      "min": 4,
-     "q1": 453.5,
-     "median": 996,
-     "q3": 2176,
+     "q1": 481.8,
+     "median": 1003,
+     "q3": 2273,
      "max": 8690,
      "unit": "mg"
     }
    },
    "perKcal": {
     "protein": {
-     "n": 27,
+     "n": 26,
      "median": 3,
      "q1": 1.8,
-     "q3": 4.4
+     "q3": 4.1
     },
     "sugars": {
-     "n": 27,
-     "median": 10,
-     "q1": 6.6,
-     "q3": 13.7
+     "n": 26,
+     "median": 11.2,
+     "q1": 7.2,
+     "q3": 13.8
     },
     "sodium": {
-     "n": 27,
-     "median": 909.6,
-     "q1": 392.7,
-     "q3": 1775.2
+     "n": 26,
+     "median": 915.7,
+     "q1": 404.3,
+     "q3": 1782.1
     }
    },
    "makers": [
     [
      "(주)오뚜기",
-     3
+     2
     ],
     [
      "(주)한미에프쓰리 2공장",
@@ -996,6 +1005,7 @@
    "href": "/nutrition-data/process/group/%EB%B0%A5%EB%A5%98",
    "total": 28,
    "comparable": 28,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -1021,7 +1031,7 @@
      "n": 28,
      "min": 0,
      "q1": 0.8,
-     "median": 3.2,
+     "median": 3.1,
      "q3": 4.9,
      "max": 10.9,
      "unit": "g"
@@ -1108,6 +1118,7 @@
    "href": "/nutrition-data/process/group/%EA%B3%BC%C2%B7%EC%B1%84%EC%A3%BC%EC%8A%A4",
    "total": 24,
    "comparable": 14,
+   "duplicates": 0,
    "basis": "100ml당",
    "largeCategory": "음료류",
    "stats": {
@@ -1220,6 +1231,7 @@
    "href": "/nutrition-data/process/group/%EB%B9%84%EC%8A%A4%ED%82%B7-%EC%BF%A0%ED%82%A4-%ED%81%AC%EB%9E%98%EC%BB%A4",
    "total": 24,
    "comparable": 24,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "과자류·빵류 또는 떡류",
    "stats": {
@@ -1245,7 +1257,7 @@
      "n": 24,
      "min": 0,
      "q1": 22.3,
-     "median": 26.7,
+     "median": 26.6,
      "q3": 28.8,
      "max": 40,
      "unit": "g"
@@ -1332,6 +1344,7 @@
    "href": "/nutrition-data/process/group/%EB%B0%98%EC%B0%AC",
    "total": 18,
    "comparable": 18,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -1366,7 +1379,7 @@
      "n": 18,
      "min": 2.7,
      "q1": 8.3,
-     "median": 14.7,
+     "median": 14.6,
      "q3": 22.1,
      "max": 31.5,
      "unit": "g"
@@ -1444,6 +1457,7 @@
    "href": "/nutrition-data/process/group/%EA%B8%B0%ED%83%80%EA%B9%80%EC%B9%98",
    "total": 15,
    "comparable": 15,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "절임류 또는 조림류",
    "stats": {
@@ -1544,6 +1558,7 @@
    "href": "/nutrition-data/process/group/%EA%B5%AD-%ED%83%95%EB%A5%98",
    "total": 14,
    "comparable": 14,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -1656,6 +1671,7 @@
    "href": "/nutrition-data/process/group/%EA%B8%B0%ED%83%80-%EB%B9%B5",
    "total": 14,
    "comparable": 14,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "과자류·빵류 또는 떡류",
    "stats": {
@@ -1768,6 +1784,7 @@
    "href": "/nutrition-data/process/group/%EC%A3%BD",
    "total": 14,
    "comparable": 14,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -1872,6 +1889,7 @@
    "href": "/nutrition-data/process/group/%EB%8F%84%EC%8B%9C%EB%9D%BD",
    "total": 12,
    "comparable": 12,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -1897,7 +1915,7 @@
      "n": 12,
      "min": 1.9,
      "q1": 3.9,
-     "median": 5.2,
+     "median": 5.1,
      "q3": 7.3,
      "max": 8.4,
      "unit": "g"
@@ -1906,7 +1924,7 @@
      "n": 12,
      "min": 13.7,
      "q1": 18.3,
-     "median": 23,
+     "median": 23.1,
      "q3": 27.9,
      "max": 34,
      "unit": "g"
@@ -1984,6 +2002,7 @@
    "href": "/nutrition-data/process/group/%EB%96%A1",
    "total": 12,
    "comparable": 12,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "과자류·빵류 또는 떡류",
    "stats": {
@@ -2000,7 +2019,7 @@
      "n": 12,
      "min": 3,
      "q1": 3.7,
-     "median": 4.3,
+     "median": 4.2,
      "q3": 5,
      "max": 6.4,
      "unit": "g"
@@ -2096,6 +2115,7 @@
    "href": "/nutrition-data/process/group/%EC%96%B4%EB%AC%B5",
    "total": 12,
    "comparable": 12,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "수산가공식품류",
    "stats": {
@@ -2207,92 +2227,89 @@
    "name": "젓갈/액젓",
    "href": "/nutrition-data/process/group/%EC%A0%93%EA%B0%88-%EC%95%A1%EC%A0%93",
    "total": 12,
-   "comparable": 11,
+   "comparable": 10,
+   "duplicates": 1,
    "basis": "100g당",
    "largeCategory": "수산가공식품류",
    "stats": {
     "energy": {
-     "n": 11,
+     "n": 10,
      "min": 55,
-     "q1": 142.5,
-     "median": 164,
-     "q3": 194,
+     "q1": 140.3,
+     "median": 162.5,
+     "q3": 189.5,
      "max": 235,
      "unit": "kcal"
     },
     "protein": {
-     "n": 11,
+     "n": 10,
      "min": 8,
      "q1": 10,
-     "median": 10,
-     "q3": 15,
+     "median": 10.1,
+     "q3": 15.5,
      "max": 18,
      "unit": "g"
     },
     "fat": {
-     "n": 11,
+     "n": 10,
      "min": 0.5,
      "q1": 3.1,
-     "median": 3.6,
-     "q3": 4.3,
+     "median": 3.4,
+     "q3": 4.7,
      "max": 6.5,
      "unit": "g"
     },
     "carbs": {
-     "n": 11,
+     "n": 10,
      "min": 2.4,
-     "q1": 13,
-     "median": 27.1,
-     "q3": 30,
+     "q1": 8.5,
+     "median": 24.6,
+     "q3": 29.6,
      "max": 36,
      "unit": "g"
     },
     "sugars": {
-     "n": 11,
+     "n": 10,
      "min": 0,
      "q1": 0,
-     "median": 9,
+     "median": 4.8,
      "q3": 9.1,
      "max": 14,
      "unit": "g"
     },
     "sodium": {
-     "n": 11,
+     "n": 10,
      "min": 0,
-     "q1": 1703.5,
-     "median": 2411,
-     "q3": 2818.5,
+     "q1": 1533.3,
+     "median": 2407.5,
+     "q3": 3022.3,
      "max": 7306,
      "unit": "mg"
     }
    },
    "perKcal": {
     "protein": {
-     "n": 11,
-     "median": 6.2,
-     "q1": 5.2,
-     "q3": 10.4
+     "n": 10,
+     "median": 6.5,
+     "q1": 5.3,
+     "q3": 11.3
     },
     "sugars": {
-     "n": 11,
-     "median": 4.6,
+     "n": 10,
+     "median": 2.9,
      "q1": 0,
-     "q3": 5.1
+     "q3": 5.4
     },
     "sodium": {
-     "n": 11,
-     "median": 1242.8,
-     "q1": 1044.7,
-     "q3": 1854.6
+     "n": 10,
+     "median": 1316.6,
+     "q1": 945.6,
+     "q3": 1910.8
     }
    },
    "makers": [
     [
      "다조아푸드",
-     2
-    ],
-    [
-     "두남식품",
      2
     ],
     [
@@ -2310,6 +2327,10 @@
     [
      "굴다리영어조합법인",
      1
+    ],
+    [
+     "제주식품",
+     1
     ]
    ],
    "makerCount": 9
@@ -2319,93 +2340,94 @@
    "name": "카레",
    "href": "/nutrition-data/process/group/%EC%B9%B4%EB%A0%88",
    "total": 10,
-   "comparable": 10,
+   "comparable": 8,
+   "duplicates": 2,
    "basis": "100g당",
    "largeCategory": "",
    "stats": {
     "energy": {
-     "n": 10,
+     "n": 8,
      "min": 77,
-     "q1": 480,
-     "median": 488,
+     "q1": 378.5,
+     "median": 484.5,
      "q3": 490,
      "max": 511,
      "unit": "kcal"
     },
     "protein": {
-     "n": 10,
+     "n": 8,
      "min": 3.9,
-     "q1": 6.6,
-     "median": 7.1,
-     "q3": 7.4,
+     "q1": 5.9,
+     "median": 7,
+     "q3": 7.3,
      "max": 7.6,
      "unit": "g"
     },
     "fat": {
-     "n": 10,
+     "n": 8,
      "min": 3.9,
-     "q1": 26.4,
-     "median": 27.4,
-     "q3": 28.8,
+     "q1": 20.8,
+     "median": 26.9,
+     "q3": 28.1,
      "max": 32,
      "unit": "g"
     },
     "carbs": {
-     "n": 10,
+     "n": 8,
      "min": 6.9,
-     "q1": 48.2,
+     "q1": 37.9,
      "median": 50.6,
-     "q3": 54,
+     "q3": 53.7,
      "max": 54.2,
      "unit": "g"
     },
     "sugars": {
-     "n": 10,
+     "n": 8,
      "min": 3.1,
-     "q1": 7.2,
-     "median": 7.7,
+     "q1": 6.2,
+     "median": 8.9,
      "q3": 10,
      "max": 15.7,
      "unit": "g"
     },
     "sodium": {
-     "n": 10,
+     "n": 8,
      "min": 492,
-     "q1": 4009.8,
-     "median": 4220,
-     "q3": 4467.3,
+     "q1": 3093,
+     "median": 4189.5,
+     "q3": 4461.8,
      "max": 4560,
      "unit": "mg"
     }
    },
    "perKcal": {
     "protein": {
-     "n": 10,
+     "n": 8,
      "median": 1.5,
-     "q1": 1.4,
-     "q3": 1.5
+     "q1": 1.5,
+     "q3": 2.4
     },
     "sugars": {
-     "n": 10,
+     "n": 8,
      "median": 2.1,
-     "q1": 1.5,
-     "q3": 2.9
+     "q1": 1.9,
+     "q3": 3.4
     },
     "sodium": {
-     "n": 10,
+     "n": 8,
      "median": 840.8,
-     "q1": 812.6,
-     "q3": 912.2
+     "q1": 765.9,
+     "q3": 916.9
     }
    },
    "makers": [
     [
      "S&B GARLIC FOODS CO.,LTD. TAKADA FACTORY",
-     4
+     3
     ],
     [
      "S&B FOODS INC. UEDA FACTORY",
-     4
+     3
     ],
     [
      "(주)오뚜기",
@@ -2420,6 +2442,7 @@
    "href": "/nutrition-data/process/group/%EC%BC%80%EC%9D%B4%ED%81%AC",
    "total": 9,
    "comparable": 9,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "과자류·빵류 또는 떡류",
    "stats": {
@@ -2532,6 +2555,7 @@
    "href": "/nutrition-data/process/group/%EC%86%8C%EC%8B%9C%EC%A7%80",
    "total": 6,
    "comparable": 6,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "식육가공품 및 포장육",
    "stats": {
@@ -2557,7 +2581,7 @@
      "n": 6,
      "min": 6,
      "q1": 17,
-     "median": 19.3,
+     "median": 19.2,
      "q3": 28.1,
      "max": 34.1,
      "unit": "g"
@@ -2575,7 +2599,7 @@
      "n": 6,
      "min": 0.3,
      "q1": 0.4,
-     "median": 0.6,
+     "median": 0.5,
      "q3": 0.9,
      "max": 1,
      "unit": "g"
@@ -2640,6 +2664,7 @@
    "href": "/nutrition-data/process/group/%ED%96%84",
    "total": 6,
    "comparable": 6,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "식육가공품 및 포장육",
    "stats": {
@@ -2748,6 +2773,7 @@
    "href": "/nutrition-data/process/group/%EC%B0%8C%EA%B0%9C-%EC%A0%84%EA%B3%A8%EB%A5%98",
    "total": 9,
    "comparable": 9,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -2860,6 +2886,7 @@
    "href": "/nutrition-data/process/group/%EC%A6%89%EC%84%9D-%EB%A9%B4%EC%9A%94%EB%A6%AC",
    "total": 9,
    "comparable": 9,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "즉석식품류",
    "stats": {
@@ -2972,6 +2999,7 @@
    "href": "/nutrition-data/material/group/%EA%B3%A0%EB%93%B1%EC%96%B4%EB%A5%98",
    "total": 31,
    "comparable": 31,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "어패류 및 기타 수산물",
    "stats": {
@@ -3059,6 +3087,7 @@
    "href": "/nutrition-data/material/group/%EC%97%B0%EC%96%B4%EB%A5%98",
    "total": 37,
    "comparable": 37,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "어패류 및 기타 수산물",
    "stats": {
@@ -3146,6 +3175,7 @@
    "href": "/nutrition-data/material/group/%EC%98%A5%EC%88%98%EC%88%98",
    "total": 40,
    "comparable": 40,
+   "duplicates": 0,
    "basis": "100g당",
    "largeCategory": "곡류",
    "stats": {
