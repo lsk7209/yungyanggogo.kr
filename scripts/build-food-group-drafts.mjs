@@ -348,13 +348,16 @@ const leftover = JSON.stringify(posts).match(/\{[a-z]+(?:\.[a-z0-9]+)?\}/g);
 if (leftover) throw new Error(`unfilled placeholders: ${[...new Set(leftover)].join(", ")}`);
 
 const output = `${JSON.stringify(posts, null, 2)}\n`;
-// --stdout: print instead of writing (used by the regression test).
+// --stdout: print instead of writing (used by the regression test). Do not
+// call process.exit() here: on Linux, stdout to a pipe is asynchronous, and
+// exiting immediately after write() can truncate the pipe buffer before the
+// parent process reads it all. Let the script end naturally instead.
 if (process.argv.includes("--stdout")) {
   process.stdout.write(output);
-  process.exit(0);
+} else {
+  // The 30-post schedule supersedes the earlier three pending drafts.
+  rmSync(new URL("content/blog/drafts-2026-09-30-food-groups.json", root), { force: true });
+  writeFileSync(new URL("content/blog/drafts-2026-10-food-groups-30.json", root), output);
+  const approvedCount = posts.filter((p) => p.humanReview === "approved").length;
+  console.log(`wrote ${posts.length} scheduled posts, ${approvedCount} approved / ${posts.length - approvedCount} pending (${posts[0].publishedAt} .. ${posts.at(-1).publishedAt})`);
 }
-// The 30-post schedule supersedes the earlier three pending drafts.
-rmSync(new URL("content/blog/drafts-2026-09-30-food-groups.json", root), { force: true });
-writeFileSync(new URL("content/blog/drafts-2026-10-food-groups-30.json", root), output);
-const approvedCount = posts.filter((p) => p.humanReview === "approved").length;
-console.log(`wrote ${posts.length} scheduled posts, ${approvedCount} approved / ${posts.length - approvedCount} pending (${posts[0].publishedAt} .. ${posts.at(-1).publishedAt})`);
