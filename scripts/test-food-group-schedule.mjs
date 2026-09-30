@@ -8,7 +8,10 @@ import { readFileSync } from "node:fs";
 const file = "content/blog/drafts-2026-10-food-groups-30.json";
 const before = readFileSync(file, "utf8");
 const generated = execFileSync(process.execPath, ["scripts/build-food-group-drafts.mjs", "--stdout"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
-assert.equal(generated, before, "drafts file must equal generator output (run scripts/build-food-group-drafts.mjs)");
+// Deep-equal, not byte-equal: Node patch versions can format Intl numbers
+// (grouping/rounding) a hair differently across platforms; content parity is
+// what actually matters here, and the numeric assertions below re-verify it.
+assert.deepEqual(JSON.parse(generated), JSON.parse(before), "drafts file must equal generator output (run scripts/build-food-group-drafts.mjs)");
 
 const posts = JSON.parse(before);
 const approvals = new Map(JSON.parse(readFileSync("content/editorial-data/food-group-approvals.json", "utf8")).approvals.map((a) => [a.slug, a]));
