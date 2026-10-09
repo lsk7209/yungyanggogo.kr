@@ -18,6 +18,7 @@
     "test:regression": "node scripts/run-regression-tests.mjs",
     "test:http": "node scripts/test-http-contract.mjs",
     "nutrition:sync": "node --experimental-strip-types scripts/sync-national-nutrition.mjs",
+    "enrich:nutrition": "node --experimental-strip-types scripts/enrich-nutrition-data.ts",
     "gsc:sitemap": "node scripts/gsc-sitemap.mjs all",
     "gsc:sitemap:check-live": "node scripts/gsc-sitemap.mjs check-live",
     "gsc:sitemap:status": "node scripts/gsc-sitemap.mjs status",

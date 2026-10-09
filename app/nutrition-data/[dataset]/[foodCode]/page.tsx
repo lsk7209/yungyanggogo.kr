@@ -25,6 +25,9 @@ import { formatGroupNumber } from "../../../../lib/nutrition-group";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
+import { readFoodEnrichmentByCode } from "../../../../lib/nutrition-enrichment-db";
+import { synthesizeEnrichmentReport } from "../../../../lib/nutrition-enrichment-synthesizer";
+import { FoodEnrichmentSection } from "../../../../components/FoodEnrichmentSection";
 
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
 // 식품 영양성분 데이터는 거의 변하지 않으므로 1일 캐싱으로 DB reads 대폭 절감
@@ -141,6 +144,31 @@ export default async function NationalNutritionDetailPage({
     // Related links are optional; their failure must not fail the record page.
   }
 
+  let enrichment = null;
+  try {
+    enrichment = await readFoodEnrichmentByCode(datasetSlug, item.foodCode);
+  } catch {
+    // Enrichment lookup fallback
+  }
+
+  if (!enrichment || enrichment.status !== "enriched") {
+    enrichment = synthesizeEnrichmentReport({
+      foodCode: item.foodCode,
+      datasetSlug,
+      foodName: item.name,
+      maker: item.maker || item.restaurant || item.importer,
+      largeCategory: item.largeCategory,
+      representativeFood: item.representativeFood,
+      servingUnit: item.servingUnit,
+      energy: item.energy,
+      protein: item.protein,
+      fat: item.fat,
+      carbs: item.carbs,
+      sugars: item.sugars,
+      sodium: item.sodium,
+    });
+  }
+
   const pageUrl = absoluteUrl(
     `/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`,
   );
@@ -204,16 +232,12 @@ export default async function NationalNutritionDetailPage({
         <h1>{item.name} 영양성분표</h1>
         <p>
           {item.name}의 기준량, 열량, 단백질, 지방, 탄수화물, 당류, 나트륨을
-          공식 표준데이터 기준으로 확인합니다. 수치는 제품 선택을 돕는 참고
-          정보이며, 실제 섭취 전에는 제품 라벨과 갱신일을 함께 확인해야 합니다.
+          공식 표준데이터 기준으로 확인합니다.
         </p>
         <div className="keyword-row">
           <span>{item.typeName || datasetInfo.shortName}</span>
           <span>{item.largeCategory || "대분류 미기재"}</span>
           <span>{item.representativeFood || "대표식품 미기재"}</span>
-          <span>
-            {cacheSource === "db" ? "영양고고 저장 자료" : "공식 원천 응답 자료"}
-          </span>
         </div>
         <ComparisonNavigationLink className="button" addItem={buildComparisonItemValue(datasetSlug, item.foodCode)} href={buildComparisonHref({
           refs: [{ dataset: datasetSlug, foodCode: item.foodCode, value: buildComparisonItemValue(datasetSlug, item.foodCode) }],
@@ -224,7 +248,14 @@ export default async function NationalNutritionDetailPage({
         </ComparisonNavigationLink>
       </header>
 
+      <FoodEnrichmentSection
+        enrichment={enrichment}
+        foodName={item.name}
+        category={item.largeCategory || item.representativeFood}
+      />
+
       <AdsenseScript />
+
 
       <section className="nutrition-detail-summary">
         {primaryMetrics.slice(0, 4).map(([label, value]) => (
@@ -351,26 +382,6 @@ export default async function NationalNutritionDetailPage({
             <dt>출처</dt>
             <dd>{item.sourceName || NATIONAL_NUTRITION_SOURCE}</dd>
           </div>
-          <div>
-            <dt>데이터 생성일</dt>
-            <dd>{item.createdAt || "자료 없음"}</dd>
-          </div>
-          <div>
-            <dt>원자료 기준일</dt>
-            <dd>{provenance.sourceUpdatedAt || "자료 없음"}</dd>
-          </div>
-          {provenance.storedAt ? (
-            <div>
-              <dt>영양고고 저장 시각</dt>
-              <dd><time dateTime={provenance.storedAt}>{formatKoreanDateTime(provenance.storedAt)}</time></dd>
-            </div>
-          ) : null}
-          {provenance.checkedAt ? (
-            <div>
-              <dt>원천 응답 확인 시각</dt>
-              <dd><time dateTime={provenance.checkedAt}>{formatKoreanDateTime(provenance.checkedAt)}</time></dd>
-            </div>
-          ) : null}
         </dl>
       </section>
 

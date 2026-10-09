@@ -35,6 +35,7 @@ export const REGRESSION_TESTS = [
   "test-nutrition-comparison.mjs",
   "test-nutrition-count-provenance.mjs",
   "test-nutrition-db-search-boundary.mjs",
+  "test-nutrition-enrichment.mjs",
   "test-nutrition-failure-integrity.mjs",
   "test-nutrition-provider-boundary.mjs",
   "test-nutrition-query.mjs",
