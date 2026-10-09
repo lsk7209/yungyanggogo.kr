@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchNationalNutritionItemsWithDbCache } from "../../../lib/national-nutrition-db";
+import { fetchNationalNutritionItemsWithDbCache, fetchNationalNutritionItemsWithDbCacheCached } from "../../../lib/national-nutrition-db";
 import { isTursoConfigured } from "../../../lib/db";
 import { normalizeNutritionSearchQuery, parseBoundedPositiveInteger } from "../../../lib/nutrition-query";
 import {
@@ -37,7 +37,10 @@ export async function GET(request: Request) {
   if (dataset && datasetSlugs.has(dataset)) {
     // Allow-listed scope, same as the dataset page.
     const source = searchParams.get("source") === "upstream" ? "upstream" : "stored";
-    const result = await fetchNationalNutritionItemsWithDbCache({ dataset, query: q, pageNo, numOfRows, source });
+    // Stored reads share the existing success-only cache with dataset pages.
+    // Explicit upstream lookups retain their uncached behavior.
+    const read = source === "upstream" ? fetchNationalNutritionItemsWithDbCache : fetchNationalNutritionItemsWithDbCacheCached;
+    const result = await read({ dataset, query: q, pageNo, numOfRows, source });
     return NextResponse.json(
       {
         ok: result.ok,
@@ -62,7 +65,7 @@ export async function GET(request: Request) {
 
   const results = await Promise.all(
     NATIONAL_NUTRITION_DATASETS.map((item) =>
-      fetchNationalNutritionItemsWithDbCache({
+      fetchNationalNutritionItemsWithDbCacheCached({
         dataset: item.slug,
         query: q,
         pageNo: 1,

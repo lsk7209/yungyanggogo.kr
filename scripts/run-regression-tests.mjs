@@ -32,6 +32,7 @@ export const REGRESSION_TESTS = [
   "test-national-nutrition-db-count.mjs",
   "test-national-nutrition-parser.mjs",
   "test-nutrition-cache-identity.mjs",
+  "test-nutrition-api-cache.mjs",
   "test-nutrition-comparison.mjs",
   "test-nutrition-count-provenance.mjs",
   "test-nutrition-db-search-boundary.mjs",
@@ -70,7 +71,8 @@ for (const key of Object.keys(safeEnv)) {
 const results = [];
 for (const file of selected) {
   const started = Date.now();
-  const run = spawnSync(process.execPath, [path.join("scripts", file)], { cwd: root, env: safeEnv, encoding: "utf8" });
+  const flags = file === "test-nutrition-api-cache.mjs" ? ["--experimental-vm-modules"] : [];
+  const run = spawnSync(process.execPath, [...flags, path.join("scripts", file)], { cwd: root, env: safeEnv, encoding: "utf8" });
   const passed = run.status === 0;
   const summary = (run.stdout || "").trim().split("\n").filter(Boolean).at(-1) ?? "";
   results.push({ file, passed, ms: Date.now() - started });
