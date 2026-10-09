@@ -1,6 +1,25 @@
+import { existsSync } from "node:fs";
+import { registerHooks } from "node:module";
+import { fileURLToPath } from "node:url";
 import { createClient } from "@libsql/client";
-import { synthesizeEnrichmentReport, type RawScrapedInsight } from "../lib/nutrition-enrichment-synthesizer";
-import { withDbRetry } from "../lib/nutrition-enrichment-db";
+import type { RawScrapedInsight } from "../lib/nutrition-enrichment-synthesizer";
+
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (specifier.startsWith(".") && context.parentURL?.startsWith("file:")) {
+      const url = new URL(specifier, context.parentURL);
+      for (const extension of [".ts", ".tsx"]) {
+        if (existsSync(fileURLToPath(url) + extension)) {
+          return nextResolve(url.href + extension, context);
+        }
+      }
+    }
+    return nextResolve(specifier, context);
+  },
+});
+
+const { synthesizeEnrichmentReport } = await import("../lib/nutrition-enrichment-synthesizer");
+const { withDbRetry } = await import("../lib/nutrition-enrichment-db");
 
 // 1. 최신 모바일 브라우저 User-Agent 풀 (12종)
 const MOBILE_USER_AGENTS = [
