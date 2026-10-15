@@ -125,10 +125,12 @@ try {
   // R35: pending / scheduled posts are not reachable and not in the sitemap.
   const blogDir = path.join(root, "content", "blog");
   const allPosts = readdirSync(blogDir).filter((f) => f.endsWith(".json")).flatMap((f) => JSON.parse(readFileSync(path.join(blogDir, f), "utf8")));
-  const pending = allPosts.filter((p) => p && p.slug && p.humanReview !== "approved");
+  // 계약 대상은 "대기 또는 아직 발행 전(예약)"인 글이다. 승인되어 발행일이 지난 글은 공개가 정상이다.
+  const notPublicYet = (p) => p.humanReview !== "approved" || new Date(p.publishedAt) > new Date();
+  const pending = allPosts.filter((p) => p && p.slug && notPublicYet(p));
   check("R35", pending.length > 0, "fixture has pending posts to test");
   // Every pending draft file is covered at least once (plus the first few overall).
-  const draftSample = readdirSync(blogDir).filter((f) => f.startsWith("drafts-")).flatMap((f) => JSON.parse(readFileSync(path.join(blogDir, f), "utf8")));
+  const draftSample = readdirSync(blogDir).filter((f) => f.startsWith("drafts-")).flatMap((f) => JSON.parse(readFileSync(path.join(blogDir, f), "utf8"))).filter(notPublicYet);
   for (const post of [...pending.slice(0, 5), ...draftSample]) {
     check("R35", (await get(base, `/blog/${post.slug}`)).status === 404, `pending post ${post.slug} is 404`);
     check("R35", !locs.some((loc) => loc.endsWith(`/blog/${post.slug}`)), `pending post ${post.slug} not in sitemap`);

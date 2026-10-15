@@ -47,3 +47,11 @@ push/배포, 승인 대기 글 검토·공개 범위, 대량 noindex/통합/리�
 
 
 
+
+## 원격 병합 후 갱신 (push 직전)
+- push 직전 원격(origin/main)에 38개 commit이 먼저 있었다(승인 글 30개 #17, 환산 계산기 #3, 상태 분리 등). 로컬 기준이 오래되어 rebase로 합쳤고, **본 문서 앞부분의 '5-2 계산기 신설'은 원격에 이미 있던 /tools/label-converter·NutritionBasisCalculator로 대체**하여 내 구현(lib/label-converter.ts 등)은 제거했다. 원격의 계산기·상태 분리(found/temporarily_unavailable/not_found)를 그대로 따른다.
+- 새 기준 콘텐츠: 승인 37(발행 경과 22 + 예약 15), 승인 대기 700(경과 631 + 예약 69). 현재 공개 = 승인 22 + seed 1 = 23건. 점검 목록 CSV를 재생성했다. 문서 앞부분의 '공개 8건/대기 629건'은 병합 전 수치다.
+- 사용자가 지적한 샌드위치 글: 화면 '발행 2026년 10월 1일'만 표시, JSON-LD datePublished 2026-10-01T09:00:00+09:00, 잘못된 수정일 미노출.
+- 검증(병합 후): 
+ode scripts/run-regression-tests.mjs 42/42 통과(신규 7개를 허용 목록에 등록), scripts/test-http-contract.mjs 208 단언 통과(next start, 로컬 파일 DB). 	est-http-contract.mjs의 R35는 drafts-* 파일 전체를 비공개로 가정했으나 승인되어 발행일이 지난 글이 공개되는 것이 정상이므로 '대기 또는 발행 전'인 글만 검사하도록 한정했다(검사 완화 아님: 대기·예약 글 404와 사이트맵 제외는 그대로). tsc 0 오류, eslint 0 오류, build 성공.
+

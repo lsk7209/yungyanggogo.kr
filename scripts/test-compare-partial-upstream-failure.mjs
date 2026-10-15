@@ -39,10 +39,12 @@ try {
   else process.env.DATA_GO_KR_NUTRITION_KEY = originalKey;
 }
 
-// 비교 화면: 항목별로 독립 조회하고, 실패 항목만 안내하며 정상 항목은 유지
+// 비교 화면: 항목별로 독립 조회하고, 일시 실패·없음을 구분해 안내하며 정상 항목은 유지
 const compare = readFileSync("app/compare/page.tsx", "utf8");
 assert.match(compare, /Promise\.all\(\s*selectedRefs\.map/);
-assert.match(compare, /Boolean\(entry\.result\.item\)/);
-assert.match(compare, /일부 식품을 불러오지 못했습니다/);
+assert.match(compare, /kind: "temporarily_unavailable"/);
+assert.match(compare, /entry\.result\.kind === "found" \? \[\{ ref: entry\.ref, item: entry\.result\.item \}\] : \[\]/);
+assert.match(compare, /unavailable\.length > 0/);
+assert.match(compare, /missing\.length > 0/);
 
 console.log("compare partial upstream failure: 500/network/no-key return failure results; page keeps other items");
