@@ -20,13 +20,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     Array.isArray(value) ? value.some(Boolean) : Boolean(value),
   );
   return {
-    title: "건강기능식품 신고번호 조회 원재료 확인",
+    title: "건강기능식품 신고정보 확인 방법과 데이터 미리보기",
     description:
-      "건강기능식품 신고번호 조회, 원재료 확인, 기능성 내용, 섭취 시 주의사항을 식품안전나라 공공 API 기준으로 확인하는 영양고고 건기식 데이터 페이지입니다.",
+      "건강기능식품 신고번호·업체명·기능성 내용·섭취 시 주의사항을 제품 라벨과 대조하는 방법과, 식품안전나라 공공 API 데이터 일부 미리보기를 제공합니다.",
     alternates: { canonical: absoluteUrl("/health-functional-foods") },
     robots: hasSearchParams ? { index: false, follow: true } : undefined,
     openGraph: {
-      title: `건강기능식품 신고번호 조회 원재료 확인 | ${siteConfig.name}`,
+      title: `건강기능식품 신고정보 확인 방법과 데이터 미리보기 | ${siteConfig.name}`,
       description:
         "건강기능식품 품목제조신고 원재료 데이터를 제품명, 업체명, 신고번호, 기능성 내용, 주의사항 중심으로 정리합니다.",
       url: absoluteUrl("/health-functional-foods")
@@ -48,7 +48,7 @@ const faqItems = [
   {
     question: "검색 결과가 없으면 미등록 제품인가요?",
     answer:
-      "이 페이지는 API 호출 범위 안에서 서버 필터링을 합니다. 검색 결과가 없다는 사실만으로 미등록을 단정할 수 없으며, 제품명 표기 차이와 최신 반영 시점을 함께 확인해야 합니다."
+      "이 페이지에는 검색 기능이 없고 공공 API의 일부 항목만 미리 보여줍니다. 여기서 제품이 보이지 않는다는 사실만으로 미등록이나 안전성 문제를 판단할 수 없으니, 아래 공식 조회 경로에서 제품명 표기 차이와 최신 반영 시점을 함께 확인하세요."
   }
 ];
 
@@ -97,17 +97,17 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
 
       <div className="section__head">
         <p className="eyebrow">FoodSafetyKorea API</p>
-        <h1>건강기능식품 신고번호 조회와 원재료 확인</h1>
+        <h1>건강기능식품 신고정보 확인 방법과 데이터 미리보기</h1>
         <p>
           건강기능식품을 고를 때는 제품명보다 신고번호, 업체명, 기능성 내용, 섭취 시 주의사항을 먼저
-          확인해야 합니다. 영양고고는 식품안전나라 공공 API 데이터를 바탕으로 공식 신고 정보를 한 화면에
-          모아 보여줍니다.
+          확인해야 합니다. 영양고고는 확인 순서를 안내하고, 식품안전나라 공공 API가 제공하는 신고 정보 일부를 미리 보여줍니다.
+          특정 제품 조회는 식품안전나라 공식 사이트(foodsafetykorea.go.kr)의 건강기능식품 정보에서 하세요.
         </p>
       </div>
 
       <div className="api-status api-status--warn">
-        <strong>전체 품목 검색은 준비 중입니다</strong>
-        <p>현재 화면은 원천의 첫 12개 확인 범위만 표시합니다. 이 범위의 결과 없음으로 미등록을 판단하지 않습니다.</p>
+        <strong>미리보기 범위 안내</strong>
+        <p>이 화면은 검색이 아니라 원천의 첫 12개 확인 범위만 표시합니다. 여기에 없다고 미등록으로 판단하지 마세요.</p>
       </div>
 
       <div className="api-status api-status--ok">
@@ -205,7 +205,7 @@ export default async function HealthFunctionalFoodsPage({ searchParams }: PagePr
       {apiResult && !apiResult.ok ? (
         <div className="api-status api-status--warn">
           <strong>현재 공식 신고 데이터를 불러오지 못했습니다</strong>
-          <p>일시적인 데이터 제공 상태일 수 있습니다. 잠시 후 다시 검색하거나 식품안전나라에서 신고번호를 확인해 주세요.</p>
+          <p>일시적인 데이터 제공 상태일 수 있습니다. 잠시 후 다시 확인하거나 식품안전나라에서 신고번호를 확인해 주세요.</p>
         </div>
       ) : null}
 

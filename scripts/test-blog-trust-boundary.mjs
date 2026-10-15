@@ -8,7 +8,7 @@ const blogData = await source("lib/blog.ts");
 
 assert.doesNotMatch(blogDetail, /데이터 편집팀/);
 assert.doesNotMatch(blogDetail, /<time[^>]*>검토 /);
-assert.match(blogDetail, /<time dateTime=\{post\.updatedAt\}>수정 \{post\.updatedAt\}<\/time>/);
+assert.match(blogDetail, /modifiedAt \? <time dateTime=\{modifiedAt\}>수정 \{formatKoreanDate\(modifiedAt\)\}<\/time> : null/);
 assert.doesNotMatch(blogDetail, /author:\s*\{[\s\S]*?데이터 편집팀/);
 assert.match(sitemap, /getAllPosts\(\)\.filter\(\(post\) => !post\.noindex\)/);
 assert.doesNotMatch(blogData, /충족은 초록색 체크/);

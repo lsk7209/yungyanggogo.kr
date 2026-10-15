@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TableOfContents } from "../../../components/TableOfContents";
 import { ArticleBlocks } from "../../../components/ArticleBlocks";
+import { formatKoreanDate, getMeaningfulModifiedAt, toIsoDateTime } from "../../../lib/blog-dates";
 import { getAllPosts, getPostBySlug, getPostUrl } from "../../../lib/blog";
 import { getPostThumbnailUrl } from "../../../lib/post-thumbnail";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
@@ -41,6 +42,7 @@ export async function generateMetadata({
   }
 
   const thumbnailUrl = getPostThumbnailUrl(post);
+  const modifiedAt = getMeaningfulModifiedAt(post);
 
   return {
     title: post.title,
@@ -53,8 +55,8 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       url: getPostUrl(post),
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
+      publishedTime: toIsoDateTime(post.publishedAt),
+      ...(modifiedAt ? { modifiedTime: modifiedAt } : {}),
       images: [
         {
           url: thumbnailUrl,
@@ -85,6 +87,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const thumbnailUrl = getPostThumbnailUrl(post);
+  const modifiedAt = getMeaningfulModifiedAt(post);
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -92,8 +95,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     "@id": `${getPostUrl(post)}#article`,
     headline: post.title,
     description: post.description,
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt,
+    datePublished: toIsoDateTime(post.publishedAt),
+    ...(modifiedAt ? { dateModified: modifiedAt } : {}),
     mainEntityOfPage: getPostUrl(post),
     image: thumbnailUrl,
     publisher: {
@@ -157,8 +160,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ))}
         </div>
         <div className="article-meta">
-          <time dateTime={post.publishedAt}>발행 {post.publishedAt}</time>
-          <time dateTime={post.updatedAt}>수정 {post.updatedAt}</time>
+          <time dateTime={toIsoDateTime(post.publishedAt)}>발행 {formatKoreanDate(post.publishedAt)}</time>
+          {modifiedAt ? <time dateTime={modifiedAt}>수정 {formatKoreanDate(modifiedAt)}</time> : null}
           <span>{post.readingMinutes}분</span>
         </div>
       </header>

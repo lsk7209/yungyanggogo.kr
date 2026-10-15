@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { formatKoreanDate, toIsoDateTime } from "../lib/blog-dates";
 import type { BlogPost } from "../lib/blog";
 import { getPostThumbnailPath } from "../lib/post-thumbnail";
 
@@ -31,7 +32,7 @@ export function PostCard({ post }: PostCardProps) {
         </h2>
         <p>{post.description}</p>
         <div className="post-card__meta">
-          <time dateTime={post.publishedAt}>{post.publishedAt}</time>
+          <time dateTime={toIsoDateTime(post.publishedAt)}>{formatKoreanDate(post.publishedAt)}</time>
           <span>{post.readingMinutes}분</span>
         </div>
       </div>

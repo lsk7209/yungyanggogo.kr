@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { isReviewPublic, normalizeLoadedReview } from "./blog-visibility";
 import { absoluteUrl } from "./site";
 
 export type BlogBlock =
@@ -198,7 +199,7 @@ export const seedBlogPosts: BlogPost[] = [
         body: [
           "첫째, 먼저 기준량을 확인합니다. 100g인지, 100ml인지, 1회제공량인지 보지 않고 열량과 당류만 비교하면 거의 항상 착시가 생깁니다. 둘째, 목적 지표를 하나 정합니다. 단백질을 찾는지, 저당 음료를 찾는지, 저나트륨 라면을 찾는지에 따라 봐야 할 첫 번째 숫자가 달라집니다.",
           "셋째, 보조 지표를 반드시 붙입니다. 단백질 랭킹에는 나트륨과 포화지방을 붙이고, 저당 랭킹에는 열량과 대체감미료 여부를 붙이며, 저칼로리 랭킹에는 포만감과 1회제공량을 같이 봅니다. 넷째, 공식 출처와 갱신일을 확인합니다.",
-          "이 순서를 지키면 영양성분표 비교가 광고 문구 확인이 아니라 데이터 확인에 가까워집니다. 특히 pSEO 사이트에서는 같은 템플릿을 반복하기보다 검색 의도에 맞춰 어떤 기준을 먼저 보여줄지 달라져야 합니다."
+          "이 순서를 지키면 영양성분표 비교가 광고 문구 확인이 아니라 데이터 확인에 가까워집니다. 같은 식품군이라도 단백질을 찾는지, 당류를 줄이려는지에 따라 먼저 볼 숫자가 달라지므로 비교 목적을 먼저 정한 뒤 기준량을 맞추는 순서가 중요합니다."
         ]
       }
     ],
@@ -260,7 +261,7 @@ function loadGeneratedPosts(): BlogPost[] {
       const posts = Array.isArray(parsed) ? parsed : [parsed];
       return posts.map((post) => ({
         ...post,
-        humanReview: post.humanReview || "pending",
+        humanReview: normalizeLoadedReview(post.humanReview),
         noindex: post.humanReview === "approved" ? post.noindex : true,
       }));
     });
@@ -271,7 +272,7 @@ export function isPostPublished(post: BlogPost, now = new Date()) {
 }
 
 function isPostPublic(post: BlogPost) {
-  return post.humanReview !== "pending";
+  return isReviewPublic(post.humanReview);
 }
 
 function keepUniqueSlugs(posts: BlogPost[]) {

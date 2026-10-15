@@ -57,9 +57,9 @@ const bakeryQa = JSON.parse(readFileSync(path.join(bakeryRoot, "qa.json"), "utf8
 const bakeryDraft = readFileSync(path.join(bakeryRoot, "draft.mdx"), "utf8");
 const bakeryBody = bakeryDraft.replace(/^---[\s\S]*?---\s*/, "");
 
-check(blogSource.includes('humanReview: post.humanReview || "pending"'), "generated posts default to pending review");
+check(blogSource.includes("humanReview: normalizeLoadedReview(post.humanReview)"), "generated posts fail closed to pending review");
 check(blogSource.includes('noindex: post.humanReview === "approved" ? post.noindex : true'), "unapproved generated posts default to noindex");
-check(blogSource.includes('post.humanReview !== "pending"'), "pending posts are excluded from public post queries");
+check(blogSource.includes("isReviewPublic(post.humanReview)"), "unapproved posts are excluded from public post queries");
 check(blogSource.includes("function keepUniqueSlugs(posts: BlogPost[])"), "public blog lists fail closed on duplicate eligible slugs");
 check(blogSource.includes("if (matches.length !== 1)"), "public blog details fail closed on duplicate eligible slugs");
 check(blogSource.includes("표시된 영양성분 값에 목표 섭취량을 곱한 뒤 표시 기준량으로 나누는 방식"), "public normalization owner states the reusable serving conversion formula");

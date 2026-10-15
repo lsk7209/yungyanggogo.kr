@@ -1,3 +1,4 @@
+import { getMeaningfulModifiedAt, toIsoDateTime } from "../../../lib/blog-dates";
 import { getAllPosts, getPostUrl } from "../../../lib/blog";
 import { foods, getFoodUrl } from "../../../lib/foods";
 import { NATIONAL_NUTRITION_DATASETS } from "../../../lib/national-nutrition-api";
@@ -32,7 +33,7 @@ export async function GET() {
     })),
     ...getAllPosts().filter((post) => !post.noindex).map((post) => ({
       url: getPostUrl(post),
-      lastModified: post.updatedAt,
+      lastModified: getMeaningfulModifiedAt(post) ?? toIsoDateTime(post.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),

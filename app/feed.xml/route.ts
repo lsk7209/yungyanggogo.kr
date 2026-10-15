@@ -1,3 +1,4 @@
+import { toIsoDateTime } from "../../lib/blog-dates";
 import { getAllPosts, getPostUrl } from "../../lib/blog";
 import { siteConfig } from "../../lib/site";
 
@@ -22,7 +23,7 @@ export function GET() {
           <link>${getPostUrl(post)}</link>
           <guid>${getPostUrl(post)}</guid>
           <description>${escapeXml(post.description)}</description>
-          <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
+          <pubDate>${new Date(toIsoDateTime(post.publishedAt) ?? post.publishedAt).toUTCString()}</pubDate>
         </item>`,
     )
     .join("");
