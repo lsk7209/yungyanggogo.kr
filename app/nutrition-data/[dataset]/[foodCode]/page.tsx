@@ -25,9 +25,6 @@ import { formatGroupNumber } from "../../../../lib/nutrition-group";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
-import { readFoodEnrichmentByCode } from "../../../../lib/nutrition-enrichment-db";
-import { synthesizeEnrichmentReport } from "../../../../lib/nutrition-enrichment-synthesizer";
-import { FoodEnrichmentSection } from "../../../../components/FoodEnrichmentSection";
 
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
 // 식품 영양성분 데이터는 거의 변하지 않으므로 1일 캐싱으로 DB reads 대폭 절감
@@ -144,31 +141,6 @@ export default async function NationalNutritionDetailPage({
     // Related links are optional; their failure must not fail the record page.
   }
 
-  let enrichment = null;
-  try {
-    enrichment = await readFoodEnrichmentByCode(datasetSlug, item.foodCode);
-  } catch {
-    // Enrichment lookup fallback
-  }
-
-  if (!enrichment || enrichment.status !== "enriched") {
-    enrichment = synthesizeEnrichmentReport({
-      foodCode: item.foodCode,
-      datasetSlug,
-      foodName: item.name,
-      maker: item.maker || item.restaurant || item.importer,
-      largeCategory: item.largeCategory,
-      representativeFood: item.representativeFood,
-      servingUnit: item.servingUnit,
-      energy: item.energy,
-      protein: item.protein,
-      fat: item.fat,
-      carbs: item.carbs,
-      sugars: item.sugars,
-      sodium: item.sodium,
-    });
-  }
-
   const pageUrl = absoluteUrl(
     `/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`,
   );
@@ -248,11 +220,6 @@ export default async function NationalNutritionDetailPage({
         </ComparisonNavigationLink>
       </header>
 
-      <FoodEnrichmentSection
-        enrichment={enrichment}
-        foodName={item.name}
-        category={item.largeCategory || item.representativeFood}
-      />
 
       <AdsenseScript />
 

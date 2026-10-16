@@ -9,6 +9,7 @@ import {
 } from "../lib/nutrition-comparison";
 
 import type { CalculatorNutrient } from "../lib/label-nutrients";
+import { getServingInputStatus } from "../lib/serving-input-status";
 
 type Props = {
   // Fixed source values (detail page) or editable label values (tool page).
@@ -58,7 +59,7 @@ export function NutritionBasisCalculator({ nutrients, servingUnit, editable = fa
     };
   }), [values, effectiveServing, energyRaw, densityBasis, intake]);
 
-  const servingValid = serving.dimension !== "unsupported";
+  const servingStatus = getServingInputStatus({ editable, amount: servingAmount, effectiveServing });
 
   return (
     <div className="basis-calculator">
@@ -105,10 +106,11 @@ export function NutritionBasisCalculator({ nutrients, servingUnit, editable = fa
         </div>
       ) : null}
 
-      {!servingValid ? (
-        <p className="api-status api-status--warn" role="status">
-          기준량이 g 또는 ml 숫자가 아니어서 {editable ? "환산할 수 없습니다. 예: 45g, 200ml" : "이 자료는 기준량 환산을 할 수 없습니다."}
-        </p>
+      {servingStatus.kind === "prompt" ? (
+        <p className="basis-calculator__hint" role="status">{servingStatus.message}</p>
+      ) : null}
+      {servingStatus.kind === "error" ? (
+        <p className="api-status api-status--warn" role="alert">{servingStatus.message}</p>
       ) : null}
 
       <div className="comparison-table-scroll" role="region" aria-label="기준별 환산 결과" tabIndex={0}>

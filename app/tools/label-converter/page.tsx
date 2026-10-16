@@ -49,7 +49,7 @@ export default function LabelConverterPage() {
       <section className="nutrition-detail-section">
         <h2>사용 방법</h2>
         <ol>
-          <li>영양성분표 상단의 기준량(예: &lsquo;1회 제공량 45g&rsquo; 또는 &lsquo;총 내용량 200ml&rsquo;)을 입력합니다.</li>
+          <li>영양성분표 상단의 기준량(예: &lsquo;1회 제공량 45g&rsquo; 또는 &lsquo;총 내용량 200ml&rsquo;)에서 숫자(45, 200)를 입력하고 단위(g 또는 ml)를 선택합니다.</li>
           <li>표에 적힌 열량, 당류, 나트륨 등의 수치를 같은 기준량 그대로 옮겨 적습니다. 모르는 칸은 비워 둡니다.</li>
           <li>100g(또는 100ml)당 값으로 제품 간 밀도를 비교하고, 100kcal당 값으로 열량 대비 구성을 봅니다.</li>
           <li>&lsquo;내가 먹는 양&rsquo;에 실제로 먹을 양을 넣으면 그 양에 들어 있는 수치를 계산합니다.</li>

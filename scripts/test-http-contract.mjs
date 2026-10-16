@@ -48,6 +48,18 @@ await db.batch([
   ...["MIX-4", "MIX-5"].map((c) => insert("food", c, `혼합군 ${c}`, { rep: "혼합군", serving: "200ml" })),
   ...["SUB-1", "SUB-2", "SUB-3", "SUB-4", "SUB-5"].map((c) => insert("food", c, `보조군 ${c}`, { rep: "보조군", serving: "100g" })),
 ]);
+// 과거 배치가 남겼을 수 있는 근거 없는 enriched 레코드. 코드 배포 후에도 공개 출력에 나오면 안 된다.
+const LEGACY_MARKER = "레거시보충정보표식";
+await db.execute(`CREATE TABLE food_enrichments (dataset_slug TEXT NOT NULL, food_code TEXT NOT NULL, status TEXT NOT NULL, review_score REAL, review_count INTEGER, price_per_100g INTEGER, sentiment_positive_rate INTEGER, summary_points TEXT, source_platform TEXT)`);
+await db.execute({
+  sql: "INSERT INTO food_enrichments VALUES ('food', 'HTTP-001', 'enriched', 4.7, 268, 3200, 90, ?, 'portal_aggregate')",
+  args: [JSON.stringify([`${LEGACY_MARKER} 소비자 누적 평점 4.7점(리뷰 268건)`, "100g당 약 3,200원", "긍정 평가 90%"])],
+});
+const dbSnapshot = async (client) => JSON.stringify({
+  schema: (await client.execute("SELECT name, sql FROM sqlite_master WHERE type = 'table' ORDER BY name")).rows,
+  legacy: (await client.execute("SELECT * FROM food_enrichments")).rows,
+});
+const snapshotBefore = await dbSnapshot(db);
 db.close();
 
 const children = [];
@@ -187,6 +199,20 @@ try {
   const toolHtml = await (await get(base, "/tools/label-converter")).text();
   check("TOOL", locs.includes(`${siteUrl}/tools/label-converter`) && toolHtml.includes("basis-calculator") && !/noindex/.test(robotsMeta(toolHtml)), "label converter is indexable and in the sitemap");
   check("TOOL", detail.includes("먹는 양에 맞춰 계산하기"), "detail page includes the intake calculator");
+  check("TOOL", toolHtml.includes("기준량 숫자를 입력하고 단위"), "label converter shows a neutral start hint on first visit");
+  check("TOOL", !toolHtml.includes("환산할 수 없습니다") && !toolHtml.includes("api-status--warn"), "label converter shows no error before any input");
+
+  // 과거 enriched 레코드가 DB에 있어도 상세 HTML(RSC 직렬화·JSON-LD 포함)에 허위 보충정보가 없고, 조회가 DB를 바꾸지 않는다.
+  for (const item of ["food/HTTP-001", "food/HTTP-010", "process/HTTP-P1"]) {
+    const legacyHtml = await (await get(base, `/nutrition-data/${item}`)).text();
+    check("ENR", legacyHtml.includes("영양성분"), `${item} still renders the official nutrition table`);
+    for (const forbidden of [LEGACY_MARKER, "소비자 누적 평점", "리뷰 268", "긍정 평가", "긍정적 평가", "3,200원", "실구매자", "★", "인텔리전스", "한 끼 식단"]) {
+      check("ENR", !legacyHtml.includes(forbidden), `${item} must not expose "${forbidden}"`);
+    }
+  }
+  const readCheck = createClient({ url: dbUrl });
+  check("ENR", (await dbSnapshot(readCheck)) === snapshotBefore, "public GET did not create, drop or alter any table, nor modify food_enrichments rows");
+  readCheck.close();
 
   // Food-group pages: sitemap index -> groups sitemap -> indexable 200 pages.
   const indexXml = await (await get(base, "/sitemap.xml")).text();

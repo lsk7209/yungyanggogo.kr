@@ -40,7 +40,8 @@ export const REGRESSION_TESTS = [
   "test-nutrition-comparison.mjs",
   "test-nutrition-count-provenance.mjs",
   "test-nutrition-db-search-boundary.mjs",
-  "test-nutrition-enrichment.mjs",
+  "test-unverified-claims-boundary.mjs",
+  "test-serving-input-status.mjs",
   "test-nutrition-failure-integrity.mjs",
   "test-nutrition-provider-boundary.mjs",
   "test-nutrition-query.mjs",
@@ -68,6 +69,11 @@ if (unclassified.length || missing.length) {
 
 const only = process.argv.slice(2);
 const selected = only.length ? REGRESSION_TESTS.filter((f) => only.includes(f)) : REGRESSION_TESTS;
+const unknown = only.filter((f) => !REGRESSION_TESTS.includes(f));
+if (unknown.length || selected.length === 0) {
+  console.error(`regression runner: unknown test name(s) ${JSON.stringify(unknown)}; nothing was run`);
+  process.exit(2);
+}
 // Never let a test reach real providers, even if the shell has credentials.
 const safeEnv = { ...process.env };
 for (const key of Object.keys(safeEnv)) {

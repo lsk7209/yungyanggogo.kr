@@ -307,7 +307,11 @@ try {
   const liquidCalc = renderToStaticMarkup(createElement(NutritionBasisCalculator, { servingUnit: "250ml", defaultIntake: "100g", nutrients: [{ key: "protein", label: "단백질", unit: "g", raw: "20" }] }));
   check("CALC", liquidCalc.includes("100ml당") && liquidCalc.includes("8 g") && liquidCalc.includes("원자료와 같은 질량 또는 부피 단위"), "ml basis uses 100ml and refuses a g intake with a visible reason");
   const tool = renderToStaticMarkup(createElement(NutritionBasisCalculator, { editable: true, servingUnit: "", nutrients: defaultLabelNutrients() }));
-  check("CALC", (tool.match(/inputMode="decimal"/g) || []).length === 9 && tool.includes("환산할 수 없습니다"), "tool renders numeric inputs and asks for a valid basis");
+  check("CALC", (tool.match(/inputMode="decimal"/g) || []).length === 9, "tool renders numeric inputs");
+  check("CALC", tool.includes("기준량 숫자를 입력하고 단위") && !tool.includes("api-status--warn") && !tool.includes("role=\"alert\""), "tool shows a neutral start hint, not an error, before any input");
+  const unsupportedFixed = renderToStaticMarkup(createElement(NutritionBasisCalculator, { servingUnit: "1회 제공량", nutrients: [{ key: "energy", label: "열량", unit: "kcal", raw: "10" }] }));
+  check("CALC", unsupportedFixed.includes("기준량 환산을 할 수 없습니다") && unsupportedFixed.includes("api-status--warn"), "fixed-basis mode with an unusable source basis still reports a visible error");
+  check("CALC", !calc.includes("api-status--warn") && !calc.includes("기준량 숫자를 입력하고 단위"), "valid fixed basis shows neither hint nor error");
 
   // ---------- food-group comparison ----------
   const group = await import("../lib/nutrition-group.ts");
