@@ -218,9 +218,9 @@ function buildPost(entry, index) {
   const focus = g.stats[entry.focus];
   const statsRows = Object.entries(g.stats).map(([key, s]) => [
     nutrientLabel[key],
-    s.n ? `${fmt(s.median)} ${s.unit}` : "계산 불가",
-    s.n ? `${fmt(s.q1)}~${fmt(s.q3)} ${s.unit}` : "-",
-    s.n ? `${fmt(s.min)}~${fmt(s.max)} ${s.unit}` : "-",
+    s.n ? `${fmt(s.median)} ${s.unit}${s.n === 1 ? " (자료 1개)" : ""}` : "계산 불가",
+    s.n > 1 ? `${fmt(s.q1)}~${fmt(s.q3)} ${s.unit}` : "-",
+    s.n > 1 ? `${fmt(s.min)}~${fmt(s.max)} ${s.unit}` : "-",
     `${s.n}/${g.comparable}`,
   ]);
   const exampleUnit = entry.example.unit || "g";

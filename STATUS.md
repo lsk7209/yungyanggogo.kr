@@ -24,3 +24,4 @@ v4 점검(중복 상세·광고 대상·승인 지문·lastmod) 작업 사본 �
 - 별도 검토: lib/national-nutrition-db.ts 읽기 경로의 CREATE ... IF NOT EXISTS(멱등 DDL)
 - 재심사 요청·GSC 작업은 하지 않음. lint/build는 OMC_ALLOW_LINT=1 필요(hook)
 - AGENTS.md/CLAUDE.md는 upstream 추적 파일: 삭제 금지, next-env.d.ts는 git checkout으로 복원
+- 10-16: v4 push 완료(c5cbda4). 사이트맵상 all/process/food 코드 겹침 0건. 피자 글 표본1개 통계 표기 수정(나머지 본문 보완·재검토는 TODO)
