@@ -1,6 +1,5 @@
 import { cache } from "react";
 import {
-  countNationalNutritionGroupItems,
   listNationalNutritionGroups,
   readNationalNutritionGroupBases,
   readNationalNutritionGroupItems,
@@ -30,15 +29,19 @@ export const loadGroupItems = cache((dataset: GroupDataset, name: string) => rea
 export async function groupLinkFor(dataset: string, representativeFood: string) {
   if (!representativeFood.trim()) return null;
   try {
-    const count = await countNationalNutritionGroupItems(dataset as GroupDataset, representativeFood);
-    return count >= MIN_GROUP_SIZE ? { href: `/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(representativeFood))}`, count } : null;
+    // Same publish rule as the sitemap and the group page, scoped to one group.
+    const bases = await readNationalNutritionGroupBases(dataset as GroupDataset, representativeFood);
+    const comparable = comparableCountsByGroup(bases).get(representativeFood) ?? 0;
+    // Shown count matches the group page header (all stored records of the group).
+    return comparable >= MIN_GROUP_SIZE ? { href: `/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(representativeFood))}`, count: bases.length } : null;
   } catch {
     return null;
   }
 }
 
 export type GroupContextRow = { key: string; label: string; unit: string; value: number | null; min: number | null; median: number | null; max: number | null; n: number };
-export type GroupContext = { href: string; name: string; count: number; basisLabel: string; rows: GroupContextRow[] };
+// count: 저장된 전체 자료 수, comparableCount: 중복·단위 문제를 뺀 비교 대상 수(성분별 유효 자료 수 n은 rows).
+export type GroupContext = { href: string; name: string; count: number; comparableCount: number; basisLabel: string; rows: GroupContextRow[] };
 
 // Where one record sits within its publishable food group, on the group's
 // comparable basis. Descriptive context only (median and range), not a rank.
@@ -57,6 +60,7 @@ export async function groupContextFor(dataset: GroupDataset, item: NationalNutri
       href: `/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(name))}`,
       name,
       count: items.length,
+      comparableCount: analysis.comparable.length,
       basisLabel: analysis.basisLabel,
       rows: analysis.stats.map((stat) => ({ ...stat, value: own.values[stat.key].value })),
     };

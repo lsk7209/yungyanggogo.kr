@@ -12,6 +12,7 @@ import {
   type NationalNutritionDatasetSlug,
 } from "../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
+import { ComparisonNavigationLink } from "../../../components/ComparisonNavigationLink";
 import { NutritionDatasetBrowser } from "../../../components/NutritionDatasetBrowser";
 import { NutritionCountSummary } from "../../../components/NutritionCountSummary";
 import { getNutritionPagination } from "../../../lib/nutrition-count";
@@ -151,7 +152,7 @@ export default async function NutritionDatasetPage({
       </div>
 
       {isGroupDataset(dataset) ? (
-        <p><Link href={`/nutrition-data/${dataset}/group`}>{datasetInfo.shortName} 식품군별 영양성분 비교 보기</Link></p>
+        <p><ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/group`}>{datasetInfo.shortName} 식품군별 영양성분 비교 보기</ComparisonNavigationLink></p>
       ) : null}
       <NutritionDatasetBrowser datasetInfo={datasetInfo} foods={result?.foods ?? []} query={query} source={effectiveSource} page={page} hasPrevious={hasPrevious} hasNext={hasNext}>
       {result?.ok && result.searchScope === "upstream" && result.scopeReason !== "no_db" ? (

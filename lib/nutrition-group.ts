@@ -51,31 +51,42 @@ export function groupDuplicateKey(item: DuplicateKeySource) {
     .join("\u0001");
 }
 
-export function analyzeGroup(items: NationalNutritionItem[]): GroupAnalysis {
-  const mass: NationalNutritionItem[] = [];
-  const volume: NationalNutritionItem[] = [];
-  const unsupportedBasis: NationalNutritionItem[] = [];
-  for (const item of items) {
-    const dimension = parseServingBasis(item.servingUnit).dimension;
-    if (dimension === "mass") mass.push(item);
-    else if (dimension === "volume") volume.push(item);
-    else unsupportedBasis.push(item);
-  }
-  // Compare within the dominant dimension; never convert g <-> ml.
-  const useVolume = volume.length > mass.length;
-  const basis: ComparisonBasis & ("per100g" | "per100ml") = useVolume ? "per100ml" : "per100g";
+type Dimension = "mass" | "volume";
+
+// Single publish policy shared by the group page and the publish gate:
+// 1) drop repeated records, 2) split by dimension, 3) the dimension with more
+// distinct records wins (tie -> mass). Never convert g <-> ml.
+export function classifyGroupRows<T extends { servingUnit: string }>(rows: T[], keyOf?: (row: T) => string | undefined) {
   const seen = new Set<string>();
-  const primary: NationalNutritionItem[] = [];
-  const duplicates: NationalNutritionItem[] = [];
-  for (const item of useVolume ? volume : mass) {
-    const key = groupDuplicateKey(item);
-    if (seen.has(key)) duplicates.push(item);
-    else {
-      seen.add(key);
-      primary.push(item);
+  const kept: Record<Dimension, T[]> = { mass: [], volume: [] };
+  const repeated: Record<Dimension, T[]> = { mass: [], volume: [] };
+  const unsupported: T[] = [];
+  for (const row of rows) {
+    const dimension = parseServingBasis(row.servingUnit).dimension;
+    if (dimension === "unsupported") {
+      unsupported.push(row);
+      continue;
     }
+    const key = keyOf?.(row);
+    if (key !== undefined) {
+      if (seen.has(key)) {
+        repeated[dimension].push(row);
+        continue;
+      }
+      seen.add(key);
+    }
+    kept[dimension].push(row);
   }
-  const otherDimension = useVolume ? mass : volume;
+  const dimension: Dimension = kept.volume.length > kept.mass.length ? "volume" : "mass";
+  const other: Dimension = dimension === "volume" ? "mass" : "volume";
+  return { dimension, primary: kept[dimension], duplicates: repeated[dimension], otherDimension: [...kept[other], ...repeated[other]], unsupported };
+}
+
+export function analyzeGroup(items: NationalNutritionItem[]): GroupAnalysis {
+  const classified = classifyGroupRows(items, groupDuplicateKey);
+  const useVolume = classified.dimension === "volume";
+  const basis: ComparisonBasis & ("per100g" | "per100ml") = useVolume ? "per100ml" : "per100g";
+  const { primary, duplicates, otherDimension, unsupported: unsupportedBasis } = classified;
 
   const comparable: GroupRow[] = primary.map((item) => ({
     item,
@@ -119,23 +130,15 @@ export function formatGroupNumber(value: number | null, unit: string) {
   return `${rounded.toLocaleString("ko-KR", { maximumFractionDigits: 1 })} ${unit}`;
 }
 
-// Per group, the number of records in its dominant comparable dimension —
-// the same rule analyzeGroup uses to build the table.
-// Rows carrying a `duplicateKey` are counted once per key, as in analyzeGroup.
+// Per group, the number of distinct records in its dominant comparable
+// dimension — computed by the same classifier analyzeGroup uses.
+// Rows carrying a `duplicateKey` are counted once per key.
 export function comparableCountsByGroup(rows: { name: string; servingUnit: string; duplicateKey?: string }[]) {
-  const tally = new Map<string, { mass: number; volume: number }>();
-  const seen = new Set<string>();
+  const byName = new Map<string, { name: string; servingUnit: string; duplicateKey?: string }[]>();
   for (const row of rows) {
-    const dimension = parseServingBasis(row.servingUnit).dimension;
-    if (dimension === "unsupported") continue;
-    if (row.duplicateKey !== undefined) {
-      const key = `${row.name}\u0002${row.duplicateKey}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-    }
-    const entry = tally.get(row.name) ?? { mass: 0, volume: 0 };
-    entry[dimension] += 1;
-    tally.set(row.name, entry);
+    const group = byName.get(row.name);
+    if (group) group.push(row);
+    else byName.set(row.name, [row]);
   }
-  return new Map([...tally].map(([name, { mass, volume }]) => [name, volume > mass ? volume : mass]));
+  return new Map([...byName].map(([name, group]) => [name, classifyGroupRows(group, (row) => row.duplicateKey).primary.length]));
 }

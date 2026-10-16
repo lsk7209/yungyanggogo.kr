@@ -572,14 +572,14 @@ export async function readNationalNutritionGroupItems(dataset: NationalNutrition
 
 // Representative-food name and serving basis of every representative row, for
 // computing which groups have enough same-dimension records to publish.
-export async function readNationalNutritionGroupBases(dataset: NationalNutritionDatasetSlug) {
+export async function readNationalNutritionGroupBases(dataset: NationalNutritionDatasetSlug, name?: string) {
   if (!isTursoConfigured) return [] as { name: string; servingUnit: string; duplicateKey: string }[];
   await ensureNationalNutritionSchema();
   const result = await getDb().execute({
     sql: `${RANKED_REPRESENTATIVE}
       SELECT representative_food AS name, serving_unit, food_name, maker, restaurant, importer, energy, protein, fat, carbs, sugars, sodium FROM ranked
-      WHERE row_rank = 1 AND representative_food <> ''`,
-    args: [dataset],
+      WHERE row_rank = 1 AND representative_food <> ''${name ? " AND representative_food = ?" : ""}`,
+    args: name ? [dataset, name] : [dataset],
   });
   const text = (value: unknown) => String(value ?? "");
   return result.rows.map((row) => ({
@@ -591,17 +591,6 @@ export async function readNationalNutritionGroupBases(dataset: NationalNutrition
       carbs: text(row.carbs), sugars: text(row.sugars), sodium: text(row.sodium),
     }),
   }));
-}
-
-export async function countNationalNutritionGroupItems(dataset: NationalNutritionDatasetSlug, name: string) {
-  if (!isTursoConfigured || !name.trim()) return 0;
-  await ensureNationalNutritionSchema();
-  const result = await getDb().execute({
-    sql: `${RANKED_REPRESENTATIVE}
-      SELECT COUNT(*) AS item_count FROM ranked WHERE row_rank = 1 AND representative_food = ?`,
-    args: [dataset, name],
-  });
-  return Number(result.rows[0]?.item_count ?? 0);
 }
 
 export async function countNationalNutritionSitemapItems(

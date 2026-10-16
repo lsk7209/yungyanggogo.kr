@@ -354,6 +354,26 @@ try {
   const listedGroups = await cache.listNationalNutritionGroups("process", 5);
   check("CONTEXT", listedGroups.every((g) => typeof g.largeCategory === "string"), "group summaries carry the large category for related links");
 
+  // Same input, same publish decision: 6 repeated 100g records + 5 distinct 100ml records.
+  const mixed = (code, serving, name, energy) => normalize(raw(code, name, { nutConSrtrQua: serving, enerc: energy, nat: "10", foodLv4Nm: "혼합군" }));
+  await cache.saveNationalNutritionItemsToDb({ dataset: "process", totalCount: null, foods: [
+    ...["H1", "H2", "H3", "H4", "H5", "H6"].map((c) => mixed(c, "100g", "반복식품", "100")),
+    ...["V1", "V2", "V3", "V4", "V5"].map((c, i) => mixed(c, "100ml", `음료${c}`, String(50 + i))),
+  ] });
+  const mixedGroup = (await groupData.loadPublishableGroups("process")).find((g) => g.name === "혼합군");
+  check("PUBLISH", mixedGroup !== undefined, "sitemap/list source includes the 5-distinct-ml group");
+  check("PUBLISH", (await groupData.groupLinkFor("process", "혼합군"))?.count === 11, "detail-page group link uses the same rule (shows all stored records)");
+  const GroupPage = await import("../app/nutrition-data/[dataset]/group/[slug]/page.tsx");
+  const mixedParams = { params: Promise.resolve({ dataset: "process", slug: "혼합군" }) };
+  const mixedMeta = await GroupPage.generateMetadata(mixedParams);
+  check("PUBLISH", mixedMeta.robots === undefined, "group page metadata stays indexable when the sitemap lists it");
+  const mixedHtml = await render(GroupPage.default(mixedParams));
+  check("PUBLISH", mixedHtml.includes("100ml당") && mixedHtml.includes("5 / 5") && mixedHtml.includes("기준량 단위가 달라"), "group body analyses the 5 distinct ml records and lists the g records as excluded");
+  check("PUBLISH", mixedHtml.includes("/compare") && mixedHtml.includes("비교 담기"), "group table keeps crawlable add-to-compare links in the initial HTML");
+  const mixedDetail = await render(DetailPage({ params: Promise.resolve({ dataset: "process", foodCode: "V1" }) }));
+  check("PROVENANCE", mixedDetail.includes("원자료 기준일") && mixedDetail.includes("영양고고 저장 시각") && /2026-\d{2}-\d{2}|2025-\d{2}-\d{2}|20\d{2}-\d{2}-\d{2}/.test(mixedDetail), "detail source section prints the source date and the stored time as separate rows");
+  check("SAMPLE", mixedDetail.includes("유효 자료 수 / 비교 대상") && mixedDetail.includes("5 / 5") && mixedDetail.includes("저장된 11종 중"), "detail group table shows per-nutrient n against the comparable count and the stored total");
+
   // Home page links to publishable food groups (ISR; section is optional on DB failure).
   const HomePage = (await import("../app/page.tsx")).default;
   const homeHtml = await render(HomePage());

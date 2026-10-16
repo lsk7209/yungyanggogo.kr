@@ -32,6 +32,7 @@ export const REGRESSION_TESTS = [
   "test-fetch-retry-boundary.mjs",
   "test-health-functional-foods-claims.mjs",
   "test-followup-state-contract.mjs",
+  "test-group-publish-consistency.mjs",
   "test-food-group-schedule.mjs",
   "test-national-nutrition-db-count.mjs",
   "test-national-nutrition-parser.mjs",

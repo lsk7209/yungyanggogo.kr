@@ -189,3 +189,35 @@ export function buildDatasetSearchHref(
   const search = params.toString();
   return `/nutrition-data/${dataset}${search ? `?${search}` : ""}`;
 }
+
+export const DEFAULT_CARRY_KEYS = ["q", "page", "source"] as const;
+
+type ParamReader = { get(name: string): string | null; getAll(name: string): string[]; has(name: string): boolean };
+
+// Href for a link rendered on a page whose URL holds the comparison state.
+// addItem: add one item to the current selection (full => already at the limit).
+// Otherwise navigate to `href`, carrying selection/basis/amount plus only the
+// `carryKeys` search params the destination also reads.
+export function resolveStatefulHref(
+  { href, addItem, carryKeys = DEFAULT_CARRY_KEYS }: { href: string; addItem?: string; carryKeys?: readonly string[] },
+  params: ParamReader,
+): { kind: "link"; href: string } | { kind: "full"; manageHref: string } {
+  const refs = parseComparisonSelection(params.getAll("item")).selectedRefs;
+  const basis = parseComparisonBasis(params.get("basis") ?? undefined);
+  const targetServingUnit = normalizeComparisonAmount(params.get("amount") ?? undefined);
+  if (addItem) {
+    const next = parseComparisonSelection([...refs.map((ref) => ref.value), addItem]);
+    if (next.tooMany) return { kind: "full", manageHref: buildComparisonHref({ refs, basis, targetServingUnit }) };
+    return { kind: "link", href: buildComparisonHref({ refs: next.selectedRefs, basis, targetServingUnit }) };
+  }
+  const target = new URL(href, "https://local.invalid");
+  for (const key of carryKeys) {
+    const value = params.get(key);
+    if (value) target.searchParams.set(key, value);
+  }
+  const plainHref = `${target.pathname}${target.search}`;
+  // Plain browsing keeps clean URLs; carry state once something is selected or
+  // a basis/amount was chosen explicitly.
+  const hasState = refs.length > 0 || params.has("basis") || params.has("amount");
+  return { kind: "link", href: hasState ? withComparisonState(plainHref, { refs, basis, targetServingUnit }) : plainHref };
+}

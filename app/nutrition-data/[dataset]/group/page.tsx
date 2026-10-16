@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ComparisonNavigationLink } from "../../../../components/ComparisonNavigationLink";
 import { getNationalNutritionDataset } from "../../../../lib/national-nutrition-api";
 import { groupSlug, isGroupDataset, MIN_GROUP_SIZE } from "../../../../lib/nutrition-group";
 import { loadPublishableGroups } from "../../../../lib/nutrition-group-data";
@@ -40,7 +41,7 @@ export default async function NutritionGroupIndexPage({ params }: PageProps) {
     <section className="section blog-index">
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/">홈</Link><span>/</span>
-        <Link href={`/nutrition-data/${dataset}`}>{info.shortName}</Link><span>/</span>
+        <ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}`}>{info.shortName}</ComparisonNavigationLink><span>/</span>
         <span>식품군별 비교</span>
       </nav>
       <div className="section__head">
@@ -55,7 +56,7 @@ export default async function NutritionGroupIndexPage({ params }: PageProps) {
         <ul className="group-index">
           {groups.map((group) => (
             <li key={group.name}>
-              <Link href={`/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(group.name))}`}>{group.name}</Link>
+              <ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(group.name))}`}>{group.name}</ComparisonNavigationLink>
               <span>{group.count}종</span>
             </li>
           ))}

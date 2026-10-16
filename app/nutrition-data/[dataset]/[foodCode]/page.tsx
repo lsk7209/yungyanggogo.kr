@@ -22,6 +22,7 @@ import { ComparisonNavigationLink } from "../../../../components/ComparisonNavig
 import { NutritionBasisCalculator } from "../../../../components/NutritionBasisCalculator";
 import { groupContextFor, groupLinkFor } from "../../../../lib/nutrition-group-data";
 import { formatGroupNumber } from "../../../../lib/nutrition-group";
+import { describeProvenance } from "../../../../lib/nutrition-provenance";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
@@ -124,7 +125,8 @@ export default async function NationalNutritionDetailPage({
   const decodedFoodCode = decodeURIComponent(foodCode);
   const datasetInfo = getNationalNutritionDataset(datasetSlug);
   const detail = requireFound(await loadDetail(datasetSlug, decodedFoodCode));
-  const { item, cacheSource, provenance } = detail;
+  const { item, provenance } = detail;
+  const dates = describeProvenance(provenance);
   const syntheticCode = isSyntheticFoodCode(datasetSlug, item);
 
   const [groupLink, groupContext] = isGroupDataset(datasetSlug)
@@ -260,6 +262,7 @@ export default async function NationalNutritionDetailPage({
                   <th scope="col">이 식품 {groupContext.basisLabel}</th>
                   <th scope="col">식품군 중앙값</th>
                   <th scope="col">식품군 범위</th>
+                  <th scope="col">유효 자료 수 / 비교 대상</th>
                   <th scope="col">중앙값 대비</th>
                 </tr>
               </thead>
@@ -270,13 +273,17 @@ export default async function NationalNutritionDetailPage({
                     <td>{formatGroupNumber(row.value, row.unit)}</td>
                     <td>{formatGroupNumber(row.median, row.unit)}</td>
                     <td>{row.min === null ? "계산 불가" : `${formatGroupNumber(row.min, row.unit)} ~ ${formatGroupNumber(row.max, row.unit)}`}</td>
+                    <td>{row.n} / {groupContext.comparableCount}</td>
                     <td>{relativeToMedian(row.value, row.median)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p><Link href={groupContext.href}>{groupContext.name} {groupContext.count}종 전체 비교표 보기</Link></p>
+          <p className="basis-calculator__note">
+            저장된 {groupContext.count}종 중 같은 기준으로 비교할 수 있는 {groupContext.comparableCount}종이 비교 대상입니다. 값이 비어 있거나 미검출·미량인 성분은 0으로 넣지 않고 빼기 때문에, 중앙값과 범위는 성분마다 유효 자료 수 n이 다를 수 있습니다.
+          </p>
+          <p><ComparisonNavigationLink carryKeys={[]} href={groupContext.href}>{groupContext.name} {groupContext.count}종 전체 비교표 보기</ComparisonNavigationLink></p>
         </section>
       ) : null}
       <section className="nutrition-detail-section">
@@ -349,6 +356,14 @@ export default async function NationalNutritionDetailPage({
             <dt>출처</dt>
             <dd>{item.sourceName || NATIONAL_NUTRITION_SOURCE}</dd>
           </div>
+          <div>
+            <dt>원자료 기준일</dt>
+            <dd>{dates.sourceDate}</dd>
+          </div>
+          <div>
+            <dt>영양고고 저장 시각</dt>
+            <dd>{dates.storedAt}</dd>
+          </div>
         </dl>
       </section>
 
@@ -365,7 +380,7 @@ export default async function NationalNutritionDetailPage({
         <section className="nutrition-detail-section">
           <h2>같은 분류의 {datasetInfo.shortName} 영양성분표</h2>
           {groupLink ? (
-            <p><Link href={groupLink.href}>{item.representativeFood} {groupLink.count}종 영양성분 비교표 보기</Link></p>
+            <p><ComparisonNavigationLink carryKeys={[]} href={groupLink.href}>{item.representativeFood} {groupLink.count}종 영양성분 비교표 보기</ComparisonNavigationLink></p>
           ) : null}
           <p>대표식품·중분류·대분류가 같은 저장 자료입니다. 추천이나 순위가 아닙니다.</p>
           <div className="related-nutrition-grid">
@@ -417,12 +432,6 @@ export default async function NationalNutritionDetailPage({
 
 function isDatasetSlug(value: string): value is NationalNutritionDatasetSlug {
   return datasetSlugs.has(value as NationalNutritionDatasetSlug);
-}
-
-function formatKoreanDateTime(iso: string) {
-  const date = new Date(iso);
-  if (!Number.isFinite(date.getTime())) return iso;
-  return date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "medium", timeStyle: "short" });
 }
 
 function relativeToMedian(value: number | null, median: number | null) {

@@ -12,6 +12,7 @@ import {
 } from "../../../../../lib/nutrition-group";
 import { loadGroupItems, loadPublishableGroups, resolveGroup } from "../../../../../lib/nutrition-group-data";
 import { buildComparisonItemValue } from "../../../../../lib/comparison-selection";
+import { ComparisonNavigationLink } from "../../../../../components/ComparisonNavigationLink";
 import { serializeJsonLd } from "../../../../../lib/json-ld";
 import { absoluteUrl, siteConfig } from "../../../../../lib/site";
 
@@ -96,8 +97,8 @@ export default async function NutritionGroupPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }} />
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/">홈</Link><span>/</span>
-        <Link href={`/nutrition-data/${dataset}`}>{datasetInfo.shortName}</Link><span>/</span>
-        <Link href={`/nutrition-data/${dataset}/group`}>식품군별 비교</Link><span>/</span>
+        <ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}`}>{datasetInfo.shortName}</ComparisonNavigationLink><span>/</span>
+        <ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/group`}>식품군별 비교</ComparisonNavigationLink><span>/</span>
         <span>{group.name}</span>
       </nav>
 
@@ -161,7 +162,7 @@ export default async function NutritionGroupPage({ params }: PageProps) {
               {analysis.comparable.map(({ item, values }) => (
                 <tr key={item.foodCode}>
                   <th scope="row">
-                    <Link href={`/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`}>{item.name}</Link>
+                    <ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`}>{item.name}</ComparisonNavigationLink>
                     <small>{[item.maker || item.restaurant || item.importer, item.typeName].filter(Boolean).join(" · ")}</small>
                   </th>
                   <td>{item.servingUnit}</td>
@@ -169,7 +170,7 @@ export default async function NutritionGroupPage({ params }: PageProps) {
                     <td key={nutrient.key}>{formatGroupNumber(values[nutrient.key].value, nutrient.unit)}</td>
                   ))}
                   <td>
-                    <Link href={`/compare?item=${encodeURIComponent(buildComparisonItemValue(dataset, item.foodCode))}`}>비교 담기</Link>
+                    <ComparisonNavigationLink href="/compare" addItem={buildComparisonItemValue(dataset, item.foodCode)}>비교 담기</ComparisonNavigationLink>
                   </td>
                 </tr>
               ))}
@@ -212,7 +213,7 @@ export default async function NutritionGroupPage({ params }: PageProps) {
           <ul className="group-index">
             {related.map((other) => (
               <li key={other.name}>
-                <Link href={`/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(other.name))}`}>{other.name}</Link>
+                <ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/group/${encodeURIComponent(groupSlug(other.name))}`}>{other.name}</ComparisonNavigationLink>
                 <span>{other.count}종</span>
               </li>
             ))}
@@ -232,7 +233,7 @@ export default async function NutritionGroupPage({ params }: PageProps) {
       <section className="link-panel">
         <h2>함께 쓰는 기능</h2>
         <ul>
-          <li><Link href={`/nutrition-data/${dataset}/group`}>{datasetInfo.shortName} 식품군 목록</Link><span>다른 식품군의 비교표를 봅니다.</span></li>
+          <li><ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/group`}>{datasetInfo.shortName} 식품군 목록</ComparisonNavigationLink><span>다른 식품군의 비교표를 봅니다.</span></li>
           <li><Link href={`/nutrition-data/${dataset}?q=${encodeURIComponent(group.name)}`}>&lsquo;{group.name}&rsquo; 이름으로 검색</Link><span>이름에 &lsquo;{group.name}&rsquo;이 들어간 다른 자료까지 찾습니다.</span></li>
           <li><Link href="/tools/label-converter">영양성분표 100g 환산 계산기</Link><span>가지고 있는 제품 라벨을 같은 기준으로 바꿔 비교합니다.</span></li>
         </ul>
