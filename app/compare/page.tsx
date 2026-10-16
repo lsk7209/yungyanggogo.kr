@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { fetchNationalNutritionItemDetail, type NationalNutritionDetailResult } from "../../lib/national-nutrition-db";
-import type { NationalNutritionItem } from "../../lib/national-nutrition-api";
+import { getNationalNutritionDataset, type NationalNutritionDatasetSlug, type NationalNutritionItem } from "../../lib/national-nutrition-api";
+import { findSameCodePairs } from "../../lib/nutrition-record-identity";
 import {
   buildComparisonHref,
   buildComparisonCollectionHref,
@@ -70,8 +71,10 @@ export default async function ComparePage({ searchParams }: PageProps) {
   const missing = loaded.filter((entry) => entry.result.kind === "not_found" || entry.result.kind === "not_in_stored_scope");
   const items = available.map((entry) => entry.item);
   const rows = comparisonRows(items, basis, targetServingUnit);
+  const sameCodePairs = findSameCodePairs(available.map((entry) => ({ value: entry.ref.value, item: entry.item })));
   const amountParts = splitComparisonAmount(targetServingUnit);
   const reportedBasesDiffer = basis === "reported" && new Set(items.map((item) => item.servingUnit.trim().toLowerCase())).size > 1;
+  const datasetLabel = (value: string) => getNationalNutritionDataset(value.split("|")[0] as NationalNutritionDatasetSlug).shortName;
   const removeHref = (value: string) => buildComparisonHref({ refs: selectedRefs, removeValue: value, basis, targetServingUnit });
   const addHref = buildComparisonCollectionHref(available[0]?.ref.dataset ?? selectedRefs[0]?.dataset ?? "all", selectedRefs, { basis, targetServingUnit });
 
@@ -95,6 +98,30 @@ export default async function ComparePage({ searchParams }: PageProps) {
       {tooMany ? <div className="api-status api-status--warn"><strong>최대 3개까지 비교할 수 있습니다</strong><p>앞에서 선택한 3개만 표시했습니다.</p></div> : null}
       {invalidCount > 0 ? <div className="api-status api-status--warn"><strong>잘못된 비교 항목을 제외했습니다</strong><p>식별할 수 없는 {invalidCount}개 선택값은 사용하지 않았습니다.</p></div> : null}
       {duplicateCount > 0 ? <div className="api-status"><strong>중복 선택을 한 번만 반영했습니다</strong><p>같은 식품 {duplicateCount}개를 중복 없이 비교합니다.</p></div> : null}
+      {sameCodePairs.map(({ first, second, identity }) => (
+        <div key={`${first.value}:${second.value}`} className="api-status" role="status">
+          {identity === "different-data" ? (
+            <>
+              <strong>식품코드는 같지만 서로 다른 자료입니다</strong>
+              <p>{first.item.foodCode}는 두 데이터셋에 있으며 기준량 또는 영양성분 값이 달라 각각 따로 비교합니다. 원자료 기준일과 저장 시각은 각 식품 상세에서 확인하세요.</p>
+            </>
+          ) : identity === "insufficient" ? (
+            <>
+              <strong>식품코드가 같은 자료가 선택됐습니다</strong>
+              <p>{first.item.foodCode}는 두 데이터셋에 있지만 비교할 영양값이 부족해 같은 자료인지 확인할 수 없습니다.</p>
+            </>
+          ) : (
+            <>
+              <strong>같은 수치의 자료를 두 번 선택했을 수 있습니다</strong>
+              <p>
+                {first.item.foodCode}는 {first.item.name}({datasetLabel(first.value)})와 {second.item.name}({datasetLabel(second.value)})에서 기준량과 영양성분 값이 모두 같습니다.
+                {identity === "same-values-different-name" ? " 제품명 표기만 다릅니다." : ""} 서로 다른 식품을 비교하려는 것이 아니라면 하나를 제거하세요.
+              </p>
+              <Link href={removeHref(second.value)}>{second.item.name} 비교에서 제거</Link>
+            </>
+          )}
+        </div>
+      ))}
       {invalidAmountInput ? <div className="api-status api-status--warn"><strong>섭취량 입력을 인식하지 못했습니다</strong><p>0보다 큰 숫자와 g 또는 ml 단위를 선택해 주세요. 이전 값 {targetServingUnit}을(를) 유지했습니다.</p></div> : null}
       {unavailable.length > 0 ? (
         <div className="api-status api-status--warn" role="status">

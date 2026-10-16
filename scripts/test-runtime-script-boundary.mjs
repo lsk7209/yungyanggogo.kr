@@ -12,7 +12,7 @@ assert.doesNotMatch(layout, /<CoupangPartnersBanner\s*\/>/);
 // Ads can only render after a found record; failures throw and absence is 404.
 assert.match(detail, /if \(detail\.kind === "found"\) return detail;/);
 assert.match(detail, /const detail = requireFound\(await loadDetail\(/);
-assert.match(detail, /<AdsenseScript\s*\/>/);
+assert.match(detail, /<AdsenseScript recordEligible=\{canRequestAdsForRecord\(item, \{ synthetic: syntheticCode \}\)\} \/>/);
 assert.doesNotMatch(detail, /CoupangPartnersBanner/);
 assert.match(analytics, /NEXT_PUBLIC_ANALYTICS_ENABLED !== "true"/);
 assert.match(analytics, /const measurementId = process\.env\.NEXT_PUBLIC_GA_ID/);

@@ -11,6 +11,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 export const REGRESSION_TESTS = [
   "test-ad-policy.mjs",
+  "test-approval-binding.mjs",
   "test-affiliate-ad-boundary.mjs",
   "test-blog-dates.mjs",
   "test-blog-pagination-boundary.mjs",
@@ -51,6 +52,7 @@ export const REGRESSION_TESTS = [
   "test-public-internal-wording.mjs",
   "test-public-quality-boundary.mjs",
   "test-query-index-policy.mjs",
+  "test-record-identity.mjs",
   "test-remaining-acceptance-boundary.mjs",
   "test-runtime-script-boundary.mjs",
   "test-sitemap-sharding-boundary.mjs",

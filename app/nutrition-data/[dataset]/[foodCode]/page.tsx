@@ -25,6 +25,7 @@ import { formatGroupNumber } from "../../../../lib/nutrition-group";
 import { describeProvenance } from "../../../../lib/nutrition-provenance";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
+import { canRequestAdsForRecord } from "../../../../lib/ad-policy";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
@@ -223,7 +224,7 @@ export default async function NationalNutritionDetailPage({
       </header>
 
 
-      <AdsenseScript />
+      <AdsenseScript recordEligible={canRequestAdsForRecord(item, { synthetic: syntheticCode })} />
 
 
       <section className="nutrition-detail-summary">

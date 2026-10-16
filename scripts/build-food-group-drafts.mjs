@@ -4,6 +4,7 @@
 // from that snapshot; the hand-written angle text only cites values verified in
 // it. All posts stay humanReview "pending" + noindex until a person approves.
 import { readFileSync, writeFileSync, rmSync } from "node:fs";
+import { hashPostContent } from "./lib/post-content-hash.mjs";
 
 const root = new URL("../", import.meta.url);
 const snapshot = JSON.parse(readFileSync(new URL("content/editorial-data/food-groups-2026-09-30.json", root), "utf8"));
@@ -344,6 +345,20 @@ if (plan.length !== 30) throw new Error(`expected 30 plan entries, got ${plan.le
 const slugs = new Set(plan.map((p) => p.slug));
 if (slugs.size !== plan.length) throw new Error("duplicate slugs");
 const posts = plan.map(buildPost);
+// 승인 때 원고 지문(contentSha256)이 기록된 글은 원고가 바뀌면 다시 비공개로 돌린다.
+// 지문이 없는 이전 승인은 그대로 유지하되 원고와 묶이지 않은 상태로 보고한다.
+const unbound = [];
+for (const post of posts) {
+  const approval = approvals.get(post.slug);
+  if (!approval) continue;
+  if (!approval.contentSha256) {
+    unbound.push(post.slug);
+  } else if (approval.contentSha256 !== hashPostContent(post)) {
+    post.humanReview = "pending";
+    post.noindex = true;
+    console.error(`approval no longer matches content, back to pending: ${post.slug}`);
+  }
+}
 const leftover = JSON.stringify(posts).match(/\{[a-z]+(?:\.[a-z0-9]+)?\}/g);
 if (leftover) throw new Error(`unfilled placeholders: ${[...new Set(leftover)].join(", ")}`);
 
@@ -359,5 +374,6 @@ if (process.argv.includes("--stdout")) {
   rmSync(new URL("content/blog/drafts-2026-09-30-food-groups.json", root), { force: true });
   writeFileSync(new URL("content/blog/drafts-2026-10-food-groups-30.json", root), output);
   const approvedCount = posts.filter((p) => p.humanReview === "approved").length;
+  if (unbound.length) console.log(`${unbound.length} approvals are not bound to a content hash (legacy): re-approve with blog:approve to bind`);
   console.log(`wrote ${posts.length} scheduled posts, ${approvedCount} approved / ${posts.length - approvedCount} pending (${posts[0].publishedAt} .. ${posts.at(-1).publishedAt})`);
 }

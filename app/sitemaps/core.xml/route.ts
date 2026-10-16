@@ -9,25 +9,25 @@ import { staticInfoPages } from "../../../lib/static-pages";
 // Hourly so scheduled posts appear in the sitemap soon after they publish.
 export const revalidate = 3600;
 
+// 정적 페이지와 데이터셋 목록은 검증된 수정일 기록이 없어 lastmod를 생략한다(고정 과거 날짜를 변경일처럼 쓰지 않음).
+// 글은 의미 있는 수정일, 식품 안내는 자료에 기록된 updatedAt만 사용한다.
 export async function GET() {
   const urls: SitemapUrl[] = [
-    { url: absoluteUrl("/"), lastModified: "2026-09-12", changeFrequency: "weekly", priority: 1 },
-    { url: absoluteUrl("/blog"), lastModified: "2026-09-12", changeFrequency: "weekly", priority: 0.8 },
-    { url: absoluteUrl("/rankings"), lastModified: "2026-09-12", changeFrequency: "weekly", priority: 0.85 },
-    { url: absoluteUrl("/nutrition-data"), lastModified: "2026-09-12", changeFrequency: "daily", priority: 0.84 },
+    { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
+    { url: absoluteUrl("/blog"), changeFrequency: "weekly", priority: 0.8 },
+    { url: absoluteUrl("/rankings"), changeFrequency: "weekly", priority: 0.85 },
+    { url: absoluteUrl("/nutrition-data"), changeFrequency: "daily", priority: 0.84 },
     // /compare is intentionally absent: it is a noindex tool page.
-    { url: absoluteUrl("/tools/label-converter"), lastModified: "2026-09-29", changeFrequency: "monthly", priority: 0.7 },
-    { url: absoluteUrl("/health-functional-foods"), lastModified: "2026-09-12", changeFrequency: "daily", priority: 0.82 },
-    { url: absoluteUrl("/health-functional-food-nutrition"), lastModified: "2026-09-12", changeFrequency: "daily", priority: 0.82 },
+    { url: absoluteUrl("/tools/label-converter"), changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/health-functional-foods"), changeFrequency: "daily", priority: 0.82 },
+    { url: absoluteUrl("/health-functional-food-nutrition"), changeFrequency: "daily", priority: 0.82 },
     ...staticInfoPages.map((page) => ({
       url: absoluteUrl(page.href),
-      lastModified: "2026-09-12",
       changeFrequency: "monthly" as const,
       priority: 0.55,
     })),
     ...NATIONAL_NUTRITION_DATASETS.map((dataset) => ({
       url: absoluteUrl(`/nutrition-data/${dataset.slug}`),
-      lastModified: "2026-09-12",
       changeFrequency: "daily" as const,
       priority: 0.76,
     })),
@@ -39,7 +39,7 @@ export async function GET() {
     })),
     ...foods.filter((food) => !food.isExample).map((food) => ({
       url: getFoodUrl(food),
-      lastModified: "2026-09-12",
+      lastModified: food.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.72,
     })),

@@ -126,12 +126,14 @@ try {
     check("R51", !/noindex/.test(robotsMeta(html)), `${pathname} is not noindex`);
     check("R51", sameUrl(canonical(html), loc), `${pathname} canonical is itself (got ${canonical(html)})`);
   }
-  // R39: static lastmod values are not stamped with the build/request date.
-  const staticLastmods = [...coreXml.matchAll(/<url><loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].filter((m) => !m[1].includes("/blog/"));
-  // Each non-post lastmod must be a fixed content date written in the route source,
-  // not a value generated at build/request time.
+  // R39: no fixed past dates and no build/request date: static pages omit lastmod, food
+  // guides use the updatedAt recorded in lib/foods.ts.
+  const nonPostLastmods = [...coreXml.matchAll(/<url><loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].filter((m) => !m[1].includes("/blog/"));
+  const foodsSource = readFileSync(path.join(root, "lib", "foods.ts"), "utf8");
+  const recordedMonths = new Set([...foodsSource.matchAll(/updatedAt: "(\d{4}-\d{2})/g)].map((m) => m[1]));
+  check("R39", nonPostLastmods.every((m) => recordedMonths.has(m[2].slice(0, 7))), "non-post lastmod values come from recorded food updatedAt");
+  check("R39", !/<loc>[^<]*yungyanggogo\.kr\/<\/loc><lastmod>/.test(coreXml), "home page carries no unverified lastmod");
   const coreRouteSource = readFileSync(path.join(root, "app", "sitemaps", "core.xml", "route.ts"), "utf8");
-  check("R39", staticLastmods.length > 0 && staticLastmods.every((m) => coreRouteSource.includes(`lastModified: "${m[2].slice(0, 10)}"`)), "non-post lastmod values are fixed content dates");
   check("R39", !/new Date\(\)/.test(coreRouteSource), "core sitemap never stamps the current date");
 
   // R35: pending / scheduled posts are not reachable and not in the sitemap.
