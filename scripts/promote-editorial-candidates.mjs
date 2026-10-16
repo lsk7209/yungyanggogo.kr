@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { BLOG_SLUG_RENAMES } from "../lib/blog-slug-redirects.ts";
 import { cleanInline, sectionsFromBody } from "./lib/editorial-public-content.mjs";
 
 const root = process.cwd();
@@ -66,7 +67,7 @@ function promote(id) {
     .slice(0, 5);
 
   return {
-    slug: id,
+    slug: BLOG_SLUG_RENAMES[id] ?? id,
     title: contract.title,
     subtitle: contract.subtitle,
     description: frontmatterValue(draft, "description"),
@@ -108,5 +109,10 @@ function promote(id) {
 
 const approvedPosts = candidateIds.map(promote);
 mkdirSync(path.dirname(outputPath), { recursive: true });
-writeFileSync(outputPath, `${JSON.stringify(approvedPosts, null, 2)}\n`, "utf8");
+// 본문·내부 링크에 남은 옛 주소도 새 공개 주소로 맞춘다(옛 주소는 301로만 남긴다).
+const serialized = Object.entries(BLOG_SLUG_RENAMES).reduce(
+  (json, [from, to]) => json.replaceAll(`/blog/${from}`, `/blog/${to}`),
+  JSON.stringify(approvedPosts, null, 2),
+);
+writeFileSync(outputPath, `${serialized}\n`, "utf8");
 console.log(`promoted ${approvedPosts.length} editorial candidates to ${path.relative(root, outputPath)}`);

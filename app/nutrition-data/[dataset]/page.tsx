@@ -13,6 +13,7 @@ import {
 } from "../../../lib/national-nutrition-api";
 import { absoluteUrl, siteConfig } from "../../../lib/site";
 import { ComparisonNavigationLink } from "../../../components/ComparisonNavigationLink";
+import { DatasetGuideSection } from "../../../components/DatasetGuideSection";
 import { NutritionDatasetBrowser } from "../../../components/NutritionDatasetBrowser";
 import { NutritionCountSummary } from "../../../components/NutritionCountSummary";
 import { getNutritionPagination } from "../../../lib/nutrition-count";
@@ -202,6 +203,7 @@ export default async function NutritionDatasetPage({
       </div>
 
       </NutritionDatasetBrowser>
+      {!query && page === 1 ? <DatasetGuideSection dataset={dataset} shortName={datasetInfo.shortName} /> : null}
     </section>
   );
 }

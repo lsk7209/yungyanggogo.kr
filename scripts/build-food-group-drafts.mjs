@@ -23,6 +23,15 @@ const datasetLabel = {
   process: { short: "가공식품", source: "전국통합식품영양성분정보(가공식품) 표준데이터", unit: "제품" },
   material: { short: "원재료성 식품", source: "전국통합식품영양성분정보(원재료성 식품) 표준데이터", unit: "자료" },
 };
+// 근거 재확인·내용 보완 대상 9편: 100kcal당 비교, 값이 적은 성분 안내, 업체 편중을 추가한다.
+const ENHANCED_SLUGS = new Set([
+  "sandwich-nutrition-100g-compare", "fried-chicken-nutrition-100g-compare", "salad-nutrition-100g-compare",
+  "pizza-nutrition-100g-compare", "ginger-tea-sugar-100ml-compare", "snack-nutrition-100g-compare",
+  "sauce-sodium-100g-compare", "rice-cake-nutrition-100g-compare", "corn-nutrition-raw-boiled-dried",
+]);
+const MIN_SAMPLE = 3;
+const PER_KCAL_UNITS = { protein: "g", sugars: "g", sodium: "mg" };
+const MAKER_CONCENTRATION_MIN = 0.3;
 const nutrientLabel = { energy: "열량", protein: "단백질", fat: "지방", carbs: "탄수화물", sugars: "당류", sodium: "나트륨" };
 
 // One entry per day. `angle` = the question this post answers; `insight` =
@@ -218,17 +227,34 @@ function buildPost(entry, index) {
   const focus = g.stats[entry.focus];
   const statsRows = Object.entries(g.stats).map(([key, s]) => [
     nutrientLabel[key],
-    s.n ? `${fmt(s.median)} ${s.unit}${s.n === 1 ? " (자료 1개)" : ""}` : "계산 불가",
-    s.n > 1 ? `${fmt(s.q1)}~${fmt(s.q3)} ${s.unit}` : "-",
-    s.n > 1 ? `${fmt(s.min)}~${fmt(s.max)} ${s.unit}` : "-",
+    s.n === 0 ? "계산 불가" : s.n < MIN_SAMPLE ? "표본 부족" : `${fmt(s.median)} ${s.unit}`,
+    s.n >= MIN_SAMPLE ? `${fmt(s.q1)}~${fmt(s.q3)} ${s.unit}` : "-",
+    s.n >= MIN_SAMPLE ? `${fmt(s.min)}~${fmt(s.max)} ${s.unit}` : "-",
     `${s.n}/${g.comparable}`,
   ]);
   const exampleUnit = entry.example.unit || "g";
   const exampleValue = focus.median === null ? null : Math.round((focus.median * entry.example.grams) / 100 * 10) / 10;
   const lowValue = focus.q1 === null ? null : Math.round((focus.q1 * entry.example.grams) / 100 * 10) / 10;
   const highValue = focus.q3 === null ? null : Math.round((focus.q3 * entry.example.grams) / 100 * 10) / 10;
+  const enhanced = ENHANCED_SLUGS.has(entry.slug);
+  const [topMaker, topCount] = g.makers[0] ?? [];
+  const concentrated = enhanced && topMaker && topCount / g.total >= MAKER_CONCENTRATION_MIN;
+  const concentrationText = concentrated
+    ? ` 가장 많은 ${topMaker} 한 곳이 전체 ${g.total}개 중 ${topCount}개(${Math.round((topCount / g.total) * 100)}%)를 차지하므로, 이 식품군의 분포에는 그 업체의 메뉴 구성이 크게 반영돼 있습니다.`
+    : "";
+  const sparse = Object.entries(g.stats).filter(([, st]) => st.n > 0 && st.n * 2 < g.comparable).map(([key, st]) => `${nutrientLabel[key]}(${st.n}/${g.comparable})`);
+  const kcalRows = Object.entries(PER_KCAL_UNITS)
+    .filter(([key]) => (g.perKcal[key]?.n ?? 0) >= MIN_SAMPLE)
+    .map(([key, unit]) => [nutrientLabel[key], `${fmt(g.perKcal[key].median)} ${unit}`, `${fmt(g.perKcal[key].q1)}~${fmt(g.perKcal[key].q3)} ${unit}`, `${g.perKcal[key].n}/${g.comparable}`]);
+  const enhancedDistribution = enhanced ? [
+    ...(sparse.length ? [{ type: "paragraph", text: `값이 있는 자료가 비교 대상의 절반에 못 미치는 성분은 ${sparse.join(", ")}입니다. 이 성분의 중앙값은 값을 기재한 자료만의 분포이므로 ${g.name} 전체의 경향으로 읽지 말고 참고용으로만 보세요.` }] : []),
+    ...(kcalRows.length ? [
+      { type: "table", headers: ["100kcal당", "중앙값", "중간 50% 범위", "값이 있는 자료"], rows: kcalRows },
+      { type: "paragraph", text: "같은 열량을 먹는다고 가정하고 성분량을 맞춘 값입니다. 100g 값에서는 열량이 높은 자료가 모든 성분이 커 보이는데, 100kcal당으로 바꾸면 열량 대비 나트륨·단백질·당류 구성 차이를 볼 수 있습니다." },
+    ] : []),
+  ] : [];
   const makersText = g.makers.length
-    ? `제조·판매처 기준으로는 ${g.makers.slice(0, 4).map(([m, c]) => `${m} ${c}개`).join(", ")} 등 ${g.makerCount}곳의 자료가 들어 있습니다. 특정 업체 자료가 많다는 것이 그 업체가 대표적이라는 뜻은 아닙니다.`
+    ? `제조·판매처 기준으로는 ${g.makers.slice(0, 4).map(([m, c]) => `${m} ${c}개`).join(", ")} 등 ${g.makerCount}곳의 자료가 들어 있습니다. 특정 업체 자료가 많다는 것이 그 업체가 대표적이라는 뜻은 아닙니다.${concentrationText}`
     : "원재료성 식품 자료라 제조사 대신 품종·산지·조리 상태별로 등록돼 있습니다. 개별 자료 이름에 상태가 적혀 있으니 비교 전에 같은 상태끼리 골라 보세요.";
   const related = entry.related.map((key) => byName.get(key)).filter(Boolean);
   const coverage = g.total === g.comparable
@@ -284,7 +310,8 @@ function buildPost(entry, index) {
         body: [],
         blocks: [
           { type: "table", headers: ["영양성분", "중앙값", "중간 50% 범위", "최저~최고", "값이 있는 자료"], rows: statsRows },
-          { type: "paragraph", text: "중앙값은 값을 크기순으로 세웠을 때 가운데 값이고, 중간 50% 범위는 하위 25%와 상위 25%를 뺀 구간입니다. 극단값 하나에 평균이 끌려가는 문제를 피하려고 평균 대신 이 두 값을 씁니다. 원자료에 값이 비어 있는 경우는 0으로 채우지 않고 계산에서 뺐습니다." },
+          { type: "paragraph", text: `중앙값은 값을 크기순으로 세웠을 때 가운데 값이고, 중간 50% 범위는 하위 25%와 상위 25%를 뺀 구간입니다. 극단값 하나에 평균이 끌려가는 문제를 피하려고 평균 대신 이 두 값을 씁니다. 원자료에 값이 비어 있는 경우는 0으로 채우지 않고 계산에서 뺐습니다.${enhanced ? ` 값이 있는 자료가 ${MIN_SAMPLE}개 미만인 성분은 중앙값이 의미 없어 ‘표본 부족’으로 표시합니다.` : ""}` },
+          ...enhancedDistribution,
         ],
       },
       {

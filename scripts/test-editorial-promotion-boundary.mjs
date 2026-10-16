@@ -1,3 +1,4 @@
+import { BLOG_SLUG_RENAMES } from "../lib/blog-slug-redirects.ts";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
@@ -9,7 +10,7 @@ assert.equal(generation.status, 0, generation.stderr || generation.stdout);
 
 const output = JSON.parse(readFileSync(path.join(root, "content", "blog", "approved-editorial-2026-09-13.json"), "utf8"));
 const approval = JSON.parse(readFileSync(path.join(root, "content", "editorial-candidates", "approval-2026-09-13.json"), "utf8"));
-const expectedSlugs = new Set([
+const candidateIds = [
   "bakery-snack-serving-basis",
   "phase6t-bagel-basis",
   "phase6t-dried-fruit-basis",
@@ -17,7 +18,8 @@ const expectedSlugs = new Set([
   "phase6t-konjac-jelly-basis",
   "phase6t-pickle-basis",
   "phase6t-salad-topping-basis",
-]);
+];
+const expectedSlugs = new Set(candidateIds.map((id) => BLOG_SLUG_RENAMES[id] ?? id));
 
 assert.equal(output.length, 7, "promotion output contains exactly seven posts");
 assert.equal(approval.approval_scope, "local_public_snapshot", "approval is scoped to the local public snapshot");

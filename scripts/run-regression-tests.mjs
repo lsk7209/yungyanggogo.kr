@@ -11,6 +11,10 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 export const REGRESSION_TESTS = [
   "test-ad-policy.mjs",
+  "test-indexable-record.mjs",
+  "test-dataset-guide.mjs",
+  "test-food-group-enhancements.mjs",
+  "test-blog-slug-redirects.mjs",
   "test-approval-binding.mjs",
   "test-affiliate-ad-boundary.mjs",
   "test-blog-dates.mjs",

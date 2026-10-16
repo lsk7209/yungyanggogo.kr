@@ -26,6 +26,7 @@ import { describeProvenance } from "../../../../lib/nutrition-provenance";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { AdsenseScript } from "../../../../components/AdsenseScript";
 import { canRequestAdsForRecord } from "../../../../lib/ad-policy";
+import { hasEnoughCoreNutrients } from "../../../../lib/indexable-record";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
@@ -102,8 +103,8 @@ export async function generateMetadata({
         `/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`,
       ),
     },
-    // Name-derived legacy identifiers are not indexable records.
-    robots: isSyntheticFoodCode(datasetSlug, item) ? { index: false, follow: true } : undefined,
+    // 이름 파생 임시 코드와 핵심 영양 자료가 부족한 상세는 색인하지 않는다(사이트맵과 같은 기준).
+    robots: isSyntheticFoodCode(datasetSlug, item) || !hasEnoughCoreNutrients(item) ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,

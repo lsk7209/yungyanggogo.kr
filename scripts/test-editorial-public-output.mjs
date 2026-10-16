@@ -1,11 +1,14 @@
+import { BLOG_SLUG_RENAMES } from "../lib/blog-slug-redirects.ts";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const posts = JSON.parse(readFileSync("content/blog/approved-editorial-2026-09-13.json", "utf8"));
 assert.equal(posts.length, 7);
+const candidateIdBySlug = new Map(Object.entries(BLOG_SLUG_RENAMES).map(([id, slug]) => [slug, id]));
 for (const post of posts) {
-  const contract = JSON.parse(readFileSync(`content/editorial-candidates/${post.slug}/contract.json`, "utf8"));
-  const draft = readFileSync(`content/editorial-candidates/${post.slug}/draft.mdx`, "utf8").replace(/^---\s*[\s\S]*?\s*---\s*/, "");
+  const candidateId = candidateIdBySlug.get(post.slug) ?? post.slug;
+  const contract = JSON.parse(readFileSync(`content/editorial-candidates/${candidateId}/contract.json`, "utf8"));
+  const draft = readFileSync(`content/editorial-candidates/${candidateId}/draft.mdx`, "utf8").replace(/^---\s*[\s\S]*?\s*---\s*/, "");
   const output = JSON.stringify(post);
   assert.ok(!output.includes(contract.non_overlap_claim), `${post.slug}: internal merge directions must not be published`);
   assert.ok(!output.includes(contract.evidence_plan), `${post.slug}: internal evidence planning must not be published`);
@@ -23,7 +26,9 @@ for (const post of posts) {
   assert.ok(!/---\s*\||###\s/.test(output), `${post.slug}: no raw table or heading syntax`);
   assert.ok(post.sourceLinks.length >= 5, `${post.slug}: sources preserved`);
   for (const match of draft.matchAll(/\[[^\]]+]\(((?:https?:\/\/|\/)[^)]+)\)/g)) {
-    assert.ok(JSON.stringify(blocks).includes(match[1]), `${post.slug}: draft destination preserved: ${match[1]}`);
+    // 공개 주소로 바뀐 글은 새 주소로 연결돼야 한다.
+    const destination = Object.entries(BLOG_SLUG_RENAMES).reduce((href, [from, to]) => href.replace(`/blog/${from}`, `/blog/${to}`), match[1]);
+    assert.ok(JSON.stringify(blocks).includes(destination), `${post.slug}: draft destination preserved: ${destination}`);
   }
   assert.equal(blocks.filter((block) => block.type === "code").length, (draft.match(/^```/gm) ?? []).length / 2, `${post.slug}: preserve record line boundaries`);
 }

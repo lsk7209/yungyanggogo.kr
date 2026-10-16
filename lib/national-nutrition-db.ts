@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { CORE_NUTRIENTS_SQL } from "./indexable-record";
 import { getDb, isTursoConfigured } from "./db";
 import { parseNutritionTotalCount } from "./nutrition-count";
 import { groupDuplicateKey } from "./nutrition-group";
@@ -619,7 +620,7 @@ export async function readNationalNutritionSitemapItems({
   // lastmod comes from the same representative row the detail page renders.
   const result = await getDb().execute({
     sql: `WITH ranked AS (
-        SELECT food_code, updated_at, ROW_NUMBER() OVER (
+        SELECT food_code, updated_at, ${CORE_NUTRIENTS_SQL} AS indexable, ROW_NUMBER() OVER (
           PARTITION BY food_code ORDER BY ${REPRESENTATIVE_ROW_ORDER}
         ) AS row_rank
         FROM national_nutrition_items
@@ -627,7 +628,7 @@ export async function readNationalNutritionSitemapItems({
       )
       SELECT food_code, NULLIF(updated_at, '') AS updated_at
       FROM ranked
-      WHERE row_rank = 1
+      WHERE row_rank = 1 AND indexable
       ORDER BY food_code ASC
       LIMIT ? OFFSET ?`,
     args: [dataset, safePageSize, safePage * safePageSize],

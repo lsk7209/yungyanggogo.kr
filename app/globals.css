@@ -2236,3 +2236,15 @@ details.data-license-panel dl {
 .nutrition-detail-page {
   max-width: 980px;
 }
+
+.dataset-guide {
+  margin-top: 32px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  line-height: 1.7;
+}
+
+.dataset-guide h2 { font-size: 1.25rem; margin: 0 0 8px; }
+.dataset-guide h3 { font-size: 1rem; margin: 16px 0 6px; }
+.dataset-guide ol, .dataset-guide ul { margin: 0; padding-left: 20px; }
