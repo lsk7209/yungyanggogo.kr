@@ -36,6 +36,14 @@ export default function AboutPage() {
       </section>
 
       <section>
+        <h2>운영 주체</h2>
+        <p>
+          영양고고는 영양고고 편집팀이 운영합니다. 데이터 표시, 글 작성과 검토, 오류 수정은 편집팀이 맡으며,
+          문의는 <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>로 받습니다.
+        </p>
+      </section>
+
+      <section>
         <h2>다루는 정보</h2>
         <ul>
           <li>전국통합식품영양성분정보 표준데이터</li>
