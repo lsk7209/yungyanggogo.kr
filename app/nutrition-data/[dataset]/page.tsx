@@ -152,6 +152,7 @@ export default async function NutritionDatasetPage({
         </p>
       </div>
 
+      {!query && page === 1 ? <p><a href="#dataset-guide">{datasetInfo.shortName} 자료 읽는 법 보기 ↓</a></p> : null}
       {isGroupDataset(dataset) ? (
         <p><ComparisonNavigationLink carryKeys={[]} href={`/nutrition-data/${dataset}/group`}>{datasetInfo.shortName} 식품군별 영양성분 비교 보기</ComparisonNavigationLink></p>
       ) : null}

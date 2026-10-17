@@ -4,7 +4,7 @@ import type { NationalNutritionDatasetSlug } from "../lib/national-nutrition-api
 export function DatasetGuideSection({ dataset, shortName }: { dataset: NationalNutritionDatasetSlug; shortName: string }) {
   const guide = DATASET_GUIDES[dataset];
   return (
-    <section className="dataset-guide" aria-labelledby="dataset-guide-title">
+    <section id="dataset-guide" className="dataset-guide" aria-labelledby="dataset-guide-title">
       <h2 id="dataset-guide-title">{shortName} 자료 읽는 법</h2>
       <p>{guide.scope}</p>
       <h3>값을 읽기 전에 확인할 것</h3>
