@@ -5,6 +5,7 @@
 // it. All posts stay humanReview "pending" + noindex until a person approves.
 import { readFileSync, writeFileSync, rmSync } from "node:fs";
 import { hashPostContent } from "./lib/post-content-hash.mjs";
+import { deepDiveSection } from "./lib/food-group-deep-dive.mjs";
 
 const root = new URL("../", import.meta.url);
 const snapshot = JSON.parse(readFileSync(new URL("content/editorial-data/food-groups-2026-09-30.json", root), "utf8"));
@@ -261,6 +262,7 @@ function buildPost(entry, index) {
     ? `모두 ${unitBase} 기준으로 환산할 수 있습니다.`
     : `이 중 ${g.comparable}개를 ${unitBase} 기준으로 비교했습니다.${g.total - g.comparable - (g.duplicates || 0) > 0 ? ` 기준량 단위가 달라 환산할 수 없는 ${g.total - g.comparable - (g.duplicates || 0)}개는 제외했습니다.` : ""}${g.duplicates ? ` 식품명·업체·기준량·영양값이 똑같이 두 번 등록된 ${g.duplicates}개는 한 번만 셌습니다.` : ""}`;
   const title = fill(entry.title, g);
+  const deepDive = deepDiveSection({ entry, g, labels: nutrientLabel, minSample: MIN_SAMPLE, perKcalUnits: PER_KCAL_UNITS, fmt });
   const focusLabel = nutrientLabel[entry.focus];
 
   return {
@@ -323,6 +325,7 @@ function buildPost(entry, index) {
           { type: "paragraph", text: makersText },
         ],
       },
+      ...(deepDive ? [deepDive] : []),
       {
         id: "calculate",
         title: "실제 먹는 양으로 바꿔 보기",

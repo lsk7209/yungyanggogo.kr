@@ -14,6 +14,7 @@ export const REGRESSION_TESTS = [
   "test-indexable-record.mjs",
   "test-dataset-guide.mjs",
   "test-food-group-enhancements.mjs",
+  "test-food-group-deep-dive.mjs",
   "test-blog-slug-redirects.mjs",
   "test-approval-binding.mjs",
   "test-affiliate-ad-boundary.mjs",
