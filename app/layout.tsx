@@ -31,7 +31,9 @@ export const metadata: Metadata = {
     google: "T29-PupD3JevU3dqOjGvY-MgLoYKhBRAQkR8zk2elys"
   },
   other: {
-    "naver-site-verification": "c31ecdc91d511be16677fa7d93c7d52c810b635e"
+    "naver-site-verification": "c31ecdc91d511be16677fa7d93c7d52c810b635e",
+    // 애드센스 사이트 연결(소유 확인)용. 광고 스크립트를 켜지 않아도 확인된다.
+    "google-adsense-account": siteConfig.publisherId
   },
   robots: {
     index: true,
