@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 const source = async (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 const layout = await source("app/layout.tsx");
 const detail = await source("app/nutrition-data/[dataset]/[foodCode]/page.tsx");
+const blogPost = await source("app/blog/[slug]/page.tsx");
 const analytics = await source("components/GAProvider.tsx");
 const envExample = await source(".env.example");
 
@@ -12,7 +13,10 @@ assert.doesNotMatch(layout, /<CoupangPartnersBanner\s*\/>/);
 // Ads can only render after a found record; failures throw and absence is 404.
 assert.match(detail, /if \(detail\.kind === "found"\) return detail;/);
 assert.match(detail, /const detail = requireFound\(await loadDetail\(/);
-assert.match(detail, /<AdsenseScript recordEligible=\{canRequestAdsForRecord\(item, \{ synthetic: syntheticCode \}\)\} \/>/);
+// 광고는 글 페이지에서만. 식품 상세(표 위주)에는 광고 스크립트를 넣지 않는다.
+assert.doesNotMatch(detail, /AdsenseScript/);
+assert.match(blogPost, /<AdsenseScript \/>/);
+assert.match(blogPost, /if \(!post\) \{\s*notFound\(\);/);
 assert.doesNotMatch(detail, /CoupangPartnersBanner/);
 assert.match(analytics, /NEXT_PUBLIC_ANALYTICS_ENABLED !== "true"/);
 assert.match(analytics, /const measurementId = process\.env\.NEXT_PUBLIC_GA_ID/);

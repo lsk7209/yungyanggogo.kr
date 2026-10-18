@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { classifyRecordIdentity, findSameCodePairs } from "../lib/nutrition-record-identity.ts";
-import { canRequestAdsForRecord } from "../lib/ad-policy.ts";
 import { parseComparisonSelection } from "../lib/comparison-selection.ts";
 
 const blank = Object.fromEntries(
@@ -37,10 +36,5 @@ const pairs = findSameCodePairs([
 assert.equal(pairs.length, 1);
 assert.equal(pairs[0].identity, "same-record");
 
-// 광고: 충분한 자료만 허용, 임시(이름 파생) 코드·값 부족 자료는 제외
-assert.equal(canRequestAdsForRecord(item({}), { synthetic: false }), true);
-assert.equal(canRequestAdsForRecord(item(sparse), { synthetic: false }), false);
-assert.equal(canRequestAdsForRecord(item({}), { synthetic: true }), false);
-assert.equal(canRequestAdsForRecord(item({ energy: "", protein: "", fat: "", carbs: "", sugars: "" }), { synthetic: false }), false);
 
-console.log("record identity and ad eligibility: 16 assertions passed");
+console.log("record identity: 12 assertions passed");

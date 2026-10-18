@@ -24,8 +24,6 @@ import { groupContextFor, groupLinkFor } from "../../../../lib/nutrition-group-d
 import { formatGroupNumber } from "../../../../lib/nutrition-group";
 import { describeProvenance } from "../../../../lib/nutrition-provenance";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
-import { AdsenseScript } from "../../../../components/AdsenseScript";
-import { canRequestAdsForRecord } from "../../../../lib/ad-policy";
 import { hasEnoughCoreNutrients } from "../../../../lib/indexable-record";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
@@ -225,7 +223,6 @@ export default async function NationalNutritionDetailPage({
       </header>
 
 
-      <AdsenseScript recordEligible={canRequestAdsForRecord(item, { synthetic: syntheticCode })} />
 
 
       <section className="nutrition-detail-summary">

@@ -3,6 +3,7 @@ import Image from "next/image";
 import type React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AdsenseScript } from "../../../components/AdsenseScript";
 import { TableOfContents } from "../../../components/TableOfContents";
 import { ArticleBlocks } from "../../../components/ArticleBlocks";
 import { formatKoreanDate, getMeaningfulModifiedAt, toIsoDateTime } from "../../../lib/blog-dates";
@@ -327,6 +328,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
         </section>
       </div>
+      <AdsenseScript />
     </article>
   );
 }
