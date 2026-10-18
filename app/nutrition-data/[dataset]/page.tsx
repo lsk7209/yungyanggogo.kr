@@ -65,7 +65,8 @@ export async function generateMetadata({
     alternates: {
       canonical: absoluteUrl(canonicalPath),
     },
-    robots: query || queryParams?.item || queryParams?.source ? { index: false, follow: true } : undefined,
+    // 2페이지 이상 목록은 얇은 목록이라 색인에서 빼고 링크만 따라가게 한다.
+    robots: page > 1 || query || queryParams?.item || queryParams?.source ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,

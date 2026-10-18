@@ -99,6 +99,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     ...(modifiedAt ? { dateModified: modifiedAt } : {}),
     mainEntityOfPage: getPostUrl(post),
     image: thumbnailUrl,
+    author: {
+      "@id": absoluteUrl("/#organization"),
+    },
     publisher: {
       "@id": absoluteUrl("/#organization"),
     },
