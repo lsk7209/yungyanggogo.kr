@@ -1,10 +1,10 @@
 # Status | 마지막: 2026-10-19
 ## 현재 작업
-애드센스 승인 우선 개편(계획 .omc/plans/adsense-approval-2026-10-16.md). 1~4단계(10157eb)·2단계 공개 글 축소(c8e5a89) 배포 완료. 7단계 신뢰 문구(e8b3c05)는 커밋만, push 승인 대기. 남음: 사람 재승인, 6단계 광고 연결(신청 직전).
+애드센스 승인 우선 개편(계획 .omc/plans/adsense-approval-2026-10-16.md). 코드 개선 전부 운영 반영(38eee25, 10-19). 남음: 사람 재승인, 글 수 확대, 심사 신청.
 ## 최근 변경 (최근 5개만)
 - 10-19: OVH 운영 38eee25 배포(GitHub Actions ovh-image.yml로 이미지 빌드 → VPS docker load → 웹 컨테이너만 교체). 서버 전용 패치(DB 읽기 전용·next 16.3.8·standalone·Dockerfile) 저장소 이식
 - 10-19: 식품군 허브 색인 기준 5→10개(MIN_INDEXABLE_GROUP_SIZE, 운영 154개 중 67개 제외 예상), 홈에 google-adsense-account 메타(광고 없이 사이트 연결)
-- 10-18: 데이터 상세 약 4,750개 noindex,follow + 사이트맵 제외(lib/sitemap-config.ts INDEX_NUTRITION_DETAILS=false, 되돌리기는 true). 커밋만, push 대기
+- 10-18: 데이터 상세 약 4,750개 noindex,follow + 사이트맵 제외(lib/sitemap-config.ts INDEX_NUTRITION_DETAILS=false, 되돌리기는 true).
 - 10-18: 광고 스크립트 대상을 식품 상세 → 블로그 글로 이동(환경변수 꺼짐 유지), 개인정보 처리방침 문구 맞춤
 - 10-18: SEO 점검 반영: Article에 author(Organization), 허브 2페이지↑ noindex,follow, 보안 헤더(nosniff·Referrer-Policy·X-Frame-Options)
 ## TODO
