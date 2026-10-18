@@ -8,7 +8,7 @@ import {
   formatGroupNumber,
   GROUP_NUTRIENTS,
   isGroupDataset,
-  MIN_GROUP_SIZE,
+  MIN_INDEXABLE_GROUP_SIZE,
 } from "../../../../../lib/nutrition-group";
 import { loadGroupItems, loadPublishableGroups, resolveGroup } from "../../../../../lib/nutrition-group-data";
 import { buildComparisonItemValue } from "../../../../../lib/comparison-selection";
@@ -47,8 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     alternates: { canonical: absoluteUrl(path) },
-    // Publish for search only when enough records share one comparable basis.
-    robots: analysis.comparable.length < MIN_GROUP_SIZE ? { index: false, follow: true } : undefined,
+    // Index only when enough records share one comparable basis (same gate as the groups sitemap).
+    robots: analysis.comparable.length < MIN_INDEXABLE_GROUP_SIZE ? { index: false, follow: true } : undefined,
     openGraph: { title: `${title} | ${siteConfig.name}`, description, url: absoluteUrl(path) },
   };
 }

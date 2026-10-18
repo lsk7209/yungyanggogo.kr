@@ -1,16 +1,16 @@
-# Status | 마지막: 2026-10-18
+# Status | 마지막: 2026-10-19
 ## 현재 작업
 애드센스 승인 우선 개편(계획 .omc/plans/adsense-approval-2026-10-16.md). 1~4단계(10157eb)·2단계 공개 글 축소(c8e5a89) 배포 완료. 7단계 신뢰 문구(e8b3c05)는 커밋만, push 승인 대기. 남음: 사람 재승인, 6단계 광고 연결(신청 직전).
 ## 최근 변경 (최근 5개만)
+- 10-19: 식품군 허브 색인 기준 5→10개(MIN_INDEXABLE_GROUP_SIZE, 운영 154개 중 67개 제외 예상), 홈에 google-adsense-account 메타(광고 없이 사이트 연결)
 - 10-18: 데이터 상세 약 4,750개 noindex,follow + 사이트맵 제외(lib/sitemap-config.ts INDEX_NUTRITION_DETAILS=false, 되돌리기는 true). 커밋만, push 대기
 - 10-18: 광고 스크립트 대상을 식품 상세 → 블로그 글로 이동(환경변수 꺼짐 유지), 개인정보 처리방침 문구 맞춤
 - 10-18: SEO 점검 반영: Article에 author(Organization), 허브 2페이지↑ noindex,follow, 보안 헤더(nosniff·Referrer-Policy·X-Frame-Options)
 - 10-18: 편집 정책 검토 문구를 실제 한 일(작성·수치 대조)로 완화(편집 7편은 사람 검토 기록 없음, approval_source=user_instruction_gg), 허브 상단에 '자료 읽는 법' 이동 링크 추가
-- 10-17: 공개 식품군 9편에 '수치는 얼마나 흩어져 있는가' 절 추가(상대 폭·100kcal당 대비·먹는 양 표, scripts/lib/food-group-deep-dive.mjs). 본문 변경 → 사람 재검토 필요
 ## TODO
-- [ ] OVH 배포 경로 확인(10-18 커밋 운영 미반영) → 해결 후 push
+- [ ] OVH 재배포: E:/server-ovhcloud/.goal-harness/yungyanggogo-redeploy-6f62051-20261018 BLOCKED(VPS 메모리 3GiB<4GiB·디스크 8GiB<10GiB). 운영은 05a7f26 이미지. 용량 확보 후 최신 main 재배포
 - [ ] GSC에서 상세 URL 중 클릭 있는 것 확인 → 필요 시 예외 색인
-- [ ] 광고 연결 확인용 스니펫 위치 결정(심사 신청 전): 광고 스크립트는 이제 블로그 글에서만 로드(식품 상세·홈·허브 없음). AdSense 사이트 연결은 홈에서 스니펫을 찾을 수 있어 홈 포함 여부를 신청 때 확인
+- [ ] 심사 신청: 홈 google-adsense-account 메타로 사이트 연결 가능(광고 스크립트는 블로그만, 환경변수 꺼짐)
 - [ ] 편집 승인 7편 사람 검토 후 검토자·날짜 기록 방식 추가(현재 기록 없음), 그 뒤 정책 문구 강화
 - [ ] 공개 유지 식품군 9편+편집 7편 사람이 읽고 `blog:approve --basis human-read`로 재승인(현재 레거시 승인)
 - [ ] all/process 중복 상세의 규모를 GSC·운영 DB 읽기로 확인 후 기준 URL 정책 승인

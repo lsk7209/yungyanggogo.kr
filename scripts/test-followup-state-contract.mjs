@@ -366,7 +366,8 @@ try {
   const GroupPage = await import("../app/nutrition-data/[dataset]/group/[slug]/page.tsx");
   const mixedParams = { params: Promise.resolve({ dataset: "process", slug: "혼합군" }) };
   const mixedMeta = await GroupPage.generateMetadata(mixedParams);
-  check("PUBLISH", mixedMeta.robots === undefined, "group page metadata stays indexable when the sitemap lists it");
+  // 5~9개 그룹: 페이지·목록은 유지, 색인·사이트맵에서는 함께 제외된다.
+  check("PUBLISH", (await groupData.loadIndexableGroups("process")).every((g) => g.name !== "혼합군") && mixedMeta.robots?.index === false, "group below the index gate is noindex and absent from the sitemap source together");
   const mixedHtml = await render(GroupPage.default(mixedParams));
   check("PUBLISH", mixedHtml.includes("100ml당") && mixedHtml.includes("5 / 5") && mixedHtml.includes("기준량 단위가 달라"), "group body analyses the 5 distinct ml records and lists the g records as excluded");
   check("PUBLISH", mixedHtml.includes("/compare") && mixedHtml.includes("비교 담기"), "group table keeps crawlable add-to-compare links in the initial HTML");

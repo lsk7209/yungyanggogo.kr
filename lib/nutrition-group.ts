@@ -5,6 +5,8 @@ import { normalizeNutrientForComparison, parseServingBasis, type ComparisonBasis
 export const GROUP_DATASETS = ["food", "process", "material"] as const;
 export type GroupDataset = (typeof GROUP_DATASETS)[number];
 export const MIN_GROUP_SIZE = 5;
+// 검색 색인·사이트맵 기준. 5~9개짜리 소그룹은 페이지·목록은 유지하되 본문이 얇아 noindex,follow로 둔다.
+export const MIN_INDEXABLE_GROUP_SIZE = 10;
 
 export const GROUP_NUTRIENTS = [
   { key: "energy", label: "열량", unit: "kcal" },

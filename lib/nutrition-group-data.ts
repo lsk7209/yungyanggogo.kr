@@ -4,7 +4,7 @@ import {
   readNationalNutritionGroupBases,
   readNationalNutritionGroupItems,
 } from "./national-nutrition-db";
-import { analyzeGroup, comparableCountsByGroup, groupDuplicateKey, groupSlug, MIN_GROUP_SIZE, type GroupDataset } from "./nutrition-group";
+import { analyzeGroup, comparableCountsByGroup, groupDuplicateKey, groupSlug, MIN_GROUP_SIZE, MIN_INDEXABLE_GROUP_SIZE, type GroupDataset } from "./nutrition-group";
 import type { NationalNutritionItem } from "./national-nutrition-api";
 
 // One aggregate query per render resolves slug -> group name and enforces the
@@ -17,6 +17,14 @@ export const loadPublishableGroups = cache(async (dataset: GroupDataset) => {
   const [groups, bases] = await Promise.all([loadGroups(dataset), readNationalNutritionGroupBases(dataset)]);
   const comparable = comparableCountsByGroup(bases);
   return groups.filter((group) => (comparable.get(group.name) ?? 0) >= MIN_GROUP_SIZE);
+});
+
+// Groups that are indexed and listed in the sitemap: a stricter gate than publishing,
+// so the group page metadata and the sitemap agree on the same comparable count.
+export const loadIndexableGroups = cache(async (dataset: GroupDataset) => {
+  const [groups, bases] = await Promise.all([loadGroups(dataset), readNationalNutritionGroupBases(dataset)]);
+  const comparable = comparableCountsByGroup(bases);
+  return groups.filter((group) => (comparable.get(group.name) ?? 0) >= MIN_INDEXABLE_GROUP_SIZE);
 });
 
 export const resolveGroup = cache(async (dataset: GroupDataset, slug: string) => {
