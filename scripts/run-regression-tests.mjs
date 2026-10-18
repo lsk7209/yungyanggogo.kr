@@ -41,6 +41,7 @@ export const REGRESSION_TESTS = [
   "test-group-publish-consistency.mjs",
   "test-food-group-schedule.mjs",
   "test-national-nutrition-db-count.mjs",
+  "test-db-readonly.mjs",
   "test-national-nutrition-parser.mjs",
   "test-nutrition-cache-identity.mjs",
   "test-nutrition-api-cache.mjs",

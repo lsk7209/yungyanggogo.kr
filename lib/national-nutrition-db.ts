@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { CORE_NUTRIENTS_SQL } from "./indexable-record";
+import * as database from "./db";
 import { getDb, isTursoConfigured } from "./db";
 import { parseNutritionTotalCount } from "./nutrition-count";
 import { groupDuplicateKey } from "./nutrition-group";
@@ -176,7 +177,7 @@ async function fetchUpstreamScope(
     pageNo,
     numOfRows,
   });
-  if (!query && result.ok && !result.fallback && result.foods.length > 0 && scopeReason === "stored_dataset_empty") {
+  if (!database.isNutritionDbReadOnly && !query && result.ok && !result.fallback && result.foods.length > 0 && scopeReason === "stored_dataset_empty") {
     try {
       await saveNationalNutritionItemsToDb({
         dataset,
@@ -203,6 +204,22 @@ async function hasStoredNationalNutritionRows(dataset: NationalNutritionDatasetS
 export async function ensureNationalNutritionSchema() {
   // 이미 초기화된 경우 DDL 재실행 방지 — 매 요청마다 DDL을 Turso에 보내던 것을 프로세스 수명 1회로 제한
   if (schemaReady) return;
+
+  if (database.isNutritionDbReadOnly) {
+    await database.verifyExistingTableColumns("national_nutrition_syncs", [
+      "dataset_slug", "query_key", "total_count", "fetched_at",
+    ]);
+    await database.verifyExistingTableColumns("national_nutrition_items", [
+      "dataset_slug", "query_key", "food_code", "food_name", "type_name", "origin_name",
+      "large_category", "representative_food", "middle_category", "serving_unit", "energy",
+      "water", "protein", "fat", "carbs", "sugars", "fiber", "calcium", "iron",
+      "potassium", "sodium", "vitamin_a", "vitamin_c", "vitamin_d", "saturated_fat",
+      "trans_fat", "maker", "importer", "distributor", "restaurant", "origin_country",
+      "source_name", "created_at", "updated_at", "synced_at",
+    ]);
+    schemaReady = true;
+    return;
+  }
 
   const db = getDb();
 
@@ -650,6 +667,9 @@ export async function saveNationalNutritionItemsToDb({
   totalCount: number | null;
   foods: NationalNutritionItem[];
 }) {
+  if (database.isNutritionDbReadOnly) {
+    throw new Error("Nutrition DB is read-only: saving nutrition items is disabled.");
+  }
   const db = getDb();
   const queryKey = normalizeQueryKey(query);
   // Rows without a source food code are not stored under an invented identifier.

@@ -8,6 +8,9 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // OVH Docker 이미지 빌드(Dockerfile)에서만 standalone 출력. Vercel·CI 빌드는 영향 없음.
+  output: process.env.NEXT_STANDALONE === "true" ? "standalone" : undefined,
+  experimental: { cpus: 2 },
   poweredByHeader: false,
   async redirects() {
     return BLOG_SLUG_REDIRECTS;
