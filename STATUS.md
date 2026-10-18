@@ -21,6 +21,7 @@
 - 승인 대기 글은 자동 승인하지 않고 비공개 유지: 사람 검토 전 허위 검수 표시 방지
 - 원본 JSON의 updatedAt은 수정하지 않고 표시 로직에서만 처리: 데이터 보존
 ## 주의
+- 운영 도메인 DNS는 51.79.206.71(OVH, Caddy)이고 Vercel 배포도 별도로 Ready 상태. 10-18 푸시(7dfbfd5·fd674c5: Article author, 허브 2페이지↑ noindex, 보안 헤더)가 15분↑ 운영에 미반영 — OVH 배포 방식 확인 필요
 - 승인 필요: 배포, 운영 DB food_enrichments 정리, enrich 예약 워크플로우 원격 중단(파일은 삭제했으나 push 전까지 원격은 계속 실행), 캐시 재생성
 - 별도 검토: lib/national-nutrition-db.ts 읽기 경로의 CREATE ... IF NOT EXISTS(멱등 DDL)
 - 재심사 요청·GSC 작업은 하지 않음. lint/build는 OMC_ALLOW_LINT=1 필요(hook)
