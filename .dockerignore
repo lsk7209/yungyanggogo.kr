@@ -1,0 +1,12 @@
+.git
+.next
+node_modules
+.goal-harness
+.omx
+.env*
+output
+docs
+*.log
+*.tsbuildinfo
+scripts/migration/*.py
+scripts/migration/*.php

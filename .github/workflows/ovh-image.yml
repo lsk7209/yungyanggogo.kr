@@ -1,0 +1,36 @@
+name: OVH image
+
+# OVH VPS는 메모리가 부족해 서버에서 빌드하지 않는다. 여기서 이미지를 만들어
+# artifact로 올리고, 서버에서는 docker load 후 웹 컨테이너만 교체한다.
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    # 빌드에는 DB·provider 자격증명을 넘기지 않는다(Dockerfile과 동일 원칙).
+    steps:
+      - uses: actions/checkout@v5
+      - uses: docker/setup-buildx-action@v3
+      - name: Build image
+        run: |
+          short="${GITHUB_SHA::7}"
+          tag="ovh-yungyanggogo-production:${short}-$(date -u +%Y%m%d)"
+          docker buildx build --load --build-arg REVISION="$GITHUB_SHA" -t "$tag" .
+          docker image inspect "$tag" --format '{{.Id}}' > image-id.txt
+          echo "$tag" > image-tag.txt
+          docker save "$tag" | gzip -1 > image.tar.gz
+          sha256sum image.tar.gz > image.tar.gz.sha256
+          cat image-tag.txt image-id.txt image.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ovh-image
+          path: |
+            image.tar.gz
+            image.tar.gz.sha256
+            image-tag.txt
+            image-id.txt
+          retention-days: 3
