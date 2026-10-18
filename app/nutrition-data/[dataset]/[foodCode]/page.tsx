@@ -25,6 +25,7 @@ import { formatGroupNumber } from "../../../../lib/nutrition-group";
 import { describeProvenance } from "../../../../lib/nutrition-provenance";
 import { isGroupDataset } from "../../../../lib/nutrition-group";
 import { hasEnoughCoreNutrients } from "../../../../lib/indexable-record";
+import { INDEX_NUTRITION_DETAILS } from "../../../../lib/sitemap-config";
 import { buildComparisonHref, buildComparisonItemValue } from "../../../../lib/comparison-selection";
 
 // searchParams 없음 — params(dataset, foodCode)만 사용하므로 ISR 가능
@@ -101,8 +102,8 @@ export async function generateMetadata({
         `/nutrition-data/${dataset}/${encodeURIComponent(item.foodCode)}`,
       ),
     },
-    // 이름 파생 임시 코드와 핵심 영양 자료가 부족한 상세는 색인하지 않는다(사이트맵과 같은 기준).
-    robots: isSyntheticFoodCode(datasetSlug, item) || !hasEnoughCoreNutrients(item) ? { index: false, follow: true } : undefined,
+    // 상세 색인을 끈 동안, 그리고 이름 파생 임시 코드·핵심 영양 자료 부족 상세는 색인하지 않는다(사이트맵과 같은 기준).
+    robots: !INDEX_NUTRITION_DETAILS || isSyntheticFoodCode(datasetSlug, item) || !hasEnoughCoreNutrients(item) ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${siteConfig.name}`,
       description,

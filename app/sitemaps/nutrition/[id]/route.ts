@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { readNationalNutritionSitemapItems } from "../../../../lib/national-nutrition-db";
 import { NATIONAL_NUTRITION_DATASETS, type NationalNutritionDatasetSlug } from "../../../../lib/national-nutrition-api";
-import { NUTRITION_SITEMAP_PAGE_SIZE } from "../../../../lib/sitemap-config";
+import { INDEX_NUTRITION_DETAILS, NUTRITION_SITEMAP_PAGE_SIZE } from "../../../../lib/sitemap-config";
 import { renderUrlSet, sitemapXmlResponse } from "../../../../lib/sitemap-xml";
 import { absoluteUrl } from "../../../../lib/site";
 
@@ -13,7 +13,7 @@ const datasetSlugs = new Set(NATIONAL_NUTRITION_DATASETS.map((dataset) => datase
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const match = /^(all|food|process|material|health)-(0|[1-9]\d*)\.xml$/.exec(id);
-  if (!match || !datasetSlugs.has(match[1] as NationalNutritionDatasetSlug)) {
+  if (!INDEX_NUTRITION_DETAILS || !match || !datasetSlugs.has(match[1] as NationalNutritionDatasetSlug)) {
     notFound();
   }
 

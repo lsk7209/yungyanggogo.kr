@@ -11,6 +11,9 @@ const config = await source("lib/sitemap-config.ts");
 const robots = await source("app/robots.ts");
 
 assert.match(config, /NUTRITION_SITEMAP_PAGE_SIZE = 10_000/);
+// 상세 색인을 끄면 사이트맵 색인·샤드 모두 상세 URL을 내보내지 않는다.
+assert.match(indexRoute, /if \(!INDEX_NUTRITION_DETAILS\) return sitemapXmlResponse/);
+assert.match(shardRoute, /!INDEX_NUTRITION_DETAILS \|\|/);
 assert.match(indexRoute, /Math\.ceil\(totalCount \/ NUTRITION_SITEMAP_PAGE_SIZE\)/);
 assert.match(indexRoute, /renderSitemapIndex/);
 assert.match(indexRoute, /dynamic = "force-dynamic"/);
@@ -27,4 +30,4 @@ assert.match(xml, /escapeXml/);
 assert.match(xml, /<sitemapindex xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
 assert.match(robots, /sitemap: absoluteUrl\("\/sitemap\.xml"\)/);
 
-console.log("sitemap sharding boundary: 15 assertions passed");
+console.log("sitemap sharding boundary: 17 assertions passed");

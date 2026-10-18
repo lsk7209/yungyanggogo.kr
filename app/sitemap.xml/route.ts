@@ -1,7 +1,7 @@
 import { isTursoConfigured } from "../../lib/db";
 import { countNationalNutritionSitemapItems } from "../../lib/national-nutrition-db";
 import { NATIONAL_NUTRITION_DATASETS } from "../../lib/national-nutrition-api";
-import { NUTRITION_SITEMAP_PAGE_SIZE } from "../../lib/sitemap-config";
+import { INDEX_NUTRITION_DETAILS, NUTRITION_SITEMAP_PAGE_SIZE } from "../../lib/sitemap-config";
 import { renderSitemapIndex, sitemapXmlResponse } from "../../lib/sitemap-xml";
 import { absoluteUrl } from "../../lib/site";
 
@@ -13,6 +13,7 @@ export async function GET() {
 
   if (isTursoConfigured) {
     sitemapUrls.push(absoluteUrl("/sitemaps/groups.xml"));
+    if (!INDEX_NUTRITION_DETAILS) return sitemapXmlResponse(renderSitemapIndex(sitemapUrls));
     try {
       const counts = await Promise.all(
         NATIONAL_NUTRITION_DATASETS.map(async (dataset) => ({
