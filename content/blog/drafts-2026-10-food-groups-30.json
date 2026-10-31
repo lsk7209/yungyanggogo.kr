@@ -1545,8 +1545,8 @@
     "publishedAt": "2026-10-06T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -2116,8 +2116,8 @@
     "publishedAt": "2026-10-08T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "terra",
     "summaryCards": [
       {
@@ -2687,8 +2687,8 @@
     "publishedAt": "2026-10-10T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {

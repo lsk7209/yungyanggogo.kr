@@ -4,47 +4,86 @@
     {
       "slug": "corn-nutrition-raw-boiled-dried",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "b38d212e53409d04fa8b42f36124468657209e8591d506789edc75f1fb79f274"
     },
     {
       "slug": "curry-roux-nutrition-basis",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "55920440394f688b35773b5916b7611e95acbc6c4c9c32aa72c6b6344a079523"
     },
     {
       "slug": "fried-chicken-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "4773919b818421c65ba4e97ae88a2b4d5ff4ebd58ecea2010895967cbc9eaddd"
+    },
+    {
+      "slug": "frozen-dumpling-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-10-31",
+      "basis": "automated-check",
+      "contentSha256": "6c157cd193c05cb19ba54ee1165d8bcaa068e4d4e65a248b9ee5d94e6d2e291c"
+    },
+    {
+      "slug": "instant-rice-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-10-31",
+      "basis": "automated-check",
+      "contentSha256": "eaa58f2d9548e142f3abb0fb4dddbbe5309b58f5d4c42e755bea70523badc838"
     },
     {
       "slug": "mackerel-nutrition-by-state",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "1c8efe6214e734a05eeb8fb4b047b22e2ae05c392f13120309001b796822fedf"
+    },
+    {
+      "slug": "marinated-meat-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-10-31",
+      "basis": "automated-check",
+      "contentSha256": "34ef492fbf976630176601352493603fc34027c364c392fbde68574aafe59178"
     },
     {
       "slug": "salad-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "17e7385d202f9ffc6620ef5bed7f53acff3bd277eb6bc1a4aca830756f5d7b0f"
     },
     {
       "slug": "salmon-nutrition-by-state",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "ae62782f6c729944ec68dfddbfa70821853a66e22ecdd888aa1c771a1ba704a7"
     },
     {
       "slug": "sandwich-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "41c6715e70f4d40594333f7b17547ccea0eaa09151a6091eb7713983cb36310c"
     },
     {
       "slug": "sauce-sodium-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "40ac2a8899e990d8c7a5df20ecec4c00b4b7943feb981964a2e9347979b39bec"
     },
     {
       "slug": "snack-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30"
+      "reviewedAt": "2026-09-30",
+      "basis": "automated-check",
+      "contentSha256": "a1b65a8353752ff2129bcad853e8ee98555408ea024331e0c7c20d9c445fead5"
     }
   ]
 }

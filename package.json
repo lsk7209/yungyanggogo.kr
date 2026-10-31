@@ -24,7 +24,8 @@
     "gsc:sitemap:verify": "node scripts/gsc-sitemap.mjs verify-property",
     "gsc:sitemap:submit": "node scripts/gsc-sitemap.mjs submit",
     "blog:review": "node scripts/render-food-group-review.mjs",
-    "blog:approve": "node scripts/approve-food-group-post.mjs"
+    "blog:approve": "node scripts/approve-food-group-post.mjs",
+    "content:pipeline": "node scripts/run-content-pipeline-daemon.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
