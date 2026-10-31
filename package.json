@@ -27,7 +27,9 @@
     "blog:approve": "node scripts/approve-food-group-post.mjs",
     "content:pipeline": "node scripts/run-content-pipeline-daemon.mjs",
     "content:deploy": "node scripts/deploy-to-ovh.mjs",
-    "deploy:ovh": "node scripts/deploy-to-ovh.mjs"
+    "deploy:ovh": "node scripts/deploy-to-ovh.mjs",
+    "indexnow:submit": "node scripts/submit-indexnow.mjs",
+    "indexnow:dry-run": "node scripts/submit-indexnow.mjs --dry-run"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",

@@ -38,6 +38,11 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true
+  },
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml"
+    }
   }
 };
 

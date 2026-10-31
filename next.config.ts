@@ -13,7 +13,11 @@ const nextConfig: NextConfig = {
   experimental: { cpus: 2 },
   poweredByHeader: false,
   async redirects() {
-    return BLOG_SLUG_REDIRECTS;
+    return [
+      ...BLOG_SLUG_REDIRECTS,
+      { source: "/rss.xml", destination: "/feed.xml", permanent: true },
+      { source: "/rss", destination: "/feed.xml", permanent: true },
+    ];
   },
   async headers() {
     return [{ source: "/:path*", headers: SECURITY_HEADERS }];

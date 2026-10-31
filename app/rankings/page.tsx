@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { rankingGroups } from "../../lib/foods";
 import {
   fetchPublicFoodItems,
@@ -12,13 +13,13 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "식품영양성분 목적별 비교 기준",
   description:
-    "단백질, 저칼로리, 저당, 저나트륨 비교 기준 안내입니다. 실제 제품 순위는 제공하지 않습니다.",
+    "단백질 밀도, 저칼로리, 저당, 저나트륨 비교 기준 안내입니다. 특정 상업적 제품 순위가 아닙니다.",
   alternates: {
     canonical: absoluteUrl("/rankings"),
   },
   openGraph: {
     title: `식품영양성분 목적별 비교 기준 | ${siteConfig.name}`,
-    description: "목적별 비교 기준 안내이며 실제 제품 순위가 아닙니다.",
+    description: "목적별 비교 기준 안내이며 제품 순위가 아닙니다.",
     url: absoluteUrl("/rankings"),
   },
 };
@@ -35,7 +36,7 @@ export default async function RankingsPage() {
         <p className="eyebrow">Rankings</p>
         <h1>식품영양성분 목적별 비교 기준</h1>
         <p>
-          아래 네 항목은 비교 기준 안내이며 제품 순위가 아닙니다. 실제 정렬된 랭킹은 아직 제공하지 않습니다.
+          식품을 선택할 때 단일 숫자에 현혹되지 않고, 목적(단백질 밀도, 저칼로리, 저당, 저나트륨)에 맞춰 올바르게 영양성분을 대조하는 4대 해석 기준입니다. 법정 허위·과장 광고를 방지하기 위해 상업적 제품 순위가 아닙니다.
         </p>
       </div>
       <div className="api-status api-status--ok">
@@ -94,9 +95,18 @@ export default async function RankingsPage() {
             <div>
               <h2>{ranking.title}</h2>
               <p>{ranking.description}</p>
+              <div style={{ marginTop: "0.5rem", fontSize: "0.9rem", color: "var(--muted, #64748b)" }}>
+                <p style={{ margin: "0.25rem 0" }}><strong>산출 공식:</strong> <code>{ranking.formula}</code></p>
+                <p style={{ margin: "0.25rem 0" }}>{ranking.keyInsight}</p>
+                <p style={{ margin: "0.4rem 0" }}>
+                  <Link href={ranking.guideLink} style={{ color: "var(--primary, #0ea5e9)", fontWeight: 500 }}>
+                    → {ranking.guideLabel}
+                  </Link>
+                </p>
+              </div>
               <small>{ranking.metric} 기준</small>
             </div>
-            <span>비교 기준 안내 · 제품 순위 아님</span>
+            <span>비교 기준 안내 · 제품 순위가 아닙니다</span>
           </article>
         ))}
       </div>

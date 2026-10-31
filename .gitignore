@@ -9,4 +9,7 @@ coverage/
 *.tsbuildinfo
 .vercel/
 .omx/
+.omc/
+.goal-harness/
+.playwright-cli/
 /output/
