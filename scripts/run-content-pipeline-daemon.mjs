@@ -110,6 +110,15 @@ if (isDevRunning) {
   console.log("ℹ 로컬 데몬 대기 상태 확인. 에이전트 데몬 관리자를 통해 즉시 연동 가동합니다.");
 }
 
+// 6. IndexNow 빠른 색인 API 제출
+console.log("\n[6단계] IndexNow 검색엔진(Bing·네이버) 빠른 색인 제출...");
+try {
+  execFileSync(process.execPath, ["scripts/submit-indexnow.mjs"], { stdio: "inherit" });
+  console.log("✓ IndexNow 검색엔진 색인 요청 완료");
+} catch (error) {
+  console.warn("ℹ IndexNow 제출 상태:", error.message);
+}
+
 console.log("\n==================================================");
 console.log("  모든 개선, 2차 리뷰, 전수 검증 파이프라인 통과!");
 console.log("==================================================");
