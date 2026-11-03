@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import type { ReactNode } from "react";
 import { GAProvider } from "../components/GAProvider";
 import { absoluteUrl, siteConfig } from "../lib/site";
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
+        <Script src="https://multi-dashboard-one.vercel.app/fleet-widget.js" id="affiliate-os-fleet" strategy="afterInteractive" />
         <GAProvider />
         <script
           type="application/ld+json"
