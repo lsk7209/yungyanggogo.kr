@@ -58,6 +58,13 @@
       "contentSha256": "eaa58f2d9548e142f3abb0fb4dddbbe5309b58f5d4c42e755bea70523badc838"
     },
     {
+      "slug": "kimchi-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "e5b45846da4ecd5a3cf55eaea7e1d291f049f4b31136fda936a08c3a1fe32e63"
+    },
+    {
       "slug": "mackerel-nutrition-by-state",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-09-30",
@@ -105,6 +112,13 @@
       "reviewedAt": "2026-09-30",
       "basis": "automated-check",
       "contentSha256": "40ac2a8899e990d8c7a5df20ecec4c00b4b7943feb981964a2e9347979b39bec"
+    },
+    {
+      "slug": "side-dish-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "4fee41b40b18f5685bef709020ea0fce61d91c85089d064909b0cac73d25dbe6"
     },
     {
       "slug": "snack-nutrition-100g-compare",
