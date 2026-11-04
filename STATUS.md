@@ -1,12 +1,12 @@
-# Status | 마지막: 2026-11-01
+# Status | 마지막: 2026-11-04
 ## 현재 작업
-콘텐츠 품질 고도화 및 검색 색인/피드/IndexNow 연동 완료. 6시간 주기 Antigravity 콘텐츠 개선 데몬 등록 완료.
+자동 콘텐츠 파이프라인 데몬 가동 및 피자·생강차 식품군 글 2편 승인·검증 완료. 6시간 주기 자동 데몬 및 IndexNow 실시간 제출 연동.
 ## 최근 변경 (최근 5개만)
+- 11-04: 자동 콘텐츠 데몬 1회차 실행: 피자·생강차 글 2차 심층 리뷰 및 승인(`human-read`), SHA-256 무결성 바인딩, IndexNow 27개 URL 제출(200 OK)
+- 11-04: Dockerfile GA4 분석 태그(`G-92QVJS88F8`) 빌드 환경변수 활성화
 - 11-01: RSS 피드 `<head>` 메타태그 등록 및 `/rss.xml`·`/rss` → `/feed.xml` 301 영구 리다이렉트 구성
-- 11-01: IndexNow API 제출 스크립트(`scripts/submit-indexnow.mjs`) 구현 및 공개 승인 22개 URL 제출(202 Accepted) 검증
+- 11-01: IndexNow API 제출 스크립트(`scripts/submit-indexnow.mjs`) 구현 및 공개 승인 URL 제출 검증
 - 11-01: `/rankings` 페이지 고도화 (단백질·저칼로리·저당·저나트륨 4대 축 산출 공식, 핵심 판별 요령, 분석 가이드 연결)
-- 11-01: 6시간 주기 콘텐츠 개선 데몬 프롬프트 작성(`docs/prompts/`) 및 Antigravity Sidecar(`yungyanggogo-content-daemon`) 등록
-- 10-19: OVH 운영 38eee25 배포(GitHub Actions ovh-image.yml로 이미지 빌드 → VPS docker load → 웹 컨테이너만 교체). 서버 전용 패치(DB 읽기 전용·next 16.3.8·standalone·Dockerfile) 저장소 이식
 ## TODO
 - [ ] 심사 신청: 홈 google-adsense-account 메타로 사이트 연결 가능(광고 스크립트는 블로그만, 환경변수 꺼짐)
 - [ ] 편집 승인 7편 사람 검토 후 검토자·날짜 기록 방식 추가(현재 기록 없음), 그 뒤 정책 문구 강화

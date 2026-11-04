@@ -10,7 +10,7 @@ FROM dependencies AS builder
 ARG REVISION=unknown
 ENV NODE_ENV=production NEXT_STANDALONE=true NEXT_TELEMETRY_DISABLED=1 \
     NEXT_PUBLIC_SITE_URL=https://yungyanggogo.kr \
-    NEXT_PUBLIC_ANALYTICS_ENABLED=false NEXT_PUBLIC_ADSENSE_ENABLED=false
+    NEXT_PUBLIC_ANALYTICS_ENABLED=true NEXT_PUBLIC_GA_ID=G-92QVJS88F8 NEXT_PUBLIC_ADSENSE_ENABLED=false
 COPY . .
 # No production DB or provider credentials are accepted by this staging build.
 RUN npm run build

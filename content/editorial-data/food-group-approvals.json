@@ -30,6 +30,13 @@
       "contentSha256": "6c157cd193c05cb19ba54ee1165d8bcaa068e4d4e65a248b9ee5d94e6d2e291c"
     },
     {
+      "slug": "ginger-tea-sugar-100ml-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-04",
+      "basis": "human-read",
+      "contentSha256": "9a7bd5997827497c45c0bed25f8d143a4d95b84de961085d902af481e6b53b1f"
+    },
+    {
       "slug": "instant-rice-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-10-31",
@@ -49,6 +56,13 @@
       "reviewedAt": "2026-10-31",
       "basis": "automated-check",
       "contentSha256": "34ef492fbf976630176601352493603fc34027c364c392fbde68574aafe59178"
+    },
+    {
+      "slug": "pizza-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-04",
+      "basis": "human-read",
+      "contentSha256": "27d84a7cf9a0498b9777fc01ba6026475fa8d7e98a02ad75434b619c23c360a8"
     },
     {
       "slug": "salad-nutrition-100g-compare",
