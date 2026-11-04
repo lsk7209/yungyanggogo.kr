@@ -2,6 +2,13 @@
   "note": "Add entries only after a person has checked the post against the data. Use: npm run blog:approve -- <slug> --reviewer <name>",
   "approvals": [
     {
+      "slug": "cookie-biscuit-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-04",
+      "basis": "human-read",
+      "contentSha256": "e75e7e5b48245376b51c2525cc64af251f444764031fabe36170cc08b6d7189d"
+    },
+    {
       "slug": "corn-nutrition-raw-boiled-dried",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-09-30",
@@ -28,6 +35,13 @@
       "reviewedAt": "2026-10-31",
       "basis": "automated-check",
       "contentSha256": "6c157cd193c05cb19ba54ee1165d8bcaa068e4d4e65a248b9ee5d94e6d2e291c"
+    },
+    {
+      "slug": "fruit-vegetable-juice-sugar-100ml",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-04",
+      "basis": "human-read",
+      "contentSha256": "b343990259a09913df756c17da22b1ab408cee258cbf50ab0bb84443aba1e0d3"
     },
     {
       "slug": "ginger-tea-sugar-100ml-compare",

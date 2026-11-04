@@ -2928,8 +2928,8 @@
     "publishedAt": "2026-10-11T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "green",
     "summaryCards": [
       {
@@ -3164,8 +3164,8 @@
     "publishedAt": "2026-10-12T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "amber",
     "summaryCards": [
       {
