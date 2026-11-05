@@ -9,6 +9,13 @@
       "contentSha256": "57529f1604882a3c88d41f0b78f1e464e728d663cedb2729eab34a3d632cc802"
     },
     {
+      "slug": "cake-sugar-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-06",
+      "basis": "human-read",
+      "contentSha256": "806aeb2917904ab9f26c942c358970aed85e6a9e730c089da24ba6bdee1d15f6"
+    },
+    {
       "slug": "cookie-biscuit-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-11-04",
@@ -133,6 +140,13 @@
       "reviewedAt": "2026-09-30",
       "basis": "automated-check",
       "contentSha256": "ae62782f6c729944ec68dfddbfa70821853a66e22ecdd888aa1c771a1ba704a7"
+    },
+    {
+      "slug": "salted-seafood-sodium-100g",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-06",
+      "basis": "human-read",
+      "contentSha256": "0eb661f665ad4d34987993d8a9ed2ef80d45c7cd844cc13b63dca6990ac13da1"
     },
     {
       "slug": "sandwich-nutrition-100g-compare",
