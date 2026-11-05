@@ -2,6 +2,13 @@
   "note": "Add entries only after a person has checked the post against the data. Use: npm run blog:approve -- <slug> --reviewer <name>",
   "approvals": [
     {
+      "slug": "bread-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "57529f1604882a3c88d41f0b78f1e464e728d663cedb2729eab34a3d632cc802"
+    },
+    {
       "slug": "cookie-biscuit-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-11-04",
@@ -126,6 +133,13 @@
       "reviewedAt": "2026-09-30",
       "basis": "automated-check",
       "contentSha256": "a1b65a8353752ff2129bcad853e8ee98555408ea024331e0c7c20d9c445fead5"
+    },
+    {
+      "slug": "soup-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "a4de22687a0898c16e003abd8629c62b0a29bffa0e8fc1f0172ce25c0efe0665"
     }
   ]
 }
