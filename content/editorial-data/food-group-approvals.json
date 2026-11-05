@@ -30,6 +30,13 @@
       "contentSha256": "55920440394f688b35773b5916b7611e95acbc6c4c9c32aa72c6b6344a079523"
     },
     {
+      "slug": "fish-cake-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "19094cbc62fdaad3af2e60152c6d61f7625012d6cfff9f6093cd5725eb144e03"
+    },
+    {
       "slug": "fried-chicken-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-09-30",
@@ -105,6 +112,13 @@
       "reviewedAt": "2026-11-05",
       "basis": "human-read",
       "contentSha256": "d300e387eb3a27871e3dc42e52d32fe80e242d2053e24a9928f42c674d402f01"
+    },
+    {
+      "slug": "rice-cake-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "c242f26f4d1e98df36fe944ae273238f7e9942d778799c91b8d8a23f6d96b52a"
     },
     {
       "slug": "salad-nutrition-100g-compare",
