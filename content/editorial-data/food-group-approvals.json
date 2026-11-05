@@ -72,6 +72,13 @@
       "contentSha256": "e5b45846da4ecd5a3cf55eaea7e1d291f049f4b31136fda936a08c3a1fe32e63"
     },
     {
+      "slug": "lunchbox-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "5f8dba7098b82dcbff97a232f636fc7699809a04f3b700bac42937abc71a6da1"
+    },
+    {
       "slug": "mackerel-nutrition-by-state",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-09-30",
@@ -91,6 +98,13 @@
       "reviewedAt": "2026-11-04",
       "basis": "human-read",
       "contentSha256": "27d84a7cf9a0498b9777fc01ba6026475fa8d7e98a02ad75434b619c23c360a8"
+    },
+    {
+      "slug": "porridge-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-05",
+      "basis": "human-read",
+      "contentSha256": "d300e387eb3a27871e3dc42e52d32fe80e242d2053e24a9928f42c674d402f01"
     },
     {
       "slug": "salad-nutrition-100g-compare",
