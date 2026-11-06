@@ -72,6 +72,13 @@
       "contentSha256": "9a7bd5997827497c45c0bed25f8d143a4d95b84de961085d902af481e6b53b1f"
     },
     {
+      "slug": "ham-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-06",
+      "basis": "human-read",
+      "contentSha256": "d89bdd130b8549a05a71864fd0109d883588f479e7c97a4187ab5877a16881e9"
+    },
+    {
       "slug": "instant-rice-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-10-31",
@@ -161,6 +168,13 @@
       "reviewedAt": "2026-09-30",
       "basis": "automated-check",
       "contentSha256": "40ac2a8899e990d8c7a5df20ecec4c00b4b7943feb981964a2e9347979b39bec"
+    },
+    {
+      "slug": "sausage-nutrition-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-06",
+      "basis": "human-read",
+      "contentSha256": "23cfb3f1ad79d542aa5c1a52b0c99cd035c4d4d01733428c6f6630376ff91e03"
     },
     {
       "slug": "side-dish-nutrition-100g-compare",
