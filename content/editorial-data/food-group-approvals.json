@@ -79,6 +79,13 @@
       "contentSha256": "d89bdd130b8549a05a71864fd0109d883588f479e7c97a4187ab5877a16881e9"
     },
     {
+      "slug": "instant-noodle-dish-nutrition-100g",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-06",
+      "basis": "human-read",
+      "contentSha256": "c50e23067d5d7fe21728645fcfff8515673183f00da17c6a85b9df7fdc7df11e"
+    },
+    {
       "slug": "instant-rice-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
       "reviewedAt": "2026-10-31",
@@ -196,6 +203,13 @@
       "reviewedAt": "2026-11-05",
       "basis": "human-read",
       "contentSha256": "a4de22687a0898c16e003abd8629c62b0a29bffa0e8fc1f0172ce25c0efe0665"
+    },
+    {
+      "slug": "stew-sodium-100g-compare",
+      "reviewer": "영양고고 데이터 편집팀",
+      "reviewedAt": "2026-11-06",
+      "basis": "human-read",
+      "contentSha256": "c40405a2bde30e4e4d819e6406a6eb3d4ee06fc520081b0b3d9d6ba596b451a6"
     }
   ]
 }

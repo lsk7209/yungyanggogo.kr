@@ -6590,8 +6590,8 @@
     "publishedAt": "2026-10-26T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
@@ -6831,8 +6831,8 @@
     "publishedAt": "2026-10-27T09:00:00+09:00",
     "updatedAt": "2026-09-30",
     "readingMinutes": 5,
-    "humanReview": "pending",
-    "noindex": true,
+    "humanReview": "approved",
+    "noindex": false,
     "accentTheme": "slate",
     "summaryCards": [
       {
