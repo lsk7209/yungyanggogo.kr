@@ -25,15 +25,15 @@
     {
       "slug": "corn-nutrition-raw-boiled-dried",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-09",
+      "basis": "human-read",
       "contentSha256": "b38d212e53409d04fa8b42f36124468657209e8591d506789edc75f1fb79f274"
     },
     {
       "slug": "curry-roux-nutrition-basis",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-09",
+      "basis": "human-read",
       "contentSha256": "55920440394f688b35773b5916b7611e95acbc6c4c9c32aa72c6b6344a079523"
     },
     {
