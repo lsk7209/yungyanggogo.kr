@@ -144,8 +144,8 @@
     {
       "slug": "salad-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-10",
+      "basis": "human-read",
       "contentSha256": "17e7385d202f9ffc6620ef5bed7f53acff3bd277eb6bc1a4aca830756f5d7b0f"
     },
     {
@@ -165,8 +165,8 @@
     {
       "slug": "sandwich-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-10",
+      "basis": "human-read",
       "contentSha256": "41c6715e70f4d40594333f7b17547ccea0eaa09151a6091eb7713983cb36310c"
     },
     {
