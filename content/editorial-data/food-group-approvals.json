@@ -109,8 +109,8 @@
     {
       "slug": "mackerel-nutrition-by-state",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-09",
+      "basis": "human-read",
       "contentSha256": "1c8efe6214e734a05eeb8fb4b047b22e2ae05c392f13120309001b796822fedf"
     },
     {
@@ -151,8 +151,8 @@
     {
       "slug": "salmon-nutrition-by-state",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-09",
+      "basis": "human-read",
       "contentSha256": "ae62782f6c729944ec68dfddbfa70821853a66e22ecdd888aa1c771a1ba704a7"
     },
     {
