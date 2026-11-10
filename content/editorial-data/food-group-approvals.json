@@ -46,15 +46,15 @@
     {
       "slug": "fried-chicken-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-10",
+      "basis": "human-read",
       "contentSha256": "4773919b818421c65ba4e97ae88a2b4d5ff4ebd58ecea2010895967cbc9eaddd"
     },
     {
       "slug": "frozen-dumpling-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-10-31",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-10",
+      "basis": "human-read",
       "contentSha256": "6c157cd193c05cb19ba54ee1165d8bcaa068e4d4e65a248b9ee5d94e6d2e291c"
     },
     {

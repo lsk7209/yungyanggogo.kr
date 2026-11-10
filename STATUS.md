@@ -1,12 +1,12 @@
 # Status | 마지막: 2026-11-10
 ## 현재 작업
-자동 콘텐츠 데몬 13회차 실행: 기타 소스류(`sauce-sodium-100g-compare`) 및 일반과자(`snack-nutrition-100g-compare`) 글 2차 심층 리뷰 및 승인(`human-read`) 갱신 (누적 26/30편 완료), 52종 전수 회귀 테스트 및 타입체크 완료, Next.js 프로덕션 빌드(54개 라우트) 및 HTTP 계약 테스트(259 assertions) 통과, IndexNow 43개 URL 실시간 제출(200 OK).
+자동 콘텐츠 데몬 14회차 실행: 닭튀김(`fried-chicken-nutrition-100g-compare`) 및 냉동만두(`frozen-dumpling-nutrition-100g-compare`) 글 2차 심층 리뷰 및 승인(`human-read`) 갱신 (누적 28/30편 완료), 52종 전수 회귀 테스트 및 타입체크 완료, Next.js 프로덕션 빌드(54개 라우트) 및 HTTP 계약 테스트(259 assertions) 통과, IndexNow 43개 URL 실시간 제출(200 OK).
 ## 최근 변경 (최근 5개만)
+- 11-10: 자동 콘텐츠 데몬 14회차 실행: 닭튀김 및 냉동만두 글 2차 심층 리뷰 및 승인(`human-read`), SHA-256 무결성 바인딩, IndexNow 43개 URL 제출(200 OK)
 - 11-10: 자동 콘텐츠 데몬 13회차 실행: 기타 소스류 및 일반과자 글 2차 심층 리뷰 및 승인(`human-read`), SHA-256 무결성 바인딩, IndexNow 43개 URL 제출(200 OK)
 - 11-10: 자동 콘텐츠 데몬 12회차 실행: 샌드위치 및 샐러드 글 2차 심층 리뷰 및 승인(`human-read`), SHA-256 무결성 바인딩, IndexNow 43개 URL 제출(200 OK)
 - 11-09: 자동 콘텐츠 데몬 11회차 실행: 고등어류 및 연어류 글 2차 심층 리뷰 및 승인(`human-read`), SHA-256 무결성 바인딩, IndexNow 43개 URL 제출(200 OK)
 - 11-09: 자동 콘텐츠 데몬 10회차 실행: 옥수수 및 카레 글 2차 심층 리뷰 및 승인(`human-read`), SHA-256 무결성 바인딩, IndexNow 43개 URL 제출(200 OK)
-- 11-06: 자동 콘텐츠 데몬 9회차 실행: 즉석 찌개·전골 및 즉석 면요리 글 2차 심층 리뷰 및 승인(`human-read`), 30편 전원 승인 완료, SHA-256 무결성 바인딩, IndexNow 43개 URL 제출(200 OK)
 ## TODO
 - [ ] 심사 신청: 홈 google-adsense-account 메타로 사이트 연결 가능(광고 스크립트는 블로그만, 환경변수 꺼짐)
 - [ ] 편집 승인 7편 사람 검토 후 검토자·날짜 기록 방식 추가(현재 기록 없음), 그 뒤 정책 문구 강화
