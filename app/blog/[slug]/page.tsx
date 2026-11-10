@@ -166,6 +166,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="article-meta">
           <time dateTime={toIsoDateTime(post.publishedAt)}>발행 {formatKoreanDate(post.publishedAt)}</time>
           {modifiedAt ? <time dateTime={modifiedAt}>수정 {formatKoreanDate(modifiedAt)}</time> : null}
+          {post.reviewer ? <span>검토 {post.reviewer}</span> : null}
           <span>{post.readingMinutes}분</span>
         </div>
       </header>

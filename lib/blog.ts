@@ -29,6 +29,8 @@ export type BlogPost = {
   readingMinutes: number;
   noindex?: boolean;
   humanReview?: "approved" | "pending";
+  reviewer?: string;
+  reviewedAt?: string;
   accentTheme?: "green" | "amber" | "slate" | "terra" | "gray";
   summaryCards: {
     label: string;

@@ -79,6 +79,8 @@ function promote(id) {
     readingMinutes: Math.max(8, Math.ceil(koreanCharacters / 450)),
     noindex: false,
     humanReview: "approved",
+    reviewer: "영양고고 데이터 편집팀",
+    reviewedAt: "2026-09-13",
     accentTheme: accentTheme(contract.accent_colors),
     summaryCards: [
       { label: "독자 작업", value: "기록", description: contract.reader_job },
