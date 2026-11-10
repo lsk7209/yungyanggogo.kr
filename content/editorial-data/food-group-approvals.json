@@ -172,8 +172,8 @@
     {
       "slug": "sauce-sodium-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-10",
+      "basis": "human-read",
       "contentSha256": "40ac2a8899e990d8c7a5df20ecec4c00b4b7943feb981964a2e9347979b39bec"
     },
     {
@@ -193,8 +193,8 @@
     {
       "slug": "snack-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-09-30",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-10",
+      "basis": "human-read",
       "contentSha256": "a1b65a8353752ff2129bcad853e8ee98555408ea024331e0c7c20d9c445fead5"
     },
     {
