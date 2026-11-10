@@ -81,10 +81,19 @@ async function startServer(port, env) {
   });
   children.push(child);
   let log = "";
+  let childExited = false;
+  let exitCode = null;
   child.stdout.on("data", (d) => { log += d; });
   child.stderr.on("data", (d) => { log += d; });
+  child.on("exit", (code) => {
+    childExited = true;
+    exitCode = code;
+  });
   const base = `http://127.0.0.1:${port}`;
   for (let i = 0; i < 120; i += 1) {
+    if (childExited) {
+      throw new Error(`server on ${port} exited prematurely with code ${exitCode}:\n${log}`);
+    }
     try {
       await fetch(`${base}/robots.txt`);
       return base;
@@ -106,8 +115,11 @@ const canonical = (html) => html.match(/<link rel="canonical" href="([^"]+)"/)?.
 // "https://host" and "https://host/" are the same URL.
 const sameUrl = (a, b) => { try { return new URL(a).href === new URL(b).href; } catch { return false; } };
 
+const PORT_1 = Number(process.env.TEST_HTTP_PORT_1 || 3297);
+const PORT_2 = Number(process.env.TEST_HTTP_PORT_2 || 3298);
+
 try {
-  const base = await startServer(3197, { TURSO_DATABASE_URL: dbUrl, TURSO_AUTH_TOKEN: "local-e2e" });
+  const base = await startServer(PORT_1, { TURSO_DATABASE_URL: dbUrl, TURSO_AUTH_TOKEN: "local-e2e" });
   const siteUrl = "https://yungyanggogo.kr";
 
   // R33 + R51: sitemap URLs must actually be indexable 200 pages with a self canonical.
@@ -255,7 +267,7 @@ try {
   // A file that is not SQLite: every query fails with "file is not a database".
   const brokenDb = path.join(workDir, "corrupt.db");
   writeFileSync(brokenDb, "this is not a sqlite database ".repeat(200));
-  const broken = await startServer(3198, { TURSO_DATABASE_URL: pathToFileURL(brokenDb).href.replace("file:///", "file:/"), TURSO_AUTH_TOKEN: "local-e2e" });
+  const broken = await startServer(PORT_2, { TURSO_DATABASE_URL: pathToFileURL(brokenDb).href.replace("file:///", "file:/"), TURSO_AUTH_TOKEN: "local-e2e" });
   const brokenHub = await get(broken, "/nutrition-data");
   const brokenHubHtml = await brokenHub.text();
   check("T01-HTTP", brokenHub.status >= 500, `hub with DB outage is 5xx (got ${brokenHub.status})`);

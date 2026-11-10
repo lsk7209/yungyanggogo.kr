@@ -88,8 +88,8 @@
     {
       "slug": "instant-rice-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-10-31",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-11",
+      "basis": "human-read",
       "contentSha256": "eaa58f2d9548e142f3abb0fb4dddbbe5309b58f5d4c42e755bea70523badc838"
     },
     {
@@ -116,8 +116,8 @@
     {
       "slug": "marinated-meat-nutrition-100g-compare",
       "reviewer": "영양고고 데이터 편집팀",
-      "reviewedAt": "2026-10-31",
-      "basis": "automated-check",
+      "reviewedAt": "2026-11-11",
+      "basis": "human-read",
       "contentSha256": "34ef492fbf976630176601352493603fc34027c364c392fbde68574aafe59178"
     },
     {
